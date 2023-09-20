@@ -1,0 +1,3143 @@
+[
+  {
+    "uso": [
+      {
+        "uso_por_edificacion": "SIN INFORMACIÓN",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CASA HABITACIÓN",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CASA HABITACIÓN",
+        "calidad_edificacion": "CALIDAD LUJO"
+      },
+      {
+        "uso_por_edificacion": "CASA HABITACIÓN",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "CASA HABITACIÓN",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "CASA HABITACIÓN",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "CASA HABITACIÓN",
+        "calidad_edificacion": "CALIDAD PRECARIA"
+      },
+      {
+        "uso_por_edificacion": "DEPARTAMENTO HABITACIONAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "DEPARTAMENTO HABITACIONAL",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "DEPARTAMENTO HABITACIONAL",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "DEPARTAMENTO HABITACIONAL",
+        "calidad_edificacion": "CALIADAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "CASA PARA OFICINAS",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CASA PARA OFICINAS",
+        "calidad_edificacion": "CALIDAD LUJO"
+      },
+      {
+        "uso_por_edificacion": "CASA PARA OFICINAS",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "CASA PARA OFICINAS",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "CASA PARA OFICINAS",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "CASA PARA OFICINAS",
+        "calidad_edificacion": "CALIDAD PRECARIA"
+      },
+      {
+        "uso_por_edificacion": "OFICINAS EN EDIFICIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "OFICINAS EN EDIFICIO",
+        "calidad_edificacion": "CALIDAD LUJO"
+      },
+      {
+        "uso_por_edificacion": "OFICINAS EN EDIFICIO",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "OFICINAS EN EDIFICIO",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "OFICINAS EN EDIFICIO",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "TIENDA DEPARTAMENTAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "TIENDA DEPARTAMENTAL",
+        "calidad_edificacion": "DEPARTAMENTAL CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "TIENDA DEPARTAMENTAL",
+        "calidad_edificacion": "DE AUTOSERVICIO CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "LOCAL COMERCIAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "LOCAL COMERCIAL",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "LOCAL COMERCIAL",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "LOCAL COMERCIAL",
+        "calidad_edificacion": "CALIDAD  ECONOMICA"
+      },
+      {
+        "uso_por_edificacion": "RESTAURANTE",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "RESTAURANTE",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "RESTAURANTE",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "COMEDOR COMUNITARIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "COMEDOR COMUNITARIO",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "COMEDOR COMUNITARIO",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "DORMITORIO COMUNITARIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "DORMITORIO COMUNITARIO",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "DORMITORIO COMUNITARIO",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "BAÑO COMUNITARIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "BAÑO COMUNITARIO",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "BAÑO COMUNITARIO",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "BODEGA O NAVE INDUSTRIAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "BODEGA O NAVE INDUSTRIAL",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "BODEGA O NAVE INDUSTRIAL",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "BODEGA O NAVE INDUSTRIAL",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "TALLER",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "TALLER",
+        "calidad_edificacion": "CALIDAD MEDIA DE DOBLE ALTURA"
+      },
+      {
+        "uso_por_edificacion": "TALLER",
+        "calidad_edificacion": "CALIDAD ECONÓMICA SENCILLO - ALTURA MENOR A 3 m"
+      },
+      {
+        "uso_por_edificacion": "TALLER INDUSTRIAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "TALLER INDUSTRIAL",
+        "calidad_edificacion": "CALIDAD MEDIA DE LOSA DE CONCRETO CON MUROS"
+      },
+      {
+        "uso_por_edificacion": "TALLER INDUSTRIAL",
+        "calidad_edificacion": "CALIDAD ECONÓMICA DE LOSA DE CONCRETO SIN MUROS"
+      },
+      {
+        "uso_por_edificacion": "CUARTO DE MÁQUINAS",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CUARTO DE MÁQUINAS",
+        "calidad_edificacion": "TIPO INDUSTRIAL DOBLE ALTURA - DE CONCRETO"
+      },
+      {
+        "uso_por_edificacion": "CUARTO DE MÁQUINAS",
+        "calidad_edificacion": "TIPO INDUSTRIAL ALTURA NORMAL - DE CONCRETO"
+      },
+      {
+        "uso_por_edificacion": "CUARTO DE MÁQUINAS",
+        "calidad_edificacion": "TIPO SERVICIO A OFICINAS O HABITACIONAL - DE CONCRETO"
+      },
+      {
+        "uso_por_edificacion": "CUARTO DE MÁQUINAS",
+        "calidad_edificacion": "TIPO INDUSTRIAL ALTURA NORMAL - TECHO LÁMINA"
+      },
+      {
+        "uso_por_edificacion": "CUARTO DE MÁQUINAS",
+        "calidad_edificacion": "TIPO SERVICIO A OFICINA O HABITACIONAL - TECHO LÁMINA"
+      },
+      {
+        "uso_por_edificacion": "CLÍNICA O CENTRO DE SALUD",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CLÍNICA O CENTRO DE SALUD",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "CLÍNICA O CENTRO DE SALUD",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "HOSPITAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "HOSPITAL",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "HOSPITAL",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "LABORATORIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "LABORATORIO",
+        "calidad_edificacion": "LABORATORIO CLÍNICO DE SALUD"
+      },
+      {
+        "uso_por_edificacion": "LABORATORIO",
+        "calidad_edificacion": "LABORATORIO AGROPECUARIO"
+      },
+      {
+        "uso_por_edificacion": "LABORATORIO",
+        "calidad_edificacion": "LABORATORIO INDUSTRIAL"
+      },
+      {
+        "uso_por_edificacion": "LABORATORIO",
+        "calidad_edificacion": "LABORATORIO CRIMINALÍSTICA"
+      },
+      {
+        "uso_por_edificacion": "ESCUELA",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "ESCUELA",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "ESCUELA",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "ESCUELA",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "BIBLIOTECA",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "BIBLIOTECA",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "BIBLIOTECA",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "BIBLIOTECA",
+        "calidad_edificacion": "CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "EDIFICIO ESTACIONAMIENTO (CUBIERTO)",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "EDIFICIO ESTACIONAMIENTO (CUBIERTO)",
+        "calidad_edificacion": "CUBIERTO - CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "EDIFICIO ESTACIONAMIENTO (CUBIERTO)",
+        "calidad_edificacion": "CUBIERTO - CALIDAD ECONÓMICA"
+      },
+      {
+        "uso_por_edificacion": "CAMPO DE TIRO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CAMPO DE TIRO",
+        "calidad_edificacion": "(CAMPO DE TIRO, DESCUBIERTO, APROX. 10 m ANCHO x 25 m LARGO, O MENOR)"
+      },
+      {
+        "uso_por_edificacion": "CAMPO DE TIRO",
+        "calidad_edificacion": "(CAMPO DE TIRO, DESCUBIERTO, APROX. 15 m ANCHO x 50 m LARGO)"
+      },
+      {
+        "uso_por_edificacion": "CAMPO DE TIRO",
+        "calidad_edificacion": "(CAMPO DE TIRO, CUBIERTO, APROX. 10 A 15 m ANCHO x 20 A 30 m LARGO)"
+      },
+      {
+        "uso_por_edificacion": "FARO DE GUARDIA (SEGURIDAD)",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "FARO DE GUARDIA (SEGURIDAD)",
+        "calidad_edificacion": "FARO DE GUARDIA (SEGURIDAD)"
+      },
+      {
+        "uso_por_edificacion": "CENTRO DE READAPTACIÓN SOCIAL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CENTRO DE READAPTACIÓN SOCIAL",
+        "calidad_edificacion": "CENTRO DE READAPTACIÓN SOCIAL (EDIFICIO PARA CELDAS)"
+      },
+      {
+        "uso_por_edificacion": "CASETA",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "CASETA",
+        "calidad_edificacion": "CASETA DE VIGILANCIA - MAYOR A 15 m2"
+      },
+      {
+        "uso_por_edificacion": "CASETA",
+        "calidad_edificacion": "CASETA DE REVISIÓN ADUANAL O COBRO PEAJE"
+      },
+      {
+        "uso_por_edificacion": "AUDITORIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "AUDITORIO",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "AUDITORIO",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "SALA DE CINE",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "SALA DE CINE",
+        "calidad_edificacion": "CALIDAD BUENA"
+      },
+      {
+        "uso_por_edificacion": "SALA DE CINE",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "TERMINAL DE TRANSPORTE",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "TERMINAL DE TRANSPORTE",
+        "calidad_edificacion": "CALIDAD MEDIA"
+      },
+      {
+        "uso_por_edificacion": "HOTEL",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "HOTEL",
+        "calidad_edificacion": "5 ESTRELLAS"
+      },
+      {
+        "uso_por_edificacion": "HOTEL",
+        "calidad_edificacion": "4 ESTRELLAS"
+      },
+      {
+        "uso_por_edificacion": "HOTEL",
+        "calidad_edificacion": "3 ESTRELLAS"
+      },
+      {
+        "uso_por_edificacion": "GIMNASIO",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "GIMNASIO",
+        "calidad_edificacion": "CALIDAD BUENA PISO DE DUELA"
+      },
+      {
+        "uso_por_edificacion": "GIMNASIO",
+        "calidad_edificacion": "CALIDAD MEDIA PISO CONCRETO"
+      },
+      {
+        "uso_por_edificacion": "GIMNASIO",
+        "calidad_edificacion": "CALIDAD ECONÓMICA PISO CONCRETO"
+      },
+      {
+        "uso_por_edificacion": "ALBERCA CUBIERTA",
+        "calidad_edificacion": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_por_edificacion": "ALBERCA CUBIERTA",
+        "calidad_edificacion": "(ALBERCA TIPO OLÍMPICA DE 500 m2  A  1,500 m2 CALIDAD MEDIA)"
+      },
+      {
+        "uso_por_edificacion": "ALBERCA CUBIERTA",
+        "calidad_edificacion": "(ALBERCA COMERCIAL DE 200 m2  A  400 m2)"
+      }
+    ]
+  },
+  {
+    "inventario": [
+      {
+        "seccion_inventario": "SIN INFORMACIÓN",
+        "dependencia_administradora": "SIN INFORMACIÓN",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "I.- INMUEBLES COMPETENCIA DE LA SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": ""
+      },
+      {
+        "seccion_inventario": "I.- INMUEBLES COMPETENCIA DE LA SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SIN INFORMACIÓN",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE CULTURA",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE CULTURA",
+        "subSeccion": "ZONAS ARQUEOLÓGICAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE DESARROLLO AGRARIO TERRITORIAL Y URBANO",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE DESARROLLO AGRARIO TERRITORIAL Y URBANO",
+        "subSeccion": "TERRENOS NACIONALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE GOBERNACIÓN",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE GOBERNACIÓN",
+        "subSeccion": "ISLAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "AEROPUERTOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "AREAS NATURALES PROTEGIDAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "BIENES NACIONALES INHERENTES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "CARRETERAS Y AUTOPISTAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES ASIGNADOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES DE USO COMÚN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES DESTINADOS A GOBIERNOS ESTATALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES DESTINADOS A GOBIERNOS MUNICIPALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES DESTINADOS A PERSONAS MORALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES EN EL EXTRANJERO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES EN PROCESO DE RECUPERACIÓN JUDICIAL O ADMINISTRATIVA"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES EN TRANSITO DE APROVECHAMIENTO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES ENAJENADOS ONEROSAMENTE"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES FEDERALES COMPARTIDOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES FEDERALES DESTINADOS A PRESTACIÓN SERVICIOS PÚBLICOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES FEDERALES EN USO DE ASOCIACIONES RELIGIOSAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES OTORGADOS EN ARRENDAMIENTO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES OTORGADOS EN COMODATO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES OTORGADOS EN CONCESIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "INMUEBLES PARA INVESTIGACIÓN Y DEFINICIÓN DE ESTATUS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "ISLAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "PLAYAS MARITIMAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "PUERTOS MARÍTIMOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "TERRENOS GANADOS AL MAR"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "TERRENOS NACIONALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "VÍAS FERROVIARIAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "ZONA FEDERAL MARITIMO TERRESTRE"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+        "subSeccion": "ZONAS ARQUEOLÓGICAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "AEROPUERTOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "AREAS NATURALES PROTEGIDAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "BIENES NACIONALES INHERENTES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "CARRETERAS Y AUTOPISTAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES ASIGNADOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES DE USO COMÚN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES DESTINADOS A GOBIERNOS ESTATALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES DESTINADOS A GOBIERNOS MUNICIPALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES DESTINADOS A PERSONAS MORALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES EN EL EXTRANJERO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES EN PROCESO DE RECUPERACIÓN JUDICIAL O ADMINISTRATIVA"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES EN TRANSITO DE APROVECHAMIENTO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES ENAJENADOS ONEROSAMENTE"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES FEDERALES COMPARTIDOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES FEDERALES DESTINADOS A PRESTACIÓN SERVICIOS PÚBLICOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES FEDERALES EN USO DE ASOCIACIONES RELIGIOSAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES OTORGADOS EN ARRENDAMIENTO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES OTORGADOS EN COMODATO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES OTORGADOS EN CONCESIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "INMUEBLES PARA INVESTIGACIÓN Y DEFINICIÓN DE ESTATUS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "ISLAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "PLAYAS MARITIMAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "PUERTOS MARÍTIMOS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "TERRENOS GANADOS AL MAR"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "TERRENOS NACIONALES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "VÍAS FERROVIARIAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "ZONA FEDERAL MARITIMO TERRESTRE"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE INFRAESTRUCTURA - COMUNICACIONES Y TRANSPORTES",
+        "subSeccion": "ZONAS ARQUEOLÓGICAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE RELACIONES EXTERIORES",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DE RELACIONES EXTERIORES",
+        "subSeccion": "INMUEBLES EN EL EXTRANJERO"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DEL MEDIO AMBIENTE Y RECURSOS NATURALES",
+        "subSeccion": "SIN INFORMACIÓN"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DEL MEDIO AMBIENTE Y RECURSOS NATURALES",
+        "subSeccion": "AREAS NATURALES PROTEGIDAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DEL MEDIO AMBIENTE Y RECURSOS NATURALES",
+        "subSeccion": "BIENES NACIONALES INHERENTES"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DEL MEDIO AMBIENTE Y RECURSOS NATURALES",
+        "subSeccion": "PLAYAS MARITIMAS"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DEL MEDIO AMBIENTE Y RECURSOS NATURALES",
+        "subSeccion": "TERRENOS GANADOS AL MAR"
+      },
+      {
+        "seccion_inventario": "II.- INMUEBLES COMPETENCIA DE OTRAS DEPENDENCIAS ADMINISTRADORAS",
+        "dependencia_administradora": "SECRETARÍA DEL MEDIO AMBIENTE Y RECURSOS NATURALES",
+        "subSeccion": "ZONA FEDERAL MARITIMO TERRESTRE"
+      },
+      {
+        "seccion_inventario": "III.- INMUEBLES PROPIEDAD DE ENTIDADES PARAESTATALES",
+        "dependencia_administradora": "NO APLICA",
+        "subSeccion": ""
+      },
+      {
+        "seccion_inventario": "IV.- INMUEBLES PROPIEDAD DE OTRAS INSTITUCIONES PÚBLICAS FEDERALES",
+        "dependencia_administradora": "NO APLICA",
+        "subSeccion": ""
+      }
+    ]
+  },
+  {
+    "InstitucionPublicaOcupante": [
+      "SIN INFORMACIÓN",
+      "ADMINISTRACIÓN DEL PATRIMONIO DE LA BENEFICENCIA PÚBLICA",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL ALTAMIRA, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL COATZACOALCOS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL DE GUAYMAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL DOS BOCAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL ENSENADA, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL LÁZARO CÁRDENAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL MANZANILLO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL MAZATLÁN, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PROGRESO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PUERTO CHIAPAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PUERTO VALLARTA, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL SALINA CRUZ, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL TAMPICO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL TOPOLOBAMPO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL TUXPAN, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL VERACRUZ, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE ACAPULCO, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE CAMPECHE, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE QUINTANA ROO, S.A. DE C.V.",
+      "AEROPUERTO INTERNACIONAL DE LA CIUDAD DE MÉXICO, S.A. DE C.V.",
+      "AEROPUERTO INTERNACIONAL FELIPE ÁNGELES, S.A. DE C.V.",
+      "AEROPUERTOS Y SERVICIOS AUXILIARES",
+      "AGENCIA DE INVESTIGACIÓN CRIMINAL",
+      "AGENCIA DE SERVICIOS A LA COMERCIALIZACIÓN Y DESARROLLO DE MERCADOS AGROPECUARIOS",
+      "AGENCIA ESPACIAL MEXICANA",
+      "AGENCIA FEDERAL DE AVIACIÓN CIVIL",
+      "AGENCIA MEXICANA DE COOPERACIÓN INTERNACIONAL PARA EL DESARROLLO",
+      "AGENCIA NACIONAL DE ADUANAS DE MÉXICO",
+      "AGENCIA NACIONAL DE SEGURIDAD INDUSTRIAL Y DE PROTECCIÓN AL MEDIO AMBIENTE DEL SECTOR HIDROCARBUROS",
+      "AGENCIA REGULADORA DEL TRANSPORTE FERROVIARIO",
+      "AGROASEMEX, S.A.",
+      "ALMACENES NACIONALES DE DEPÓSITO, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+      "ARCHIVO GENERAL DE LA NACIÓN",
+      "AUDITORÍA SUPERIOR DE LA FEDERACIÓN",
+      "AUTORIDAD EDUCATIVA FEDERAL EN LA CIUDAD DE MÉXICO",
+      "AUTORIDAD FEDERAL PARA EL DESARROLLO DE LAS ZONAS ECONÓMICAS ESPECIALES",
+      "BANCO DE MÉXICO",
+      "BANCO DEL BIENESTAR, S.N.C., I.B.D.",
+      "BANCO NACIONAL DE COMERCIO EXTERIOR, S.N.C.",
+      "BANCO NACIONAL DE COMERCIO INTERIOR, S.N.C. (EN PROCESO DE DESINCORPORACIÓN)",
+      "BANCO NACIONAL DE CRÉDITO RURAL, S.N.C. (EN PROCESO DE DESINCORPORACIÓN)",
+      "BANCO NACIONAL DE OBRAS Y SERVICIOS PÚBLICOS, S.N.C.",
+      "BANCO NACIONAL DEL EJÉRCITO, FUERZA AÉREA Y ARMADA, S.N.C.",
+      "CAMINOS Y PUENTES FEDERALES DE INGRESOS Y SERVICIOS CONEXOS",
+      "CASA DE MONEDA DE MÉXICO",
+      "CENTRO DE CAPACITACIÓN CINEMATOGRÁFICA, A.C.",
+      "CENTRO DE ENSEÑANZA TÉCNICA INDUSTRIAL",
+      "CENTRO DE ESTUDIOS FILOSÓFICOS POLÍTICOS Y SOCIALES VICENTE LOMBARDO TOLEDANO",
+      "CENTRO DE ESTUDIOS SUPERIORES EN TURISMO",
+      "CENTRO DE INGENIERÍA Y DESARROLLO INDUSTRIAL",
+      "CENTRO DE INVESTIGACIÓN CIENTÍFICA DE YUCATÁN, A.C.",
+      "CENTRO DE INVESTIGACIÓN CIENTÍFICA Y DE EDUCACIÓN SUPERIOR DE ENSENADA, BAJA CALIFORNIA",
+      "CENTRO DE INVESTIGACIÓN EN ALIMENTACIÓN Y DESARROLLO, A.C.",
+      "CENTRO DE INVESTIGACIÓN EN CIENCIAS DE INFORMACIÓN GEOESPACIAL, A.C.",
+      "CENTRO DE INVESTIGACIÓN EN MATEMÁTICAS, A.C.",
+      "CENTRO DE INVESTIGACIÓN EN MATERIALES AVANZADOS, S.C.",
+      "CENTRO DE INVESTIGACIÓN Y ASISTENCIA EN TECNOLOGÍA Y DISEÑO DEL ESTADO DE JALISCO, A.C.",
+      "CENTRO DE INVESTIGACIÓN Y DE ESTUDIOS AVANZADOS DEL INSTITUTO POLITÉCNICO NACIONAL",
+      "CENTRO DE INVESTIGACIÓN Y DESARROLLO TECNOLÓGICO EN ELECTROQUÍMICA, S.C.",
+      "CENTRO DE INVESTIGACIÓN Y DOCENCIA ECONÓMICAS, A.C.",
+      "CENTRO DE INVESTIGACIONES BIOLÓGICAS DEL NOROESTE, S.C.",
+      "CENTRO DE INVESTIGACIONES EN ÓPTICA, A.C.",
+      "CENTRO DE INVESTIGACIONES Y ESTUDIOS SUPERIORES EN ANTROPOLOGÍA SOCIAL",
+      "CENTRO DE PRODUCCIÓN DE PROGRAMAS INFORMATIVOS Y ESPECIALES",
+      "CENTRO FEDERAL DE CONCILIACIÓN Y REGISTRO LABORAL",
+      "CENTRO NACIONAL DE CONTROL DE ENERGÍA",
+      "CENTRO NACIONAL DE CONTROL DEL GAS NATURAL",
+      "CENTRO NACIONAL DE EQUIDAD DE GÉNERO Y SALUD REPRODUCTIVA",
+      "CENTRO NACIONAL DE EXCELENCIA TECNOLÓGICA EN SALUD",
+      "CENTRO NACIONAL DE INTELIGENCIA",
+      "CENTRO NACIONAL DE LA TRANSFUSIÓN SANGUÍNEA",
+      "CENTRO NACIONAL DE METROLOGÍA",
+      "CENTRO NACIONAL DE PREVENCIÓN DE DESASTRES",
+      "CENTRO NACIONAL DE PROGRAMAS PREVENTIVOS Y CONTROL DE ENFERMEDADES",
+      "CENTRO NACIONAL DE TRASPLANTES",
+      "CENTRO NACIONAL PARA LA PREVENCIÓN Y EL CONTROL DEL VIH/SIDA",
+      "CENTRO NACIONAL PARA LA SALUD DE LA INFANCIA Y LA ADOLESCENCIA",
+      "CENTRO REGIONAL DE ALTA ESPECIALIDAD DE CHIAPAS",
+      "CENTROS DE INTEGRACIÓN JUVENIL, A.C.",
+      "CFE DISTRIBUCIÓN",
+      "CFE GENERACIÓN I",
+      "CFE GENERACIÓN II",
+      "CFE GENERACIÓN III",
+      "CFE GENERACIÓN IV",
+      "CFE GENERACIÓN V",
+      "CFE GENERACIÓN VI",
+      "CFE SUMINISTRADOR DE SERVICIOS BÁSICOS",
+      "CFE TELECOMUNICACIONES E INTERNET PARA TODOS",
+      "CFE TRANSMISIÓN",
+      "CIATEC, A.C. \"CENTRO DE INNOVACIÓN APLICADA EN TECNOLOGÍAS COMPETITIVAS\"",
+      "CIATEQ, A.C. CENTRO DE TECNOLOGÍA AVANZADA",
+      "COLEGIO DE BACHILLERES",
+      "COLEGIO DE POSTGRADUADOS",
+      "COLEGIO NACIONAL DE EDUCACIÓN PROFESIONAL TÉCNICA",
+      "COLEGIO SUPERIOR AGROPECUARIO DEL ESTADO DE GUERRERO",
+      "COMISIÓN DE APELACIÓN Y ARBITRAJE DEL DEPORTE",
+      "COMISIÓN DE OPERACIÓN Y FOMENTO DE ACTIVIDADES ACADÉMICAS DEL INSTITUTO POLITÉCNICO NACIONAL",
+      "COMISIÓN EJECUTIVA DE ATENCIÓN A VÍCTIMAS",
+      "COMISIÓN EJECUTIVA DEL FONDO DE LA VIVIENDA DEL ISSSTE",
+      "COMISIÓN FEDERAL DE COMPETENCIA ECONÓMICA",
+      "COMISIÓN FEDERAL DE ELECTRICIDAD",
+      "COMISIÓN FEDERAL DE TELECOMUNICACIONES",
+      "COMISIÓN FEDERAL PARA LA PROTECCIÓN CONTRA RIESGOS SANITARIOS",
+      "COMISIÓN NACIONAL BANCARIA Y DE VALORES",
+      "COMISIÓN NACIONAL CONTRA LAS ADICCIONES",
+      "COMISIÓN NACIONAL DE ACUACULTURA Y PESCA",
+      "COMISIÓN NACIONAL DE ARBITRAJE MÉDICO",
+      "COMISIÓN NACIONAL DE ÁREAS NATURALES PROTEGIDAS",
+      "COMISIÓN NACIONAL DE BIOÉTICA",
+      "COMISIÓN NACIONAL DE BÚSQUEDA DE PERSONAS",
+      "COMISIÓN NACIONAL DE CULTURA FÍSICA Y DEPORTE",
+      "COMISIÓN NACIONAL DE HIDROCARBUROS",
+      "COMISIÓN NACIONAL DE LAS ZONAS ÁRIDAS",
+      "COMISIÓN NACIONAL DE LIBROS DE TEXTO GRATUITOS",
+      "COMISIÓN NACIONAL DE LOS DERECHOS HUMANOS",
+      "COMISIÓN NACIONAL DE LOS SALARIOS MÍNIMOS",
+      "COMISIÓN NACIONAL DE MEJORA REGULATORIA",
+      "COMISIÓN NACIONAL DE PROTECCIÓN SOCIAL EN SALUD",
+      "COMISIÓN NACIONAL DE SEGURIDAD NUCLEAR Y SALVAGUARDIAS",
+      "COMISIÓN NACIONAL DE SEGUROS Y FIANZAS",
+      "COMISIÓN NACIONAL DE VIVIENDA",
+      "COMISIÓN NACIONAL DEL AGUA",
+      "COMISIÓN NACIONAL DEL SISTEMA DE AHORRO PARA EL RETIRO",
+      "COMISIÓN NACIONAL FORESTAL",
+      "COMISIÓN NACIONAL PARA EL USO EFICIENTE DE LA ENERGÍA",
+      "COMISIÓN NACIONAL PARA LA MEJORA CONTINUA DE LA EDUCACIÓN",
+      "COMISIÓN NACIONAL PARA LA PROTECCIÓN Y DEFENSA DE LOS USUARIOS DE SERVICIOS FINANCIEROS",
+      "COMISIÓN NACIONAL PARA PREVENIR Y ERRADICAR LA VIOLENCIA CONTRA LAS MUJERES",
+      "COMISIÓN PARA LA REGULARIZACIÓN DE LA TENENCIA DE LA TIERRA",
+      "COMISIÓN REGULADORA DE ENERGÍA",
+      "COMITÉ NACIONAL MIXTO DE PROTECCIÓN AL SALARIO",
+      "COMITÉ NACIONAL PARA EL DESARROLLO SUSTENTABLE DE LA CAÑA DE AZÚCAR",
+      "COMPAÑÍA MEXICANA DE EXPLORACIONES, S.A. DE C.V.",
+      "COMPAÑÍA OPERADORA DEL CENTRO CULTURAL Y TURÍSTICO DE TIJUANA, S.A. DE C.V.",
+      "CONSEJERÍA JURÍDICA DEL EJECUTIVO FEDERAL",
+      "CONSEJO DE LA JUDICATURA FEDERAL",
+      "CONSEJO DE PROMOCIÓN TURÍSTICA DE MÉXICO, S.A. DE C.V.",
+      "CONSEJO NACIONAL DE EVALUACIÓN DE LA POLÍTICA DE DESARROLLO SOCIAL",
+      "CONSEJO NACIONAL DE FOMENTO EDUCATIVO",
+      "CONSEJO NACIONAL DE HUMANIDADES, CIENCIAS Y TECNOLOGÍAS",
+      "CONSEJO NACIONAL PARA EL DESARROLLO Y LA INCLUSIÓN DE LAS PERSONAS CON DISCAPACIDAD",
+      "CONSEJO NACIONAL PARA LA CULTURA Y LAS ARTES",
+      "CONSEJO NACIONAL PARA PREVENIR LA DISCRIMINACIÓN",
+      "COORDINACIÓN GENERAL @PRENDE.MX",
+      "COORDINACIÓN GENERAL DE LA COMISIÓN MEXICANA DE AYUDA A REFUGIADOS",
+      "COORDINACIÓN GENERAL DEL PROGRAMA NACIONAL DE APOYO PARA LAS EMPRESAS DE SOLIDARIDAD",
+      "COORDINACIÓN NACIONAL ANTISECUESTRO",
+      "COORDINACIÓN NACIONAL DE BECAS PARA EL BIENESTAR BENITO JUÁREZ",
+      "COORDINACIÓN NACIONAL DEL PROGRAMA DE DESARROLLO HUMANO OPORTUNIDADES",
+      "COORDINACIÓN NACIONAL DEL SERVICIO PROFESIONAL DOCENTE",
+      "COORDINACIÓN PARA LA ATENCIÓN INTEGRAL DE LA MIGRACIÓN EN LA FRONTERA SUR",
+      "CORPORACIÓN DE SERVICIOS AL TURISTA ÁNGELES VERDES",
+      "CORPORACIÓN MEXICANA DE INVESTIGACIÓN EN MATERIALES, S.A. DE C.V.",
+      "CORREDOR INTEROCEÁNICO DEL ISTMO DE TEHUANTEPEC",
+      "DICONSA, S.A. DE C.V.",
+      "EDUCAL, S.A. DE C.V.",
+      "EL COLEGIO DE LA FRONTERA NORTE, A.C.",
+      "EL COLEGIO DE LA FRONTERA SUR",
+      "EL COLEGIO DE MÉXICO, A.C.",
+      "EL COLEGIO DE MICHOACÁN, A.C.",
+      "EL COLEGIO DE SAN LUIS, A.C.",
+      "EL COLEGIO NACIONAL",
+      "ESTUDIOS CHURUBUSCO AZTECA, S.A.",
+      "ESTUDIOS CHURUBUSCO AZTECA, S.A.",
+      "EXPORTADORA DE SAL, S.A. DE C.V.",
+      "EXPORTADORES ASOCIADOS, S.A. DE C.V. (EN PROCESO DE DESINCORPORACIÓN)",
+      "FERROCARRIL CHIHUAHUA AL PACÍFICO, S.A. DE C.V. (EN PROCESO DE DESINCORPORACIÓN)",
+      "FERROCARRIL DEL ISTMO DE TEHUANTEPEC, S.A. DE C.V.",
+      "FERROCARRILES NACIONALES DE MÉXICO (EN PROCESO DE DESINCORPORACIÓN)",
+      "FESTIVAL INTERNACIONAL CERVANTINO",
+      "FIDEICOMISO DE FOMENTO MINERO",
+      "FIDEICOMISO DE LOS SISTEMAS NORMALIZADO DE COMPETENCIA LABORAL Y DE CERTIFICACIÓN DE COMPETENCIA LABORAL",
+      "FIDEICOMISO DE RIESGO COMPARTIDO",
+      "FIDEICOMISO FONDO NACIONAL DE FOMENTO EJIDAL",
+      "FIDEICOMISO FONDO NACIONAL DE HABITACIONES POPULARES",
+      "FIDEICOMISO LIQUIDADOR DE INSTITUCIONES Y ORGANIZACIONES AUXILIARES DE CRÉDITO (EN DESINCORPORACIÓN)",
+      "FIDEICOMISO PARA LA CINETECA NACIONAL",
+      "FIDEICOMISO UNIVERSIDAD MARÍTIMA Y PORTUARIA DE MÉXICO",
+      "FIDEICOMISOS INSTITUIDOS EN RELACION CON LA AGRICULTURA",
+      "FINANCIERA NACIONAL AZUCARERA (EN LIQUIDACIÓN)",
+      "FINANCIERA NACIONAL DE DESARROLLO AGROPECUARIO, RURAL, FORESTAL Y PESQUERO",
+      "FINANCIERA PARA EL BIENESTAR",
+      "FISCALÍA GENERAL DE LA REPÚBLICA",
+      "FONATUR CONSTRUCTORA, S.A. DE C.V.",
+      "FONATUR INFRAESTRUCTURA, S.A. DE C.V.",
+      "FONATUR PRESTADORA DE SERVICIOS, S.A. DE C.V.",
+      "FONATUR TREN MAYA, S.A. DE C.V.",
+      "FONDO DE CAPITALIZACIÓN E INVERSIÓN DEL SECTOR RURAL",
+      "FONDO DE CULTURA ECONÓMICA",
+      "FONDO DE EMPRESAS EXPROPIADAS DEL SECTOR AZUCARERO",
+      "FONDO DE GARANTÍA Y FOMENTO PARA LA AGRICULTURA, GANADERÍA Y AVICULTURA",
+      "FONDO DE GARANTÍA Y FOMENTO PARA LAS ACTIVIDADES PESQUERAS",
+      "FONDO DE INFORMACIÓN Y DOCUMENTACIÓN PARA LA INDUSTRIA",
+      "FONDO DE OPERACIÓN Y FINANCIAMIENTO BANCARIO A LA VIVIENDA",
+      "FONDO ESPECIAL DE ASISTENCIA TÉCNICA Y GARANTÍA PARA CRÉDITOS AGROPECUARIOS",
+      "FONDO ESPECIAL PARA FINANCIAMIENTOS AGROPECUARIOS",
+      "FONDO NACIONAL DE FOMENTO AL TURISMO",
+      "FONDO NACIONAL PARA EL FOMENTO DE LAS ARTESANÍAS",
+      "FONDO PARA EL DESARROLLO DE RECURSOS HUMANOS",
+      "GRUPO AEROPORTUARIO DE LA CIUDAD DE MÉXICO, S.A. DE C.V.",
+      "GUARDIA NACIONAL",
+      "H. CÁMARA DE DIPUTADOS",
+      "H. CÁMARA DE SENADORES",
+      "HOSPITAL GENERAL \"DR. MANUEL GEA GONZÁLEZ\"",
+      "HOSPITAL GENERAL DE MÉXICO \"DR. EDUARDO LICEAGA\"",
+      "HOSPITAL INFANTIL DE MÉXICO \"FEDERICO GÓMEZ\"",
+      "HOSPITAL JUÁREZ DE MÉXICO",
+      "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE CIUDAD VICTORIA \"BICENTENARIO 2010\"",
+      "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE IXTAPALUCA",
+      "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE LA PENÍNSULA DE YUCATÁN",
+      "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE OAXACA",
+      "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DEL BAJÍO",
+      "I.I.I. SERVICIOS, S.A. DE C.V.",
+      "IMPRESORA Y ENCUADERNADORA PROGRESO, S.A. DE C.V.",
+      "INCOBUSA, S.A. DE C.V.",
+      "INFOTEC CENTRO DE INVESTIGACIÓN E INNOVACIÓN EN TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN",
+      "INSTALACIONES INMOBILIARIAS PARA INDUSTRIAS, S.A. DE C.V.",
+      "INSTITUTO DE ADMINISTRACIÓN Y AVALÚOS DE BIENES NACIONALES",
+      "INSTITUTO DE COMPETITIVIDAD TURÍSTICA",
+      "INSTITUTO DE ECOLOGÍA, A.C.",
+      "INSTITUTO DE INVESTIGACIONES \"DR. JOSÉ MARÍA LUIS MORA\"",
+      "INSTITUTO DE LOS MEXICANOS EN EL EXTERIOR",
+      "INSTITUTO DE SALUD PARA EL BIENESTAR",
+      "INSTITUTO DE SEGURIDAD SOCIAL PARA LAS FUERZAS ARMADAS MEXICANAS",
+      "INSTITUTO DE SEGURIDAD Y SERVICIOS SOCIALES DE LOS TRABAJADORES DEL ESTADO",
+      "INSTITUTO DEL FONDO NACIONAL DE LA VIVIENDA PARA LOS TRABAJADORES",
+      "INSTITUTO DEL FONDO NACIONAL PARA EL CONSUMO DE LOS TRABAJADORES",
+      "INSTITUTO FEDERAL DE TELECOMUNICACIONES",
+      "INSTITUTO MATÍAS ROMERO",
+      "INSTITUTO MEXICANO DE CINEMATOGRAFÍA",
+      "INSTITUTO MEXICANO DE LA JUVENTUD",
+      "INSTITUTO MEXICANO DE LA PROPIEDAD INDUSTRIAL",
+      "INSTITUTO MEXICANO DE LA RADIO",
+      "INSTITUTO MEXICANO DE LA RADIO",
+      "INSTITUTO MEXICANO DE TECNOLOGÍA DEL AGUA",
+      "INSTITUTO MEXICANO DEL PETRÓLEO",
+      "INSTITUTO MEXICANO DEL SEGURO SOCIAL",
+      "INSTITUTO MEXICANO DEL TRANSPORTE",
+      "INSTITUTO NACIONAL DE ANTROPOLOGÍA E HISTORIA",
+      "INSTITUTO NACIONAL DE ASTROFÍSICA, ÓPTICA Y ELECTRÓNICA",
+      "INSTITUTO NACIONAL DE BELLAS ARTES Y LITERATURA",
+      "INSTITUTO NACIONAL DE CANCEROLOGÍA",
+      "INSTITUTO NACIONAL DE CARDIOLOGÍA \"IGNACIO CHÁVEZ\"",
+      "INSTITUTO NACIONAL DE CIENCIAS MÉDICAS Y NUTRICIÓN \"SALVADOR ZUBIRÁN\"",
+      "INSTITUTO NACIONAL DE CIENCIAS PENALES",
+      "INSTITUTO NACIONAL DE DESARROLLO SOCIAL",
+      "INSTITUTO NACIONAL DE ECOLOGÍA",
+      "INSTITUTO NACIONAL DE ECOLOGÍA Y CAMBIO CLIMÁTICO",
+      "INSTITUTO NACIONAL DE ELECTRICIDAD Y ENERGÍAS LIMPIAS",
+      "INSTITUTO NACIONAL DE ENFERMEDADES RESPIRATORIAS \"ISMAEL COSÍO VILLEGAS\"",
+      "INSTITUTO NACIONAL DE ESTADÍSTICA Y GEOGRAFÍA",
+      "INSTITUTO NACIONAL DE ESTUDIOS HISTÓRICOS DE LAS REVOLUCIONES DE MÉXICO",
+      "INSTITUTO NACIONAL DE GERIATRÍA",
+      "INSTITUTO NACIONAL DE INVESTIGACIONES FORESTALES, AGRÍCOLAS Y PECUARIAS",
+      "INSTITUTO NACIONAL DE INVESTIGACIONES NUCLEARES",
+      "INSTITUTO NACIONAL DE LA ADMINISTRACIÓN PÚBLICA, A.C.",
+      "INSTITUTO NACIONAL DE LA ECONOMÍA SOCIAL",
+      "INSTITUTO NACIONAL DE LA INFRAESTRUCTURA FÍSICA EDUCATIVA",
+      "INSTITUTO NACIONAL DE LAS MUJERES",
+      "INSTITUTO NACIONAL DE LAS PERSONAS ADULTAS MAYORES",
+      "INSTITUTO NACIONAL DE LENGUAS INDÍGENAS",
+      "INSTITUTO NACIONAL DE LOS PUEBLOS INDÍGENAS",
+      "INSTITUTO NACIONAL DE MEDICINA GENÓMICA",
+      "INSTITUTO NACIONAL DE MIGRACIÓN",
+      "INSTITUTO NACIONAL DE NEUROLOGÍA Y NEUROCIRUGÍA \"MANUEL VELASCO SUÁREZ\"",
+      "INSTITUTO NACIONAL DE PEDIATRÍA",
+      "INSTITUTO NACIONAL DE PERINATOLOGÍA \"ISIDRO ESPINOSA DE LOS REYES\"",
+      "INSTITUTO NACIONAL DE PESCA Y ACUACULTURA",
+      "INSTITUTO NACIONAL DE PSIQUIATRÍA \"RAMÓN DE LA FUENTE MUÑIZ\"",
+      "INSTITUTO NACIONAL DE REHABILITACIÓN \"LUIS GUILLERMO IBARRA IBARRA\"",
+      "INSTITUTO NACIONAL DE SALUD PÚBLICA",
+      "INSTITUTO NACIONAL DE TRANSPARENCIA, ACCESO A LA INFORMACIÓN Y PROTECCIÓN DE DATOS PERSONALES",
+      "INSTITUTO NACIONAL DEL DERECHO DE AUTOR",
+      "INSTITUTO NACIONAL DEL EMPRENDEDOR",
+      "INSTITUTO NACIONAL DEL SUELO SUSTENTABLE",
+      "INSTITUTO NACIONAL ELECTORAL",
+      "INSTITUTO NACIONAL PARA EL DESARROLLO DE CAPACIDADES DEL SECTOR RURAL, A.C.",
+      "INSTITUTO NACIONAL PARA EL FEDERALISMO Y EL DESARROLLO MUNICIPAL",
+      "INSTITUTO NACIONAL PARA LA EDUCACIÓN DE LOS ADULTOS",
+      "INSTITUTO PARA DEVOLVER AL PUEBLO LO ROBADO",
+      "INSTITUTO PARA EL DESARROLLO TÉCNICO DE LAS HACIENDAS PÚBLICAS",
+      "INSTITUTO PARA LA PROTECCIÓN AL AHORRO BANCARIO",
+      "INSTITUTO POLITÉCNICO NACIONAL",
+      "INSTITUTO POTOSINO DE INVESTIGACIÓN CIENTÍFICA Y TECNOLÓGICA, A.C.",
+      "LABORATORIOS DE BIOLÓGICOS Y REACTIVOS DE MÉXICO, S.A. DE C.V.",
+      "LICONSA, S.A. DE C.V.",
+      "LITIO PARA MÉXICO",
+      "LOTERÍA NACIONAL",
+      "LUZ Y FUERZA DEL CENTRO, EN LIQUIDACIÓN",
+      "NACIONAL FINANCIERA, S.N.C.",
+      "NOTIMEX, AGENCIA DE NOTICIAS DEL ESTADO MEXICANO",
+      "ORGANISMO COORDINADOR DE LAS UNIVERSIDADES PARA EL BIENESTAR BENITO JUÁREZ GARCÍA",
+      "ORGANISMO PROMOTOR DE INVERSIONES EN TELECOMUNICACIONES",
+      "ÓRGANO ADMINISTRATIVO DESCONCENTRADO ESPECIALIZADO EN MECANISMOS ALTERNATIVOS DE SOLUCIÓN DE CONTROVERSIAS EN MATERIA PENAL",
+      "OTROS",
+      "PATRONATO DE OBRAS E INSTALACIONES DEL INSTITUTO POLITÉCNICO NACIONAL",
+      "PATRONATO DEL AHORRO NACIONAL",
+      "PEMEX LOGÍSTICA",
+      "PEMEX TRANSFORMACIÓN INDUSTRIAL",
+      "PEMEX-EXPLORACIÓN Y PRODUCCIÓN",
+      "PEMEX-GAS Y PETROQUÍMICA BÁSICA",
+      "PEMEX-PETROQUÍMICA",
+      "PEMEX-REFINACIÓN",
+      "PETRÓLEOS MEXICANOS",
+      "PMI COMERCIO INTERNACIONAL, S.A. DE C.V.",
+      "POLICÍA FEDERAL",
+      "PRESIDENCIA DE LA REPÚBLICA",
+      "PREVENCIÓN Y READAPTACIÓN SOCIAL",
+      "PROCURADURÍA AGRARIA",
+      "PROCURADURÍA DE LA DEFENSA DEL CONTRIBUYENTE",
+      "PROCURADURÍA FEDERAL DE LA DEFENSA DEL TRABAJO",
+      "PROCURADURÍA FEDERAL DE PROTECCIÓN AL AMBIENTE",
+      "PROCURADURÍA FEDERAL DEL CONSUMIDOR",
+      "PROCURADURÍA GENERAL DE LA REPÚBLICA",
+      "PRODUCTORA DE COSPELES (EN PROCESO DE DESINCORPORACIÓN)",
+      "PRODUCTORA NACIONAL DE BIOLÓGICOS VETERINARIOS",
+      "PRODUCTORA NACIONAL DE SEMILLAS",
+      "PRODUCTOS FORESTALES MEXICANOS (EN PROCESO DE INCORPORACIÓN)",
+      "PROMÉXICO",
+      "RADIO EDUCACIÓN",
+      "REGISTRO AGRARIO NACIONAL",
+      "SECRETARÍA DE AGRICULTURA Y DESARROLLO RURAL",
+      "SECRETARÍA DE BIENESTAR",
+      "SECRETARÍA DE CULTURA",
+      "SECRETARÍA DE DESARROLLO AGRARIO, TERRITORIAL Y URBANO",
+      "SECRETARÍA DE ECONOMÍA",
+      "SECRETARÍA DE EDUCACIÓN PÚBLICA",
+      "SECRETARÍA DE ENERGÍA",
+      "SECRETARÍA DE GOBERNACIÓN",
+      "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+      "SECRETARÍA DE INFRAESTRUCTURA, COMUNICACIONES Y TRANSPORTES",
+      "SECRETARÍA DE LA DEFENSA NACIONAL",
+      "SECRETARÍA DE LA FUNCIÓN PÚBLICA",
+      "SECRETARÍA DE MARINA ARMADA DE MÉXICO",
+      "SECRETARÍA DE MEDIO AMBIENTE Y RECURSOS NATURALES",
+      "SECRETARÍA DE RELACIONES EXTERIORES",
+      "SECRETARÍA DE SALUD",
+      "SECRETARÍA DE SEGURIDAD Y PROTECCIÓN CIUDADANA",
+      "SECRETARÍA DE TURISMO",
+      "SECRETARÍA DEL TRABAJO Y PREVISIÓN SOCIAL",
+      "SECRETARÍA EJECUTIVA DEL SISTEMA NACIONAL ANTICORRUPCIÓN",
+      "SECRETARÍA EJECUTIVA DEL SISTEMA NACIONAL DE PROTECCIÓN INTEGRAL DE NIÑAS, NIÑOS Y ADOLESCENTES",
+      "SECRETARÍA GENERAL DEL CONSEJO NACIONAL DE POBLACIÓN",
+      "SECRETARÍA TÉCNICA DE LA COMISIÓN CALIFICADORA DE PUBLICACIONES Y REVISTAS ILUSTRADAS",
+      "SECRETARÍA TÉCNICA DEL CONSEJO DE COORDINACIÓN PARA LA IMPLEMENTACIÓN DEL SISTEMA DE JUSTICIA PENAL",
+      "SECRETARIADO EJECUTIVO DEL SISTEMA NACIONAL DE SEGURIDAD PÚBLICA",
+      "SEGURIDAD ALIMENTARIA MEXICANA",
+      "SEGUROS DE CRÉDITO A LA VIVIENDA SHF, S.A. DE C.V.",
+      "SERVICIO DE ADMINISTRACIÓN TRIBUTARIA",
+      "SERVICIO DE INFORMACIÓN AGROALIMENTARIA Y PESQUERA",
+      "SERVICIO DE PROTECCIÓN FEDERAL",
+      "SERVICIO GEOLÓGICO MEXICANO",
+      "SERVICIO NACIONAL DE INSPECCIÓN Y CERTIFICACIÓN DE SEMILLAS",
+      "SERVICIO NACIONAL DE SANIDAD, INOCUIDAD Y CALIDAD AGROALIMENTARIA",
+      "SERVICIO POSTAL MEXICANO",
+      "SERVICIOS A LA NAVEGACIÓN EN EL ESPACIO AÉREO MEXICANO",
+      "SERVICIOS AEROPORTUARIOS DE LA CIUDAD DE MÉXICO, S.A. DE C.V.",
+      "SERVICIOS DE ALMACENAMIENTO DEL NORTE, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+      "SERVICIOS DE ATENCIÓN PSIQUIÁTRICA",
+      "SERVICIOS DE SALUD DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL PARA EL BIENESTAR",
+      "SISTEMA DE TIENDAS DE LOS TRABAJADORES AL SERVICIO DEL ESTADO",
+      "SISTEMA NACIONAL PARA EL DESARROLLO INTEGRAL DE LA FAMILIA",
+      "SISTEMA PÚBLICO DE RADIODIFUSIÓN DEL ESTADO MEXICANO",
+      "SOCIEDAD HIPOTECARIA FEDERAL, S.N.C.",
+      "SUPREMA CORTE DE JUSTICIA DE LA NACIÓN",
+      "TALLERES GRÁFICOS DE MÉXICO",
+      "TECNOLÓGICO NACIONAL DE MÉXICO",
+      "TELEVISIÓN METROPOLITANA, S.A. DE C.V.",
+      "TERRENOS DE JALTIPAN, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+      "TERRENOS PARA INDUSTRIAS, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+      "TRIBUNAL ELECTORAL DEL PODER JUDICIAL DE LA FEDERACIÓN",
+      "TRIBUNAL FEDERAL DE CONCILIACIÓN Y ARBITRAJE",
+      "TRIBUNAL FEDERAL DE JUSTICIA ADMINISTRATIVA",
+      "TRIBUNAL SUPERIOR AGRARIO",
+      "UNIDAD DEL SISTEMA PARA LA CARRERA DE LAS MAESTRAS Y LOS MAESTROS",
+      "UNIVERSIDAD ABIERTA Y A DISTANCIA DE MÉXICO",
+      "UNIVERSIDAD AUTÓNOMA AGRARIA \"ANTONIO NARRO\"",
+      "UNIVERSIDAD AUTÓNOMA CHAPINGO",
+      "UNIVERSIDAD AUTÓNOMA METROPOLITANA",
+      "UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO",
+      "UNIVERSIDAD PEDAGÓGICA NACIONAL",
+      "XE-IPN CANAL 11"
+    ]
+  },
+  {
+    "usoGenerico": [
+      {
+        "uso_generico": "SIN INFORMACIÓN",
+        "uso_especifico": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "ADUANA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "AGENCIA ADUANAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "AGENCIA NOTICIOSA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "ASEGURADORA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "BANCO"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "CASA DE MONEDA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "DELEGACION"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "DERIVADOS DE SU OBJETO INSTITUCIONAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "EMBAJADA O CONSULADO"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "INMUEBLES FEDERALES COMPARTIDOS"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DE GOBIERNO ESTATAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DE GOBIERNO MUNICIPAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DE MENSAJERIA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DE TELEFONOS"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DE TELEGRAFOS"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DEL PODER EJECUTIVO FEDERAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DEL PODER JUDICIAL FEDERAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "OFICINA DEL PODER LEGISLATIVO FEDERAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "PALACIO DE GOBIERNO ESTATAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "PALACIO DE GOBIERNO FEDERAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "PALACIO MUNICIPAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "RESIDENCIA OFICIAL DEL PODER EJECUTIVO FEDERAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "SERVICIO POSTAL"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "TESORERIA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "TRAMITE Y COBRANZA"
+      },
+      {
+        "uso_generico": "DE SERVICIO PÚBLICO",
+        "uso_especifico": "TRAMITES DE SERVICIOS PUBLICOS"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "BANCO DE MATERIAL PETREO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "BANCO DE MATERIALES"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "BOMBAS"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "CEMENTERIO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "ESTACIONAMIENTO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "LAVANDERIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "PLATAFORMAS"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "SERVICIOS DE AGENCIA FUNERARIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "SERVIDUMBRE DE PASO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "SINDICATO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "TALLER DE MAQUINARIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "TALLER MECANICO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "TALLERES DE REPARACION Y MANTENIMIENTO"
+      },
+      {
+        "uso_generico": "SERVICIOS DIVERSOS",
+        "uso_especifico": "TALLERES GRAFICOS"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "SIN INFORMACIÓN"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "ACTIVIDADES CASTRENSES"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "AGENCIA DEL MINISTERIO PUBLICO"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "BASE O CUARTEL DE LAS FUERZAS ARMADAS"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CAMPAMENTO DE POLICIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CAMPO MILITAR"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CAPITANIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CASETA DE CONTROL Y/O VIGILANCIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CENTRAL DE AMBULANCIAS"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CENTRO DE RETENCION MIGRATORIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "CENTRO PRACTICO OPERATIVO"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "COMANDANCIA DE POLICIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "ESTACION DE BOMBEROS"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "PARTIDA DE INFANTERIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "PROCURACION DE JUSTICIA"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "RECLUSORIO"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "REFORMATORIO"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "TRIBUNAL O JUZGADO"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "ZONA DE PROTECCION"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "ZONA MILITAR"
+      },
+      {
+        "uso_generico": "SEGURIDAD Y JUSTICIA",
+        "uso_especifico": "ZONA NAVAL"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "AERODROMO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "AEROPUERTO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ANTENAS"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ATRACADERO O MUELLE"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "AUTOPISTA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "BALIZA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "CAMINO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "CARRETERA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "CASETA DE COMUNICACIONES"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "CASETA PESADORA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "EDIFICIO TECNICO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESPUELA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION DE FERROCARRIL"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION DE METRO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION DE RADIOTELEFONIA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION DE RADIOTELEGRAFIA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION FLUVIAL"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION MARITIMA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION RADIOEMISORA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION RADIOGONOMETRICA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION RADIOMARITIMA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION RADIOMONITORA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION RECEPTORA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION REPETIDORA DE MICROONDAS"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACIÓN SISMOLÓGICA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION TELEVISORA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION TERMINAL DE MICROONDAS"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "ESTACION TERRENA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "FARO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "GUARDAFARO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "LINEA DE TRANSMISION TELEGRAFICA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "PISTA DE ATERRIZAJE"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "TERMINAL DE AUTOBUSES FORANEOS"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "TERMINAL DE AUTOBUSES URBANOS"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "TERMINAL DE CAMIONES DE CARGA"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "TORRE DE TELECOMUNICACIONES"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "TRANSBORDO MARITIMO"
+      },
+      {
+        "uso_generico": "COMUNICACIONES Y TRANSPORTES",
+        "uso_especifico": "TRANSBORDO TERRESTRE"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "CAMPAMENTO PARA CASAS MOVILES"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "CASA DE EMPLEADOS"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "CASA DE FUNCIONARIOS"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "CASA DE HUESPEDES"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "CASA HABITACION"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "CONJUNTO HABITACIONAL"
+      },
+      {
+        "uso_generico": "HABITACIÓN",
+        "uso_especifico": "HABITACION DE PERSONAL"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "ABASTECIMIENTO - TRATAMIENTO Y/O ENFRIAMIENTO DE AGUA"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "CANAL"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "CARCAMOS"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "CHIMENEAS"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "PLANTA DE BOMBEO DE AGUA"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "PLANTA DESALINIZADORA DE AGUA"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "POZO DE AGUA"
+      },
+      {
+        "uso_generico": "INFRAESTRUCTURA GENERAL",
+        "uso_especifico": "TORRES"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "ALBERCAS"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "AREAS VERDES"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "AUTODROMO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "CANCHA DEPORTIVA"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "CASA CLUB"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "CENTRO SOCIAL"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "CENTROS COMUNITARIOS"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "CLUB CAMPESTRE"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "CLUB DE GOLF"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "DESARROLLO INMOBILIARIO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "ESTADIO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "FUENTES"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "GALGODROMO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "GIMNASIO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "HIPODROMO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "HOTEL"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "JARDIN BOTANICO"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "JARDINES"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "MOTEL"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "PARQUE"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "POSADA - PARADOR - CAMPAMENTO O ALBERGUE"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "SALÓN PARA EVENTOS SOCIALES"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "UNIDAD DEPORTIVA"
+      },
+      {
+        "uso_generico": "TURISMO - RECREACIÓN Y DEPORTE",
+        "uso_especifico": "ZOOLOGICO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "ANEXO TEMPLO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "CAPILLA"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "CASA PARROQUIAL O CURATO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "CATEDRAL"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "CONVENTO O MONASTERIO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "CUASIPARROQUIA"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "ERMITA"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "IGLESIA"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "NOTARIA PARROQUIAL"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "OBISPADO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "PARROQUIA"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "SANTUARIO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "SEMINARIO"
+      },
+      {
+        "uso_generico": "RELIGIÓN",
+        "uso_especifico": "TEMPLO"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "CASETA DE CONTROL"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "CASETA DE POZOS E INSTALACIONES"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "CENTRAL TERMO-ELECTRICA"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "CENTRO DE CONTROL Y DISTRIBUCION DE ENERGIA"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "EMBALSE"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "EQUIPO DE ENFRIAMIENTO"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "ESTACIONES ELECTRICAS"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "FOSA DE EVAPORACION"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES DE EXPLORACION"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES DE EXPLOTACION"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES DE LA RED PRODUCTORA"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES DE PETROQUIMICA"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES DE RECUPERACION Y ALMACENAMIENTO DE HIDROCARBUROS"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES DE REFINACION"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "INSTALACIONES PARA ALMACENAMIENTO Y DISTRIBUCION DE PRODUCTOS"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "LINEA DE TRANSMISION ELECTRICA"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "MONITOREO AMBIENTAL"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "NORIA Y CASETA DE BOMBEO"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "OBRAS INDUSTRIALES COMPLEMENTARIAS (VAPOR - ENERGIA - ELECTRICIDAD - ETC.)"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "OLEODUCTOS"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "PLANTA GENERADORA (HIDROELECTRICA- TERMOELECTRICA- NUCLEOELECTRICAS- ETC.)"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "SISTEMA DE TRANSPORTACION POR TUBERIA"
+      },
+      {
+        "uso_generico": "ENERGÍA",
+        "uso_especifico": "SUBESTACION ELECTRICA"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "AREA NATURAL PROTEGIDA"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "CAMPAMENTO FORESTAL"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "CENTROS INTEGRALES DE LA VIDA SILVESTRE"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "PARQUE ECOLOGICO"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "PARQUE NACIONAL"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "RESERVA DE LA BIOSFERA"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "RESERVA ECOLOGICA"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "RESERVA FORESTAL"
+      },
+      {
+        "uso_generico": "MEDIO AMBIENTE",
+        "uso_especifico": "VIVERO"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "ANALISIS DE PLAGUICIDAS"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "BAÑO GARRAPATICIDA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "CABALLERIZA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "CAMPO EXPERIMENTAL"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "CENTRO DE FOMENTO GANADERO"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "CULTIVOS VARIOS"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "DESTRUCCION E INCINERACION"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "ESTACIÓN CUARENTENARIA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "EXPLOTACION AGROPECUARIA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "FOMENTO ACUICOLA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "FOMENTO AGROINDUSTRIAL"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "FOMENTO APICOLA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "FOMENTO FORESTAL"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "GRANJA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "HACIENDA AGROPECUARIA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "HUERTA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "INSPECCIÓN Y VERIFICACIÓN FITOZOOSANITARIA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "INVERNADEROS"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "LABORATORIO DE BIOLOGÍA MOLECULAR"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "LABORATORIO FITOZOOSANITARIO"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "MEJORAMIENTO GENETICO"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "PLANTA TIF"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "PRODUCCION DE PLANTA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "RANCHO GANADERO"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "RASTRO"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "REFORESTACION"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "REPRODUCCION DE ORGANISMOS BENEFICOS"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "REPRODUCCION PECUARIA"
+      },
+      {
+        "uso_generico": "DESARROLLO AGROPECUARIO Y ACUICOLA",
+        "uso_especifico": "VIVERO CRIA DE PECES"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "ALBERGUE"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "ASILO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "BANCO DE SANGRE"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CASA CUNA"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CASA DE SALUD"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CASA HOGAR"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO ANTIRRABICO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE BIENESTAR SOCIAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE DESARROLLO INFANTIL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE DETECCION DEL SIDA"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE INTEGRACION JUVENIL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE NEUROLOGIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE ORIENTACION"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE REHABILITACION"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE SALUD CON HOSPITAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE SALUD HIBRIDO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE SALUD PERIFERICO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE SALUD RURAL CONCENTRADO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE SALUD RURAL DISPERSO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO DE SALUD URBANO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CENTRO MATERNO-INFANTIL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CLINICA DE ESPECIALIDADES Y MODULO DENTAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CLINICA DE URGENCIAS"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CLINICA GENERAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "COMEDOR"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "CONSULTORIO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "DESARROLLO INTEGRAL DE LA FAMILIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "DISPENSARIO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "ENFERMERIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "GUARDERIA"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL BASICO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL DE ESPECIALIDADES"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL DENTAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL GENERAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL INFANTIL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL MATERNO INFANTIL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "HOSPITAL REGIONAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "LABORATORIO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "MEDICINA GENERAL"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "MODULO OPTOAUDIOMETRICO"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "UNIDAD AUXILIAR DE SALUD"
+      },
+      {
+        "uso_generico": "SERVICIOS DE SALUD Y ASISTENCIA SOCIAL",
+        "uso_especifico": "UNIDAD DE MEDICINA FAMILIAR"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "BENEFICIO DE MINERALES"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "CARNICERIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "CENTRO COMERCIAL"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "COMERCIALIZACION"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "COMERCIO DE MATERIALES DE CONSTRUCCION"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "DISTRIBUCION DE INSUMOS AGROPECUARIOS"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "EXPLOTACION DE MINERALES METALICOS Y NO METALICOS"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FABRICA DE TABLEROS"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FABRICA TEXTIL"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FABRICACION DE PRODUCTOS ALIMENTICIOS - BEBIDAS Y TABACO"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FABRICACION DE PRODUCTOS METALICOS- MAQUINARIA Y EQUIPO- INCLUYE INSTRUMENTOS QUIRURGICOS DE PRECISION"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FABRICACION DE PRODUCTOS MINERALES NO METALICOS (EXCEPTO LOS DERIVADOS DEL PETROLEO Y DEL CARBON )"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FABRICACION DE SUSTANCIAS QUIMICAS- PRODUCTOS DERIVADOS DE PETROLEO- CARBON- HULE Y PLASTICO"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FARMACIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "FERRETERIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "GASOLINERIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "INDUSTRIA DE LA MADERA Y PRODUCTOS DE MADERA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "INDUSTRIA DEL PAPEL Y PRODUCTOS DE PAPEL- IMPRENTAS Y EDITORIALES"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "INDUSTRIAS METALICAS BASICAS (HIERRO, ACERO, ETC.)"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "LECHERIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "LOCAL DE DISTRIBUCION Y COMERCIALIZACION"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "MERCADO PUBLICO"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "PANIFICADORA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "PEQUEÑO COMERCIO"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "PLANTA DE ASFALTO"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "RESTAURANTE Y FUENTE DE SODAS"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "SALA DE BELLEZA Y PELUQUERIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "SUPERMERCADO"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "TIENDA COMERCIAL"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "TIENDA DE ABARROTES Y COMESTIBLES"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "TIENDA DE ESPECIALIDADES"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "TIENDA DE PRODUCTOS BASICOS"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "TIENDA DE REFACCIONES"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "TORTILLERIA"
+      },
+      {
+        "uso_generico": "INDUSTRIA Y COMERCIO",
+        "uso_especifico": "ZONAS ECONOMICAS ESPECIALES"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "AUDITORIO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "BACHILLERATO GENERAL"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "BACHILLERATO TÉCNICO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "BIBLIOTECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CASA DE CULTURA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CENTRO CULTURAL"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CENTRO DE CAPACITACION"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CENTRO DE INVESTIGACION"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CENTRO DE OBSERVACION (METEOROLOGICA, ASTRONOMICA, COSMOGRAFICA, ETC.)"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CENTRO DE ORIENTACION VOCACIONAL"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CENTRO PARA ESTUDIOS DE POSTGRADO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "CINETECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "EDUCACIÓN BASICA PARA ADULTOS"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA DE CAPACITACION PARA EL TRABAJO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA DE EDUCACION ESPECIAL"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA DE ENSEÑANZA COMERCIAL E IDIOMAS"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA DE POLICIA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA MILITARIZADA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA PARA INVIDENTES"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESCUELA TECNICA (AGROPECUARIA, COMERCIAL, INDUSTRIAL, PESQUERA, ETC.)"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ESTUDIOS CINEMATOGRAFICOS"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "EXPOSICIONES TEMPORALES"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "FONOTECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "GALERIA DE ARTE"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "HEMEROTECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "INSTITUCIONES QUE COMBINAN DIFERENTES NIVELES DE ENSEÑANZA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "INSTITUTO DE INVESTIGACION Y EXPERIMENTACION (FISICA, QUIMICA, BIOLOGICA, ETC.)"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "INTERNADO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "JARDIN DE NIÑOS"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "LABORATORIO CON FINES EDUCATIVOS"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "LUDOTECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "MONUMENTO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "MUSEO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "NORMAL"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "NORMAL SUPERIOR"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "PINACOTECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "PLANOTECA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "PLAZA CIVICA O EXPLANADA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "PLAZA PUBLICA O AGORA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "PREPARATORIA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "PRIMARIA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "SALA CINEMATOGRAFICA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "SALA DE LECTURA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "SECUNDARIA GENERAL"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "SECUNDARIA TECNICA (AGROPECUARIA, COMERCIAL, INDUSTRIAL, PESQUERA, ETC.)"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "SITIO HISTORICO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "TALLER DE ADIESTRAMIENTO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "TALLERES CULTURALES"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "TALLERES TÉCNICOS"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "TEATRO"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "TEATRO AL AIRE LIBRE"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "TELESECUNDARIA"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "UNIVERSIDAD"
+      },
+      {
+        "uso_generico": "EDUCACIÓN Y CULTURA",
+        "uso_especifico": "ZONAS ARQUEOLOGICAS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ALMACEN"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ALMACEN DE GRANOS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ALMACEN HERBARIO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ALMACENAMIENTO DE EQUIPO ELECTRICO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ALMACENAMIENTO DE MAQUINARIA Y EQUIPO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ARCHIVO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "ARCHIVO HISTÓRICO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA DE ABARROTES"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA DE ACOPIO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA DE PRODUCTOS PERECEDEROS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA DE SEMILLAS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA DE TRANSFERENCIAS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "BODEGA PARA ALMACENAMIENTO DE CARTAS Y PAQUETES"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "CORRALON DE VEHICULOS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE AGUA"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE COMBUSTIBLE"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE DESECHOS SOLIDOS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE EXPLOSIVOS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE GAS LIQUIDO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE MADERA"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE MAQUINARIAS"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE MATERIAL ASFALTICO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE MATERIAL PETREO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO DE OBRADORES"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "DEPOSITO Y ALMACEN (MILITAR , NAVAL O AEREO)"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "PARQUE DE MAQUINARIA"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "PARQUE DE MATERIALES"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "TANQUE PILAS Y FILTRO"
+      },
+      {
+        "uso_generico": "ALMACENES - ARCHIVOS Y BODEGAS",
+        "uso_especifico": "TOLVAS"
+      },
+      {
+        "uso_generico": "SIN USO",
+        "uso_especifico": "EDIFICIO O CONSTRUCCION SIN USO"
+      },
+      {
+        "uso_generico": "SIN USO",
+        "uso_especifico": "INMUEBLE EN RUINAS"
+      },
+      {
+        "uso_generico": "SIN USO",
+        "uso_especifico": "INMUEBLE INVADIDO"
+      },
+      {
+        "uso_generico": "SIN USO",
+        "uso_especifico": "OBRA EN PROCESO"
+      },
+      {
+        "uso_generico": "SIN USO",
+        "uso_especifico": "TERRENO BALDIO SIN USO"
+      },
+      {
+        "uso_generico": "SIN USO",
+        "uso_especifico": "TRANSFERIDO AL SAE"
+      }
+    ]
+  },
+  {
+    "Usuario_principal_Inmueble": [
+      "SIN INFORMACIÓN",
+      "ADMINISTRACIÓN DEL PATRIMONIO DE LA BENEFICENCIA PÚBLICA",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL ALTAMIRA, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL DOS BOCAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL ENSENADA, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL GUAYMAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL LÁZARO CÁRDENAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL MANZANILLO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL MAZATLÁN, S.A. DE C.V",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PROGRESO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PUERTO CHIAPAS, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL PUERTO VALLARTA, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL TAMPICO, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL TOPOLOBAMPO, S.A. DE C.V",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL TUXPAN, S.A. DE C.V.",
+      "ADMINISTRACIÓN DEL SISTEMA PORTUARIO NACIONAL VERACRUZ, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE ACAPULCO, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE CAMPECHE, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE COATZACOALCOS, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE QUINTANA ROO, S.A. DE C.V.",
+      "ADMINISTRACIÓN PORTUARIA INTEGRAL DE SALINA CRUZ, S.A. DE C.V.",
+      "AEROPUERTO INTERNACIONAL DE LA CIUDAD DE MÉXICO, S.A. DE C.V.",
+      "AEROPUERTO INTERNACIONAL FELIPE ÁNGELES, S.A. DE C.V.",
+      "AEROPUERTOS Y SERVICIOS AUXILIARES",
+      "AGENCIA DE INVESTIGACIÓN CRIMINAL",
+      "AGENCIA DE SERVICIOS A LA COMERCIALIZACIÓN Y DESARROLLO DE MERCADOS AGROPECUARIOS",
+      "AGENCIA ESPACIAL MEXICANA",
+      "AGENCIA FEDERAL DE AVIACIÓN CIVIL",
+      "AGENCIA MEXICANA DE COOPERACIÓN INTERNACIONAL PARA EL DESARROLLO",
+      "AGENCIA NACIONAL DE ADUANAS DE MÉXICO",
+      "AGENCIA NACIONAL DE SEGURIDAD INDUSTRIAL Y DE PROTECCIÓN AL MEDIO AMBIENTE DEL SECTOR HIDROCARBUROS",
+      "AGENCIA REGULADORA DEL TRANSPORTE FERROVIARIO",
+      "AGROASEMEX, S.A.",
+      "ALMACENES NACIONALES DE DEPÓSITO, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+      "ARCHIVO GENERAL DE LA NACIÓN",
+      "AUDITORÍA SUPERIOR DE LA FEDERACIÓN",
+      "AUTORIDAD EDUCATIVA FEDERAL EN LA CIUDAD DE MÉXICO",
+      "AUTORIDAD FEDERAL PARA EL DESARROLLO DE LAS ZONAS ECONÓMICAS ESPECIALES",
+      "BANCO DE MÉXICO",
+      "BANCO DEL BIENESTAR, S.N.C., I.B.D.",
+      "BANCO NACIONAL DE COMERCIO EXTERIOR, S.N.C.",
+      "BANCO NACIONAL DE COMERCIO INTERIOR, S.N.C. (EN PROCESO DE DESINCORPORACIÓN)",
+      "BANCO NACIONAL DE CRÉDITO RURAL, S.N.C. (EN PROCESO DE DESINCORPORACIÓN)",
+      "BANCO NACIONAL DE OBRAS Y SERVICIOS PÚBLICOS, S.N.C.",
+      "BANCO NACIONAL DEL EJÉRCITO, FUERZA AÉREA Y ARMADA, S.N.C.",
+    "CAMINOS Y PUENTES FEDERALES DE INGRESOS Y SERVICIOS CONEXOS",
+    "CASA DE MONEDA DE MÉXICO",
+    "CENTRO DE CAPACITACIÓN CINEMATOGRÁFICA, A.C.",
+    "CENTRO DE ENSEÑANZA TÉCNICA INDUSTRIAL",
+    "CENTRO DE ESTUDIOS FILOSÓFICOS POLÍTICOS Y SOCIALES VICENTE LOMBARDO TOLEDANO",
+    "CENTRO DE ESTUDIOS SUPERIORES EN TURISMO",
+    "CENTRO DE INGENIERÍA Y DESARROLLO INDUSTRIAL",
+    "CENTRO DE INVESTIGACIÓN CIENTÍFICA DE YUCATÁN, A.C.",
+    "CENTRO DE INVESTIGACIÓN CIENTÍFICA Y DE EDUCACIÓN SUPERIOR DE ENSENADA, BAJA CALIFORNIA",
+    "CENTRO DE INVESTIGACIÓN EN ALIMENTACIÓN Y DESARROLLO, A.C.",
+    "CENTRO DE INVESTIGACIÓN EN CIENCIAS DE INFORMACIÓN GEOESPACIAL, A.C",
+    "CENTRO DE INVESTIGACIÓN EN MATEMÁTICAS, A.C.",
+    "CENTRO DE INVESTIGACIÓN EN MATERIALES AVANZADOS, S.C.",
+    "CENTRO DE INVESTIGACIÓN Y ASISTENCIA EN TECNOLOGÍA Y DISEÑO DEL ESTADO DE JALISCO, A.C.",
+    "CENTRO DE INVESTIGACIÓN Y DE ESTUDIOS AVANZADOS DEL INSTITUTO POLITÉCNICO NACIONAL",
+    "CENTRO DE INVESTIGACIÓN Y DESARROLLO TECNOLÓGICO EN ELECTROQUÍMICA, S.C.",
+    "CENTRO DE INVESTIGACIÓN Y DOCENCIA ECONÓMICAS, A.C.",
+    "CENTRO DE INVESTIGACIONES BIOLÓGICAS DEL NOROESTE, S.C.",
+    "CENTRO DE INVESTIGACIONES EN ÓPTICA, A.C.",
+    "CENTRO DE INVESTIGACIONES Y ESTUDIOS SUPERIORES EN ANTROPOLOGÍA SOCIAL",
+    "CENTRO DE PRODUCCIÓN DE PROGRAMAS INFORMATIVOS Y ESPECIALES",
+    "CENTRO FEDERAL DE CONCILIACIÓN Y REGISTRO LABORAL",
+    "CENTRO NACIONAL DE CONTROL DE ENERGÍA",
+    "CENTRO NACIONAL DE CONTROL DEL GAS NATURAL",
+    "CENTRO NACIONAL DE EQUIDAD DE GÉNERO Y SALUD REPRODUCTIVA",
+    "CENTRO NACIONAL DE EXCELENCIA TECNOLÓGICA EN SALUD",
+    "CENTRO NACIONAL DE INTELIGENCIA",
+    "CENTRO NACIONAL DE LA TRANSFUSIÓN SANGUÍNEA",
+    "CENTRO NACIONAL DE METROLOGÍA",
+    "CENTRO NACIONAL DE PREVENCIÓN DE DESASTRES",
+    "CENTRO NACIONAL DE PROGRAMAS PREVENTIVOS Y CONTROL DE ENFERMEDADES",
+    "CENTRO NACIONAL DE TRASPLANTES",
+    "CENTRO NACIONAL PARA LA PREVENCIÓN Y EL CONTROL DEL VIH/SIDA",
+    "CENTRO NACIONAL PARA LA SALUD DE LA INFANCIA Y LA ADOLESCENCIA",
+    "CENTRO REGIONAL DE ALTA ESPECIALIDAD DE CHIAPAS",
+    "CENTROS DE INTEGRACIÓN JUVENIL, A.C.",
+    "CFE DISTRIBUCIÓN",
+    "CFE GENERACIÓN I",
+    "CFE GENERACIÓN II",
+    "CFE GENERACIÓN III",
+    "CFE GENERACIÓN IV",
+    "CFE GENERACIÓN V",
+    "CFE GENERACIÓN VI",
+    "CFE SUMINISTRADOR DE SERVICIOS BÁSICOS",
+    "CFE TELECOMUNICACIONES Y INTERNET PARA TODOS",
+    "CFE TRANSMISIÓN",
+    "CIATEC, A.C. \"CENTRO DE INNOVACIÓN APLICADA EN TECNOLOGÍAS COMPETITIVAS\"",
+    "CIATEQ, A.C. CENTRO DE TECNOLOGÍA AVANZADA",
+    "COLEGIO DE BACHILLERES",
+    "COLEGIO DE POSTGRADUADOS",
+    "COLEGIO NACIONAL DE EDUCACIÓN PROFESIONAL TÉCNICA",
+    "COLEGIO SUPERIOR AGROPECUARIO DEL ESTADO DE GUERRERO",
+    "COMISIÓN DE APELACIÓN Y ARBITRAJE DEL DEPORTE",
+    "COMISIÓN DE OPERACIÓN Y FOMENTO DE ACTIVIDADES ACADÉMICAS DEL INSTITUTO POLITÉCNICO NACIONAL",
+    "COMISIÓN EJECUTIVA DE ATENCIÓN A VÍCTIMAS",
+    "COMISIÓN FEDERAL DE COMPETENCIA ECONÓMICA",
+    "COMISIÓN FEDERAL DE ELECTRICIDAD",
+    "COMISIÓN FEDERAL DE TELECOMUNICACIONES",
+    "COMISIÓN FEDERAL PARA LA PROTECCIÓN CONTRA RIESGOS SANITARIOS",
+    "COMISIÓN NACIONAL BANCARIA Y DE VALORES",
+    "COMISIÓN NACIONAL CONTRA LAS ADICCIONES",
+    "COMISIÓN NACIONAL DE ACUACULTURA Y PESCA",
+    "COMISIÓN NACIONAL DE ARBITRAJE MÉDICO",
+    "COMISIÓN NACIONAL DE ÁREAS NATURALES PROTEGIDAS",
+    "COMISIÓN NACIONAL DE BIOÉTICA",
+    "COMISIÓN NACIONAL DE BÚSQUEDA DE PERSONAS",
+    "COMISIÓN NACIONAL DE CULTURA FÍSICA Y DEPORTE",
+    "COMISIÓN NACIONAL DE HIDROCARBUROS",
+    "COMISIÓN NACIONAL DE LAS ZONAS ÁRIDAS",
+    "COMISIÓN NACIONAL DE LIBROS DE TEXTO GRATUITOS",
+    "COMISIÓN NACIONAL DE LOS DERECHOS HUMANOS",
+    "COMISIÓN NACIONAL DE LOS SALARIOS MÍNIMOS",
+    "COMISIÓN NACIONAL DE MEJORA REGULATORIA",
+    "COMISIÓN NACIONAL DE PROTECCIÓN SOCIAL EN SALUD",
+    "COMISIÓN NACIONAL DE SEGURIDAD NUCLEAR Y SALVAGUARDIAS",
+    "COMISIÓN NACIONAL DE SEGUROS Y FIANZAS",
+    "COMISIÓN NACIONAL DE VIVIENDA",
+    "COMISIÓN NACIONAL DEL AGUA",
+    "COMISIÓN NACIONAL DEL SISTEMA DE AHORRO PARA EL RETIRO",
+    "COMISIÓN NACIONAL FORESTAL",
+    "COMISIÓN NACIONAL PARA EL USO EFICIENTE DE LA ENERGÍA",
+    "COMISIÓN NACIONAL PARA LA PROTECCIÓN Y DEFENSA DE LOS USUARIOS DE SERVICIOS FINANCIEROS",
+    "COMISIÓN NACIONAL PARA PREVENIR Y ERRADICAR LA VIOLENCIA CONTRA LAS MUJERES",
+    "COMISIÓN REGULADORA DE ENERGÍA",
+    "COMITÉ NACIONAL MIXTO DE PROTECCIÓN AL SALARIO",
+    "COMITÉ NACIONAL PARA EL DESARROLLO SUSTENTABLE DE LA CAÑA DE AZÚCAR",
+    "COMPAÑÍA MEXICANA DE EXPLORACIONES, S.A. DE C.V.",
+    "COMPAÑÍA OPERADORA DEL CENTRO CULTURAL Y TURÍSTICO DE TIJUANA, S.A. DE C.V.",
+    "CONSEJERÍA JURÍDICA DEL EJECUTIVO FEDERAL",
+    "CONSEJO DE LA JUDICATURA FEDERAL",
+    "CONSEJO DE PROMOCIÓN TURÍSTICA DE MÉXICO, S.A. DE C.V.",
+    "CONSEJO NACIONAL DE EVALUACIÓN DE LA POLÍTICA DE DESARROLLO SOCIAL",
+    "CONSEJO NACIONAL DE FOMENTO EDUCATIVO",
+    "CONSEJO NACIONAL DE HUMANIDADES, CIENCIAS Y TECNOLOGÍAS",
+    "CONSEJO NACIONAL PARA EL DESARROLLO Y LA INCLUSIÓN DE LAS PERSONAS CON DISCAPACIDAD",
+    "CONSEJO NACIONAL PARA LA CULTURA Y LAS ARTES",
+    "CONSEJO NACIONAL PARA PREVENIR LA DISCRIMINACIÓN",
+    "COORDINACIÓN GENERAL @PRENDE.MX",
+    "COORDINACIÓN GENERAL DE LA COMISIÓN MEXICANA DE AYUDA A REFUGIADOS",
+    "COORDINACIÓN GENERAL DEL PROGRAMA NACIONAL DE APOYO PARA LAS EMPRESAS DE SOLIDARIDAD",
+    "COORDINACIÓN NACIONAL ANTISECUESTRO",
+    "COORDINACIÓN NACIONAL DE BECAS PARA EL BIENESTAR BENITO JUÁREZ",
+    "COORDINACIÓN NACIONAL DEL SERVICIO PROFESIONAL DOCENTE",
+    "COORDINACIÓN PARA LA ATENCIÓN INTEGRAL DE LA MIGRACIÓN EN LA FRONTERA SUR",
+    "CORPORACIÓN DE SERVICIOS AL TURISTA ÁNGELES VERDES",
+    "CORPORACIÓN MEXICANA DE INVESTIGACIÓN EN MATERIALES, S.A. DE C.V.",
+    "CORREDOR INTEROCEÁNICO DEL ISTMO DE TEHUANTEPEC",
+    "DICONSA, S.A. DE C.V.",
+    "EDUCAL, S.A. DE C.V.",
+    "EL COLEGIO DE LA FRONTERA NORTE, A.C.",
+    "EL COLEGIO DE LA FRONTERA SUR",
+    "EL COLEGIO DE MÉXICO, A.C.",
+    "EL COLEGIO DE MICHOACÁN, A.C.",
+    "EL COLEGIO DE SAN LUIS, A.C.",
+    "EL COLEGIO NACIONAL",
+    "ESTUDIOS CHURUBUSCO AZTECA, S.A.",
+    "EXPORTADORA DE SAL, S.A. DE C.V.",
+    "EXPORTADORES ASOCIADOS, S.A. DE C.V. (EN PROCESO DE DESINCORPORACIÓN)",
+    "FERROCARRIL CHIHUAHUA AL PACÍFICO, S.A. DE C.V. (EN PROCESO DE DESINCORPORACIÓN)",
+    "FERROCARRIL DEL ISTMO DE TEHUANTEPEC, S.A. DE C.V.",
+    "FERROCARRILES NACIONALES DE MÉXICO (EN PROCESO DE DESINCORPORACIÓN)",
+    "FESTIVAL INTERNACIONAL CERVANTINO",
+    "FIDEICOMISO DE FOMENTO MINERO",
+    "FIDEICOMISO DE FORMACIÓN Y CAPACITACIÓN PARA EL PERSONAL DE LA MARINA MERCANTE NACIONAL",
+    "FIDEICOMISO DE LOS SISTEMAS NORMALIZADO DE COMPETENCIA LABORAL Y DE CERTIFICACIÓN DE COMPETENCIA LABORAL",
+    "FIDEICOMISO DE RIESGO COMPARTIDO",
+    "FIDEICOMISO FONDO NACIONAL DE FOMENTO EJIDAL",
+    "FIDEICOMISO FONDO NACIONAL DE HABITACIONES POPULARES",
+    "FIDEICOMISO LIQUIDADOR DE INSTITUCIONES Y ORGANIZACIONES AUXILIARES DE CRÉDITO (EN DESINCORPORACIÓN)",
+    "FIDEICOMISO PARA LA CINETECA NACIONAL",
+    "FIDEICOMISO UNIVERSIDAD MARÍTIMA Y PORTUARIA DE MÉXICO",
+    "FIDEICOMISOS INSTITUIDOS EN RELACION CON LA AGRICULTURA",
+    "FINANCIERA NACIONAL AZUCARERA (EN LIQUIDACIÓN)",
+    "FINANCIERA NACIONAL DE DESARROLLO AGROPECUARIO, RURAL, FORESTAL Y PESQUERO",
+    "FINANCIERA PARA EL BIENESTAR",
+    "FISCALÍA GENERAL DE LA REPÚBLICA",
+    "FONATUR CONSTRUCTORA, S.A. DE C.V.",
+    "FONATUR INFRAESTRUCTURA, S.A. DE C.V.",
+    "FONATUR OPERADORA PORTUARIA, S.A. DE C.V.",
+    "FONATUR PRESTADORA DE SERVICIOS, S.A. DE C.V.",
+    "FONATUR TREN MAYA, S.A. DE C.V.",
+    "FONDO DE CAPITALIZACIÓN E INVERSIÓN DEL SECTOR RURAL",
+    "FONDO DE CULTURA ECONÓMICA",
+    "FONDO DE EMPRESAS EXPROPIADAS DEL SECTOR AZUCARERO",
+    "FONDO DE GARANTÍA Y FOMENTO PARA LA AGRICULTURA, GANADERÍA Y AVICULTURA",
+    "FONDO DE GARANTÍA Y FOMENTO PARA LAS ACTIVIDADES PESQUERAS",
+    "FONDO DE INFORMACIÓN Y DOCUMENTACIÓN PARA LA INDUSTRIA",
+    "FONDO DE LA VIVIENDA DEL INSTITUTO DE SEGURIDAD Y SERVICIOS SOCIALES DE LOS TRABAJADORES DEL ESTADO",
+    "FONDO DE OPERACIÓN Y FINANCIAMIENTO BANCARIO A LA VIVIENDA",
+    "FONDO ESPECIAL DE ASISTENCIA TÉCNICA Y GARANTÍA PARA CRÉDITOS AGROPECUARIOS",
+    "FONDO ESPECIAL PARA FINANCIAMIENTOS AGROPECUARIOS",
+    "FONDO NACIONAL DE FOMENTO AL TURISMO",
+    "FONDO NACIONAL PARA EL FOMENTO DE LAS ARTESANÍAS",
+    "FONDO PARA EL DESARROLLO DE RECURSOS HUMANOS",
+    "GRUPO AEROPORTUARIO DE LA CIUDAD DE MÉXICO, S.A. DE C.V.",
+    "GUARDIA NACIONAL",
+    "H. CÁMARA DE DIPUTADOS",
+    "H. CÁMARA DE SENADORES",
+    "HOSPITAL GENERAL \"DR. MANUEL GEA GONZÁLEZ\"",
+    "HOSPITAL GENERAL DE MÉXICO \"DR. EDUARDO LICEAGA\"",
+    "HOSPITAL INFANTIL DE MÉXICO \"FEDERICO GÓMEZ\"",
+    "HOSPITAL JUÁREZ DE MÉXICO",
+    "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE CIUDAD VICTORIA \"BICENTENARIO 2010\"",
+    "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE IXTAPALUCA",
+    "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE LA PENÍNSULA DE YUCATÁN",
+    "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DE OAXACA",
+    "HOSPITAL REGIONAL DE ALTA ESPECIALIDAD DEL BAJÍO",
+    "I.I.I. SERVICIOS, S.A. DE C.V.",
+    "IMPRESORA Y ENCUADERNADORA PROGRESO, S.A. DE C.V.",
+    "INCOBUSA, S.A. DE C.V.",
+    "INFOTEC CENTRO DE INVESTIGACIÓN E INNOVACIÓN EN TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN",
+    "INSTALACIONES INMOBILIARIAS PARA INDUSTRIAS, S.A. DE C.V.",
+    "INSTITUTO DE ADMINISTRACIÓN Y AVALÚOS DE BIENES NACIONALES",
+    "INSTITUTO DE COMPETITIVIDAD TURÍSTICA",
+    "INSTITUTO DE ECOLOGÍA, A.C.",
+    "INSTITUTO DE INVESTIGACIONES \"DR. JOSÉ MARÍA LUIS MORA\"",
+    "INSTITUTO DE LOS MEXICANOS EN EL EXTERIOR",
+    "INSTITUTO DE SALUD PARA EL BIENESTAR",
+    "INSTITUTO DE SEGURIDAD SOCIAL PARA LAS FUERZAS ARMADAS MEXICANAS",
+    "INSTITUTO DE SEGURIDAD Y SERVICIOS SOCIALES DE LOS TRABAJADORES DEL ESTADO",
+    "INSTITUTO DEL FONDO NACIONAL DE LA VIVIENDA PARA LOS TRABAJADORES",
+    "INSTITUTO DEL FONDO NACIONAL PARA EL CONSUMO DE LOS TRABAJADORES",
+    "INSTITUTO FEDERAL DE TELECOMUNICACIONES",
+    "INSTITUTO MATÍAS ROMERO",
+    "INSTITUTO MEXICANO DE CINEMATOGRAFÍA",
+    "INSTITUTO MEXICANO DE LA JUVENTUD",
+    "INSTITUTO MEXICANO DE LA PROPIEDAD INDUSTRIAL",
+    "INSTITUTO MEXICANO DE LA RADIO",
+    "INSTITUTO MEXICANO DE TECNOLOGÍA DEL AGUA",
+    "INSTITUTO MEXICANO DEL PETRÓLEO",
+    "INSTITUTO MEXICANO DEL SEGURO SOCIAL",
+    "INSTITUTO MEXICANO DEL TRANSPORTE",
+    "INSTITUTO NACIONAL DE ANTROPOLOGÍA E HISTORIA",
+    "INSTITUTO NACIONAL DE ASTROFÍSICA, ÓPTICA Y ELECTRÓNICA",
+    "INSTITUTO NACIONAL DE BELLAS ARTES Y LITERATURA",
+    "INSTITUTO NACIONAL DE CANCEROLOGÍA",
+    "INSTITUTO NACIONAL DE CARDIOLOGÍA \"IGNACIO CHÁVEZ\"",
+    "INSTITUTO NACIONAL DE CIENCIAS MÉDICAS Y NUTRICIÓN \"SALVADOR ZUBIRÁN\"",
+    "INSTITUTO NACIONAL DE CIENCIAS PENALES",
+    "INSTITUTO NACIONAL DE DESARROLLO SOCIAL",
+    "INSTITUTO NACIONAL DE ECOLOGÍA",
+    "INSTITUTO NACIONAL DE ECOLOGÍA Y CAMBIO CLIMÁTICO",
+    "INSTITUTO NACIONAL DE ELECTRICIDAD Y ENERGÍAS LIMPIAS",
+    "INSTITUTO NACIONAL DE ENFERMEDADES RESPIRATORIAS \"ISMAEL COSÍO VILLEGAS\"",
+    "INSTITUTO NACIONAL DE ESTADÍSTICA Y GEOGRAFÍA",
+    "INSTITUTO NACIONAL DE ESTUDIOS HISTÓRICOS DE LAS REVOLUCIONES DE MÉXICO",
+    "INSTITUTO NACIONAL DE GERIATRÍA",
+    "INSTITUTO NACIONAL DE INVESTIGACIONES FORESTALES, AGRÍCOLAS Y PECUARIAS",
+    "INSTITUTO NACIONAL DE INVESTIGACIONES NUCLEARES",
+    "INSTITUTO NACIONAL DE LA ADMINISTRACIÓN PÚBLICA, A.C.",
+    "INSTITUTO NACIONAL DE LA ECONOMÍA SOCIAL",
+    "INSTITUTO NACIONAL DE LA INFRAESTRUCTURA FÍSICA EDUCATIVA",
+    "INSTITUTO NACIONAL DE LAS MUJERES",
+    "INSTITUTO NACIONAL DE LAS PERSONAS ADULTAS MAYORES",
+    "INSTITUTO NACIONAL DE LENGUAS INDÍGENAS",
+    "INSTITUTO NACIONAL DE LOS PUEBLOS INDÍGENAS",
+    "INSTITUTO NACIONAL DE MEDICINA GENÓMICA",
+    "INSTITUTO NACIONAL DE MIGRACIÓN",
+    "INSTITUTO NACIONAL DE NEUROLOGÍA Y NEUROCIRUGÍA \"MANUEL VELASCO SUÁREZ\"",
+    "INSTITUTO NACIONAL DE PEDIATRÍA",
+    "INSTITUTO NACIONAL DE PERINATOLOGÍA \"ISIDRO ESPINOSA DE LOS REYES\"",
+    "INSTITUTO NACIONAL DE PESCA Y ACUACULTURA",
+    "INSTITUTO NACIONAL DE PSIQUIATRÍA \"RAMÓN DE LA FUENTE MUÑIZ\"",
+    "INSTITUTO NACIONAL DE REHABILITACIÓN \"LUIS GUILLERMO IBARRA IBARRA\"",
+    "INSTITUTO NACIONAL DE SALUD PÚBLICA",
+    "INSTITUTO NACIONAL DE TRANSPARENCIA, ACCESO A LA INFORMACIÓN Y PROTECCIÓN DE DATOS PERSONALES",
+    "INSTITUTO NACIONAL DEL DERECHO DE AUTOR",
+    "INSTITUTO NACIONAL DEL EMPRENDEDOR",
+    "INSTITUTO NACIONAL DEL SUELO SUSTENTABLE",
+    "INSTITUTO NACIONAL ELECTORAL",
+    "INSTITUTO NACIONAL PARA EL DESARROLLO DE CAPACIDADES DEL SECTOR RURAL, A.C.",
+    "INSTITUTO NACIONAL PARA EL FEDERALISMO Y EL DESARROLLO MUNICIPAL",
+    "INSTITUTO NACIONAL PARA LA EDUCACIÓN DE LOS ADULTOS",
+    "INSTITUTO PARA DEVOLVER AL PUEBLO LO ROBADO",
+    "INSTITUTO PARA EL DESARROLLO TÉCNICO DE LAS HACIENDAS PÚBLICAS",
+    "INSTITUTO PARA LA PROTECCIÓN AL AHORRO BANCARIO",
+    "INSTITUTO POLITÉCNICO NACIONAL",
+    "INSTITUTO POTOSINO DE INVESTIGACIÓN CIENTÍFICA Y TECNOLÓGICA, A.C.",
+    "LABORATORIOS DE BIOLÓGICOS Y REACTIVOS DE MÉXICO, S.A. DE C.V.",
+    "LICONSA, S.A. DE C.V.",
+    "LITIO PARA MÉXICO",
+    "LOTERÍA NACIONAL",
+    "LUZ Y FUERZA DEL CENTRO, EN LIQUIDACIÓN",
+    "NACIONAL FINANCIERA, S.N.C.",
+    "NOTIMEX, AGENCIA DE NOTICIAS DEL ESTADO MEXICANO",
+    "ORGANISMO COORDINADOR DE LAS UNIVERSIDADES PARA EL BIENESTAR BENITO JUÁREZ GARCÍA",
+    "ORGANISMO PROMOTOR DE INVERSIONES EN TELECOMUNICACIONES",
+    "ÓRGANO ADMINISTRATIVO DESCONCENTRADO ESPECIALIZADO EN MECANISMOS ALTERNATIVOS DE SOLUCIÓN DE CONTROVERSIAS EN MATERIA PENAL",
+    "OTROS",
+    "PATRONATO DE OBRAS E INSTALACIONES DEL INSTITUTO POLITÉCNICO NACIONAL",
+    "PATRONATO DEL AHORRO NACIONAL",
+    "PEMEX COGENERACIÓN Y SERVICIOS",
+    "PEMEX ETILENO",
+    "PEMEX EXPLORACIÓN Y PRODUCCIÓN",
+    "PEMEX FERTILIZANTES",
+    "PEMEX LOGÍSTICA",
+    "PEMEX PERFORACIÓN Y SERVICIOS",
+    "PEMEX TRANSFORMACIÓN INDUSTRIAL",
+    "PEMEX-GAS Y PETROQUÍMICA BÁSICA",
+    "PEMEX-PETROQUÍMICA",
+    "PEMEX-REFINACIÓN",
+    "PETRÓLEOS MEXICANOS",
+    "PMI COMERCIO INTERNACIONAL, S.A. DE C.V.",
+    "POLICÍA FEDERAL",
+    "PRESIDENCIA DE LA REPÚBLICA",
+    "PREVENCIÓN Y READAPTACIÓN SOCIAL",
+    "PROCURADURÍA AGRARIA",
+    "PROCURADURÍA DE LA DEFENSA DEL CONTRIBUYENTE",
+    "PROCURADURÍA FEDERAL DE LA DEFENSA DEL TRABAJO",
+    "PROCURADURÍA FEDERAL DE PROTECCIÓN AL AMBIENTE",
+    "PROCURADURÍA FEDERAL DEL CONSUMIDOR",
+    "PRODUCTORA DE COSPELES (EN PROCESO DE DESINCORPORACIÓN)",
+    "PRODUCTORA NACIONAL DE BIOLÓGICOS VETERINARIOS",
+    "PRODUCTORA NACIONAL DE SEMILLAS",
+    "PRODUCTOS FORESTALES MEXICANOS (EN PROCESO DE INCORPORACIÓN)",
+    "PROMÉXICO",
+    "RADIO EDUCACIÓN",
+    "REGISTRO AGRARIO NACIONAL",
+    "SECRETARÍA DE AGRICULTURA Y DESARROLLO RURAL",
+    "SECRETARÍA DE BIENESTAR",
+    "SECRETARÍA DE CULTURA",
+    "SECRETARÍA DE DESARROLLO AGRARIO, TERRITORIAL Y URBANO",
+    "SECRETARÍA DE ECONOMÍA",
+    "SECRETARÍA DE EDUCACIÓN PÚBLICA",
+    "SECRETARÍA DE ENERGÍA",
+    "SECRETARÍA DE GOBERNACIÓN",
+    "SECRETARÍA DE HACIENDA Y CRÉDITO PÚBLICO",
+    "SECRETARÍA DE INFRAESTRUCTURA, COMUNICACIONES Y TRANSPORTES",
+    "SECRETARÍA DE LA DEFENSA NACIONAL",
+    "SECRETARÍA DE LA FUNCIÓN PÚBLICA",
+    "SECRETARÍA DE MARINA ARMADA DE MÉXICO",
+    "SECRETARÍA DE MEDIO AMBIENTE Y RECURSOS NATURALES",
+    "SECRETARÍA DE RELACIONES EXTERIORES",
+    "SECRETARÍA DE SALUD",
+    "SECRETARÍA DE SEGURIDAD Y PROTECCIÓN CIUDADANA",
+    "SECRETARÍA DE TURISMO",
+    "SECRETARÍA DEL TRABAJO Y PREVISIÓN SOCIAL",
+    "SECRETARÍA EJECUTIVA DEL SISTEMA NACIONAL ANTICORRUPCIÓN",
+    "SECRETARÍA EJECUTIVA DEL SISTEMA NACIONAL DE PROTECCIÓN INTEGRAL DE NIÑAS, NIÑOS Y ADOLESCENTES",
+    "SECRETARÍA GENERAL DEL CONSEJO NACIONAL DE POBLACIÓN",
+    "SECRETARÍA TÉCNICA DE LA COMISIÓN CALIFICADORA DE PUBLICACIONES Y REVISTAS ILUSTRADAS",
+    "SECRETARÍA TÉCNICA DEL CONSEJO DE COORDINACIÓN PARA LA IMPLEMENTACIÓN DEL SISTEMA DE JUSTICIA PENAL",
+    "SECRETARIADO EJECUTIVO DEL SISTEMA NACIONAL DE SEGURIDAD PÚBLICA",
+    "SEGURIDAD ALIMENTARIA MEXICANA",
+    "SEGUROS DE CRÉDITO A LA VIVIENDA SHF, S.A. DE C.V.",
+    "SERVICIO DE ADMINISTRACIÓN TRIBUTARIA",
+    "SERVICIO DE INFORMACIÓN AGROALIMENTARIA Y PESQUERA",
+    "SERVICIO DE PROTECCIÓN FEDERAL",
+    "SERVICIO GEOLÓGICO MEXICANO",
+    "SERVICIO NACIONAL DE INSPECCIÓN Y CERTIFICACIÓN DE SEMILLAS",
+    "SERVICIO NACIONAL DE SANIDAD, INOCUIDAD Y CALIDAD AGROALIMENTARIA",
+    "SERVICIO POSTAL MEXICANO",
+    "SERVICIOS A LA NAVEGACIÓN EN EL ESPACIO AÉREO MEXICANO",
+    "SERVICIOS AEROPORTUARIOS DE LA CIUDAD DE MÉXICO, S.A. DE C.V.",
+    "SERVICIOS DE ALMACENAMIENTO DEL NORTE, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+    "SERVICIOS DE ATENCIÓN PSIQUIÁTRICA",
+    "SERVICIOS DE SALUD DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL PARA EL BIENESTAR",
+    "SISTEMA DE TIENDAS DE LOS TRABAJADORES AL SERVICIO DEL ESTADO",
+    "SISTEMA NACIONAL PARA EL DESARROLLO INTEGRAL DE LA FAMILIA",
+    "SISTEMA PÚBLICO DE RADIODIFUSIÓN DEL ESTADO MEXICANO",
+    "SOCIEDAD HIPOTECARIA FEDERAL, S.N.C.",
+    "SUPREMA CORTE DE JUSTICIA DE LA NACIÓN",
+    "TALLERES GRÁFICOS DE MÉXICO",
+    "TECNOLÓGICO NACIONAL DE MÉXICO",
+    "TELEVISIÓN METROPOLITANA, S.A. DE C.V.",
+    "TERRENOS DE JALTIPAN, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+    "TERRENOS PARA INDUSTRIAS, S.A. (EN PROCESO DE DESINCORPORACIÓN)",
+    "TRIBUNAL ELECTORAL DEL PODER JUDICIAL DE LA FEDERACIÓN",
+    "TRIBUNAL FEDERAL DE CONCILIACIÓN Y ARBITRAJE",
+    "TRIBUNAL FEDERAL DE JUSTICIA ADMINISTRATIVA",
+    "TRIBUNAL SUPERIOR AGRARIO",
+    "UNIDAD DEL SISTEMA PARA LA CARRERA DE LAS MAESTRAS Y LOS MAESTROS",
+    "UNIVERSIDAD ABIERTA Y A DISTANCIA DE MÉXICO",
+    "UNIVERSIDAD AUTÓNOMA AGRARIA \"ANTONIO NARRO\"",
+    "UNIVERSIDAD AUTÓNOMA CHAPINGO",
+    "UNIVERSIDAD AUTÓNOMA METROPOLITANA",
+    "UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO",
+    "UNIVERSIDAD PEDAGÓGICA NACIONAL"
+    ]
+  }
+]

@@ -1,0 +1,170 @@
+<div class="tab-content active" id="tab-encabezado">
+        <div class="section">
+          <div class="separador">
+          <legend>Dictamen estructural</legend>
+            <div class="form-group form-check-inline">
+              <label for="{{ form.certificado_de_seguridad.id_for_label }}">Certificado de Seguridad:</label>
+              {{ form.certificado_de_seguridad }}
+            </div>
+
+            <div class="form-group form-check-inline">
+              <label for="{{ form.sentido_del_Dictamen.id_for_label }}">Sentido del Dictamen:</label>
+              {{ form.sentido_del_Dictamen }}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.descripcion_del_sentido_del_Dictamen.id_for_label }}">Descripción del Sentido del Dictamen:</label>
+              {{ form.descripcion_del_sentido_del_Dictamen }}
+            </div>
+            <div class="form-group form-check-inline">
+                <label for="{{ form.fecha_documento.id_for_label }}">Fecha de Documento: <p style="color: red;">{{form.fecha_documento.value}}</p></label>
+                {{ form.fecha_documento }}
+            </div>
+          <br><br>
+          <fieldset>
+            <legend>Subir Archivo</legend>
+            <div class="form-group">
+              <label for="{{ form.subir_archivo.id_for_label }}">Subir Archivo:</label>
+              {{ form.subir_archivo }}
+            </div>
+          </fieldset>
+          </div>
+
+          
+          <br><br>
+          <p>⚠️Guarde primero sus cambios antes de agregar un folio, numero plano o expediente CEDOC⚠️</p>
+
+          <div class="separador">
+          <fieldset>
+            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+            <h2>Folios Reales Asignados:</h2>
+            {% if task.foliosreales_set.exists %}
+            <table class="folios-reales-table">
+                <thead>
+                    <tr>
+                        <th>Folios Reales</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for folio_real in task.foliosreales_set.all %}
+                    <tr>
+                        <td>{{ folio_real.folios_reales_data }}</td>
+                        <td>
+                            <button class="delete-folio-real-btn btn btn-outline-danger" data-url="{% url 'delete_folio_real' task_id=task.id folio_real_id=folio_real.id %}">Eliminar</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+              <form method="post"  enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label for="{{ folios_reales_data_form.folios_reales_data.id_for_label }}">Agregar nuevo folio real:</label>
+                      {{ folios_reales_data_form.folios_reales_data }}
+                  </div>
+                  <button type="submit" class="btn btn-outline-success">Agregar folio real</button>
+              </form>
+       
+        </fieldset>
+          </div>
+        <br><br>
+        <div class="separador">
+        <fieldset>
+          <h2>Proporcione los datos de los numeros de planos:</h2>
+          {% if task.numeros_planos.exists %}
+          <table class="expedientes-cedoc-table">
+              <thead>
+                  <tr>
+                      <th>Numero Plano</th>
+                      <th>Acciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for numero_plano in task.numeros_planos.all %}
+                  <tr>
+                      <td>{{ numero_plano.numero_plano_data }}</td>
+                      <td>
+                          <button class="delete-numero-plano-btn btn btn-outline-danger" data-url="{% url 'delete_numero_plano' task_id=task.id numero_plano_id=numero_plano.id %}">Eliminar</button>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          {% endif %}   
+          <form method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ numero_plano_data_form.numero_plano_data.id_for_label }}">Agregar nuevo No. de Plano:</label>
+                {{ numero_plano_data_form.numero_plano_data }}
+            </div>
+            <button type="submit" class="btn btn-outline-success">Agregar No. Plano:</button>
+        </form>
+      </fieldset>
+        </div>
+      <br><br>
+      <div class="separador">
+          <fieldset>
+            <h2>Expedientes CEDOC Asignados:</h2>
+            {% if task.expedientes_cedoc_set.exists %}
+            <table class="expedientes-cedoc-table">
+              <thead>
+                <tr>
+                  <th>Expediente CEDOC</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for expediente_cedoc in task.expedientes_cedoc_set.all %}
+                  <tr>
+                    <td>{{ expediente_cedoc.expediente_cedoc_data }}</td>
+                    <td>
+                      <button class="delete-expediente-cedoc-btn btn btn-outline-danger" data-url="{% url 'delete_expediente_cedoc' task_id=task.id expediente_cedoc_id=expediente_cedoc.id %}">Eliminar</button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+             
+          <form method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ expediente_cedoc_data_form.expediente_cedoc_data.id_for_label }}">Agregar nuevo No. Expediente del CEDOC:</label>
+                {{ expediente_cedoc_data_form.expediente_cedoc_data }}
+            </div>
+            <button type="submit" class="btn btn-outline-success">Agregar Expediente CEDOC</button>
+        </form>
+        </fieldset>
+      </div>
+      <br><br>
+          <fieldset>
+            <div class="form-group">
+              <label for="{{ form.no_de_identificador_del_expediente_institucion.id_for_label }}">No. Identificador del Expediente de la Institución:</label>
+              {{ form.no_de_identificador_del_expediente_institucion }}
+          </fieldset>
+        </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var dateInputs = document.querySelectorAll("[type='date']");
+    
+    dateInputs.forEach(function (input) {
+        var dateValue = input.value;
+        if (dateValue) {
+            var date = new Date(dateValue);
+            var formattedDate = date.toLocaleDateString('es-MX'); // Cambia 'es-MX' al código de tu idioma
+            input.value = formattedDate;
+        }
+    });
+});
+
+  
+</script>

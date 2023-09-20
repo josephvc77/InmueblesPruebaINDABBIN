@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block titulo %}Editar Ocupación{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2>Editar Ocupación</h2>
+    <form method="POST" class="form">
+      {% csrf_token %}
+      
+      <!-- Campos del formulario -->
+      {{ form.as_p }}
+      
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      <a href="{% url 'task_detail' task_id=ocupacion.task_id %}" class="btn btn-secondary">Volver al Detalle de la Tarea</a>
+    </form>
+  </div>
+{% endblock %}

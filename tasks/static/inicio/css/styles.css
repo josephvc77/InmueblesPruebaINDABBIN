@@ -1,0 +1,213 @@
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal-content {
+    display: block;
+    margin: auto;
+    max-width: 80%;
+    max-height: 80%;
+  }
+
+  /* Estilos para el botón de cerrar */
+  .close {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+  }
+
+  /* Estilos para centrar el modal verticalmente */
+  .modal-content {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Estilos para centrar la imagen horizontalmente */
+  #modalImage {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  /* Estilos generales para el formulario */
+  .task-form {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 7px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .section h2 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .tabs {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+
+  .tab.active {
+    background-color: #007BFF;
+    color: #fff;
+  }
+
+  .tab-content {
+    display: none;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .task-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .task-action-buttons form {
+    margin-left: 10px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .btn-primary {
+    background-color: #007BFF;
+    color: #fff;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    color: #fff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .task-detail-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .task-detail-container h1 {
+    margin-top: 0;
+  }
+
+  .task-form-container {
+    margin-bottom: 20px;
+  }
+
+  .task-detail-container.dark-mode {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .task-detail-container.dark-mode{
+    background-color: #333;
+    color: #fff;
+  }
+
+  /* Estilos responsivos */
+  @media screen and (max-width: 768px) {
+    .task-form {
+      padding: 10px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 8px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+    }
+  }
+
+  .fotos{
+    display: flex;
+  }
+  #id_fotografia_de_la_ubicacion{
+    display: flex;
+    width: 50%;
+  }
+
+  #subir_archivo-clear_id{
+    display: flex;
+    left: -23em;
+    top: 1.5em;
+  }
+
+  .separador{
+    padding: 25px;
+    border: .2px solid #00000087;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .width-label{
+    width: 35%;
+  }
+
+ 

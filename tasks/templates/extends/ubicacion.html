@@ -1,0 +1,270 @@
+<div class="tab-content" id="tab-ubicacion">
+  <div class="section">
+    <h2>Ubicación</h2>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.pais.id_for_label }}">País:</label>
+      {{ form.pais }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.entidad_federativa.id_for_label }}"
+        >Entidad Federativa:</label
+      >
+      <select
+        id="{{ form.entidad_federativa.auto_id }}"
+        name="{{ form.entidad_federativa.html_name }}"
+      ></select>
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.municipio_alcaldia.id_for_label }}"
+        >Municipio o Alcaldía:</label
+      >
+      <select
+        id="{{ form.municipio_alcaldia.auto_id }}"
+        name="{{ form.municipio_alcaldia.html_name }}"
+      ></select>
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.localidad.id_for_label }}">Localidad:</label>
+      {{ form.localidad }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.fotografia_de_la_ubicacion.id_for_label }}"
+        >Fotografía de Ubicación:</label
+      >
+      <div class="m-2">{{ form.fotografia_de_la_ubicacion }}</div>
+      <a
+        class="btn btn-outline-success m-2"
+        href="https://www.google.com.mx/maps/"
+        target="_blank"
+      >
+        Ir a Google Maps</a
+      >
+    </div>
+
+    {% if task.fotografia_de_la_ubicacion %}
+    <img
+      width="150"
+      src="{{ task.fotografia_de_la_ubicacion.url }}"
+      alt="Fotografía de ubicación"
+      onclick="openModal('{{ task.fotografia_de_la_ubicacion.url }}')"
+    />
+    {% else %}
+    <p>No hay fotografía de ubicación disponible.</p>
+    {% endif %}
+
+    <br><br>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.componente_espacial.id_for_label }}"
+        >Componente Espacial:</label
+      >
+      {{ form.componente_espacial }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.tipo_vialidad.id_for_label }}"
+        >Tipo de Vialidad:</label
+      >
+      {{ form.tipo_vialidad }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.nombre_vialidad.id_for_label }}"
+        >Nombre de la Vialidad:</label
+      >
+      {{ form.nombre_vialidad }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.numero_exterior.id_for_label }}"
+        >Número Exterior:</label
+      >
+      {{ form.numero_exterior }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.numero_exterior_2.id_for_label }}"
+        >Número Exterior 2:</label
+      >
+      {{ form.numero_exterior_2 }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.numero_interior.id_for_label }}"
+        >Número Interior:</label
+      >
+      {{ form.numero_interior }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.tipo_asentamiento.id_for_label }}"
+        >Tipo de Asentamiento:</label
+      >
+      {{ form.tipo_asentamiento }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.nombre_asentamiento.id_for_label }}"
+        >Nombre de Asentamiento:</label
+      >
+      {{ form.nombre_asentamiento }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.codigo_postal.id_for_label }}">Código Postal:</label>
+      {{ form.codigo_postal }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.entre_vialidades_referencia1.id_for_label }}"
+        >Entre Vialidades Referencia 1:</label
+      >
+      {{ form.entre_vialidades_referencia1 }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.entre_vialidades_referencia2.id_for_label }}"
+        >Entre Vialidades Referencia 2:</label
+      >
+      {{ form.entre_vialidades_referencia2 }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.vialidad_posterior.id_for_label }}"
+        >Vialidad Posterior:</label
+      >
+      {{ form.vialidad_posterior }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.descripcion_ubicacion.id_for_label }}"
+        >Descripción de Ubicación:</label
+      >
+      {{ form.descripcion_ubicacion }}
+    </div>
+  </div>
+
+  <div class="separador">
+    <h4>Proporcione los datos del Punto Geográfico</h4>
+    <div class="form-group width-label">
+      <label for="{{ form.datum.id_for_label }}">Datum:</label>
+      {{ form.datum }}
+    </div>
+    <div class="form-group form-check-inline">
+      <label for="{{ form.utmx.id_for_label }}"
+        >Georreferenciación por UTMX:</label
+      >
+      {{ form.utmx }}
+    </div>
+
+    <div class="form-group form-check-inline">
+      <label for="{{ form.utmy.id_for_label }}"
+        >Georreferenciación por UTMY:</label
+      >
+      {{ form.utmy }}
+    </div>
+    <br />
+    <div class="form-group form-check-inline">
+      <label for="{{ form.utm_zona.id_for_label }}"
+        >Georreferenciación por UTM Zona:</label
+      >
+      {{ form.utm_zona }}
+    </div>
+
+    <div class="form-group form-check-inline">
+      <label for="{{ form.latitud.id_for_label }}"
+        >Georreferenciación Latitud:</label
+      >
+      {{ form.latitud }}
+    </div>
+
+    <div class="form-group form-check-inline">
+      <label for="{{ form.longitud.id_for_label }}"
+        >Georreferenciación Longitud:</label
+      >
+      {{ form.longitud }}
+    </div>
+  </div>
+
+  <div class="separador">
+    <div id="colindancias-table">
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>Orientación</th>
+            <th>Colindancia</th>
+            <th>Medida en Metros</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for colindancia in task.colindancias_set.all %}
+          <tr>
+            <td>{{ colindancia.orientacion }}</td>
+            <td>{{ colindancia.colindancia }}</td>
+            <td>{{ colindancia.medida_en_metros }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <h4>Proporcione los datos de las colindancias</h4>
+    <form method="POST" id="colindancias-form">
+      {% csrf_token %}
+      <!-- Campos del formulario de colindancias -->
+      <div class="form-group form-check-inline width-label">
+        <label for="id_orientacion">Orientación:</label>
+        {{ colindancia_form.orientacion }}
+      </div>
+      <div class="form-group form-check-inline">
+        <label for="id_colindancia">Colindancia:</label>
+        {{ colindancia_form.colindancia }}
+      </div>
+      <div class="form-group form-check-inline">
+        <label for="id_medida_en_metros">Medida en Metros:</label>
+        {{ colindancia_form.medida_en_metros }}
+      </div>
+      <button type="submit" class="btn btn-primary" id="guardar-colindancia">
+        Guardar
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Función para cargar las entidades federativas en el campo select
+  function loadEntidadesFederativas() {
+    $.getJSON("/get_entidades_federativas/", function (data) {
+      var selectEntidades = $("#{{ form.entidad_federativa.auto_id }}");
+      selectEntidades.empty();
+      $.each(data.entidades_federativas, function (index, value) {
+        // Verificar si el valor de entidad_federativa coincide con el valor actual del campo
+        var selected =
+          value === "{{ form.instance.entidad_federativa }}" ? "selected" : "";
+        selectEntidades.append(
+          $("<option>")
+            .text(value)
+            .attr("value", value)
+            .prop("selected", selected)
+        );
+      });
+      loadMunicipios(selectEntidades.val()); // Cargamos los municipios correspondientes a la entidad seleccionada
+    });
+  }
+
+  // Función para cargar los municipios en el campo select
+  function loadMunicipios(entidadFederativa) {
+    $.getJSON("/get_municipios/" + entidadFederativa + "/", function (data) {
+      var selectMunicipios = $("#{{ form.municipio_alcaldia.auto_id }}");
+      selectMunicipios.empty();
+      $.each(data.municipios, function (index, value) {
+        // Verificar si el valor de municipio_alcaldia coincide con el valor actual del campo
+        var selected =
+          value === "{{ form.instance.municipio_alcaldia }}" ? "selected" : "";
+        selectMunicipios.append(
+          $("<option>")
+            .text(value)
+            .attr("value", value)
+            .prop("selected", selected)
+        );
+      });
+    });
+  }
+
+  // Función para cargar los datos al cargar la página
+  $(document).ready(function () {
+    loadEntidadesFederativas(); // Cargamos las entidades federativas
+    $("#{{ form.entidad_federativa.auto_id }}").change(function () {
+      loadMunicipios($(this).val()); // Cargamos los municipios al cambiar la entidad federativa seleccionada
+    });
+  });
+</script>
+

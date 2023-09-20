@@ -1,0 +1,623 @@
+<div class="tab-content" id="tab-uso">
+    <div class="section">
+
+        <div class="form-group">
+            <label for="{{ form.usuario_principal_del_inmueble.id_for_label }}">Usuario Principal del Inmueble:</label>
+            <select id="{{ form.usuario_principal_del_inmueble.auto_id }}" name="{{ form.usuario_principal_del_inmueble.html_name }}"></select>
+        </div>
+    
+        <div class="form-group form-check-inline">
+            <label for="{{ form.usoGenerico.id_for_label }}">Uso Genérico:</label>
+            <select id="{{ form.usoGenerico.auto_id }}" name="{{ form.usoGenerico.html_name }}"></select>
+        </div>
+        
+        <div class="form-group form-check-inline">
+            <label for="{{ form.usoEspecifico.id_for_label }}">Uso Específico:</label>
+            <select id="{{ form.usoEspecifico.auto_id }}" name="{{ form.usoEspecifico.html_name }}"></select>
+        </div>
+    
+        <div class="form-group">
+            <label for="{{ form.uso_de_suelo_autorizado.id_for_label }}">Uso de Suelo Autorizado:</label>
+            {{ form.uso_de_suelo_autorizado }}
+        </div>
+    
+        <div class="form-group form-check-inline">
+            <label for="{{ form.numero_de_empleados_en_el_inmueble.id_for_label }}">Número de Empleados en el Inmueble:</label>
+            {{ form.numero_de_empleados_en_el_inmueble }}
+        </div>
+    
+        <div class="form-group form-check-inline form-check-inline">
+            <label for="{{ form.documento_que_autoriza_ocupacion.id_for_label }}">Documento que Autoriza Ocupación:</label>
+            {{ form.documento_que_autoriza_ocupacion }}
+        </div>
+        <div class="separador" id="DocumentoOcupacion">
+            <h4>Proporcione los datos del Documento de Ocupación:</h4>
+            <form id="documentoOcupacionForm" method="post" class="task-form">
+                {% csrf_token %}
+        
+                <div class="form-group">
+                    <label for="{{ documento_ocupacion_form.tipo_de_documento.id_for_label }}">Tipo de Documento:</label>
+                    {{ documento_ocupacion_form.tipo_de_documento }}
+                </div>
+        
+                <div class="form-group form-check-inline" id="fecha_documento_group">
+                    <label for="{{ documento_ocupacion_form.fecha_documento.id_for_label }}">Fecha de Documento:</label>
+                    <input type="date" id="{{ documento_ocupacion_form.fecha_documento.id_for_label }}" name="{{ documento_ocupacion_form.fecha_documento.name }}" class="form-control" value="{{ documento_ocupacion_form.fecha_documento.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_documento')">
+                </div>
+                
+                <div id="dateAlertDocumento" class="alert alert-danger" style="display: none;">
+                    La fecha no puede ser posterior a la fecha actual.
+                </div>
+                
+            
+                <div class="form-group form-check-inline">
+                    <label id="inscripcion_RPPF" for="{{ documento_ocupacion_form.inscripcion_RPPF.id_for_label }}">Inscripción RPPF:</label>
+                    {{ documento_ocupacion_form.inscripcion_RPPF }}
+                </div>
+        
+                <div class="form-group form-check-inline" id="folioReal">
+                    <label id="folioReal" for="{{ documento_ocupacion_form.folio_real_federal.id_for_label }}">Folio Real Federal:</label>
+                    {{ documento_ocupacion_form.folio_real_federal }}
+                </div>
+        
+                <div class="form-group form-check-inline" id="fecha_inscripcion_federal">
+                    <label for="{{ documento_ocupacion_form.fecha_inscripcion_federal.id_for_label }}">Fecha de Inscripción Federal:</label>
+                    <input type="date" id="{{ documento_ocupacion_form.fecha_inscripcion_federal.id_for_label }}" name="{{ documento_ocupacion_form.fecha_inscripcion_federal.name }}" class="form-control" value="{{ documento_ocupacion_form.fecha_inscripcion_federal.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_inscripcion_federal')">
+                </div>
+
+        
+                <button type="button" class="btn btn-primary" id="guardarDocumentoOcupacion">Guardar</button>
+
+            </form>
+            <div id="tablaDocumentoOcupacionContainer"> 
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tipo de Documento</th>
+                        <th>Fecha de Documento</th>
+                        <th>Inscripción RPPF</th>
+                        <th>Folio Real Federal</th>
+                        <th>Fecha de Inscripción Federal</th>
+                        <th>Acciones</th>
+                        <!-- Agrega aquí las columnas adicionales que desees mostrar -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for documento_ocupacion in task.documento_ocupacion_set.all %}
+                    <tr>
+                        <td>{{ documento_ocupacion.tipo_de_documento }}</td>
+                        <td>{{ documento_ocupacion.fecha_documento }}</td>
+                        <td>{{ documento_ocupacion.inscripcion_RPPF }}</td>
+                        <td>{{ documento_ocupacion.folio_real_federal }}</td>
+                        <td>{{ documento_ocupacion.fecha_inscripcion_federal }}</td>
+                        <td>
+                            <a href="{% url 'eliminar_docOcupacion' docOcupacion_id=documento_ocupacion.id %}" class="btn btn-danger btn-sm eliminar-btn" data-tipo="documento_ocupacion" data-id="{{ documento_ocupacion.id }}">Eliminar</a>
+                        </td>
+                        <!-- Agrega aquí las celdas correspondientes a las columnas adicionales -->
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No hay registros de documentos de ocupación.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    
+
+        <div class="form-group form-check-inline">
+            <label for="{{ form.instituciones_ocupantes.id_for_label }}">Instituciones Ocupantes:</label>
+            {{ form.instituciones_ocupantes }}
+        </div>
+
+        <div class="separador" id="InstitucionesOcupantes">
+            <h4>Proporcione los datos de las Instituciones Ocupantes</h4>
+        
+            <!-- Formulario para agregar nuevas instituciones ocupantes -->
+            <form id="institucionesOcupantesForm" method="post" class="task-form" >
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="{{ instituciones_ocupantes_form.institucion_publica_ocupante.id_for_label }}">Institución Pública Ocupante:</label>
+                    <select id="{{ instituciones_ocupantes_form.institucion_publica_ocupante.auto_id }}" name="{{ instituciones_ocupantes_form.institucion_publica_ocupante.html_name }}"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ instituciones_ocupantes_form.superficie_asignada.id_for_label }}">Superficie Asignada a la Institución Ocupante:</label>
+                    {{ instituciones_ocupantes_form.superficie_asignada }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ instituciones_ocupantes_form.uso_institucion_ocupante.id_for_label }}">Uso de la Institución Ocupante:</label>
+                    {{ instituciones_ocupantes_form.uso_institucion_ocupante }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ instituciones_ocupantes_form.superficie_disponible.id_for_label }}">Superficie Disponible:</label>
+                    {{ instituciones_ocupantes_form.superficie_disponible }}
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="guardarInstitucionesOcupantes">Guardar</button>
+        </form>
+
+    <div id="tablaInstitucionesOcupantesContainer">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Institución Pública Ocupante</th>
+                        <th>Superficie Asignada</th>
+                        <th>Uso de la Institución Ocupante</th>
+                        <th>Superficie Disponible</th>
+                        <th>Acciones</th>
+                        <!-- Agrega aquí las columnas adicionales que desees mostrar -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for institucion_ocupante in task.institucionesocupantes_set.all %}
+                    <tr>
+                        <td>{{ institucion_ocupante.institucion_publica_ocupante }}</td>
+                        <td>{{ institucion_ocupante.superficie_asignada }}</td>
+                        <td>{{ institucion_ocupante.uso_institucion_ocupante }}</td>
+                        <td>{{ institucion_ocupante.superficie_disponible }}</td>
+                        <td>
+                            <a href="{% url 'eliminar_DatoInstitucionOcupante' datoInstitucionOcupante_id=institucion_ocupante.id %}" class="btn btn-danger btn-sm eliminar-btn" data-tipo="institucion_ocupante" data-id="{{ institucion_ocupante.id }}">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay registros de instituciones ocupantes.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <div class="form-group form-check-inline">
+            <label for="{{ form.usuarios_terceros.id_for_label }}">Usuarios Terceros:</label>
+            {{ form.usuarios_terceros }}
+        </div>
+
+        <div class="separador" id="DatosTerceros">
+            <h4>Proporcione los datos de Terceros Usuarios:</h4>
+            <form method="post" class="task-form" id="datosTercerosForm">
+                {% csrf_token %}
+        
+                <div class="form-group">
+                    <label for="{{ datos_terceros_form.tipo_usuario_tercero.id_for_label }}">Tipo de Terceros Usuarios:</label>
+                    {{ datos_terceros_form.tipo_usuario_tercero }}
+                </div>
+            
+                <div class="form-group form-check-inline">
+                    <label for="{{ datos_terceros_form.beneficiario.id_for_label }}">Beneficiario:</label>
+                    {{ datos_terceros_form.beneficiario }}
+                </div>
+        
+                <div class="form-group form-check-inline" id="">
+                    <label for="{{ datos_terceros_form.nombre_beneficiario.id_for_label }}">Nombre Beneficiario:</label>
+                    {{ datos_terceros_form.nombre_beneficiario }}
+                </div>
+
+                <div class="form-group form-check-inline" id="">
+                    <label for="{{ datos_terceros_form.rfc.id_for_label }}">RFC:</label>
+                    {{ datos_terceros_form.rfc }}
+                </div>
+        
+                <div class="form-group form-check-inline" id="fecha_inicio_vigencia">
+                    <label for="{{ datos_terceros_form.fecha_inicio_vigencia.id_for_label }}">Fecha de Inicio Vigencia:</label>
+                    <input type="date" id="{{ datos_terceros_form.fecha_inicio_vigencia.id_for_label }}" name="{{ datos_terceros_form.fecha_inicio_vigencia.name }}" class="form-control" value="{{ datos_terceros_form.fecha_inicio_vigencia.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_inicio_vigencia')">
+                </div>
+
+                <div class="form-group form-check-inline" id="fecha_termino_vigencia">
+                    <label for="{{ datos_terceros_form.fecha_termino_vigencia.id_for_label }}">Fecha de termino Vigencia:</label>
+                    <input type="date" id="{{ datos_terceros_form.fecha_termino_vigencia.id_for_label }}" name="{{ datos_terceros_form.fecha_termino_vigencia.name }}" class="form-control" value="{{ datos_terceros_form.fecha_termino_vigencia.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_termino_vigencia')">
+                </div>
+
+                <div class="form-group form-check-inline" id="prorroga">
+                    <label for="{{ datos_terceros_form.prorroga.id_for_label }}">Prórroga:</label>
+                    <input type="date" id="{{ datos_terceros_form.prorroga.id_for_label }}" name="{{ datos_terceros_form.prorroga.name }}" class="form-control" value="{{ datos_terceros_form.prorroga.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'prorroga')">
+                </div>
+
+                <div class="form-group form-check-inline" id="">
+                    <label for="{{ datos_terceros_form.inscripcion_folio_real_federal.id_for_label }}">Inscripción Folio Real Federal:</label>
+                    {{ datos_terceros_form.inscripcion_folio_real_federal }}
+                </div>
+
+                <div class="form-group form-check-inline" id="">
+                    <label for="{{ datos_terceros_form.superficie_objeto_ocupacion_metros.id_for_label }}">Superficie Objeto de la Ocupación (metros):</label>
+                    {{ datos_terceros_form.superficie_objeto_ocupacion_metros }}
+                </div>
+
+                <div class="form-group form-check-inline" id="">
+                    <label for="{{ datos_terceros_form.uso.id_for_label }}">Uso:</label>
+                    {{ datos_terceros_form.uso }}
+                </div>
+        
+                <button type="submit" class="btn btn-primary" id="guardarDatosTerceros">Guardar</button>
+    </form>
+            <div class="table-responsive" id="tablaDatosTercerosContainer">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Terceros Usuarios</th>
+                            <th>Beneficiario</th>
+                            <th>Nombre Beneficiario</th>
+                            <th>RFC</th>
+                            <th>Fecha de Inicio Vigencia</th>
+                            <th>Fecha de Término Vigencia</th>
+                            <th>Prórroga</th>
+                            <th>Inscripción Folio Real Federal</th>
+                            <th>Superficie Objeto de la Ocupación (metros)</th>
+                            <th>Uso</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for datos_terceros in task.datosterceros_set.all %}
+                        <tr>
+                            <td>{{ datos_terceros.tipo_usuario_tercero }}</td>
+                            <td>{{ datos_terceros.beneficiario }}</td>
+                            <td>{{ datos_terceros.nombre_beneficiario }}</td>
+                            <td>{{ datos_terceros.rfc }}</td>
+                            <td>{{ datos_terceros.fecha_inicio_vigencia }}</td>
+                            <td>{{ datos_terceros.fecha_termino_vigencia }}</td>
+                            <td>{{ datos_terceros.prorroga }}</td>
+                            <td>{{ datos_terceros.inscripcion_folio_real_federal }}</td>
+                            <td>{{ datos_terceros.superficie_objeto_ocupacion_metros }}</td>
+                            <td>{{ datos_terceros.uso }}</td>
+                            <td>
+                                <a href="{% url 'deleteDatosTerceros' datos_terceros_id=datos_terceros.id %}" class="btn btn-danger btn-sm eliminar-btn" data-tipo="datos_terceros" data-id="{{ datos_terceros.id }}">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadUsosGenericos() {
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/3/usoGenerico.json', function(data) {
+            var usoGenerico = [...new Set(data.map(item => item.uso_generico))];
+            var selectUsosGenericos = $('#{{ form.usoGenerico.auto_id }}');
+
+            selectUsosGenericos.empty();
+            $.each(usoGenerico, function(index, value) {
+                var selected = value === '{{ form.instance.usoGenerico }}' ? 'selected' : '';
+                selectUsosGenericos.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+            loadUsosEspecificos();
+        });
+    }
+
+    function loadUsosEspecificos() {
+        var selectUsosGenericos = $('#{{ form.usoGenerico.auto_id }}').val();
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/3/usoGenerico.json', function(data) {
+            var usoEspecifico = [...new Set(data.filter(item => item.uso_generico === selectUsosGenericos)
+                                        .map(item => item.uso_especifico))];
+
+            var selectUsosEspecifico = $('#{{ form.usoEspecifico.auto_id }}');
+            selectUsosEspecifico.empty();
+            $.each(usoEspecifico, function(index, value) {
+                var selected = value === '{{ form.instance.usoEspecifico }}' ? 'selected' : '';
+                selectUsosEspecifico.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+                
+            });
+        });
+    }
+
+    $(document).ready(function() {
+        loadUsosGenericos();
+        $('#{{ form.usoGenerico.auto_id }}').change(function() {
+            loadUsosEspecificos($(this).val());
+        });
+    });
+</script>
+
+
+
+<script>
+    function validateDate(input, alertType) {
+        var selectedDate = new Date(input.value);
+        var currentDate = new Date();
+        var alertId = alertType === 'fecha_documento' || alertType === 'fecha_inscripcion_federal' || alertType === 'fecha_inicio_vigencia' || alertType === 'prorroga' || alertType === 'fecha_termino_vigencia'? 'dateAlertDocumento' : 'dateAlertFederal';
+
+        if (selectedDate > currentDate) {
+            var alert = document.getElementById(alertId);
+            alert.style.display = 'block';
+
+            // Agregamos estilos para hacer la alerta flotante
+            alert.style.position = 'fixed';
+            alert.style.top = '10px';
+            alert.style.right = '10px';
+            alert.style.zIndex = '1000'; // Asegura que esté por encima de otros elementos
+
+            input.value = ''; // Limpia el campo de fecha
+
+            // Cierra la alerta después de 5 segundos (5000 ms)
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 5000);
+        } else {
+            document.getElementById(alertId).style.display = 'none';
+        }
+    }
+</script>
+    
+<script>
+    $(document).ready(function() {
+        
+        $("#folioReal, #fecha_inscripcion_federal, #InstitucionesOcupantes").hide();
+        $("#DocumentoOcupacion, #DatosTerceros").hide();
+
+       
+        function showUsuariosTerceros(selectedValue){
+            if (selectedValue === "Si") {
+                $("#DatosTerceros").show();
+            } else {
+                $("#DatosTerceros").hide();
+            }
+        }
+
+        function showRPPF(selectedValue){
+            if (selectedValue === "Si") {
+                $("#folioReal, #fecha_inscripcion_federal").show();
+            } else {
+                $("#folioReal, #fecha_inscripcion_federal").hide();
+            }
+        }
+        // Función para mostrar u ocultar campos según la selección
+        function showHideFields(selectedValue){
+            if (selectedValue === "Si") {
+                $("#DocumentoOcupacion").show();
+            } else {
+                $("#DocumentoOcupacion").hide();
+            }
+        }
+
+        function showinstitucionesOcupantes(selectedValue){
+            if (selectedValue === "Si") {
+                $("#InstitucionesOcupantes").show();
+            } else {
+                $("#InstitucionesOcupantes").hide();
+            }
+        }
+        // Obtener el valor actual de "Inscripción por Registro Local" y mostrar campos correspondientes
+        var inscripcionRegistroLocal = $("#{{ form.documento_que_autoriza_ocupacion.id_for_label }}").val();
+        showHideFields(inscripcionRegistroLocal);
+
+  // Manejar cambios en "Inscripción por Registro Local"
+        $("#{{ form.documento_que_autoriza_ocupacion.id_for_label }}").change(function() {
+            var selectedValue = $(this).val();
+            showHideFields(selectedValue);
+        });
+
+        var inscripcionRPPF = $("#{{ documento_ocupacion_form.inscripcion_RPPF.id_for_label }}").val();
+        showRPPF(inscripcionRPPF);
+
+        $("#{{ documento_ocupacion_form.inscripcion_RPPF.id_for_label }}").change(function() {
+            var selectedValue = $(this).val();
+            showRPPF(selectedValue);
+        });
+
+        var institucionesOcupantes = $("#{{ form.instituciones_ocupantes.id_for_label }}").val();
+        showinstitucionesOcupantes(institucionesOcupantes);
+
+        $("#{{ form.instituciones_ocupantes.id_for_label }}").change(function() {
+            var selectedValue = $(this).val();
+            showinstitucionesOcupantes(selectedValue);
+        });
+        
+        var usuariosTerceros = $("#{{ form.usuarios_terceros.id_for_label }}").val();
+        showUsuariosTerceros(usuariosTerceros);
+
+        $("#{{ form.usuarios_terceros.id_for_label }}").change(function() {
+            var selectedValue = $(this).val();
+            showUsuariosTerceros(selectedValue);
+        });
+
+      
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        loadUsoPorEdificacion();
+    });
+    function loadUsoPorEdificacion() {
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/2/.json', function(data) {
+            var institucion_publica_ocupante = data.InstitucionPublicaOcupante; // Accede a la propiedad correcta
+
+            var selectUsoPorEdificacion = $('[name="{{ instituciones_ocupantes_form.institucion_publica_ocupante.html_name }}"]');
+
+            selectUsoPorEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(institucion_publica_ocupante, function(index, value){
+                var selected = value === '{{instituciones_ocupantes_form.instance.institucion_publica_ocupante  }}' ? 'selected' : '';
+                selectUsoPorEdificacion.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+        });
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        loadUsuarioPrincipal();
+    });
+
+    function loadUsuarioPrincipal() {
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/4/.json', function(data) {
+            var usuario_principal_del_inmueble = data.Usuario_principal_Inmueble; // Accede a la propiedad correcta
+
+            var selectUsuarioPrincipal = $('[name="{{ form.usuario_principal_del_inmueble.html_name }}"]');
+
+            selectUsuarioPrincipal.empty(); // Limpiar opciones anteriores
+            $.each(usuario_principal_del_inmueble, function(index, value){
+                var selected = value === '{{form.instance.usuario_principal_del_inmueble  }}' ? 'selected' : '';
+                selectUsuarioPrincipal.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+        });
+    }
+</script>
+
+
+<script>
+
+
+$(document).ready(function() {
+    // Manejador de clics para los botones de "Eliminar"
+    $(".eliminar-btn").click(function(event) {
+        event.preventDefault(); // Previene el comportamiento predeterminado del enlace
+        
+        var url = $(this).attr("href"); // Obtiene la URL de eliminación
+        var tipo = $(this).data("tipo"); // Obtiene el tipo de elemento a eliminar
+        var id = $(this).data("id"); // Obtiene el ID del elemento a eliminar
+        
+        if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
+            // Realiza una solicitud AJAX para eliminar el elemento
+            $.ajax({
+                type: "POST", // O GET si lo prefieres
+                url: url,
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}", // Asegúrate de enviar el token CSRF
+                },
+                success: function(response) {
+                    // Elimina la fila correspondiente en la tabla
+                    $("#" + tipo + "-" + id).remove();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    // Maneja errores si es necesario
+                }
+            });
+        }
+    });
+});
+</script>
+<!-- Agrega esto a tu plantilla HTML -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Agrega un manejador de eventos a los enlaces de eliminación
+        $(".eliminar-btn").click(function(event) {
+            // Evita que el enlace de eliminación realice su acción predeterminada
+            event.preventDefault();
+
+            // Obtiene la URL de eliminación del atributo "href" del enlace
+            var deleteUrl = $(this).attr("href");
+
+            // Realiza una solicitud Ajax para eliminar el elemento
+            $.ajax({
+                url: deleteUrl,
+                type: "POST",
+                success: function(response) {
+                    if (response.success) {
+                        // Actualiza la tabla después de eliminar
+                        $("#tablaInstitucionesOcupantesContainer").load("{% url 'task_detail' task_id=task.id %} #tablaInstitucionesOcupantesContainer");
+                    } else {
+                        alert("Hubo un error al eliminar el elemento.");
+                    }
+                },
+                error: function() {
+                    alert("Se produjo un error al enviar la solicitud de eliminación.");
+                },
+            });
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        // Agrega un manejador de eventos al botón "Guardar" de Documento de Ocupación
+        $("#guardarDocumentoOcupacion").click(function() {
+            var formData = $("#documentoOcupacionForm").serialize();
+    
+            // Realiza una solicitud Ajax para guardar los datos del formulario de Documento de Ocupación
+            $.ajax({
+                url: "{% url 'guardar_documento_ocupacion' task_id=task.id %}",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Actualiza la tabla después de guardar
+                        $("#tablaDocumentoOcupacionContainer").load("{% url 'task_detail' task_id=task.id %} #tablaDocumentoOcupacionContainer");
+                        
+                        // Restablece el formulario de Documento de Ocupación
+                        $("#documentoOcupacionForm")[0].reset();
+                    } else {
+                        alert("Hubo un error al guardar el formulario de Documento de Ocupación.");
+                    }
+                },
+                error: function() {
+                    alert("Se produjo un error al enviar el formulario de Documento de Ocupación.");
+                },
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Agrega un manejador de eventos al botón "Guardar" de Datos de Terceros
+        $("#guardarInstitucionesOcupantes").click(function(event) {
+            // Evita que el formulario se envíe automáticamente
+            event.preventDefault();
+            
+            var formData = $("#institucionesOcupantesForm").serialize();
+    
+            // Realiza una solicitud Ajax para guardar los datos del formulario de Datos de Terceros
+            $.ajax({
+                url: "{% url 'guardar_instituciones_ocupantes' task_id=task.id %}",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Actualiza la tabla después de guardar
+                        $("#tablaInstitucionesOcupantesContainer").load("{% url 'task_detail' task_id=task.id %} #tablaInstitucionesOcupantesContainer");
+                        
+                        // Restablece el formulario de Datos de Terceros
+                        $("#institucionesOcupantesForm")[0].reset();
+                    } else {
+                        alert("Hubo un error al guardar el formulario de Datos de Terceros.");
+                    }
+                },
+                error: function() {
+                    alert("Se produjo un error al enviar el formulario de Datos de Terceros.");
+                },
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Agrega un manejador de eventos al botón "Guardar" de Datos de Terceros
+        $("#guardarDatosTerceros").click(function(event) {
+            // Evita que el formulario se envíe automáticamente
+            event.preventDefault();
+
+            var formData = $("#datosTercerosForm").serialize();
+
+            // Realiza una solicitud Ajax para guardar los datos del formulario de Datos de Terceros
+            $.ajax({
+                url: "{% url 'guardar_datos_terceros' task_id=task.id %}",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Actualiza la tabla después de guardar
+                        $("#tablaDatosTercerosContainer").load("{% url 'task_detail' task_id=task.id %} #tablaDatosTercerosContainer");
+
+                        // Restablece el formulario de Datos de Terceros
+                        $("#datosTercerosForm")[0].reset();
+                    } else {
+                        alert("Hubo un error al guardar el formulario de Datos de Terceros.");
+                    }
+                },
+                error: function() {
+                    alert("Se produjo un error al enviar el formulario de Datos de Terceros.");
+                },
+            });
+        });
+    });
+</script>

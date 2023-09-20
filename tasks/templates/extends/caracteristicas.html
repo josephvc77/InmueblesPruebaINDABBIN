@@ -1,0 +1,534 @@
+<div class="tab-content" id="tab-caracteristicas">
+    <div class="section">
+        
+        <div class="form-group">
+            <label for="tipo_opcion">Tipo de Opción:</label>
+            <select id="tipo_opcion" name="tipo_opcion">
+                <option value="sin_informacion">Sin Información</option>
+                <option value="edificacion">Edificación o Mixto</option>
+                <option value="terreno">Terreno</option>
+            </select>
+        </div>
+    
+
+
+        <!-- Formulario para Edificación -->
+        <div id="form-edificacion" class="form-section form-group">
+            <div class="separador">
+                <h3>Proporcione los datos de las Edificaciones Existentes</h3><br><br>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.tipo_de_inmueble.id_for_label }}">Tipo de Inmueble:</label>
+                    {{ edificacion_form.tipo_de_inmueble }}
+                </div>
+                
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.nombre_edificacion.id_for_label }}">Nombre de Edificación:</label>
+                    {{ edificacion_form.nombre_edificacion }}
+                </div>
+                
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.propietario_de_la_edificacion.id_for_label }}">Propietario de la Edificación:</label>
+                    {{ edificacion_form.propietario_de_la_edificacion }}
+                </div>
+                
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.niveles_por_edificio.id_for_label }}">Niveles por Edificio:</label>
+                    {{ edificacion_form.niveles_por_edificio }}
+                </div>
+                
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.superficie_construida_por_edificacion_m2.id_for_label }}">Superficie Construida por Edificación (m²):</label>
+                    {{ edificacion_form.superficie_construida_por_edificacion_m2 }}
+                </div>
+                
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.fecha_construccion_por_edificacion.id_for_label }}">Fecha Construcción por Edificación:</label>
+                    <input type="date" id="{{ edificacion_form.fecha_construccion_por_edificacion.id_for_label }}" name="{{ edificacion_form.fecha_construccion_por_edificacion.name }}" class="form-control" value="{{ edificacion_form.fecha_construccion_por_edificacion.value|default:'' }}" onchange="validateDate(this)">
+                </div>
+                
+                <div id="dateAlertLocal" class="alert alert-danger" style="display: none;">
+                    La fecha no puede ser posterior a la fecha actual.
+                </div>
+                
+                
+                <div class="form-group">
+                    <label for="{{ edificacion_form.caracteristicas_de_la_edificacion.id_for_label }}">Características de la Edificación:</label>
+                    {{ edificacion_form.caracteristicas_de_la_edificacion }}
+                </div>
+                <br>
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.usoEdificacion.id_for_label }}">Uso por Edificación:</label>
+                    <select id="{{ edificacion_form.usoEdificacion.auto_id }}" name="{{ edificacion_form.usoEdificacion.html_name }}"></select>
+                </div>
+                
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ edificacion_form.calidadEdificacion.id_for_label }}">Calidad de la Edificación:</label>
+                    <select id="{{ edificacion_form.calidadEdificacion.auto_id }}" name="{{ edificacion_form.calidadEdificacion.html_name }}"></select>
+                </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ edificacion_form.cajones_de_estacionamiento_por_edificacion.id_for_label }}">Cajones de Estacionamiento por Edificación:</label>
+            {{ edificacion_form.cajones_de_estacionamiento_por_edificacion }}
+        </div>
+
+        <div class="form-group form-check-inline">
+            <label for="{{ edificacion_form.rampa_de_acceso.id_for_label }}">Rampa de Acceso:</label>
+            {{ edificacion_form.rampa_de_acceso }}
+        </div>
+
+        <div class="form-group form-check-inline">
+            <label for="{{ edificacion_form.ruta_de_evacuacion.id_for_label }}">Ruta de Evacuación:</label>
+            {{ edificacion_form.ruta_de_evacuacion }}
+        </div>
+
+        <div class="form-group form-check-inline">
+            <label for="{{ edificacion_form.sanitario_para_personas_con_discapacidad.id_for_label }}">Sanitario para Personas con Discapacidad:</label>
+            {{ edificacion_form.sanitario_para_personas_con_discapacidad }}
+        </div>
+
+                <button class="btn btn-outline-success" type="submit">Agregar Nuevo</button>
+            </form>
+        </div>
+        </div>
+
+
+        <!-- Formulario para Terreno -->
+        <div id="form-terreno" class="form-section">
+            <div class="separador">
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.superficie_del_terreno_en_M2.id_for_label }}">Superficie del terreno en M2:</label>
+                    {{ form.superficie_del_terreno_en_M2 }}
+                  </div>
+                  <div class="form-group form-check-inline">
+                    <label for="{{ form.superficie_del_terreno_HA.id_for_label }}">superficie del terreno HA:</label>
+                    {{ form.superficie_del_terreno_HA }}
+                  </div>
+                  <div class="form-group form-check-inline">
+                    <label for="{{ form.superficie_de_desplante_en_M2.id_for_label }}">superficie de desplante en M2:</label>
+                    {{ form.superficie_de_desplante_en_M2 }}
+                  </div>
+                  <div class="form-group form-check-inline">
+                    <label for="{{ form.superficie_construida_en_M2.id_for_label }}">superficie construida en M2:</label>
+                    {{ form.superficie_construida_en_M2 }}
+                  </div>
+                  <div class="form-group form-check-inline">
+                    <label for="{{ form.superficie_util_m2.id_for_label }}">Superficie Útil o Rentable en M2:</label>
+                    {{ form.superficie_util_m2 }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.zona_ubicacion.id_for_label }}">Zona en la que se Ubica el Inmueble:</label>
+                    {{ form.zona_ubicacion }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="tipo_inmueble_rural">
+                    <label for="{{ form.tipo_inmueble_rural.id_for_label }}">Tipo de Inmueble Rural:</label>
+                    {{ form.tipo_inmueble_rural}}
+                </div>
+                
+                <div class="form-group form-check-inline" id="uso_dominante_zona">
+                    <label for="{{ form.uso_dominante_zona.id_for_label }}">Uso Dominante de la Zona:</label>
+                    {{ form.uso_dominante_zona }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="clasificacion_por_edad">
+                    <label for="{{ form.clasificacion_edad.id_for_label }}">Clasificación por Edad:</label>
+                    {{ form.clasificacion_edad }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="categoria">
+                    <label for="{{ form.categoria.id_for_label }}">Categoría:</label>
+                    {{ form.categoria }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="grado_consolidacion">
+                    <label for="{{ form.grado_consolidacion.id_for_label }}">Grado de Consolidación:</label>
+                    {{ form.grado_consolidacion }}
+                </div>
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.calidad_construccion.id_for_label }}">Calidad de Construcción:</label>
+                    {{ form.calidad_construccion }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.servicios.id_for_label }}">Servicios:</label>
+                    {{ form.servicios }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.telefono_inmueble.id_for_label }}">No. Telefónico del Inmueble:</label>
+                    {{ form.telefono_inmueble }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.fecha_inicio_construccion.id_for_label }}">Fecha de Inicio de Construcción del Inmueble:</label>
+                    {{ form.fecha_inicio_construccion }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.siglo_construccion.id_for_label }}">Siglo de Construcción:</label>
+                    {{ form.siglo_construccion }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.fecha_ultima_remodelacion.id_for_label }}">Fecha de Última Remodelación del Inmueble:</label>
+                    {{ form.fecha_ultima_remodelacion }}
+                </div>
+                <div class="separador">
+                <div class="form-group">
+                    <h4>Características Especiales del Inmueble:</h4><br>
+                    <div class="form-check form-check-inline">
+                        {{ form.monumento }}
+                        <label class="form-check-label" for="{{ form.monumento.id_for_label }}">Monumento</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        {{ form.historico }}
+                        <label class="form-check-label" for="{{ form.historico.id_for_label }}">Histórico</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        {{ form.artistico }}
+                        <label class="form-check-label" for="{{ form.artistico.id_for_label }}">Artístico</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        {{ form.arqueologico }}
+                        <label class="form-check-label" for="{{ form.arqueologico.id_for_label }}">Arqueológico</label>
+                    </div>
+
+                    
+                    <br>
+                    <div id="datas">
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.clave_inah.id_for_label }}" class="col-form-label">Clave INAH:</label>
+                        {{ form.clave_inah }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.folio_real_inah.id_for_label }}" class="col-form-label">Folio Real INAH:</label>
+                        {{ form.folio_real_inah }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.no_plano_inah.id_for_label }}" class="col-form-label">No Plano INAH:</label>
+                        {{ form.no_plano_inah }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.clave_cnmh.id_for_label }}" class="col-form-label">Clave CNMH:</label>
+                        {{ form.clave_cnmh }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.clave_dgsm_pc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
+                        {{ form.clave_dgsmpc_conaculta }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.fecha_inscripcion_unesco.id_for_label }}" class="col-form-label">Fecha Inscripción UNESCO:</label>
+                        {{ form.fecha_inscripcion_unesco }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.observaciones_historicas.id_for_label }}" class="col-form-label">Observaciones Históricas:</label>
+                        {{ form.observaciones_historicas }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.siglo_o_periodo.id_for_label }}" class="col-form-label">Siglo o Periodo:</label>
+                        {{ form.siglo_o_periodo }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.correlativo.id_for_label }}" class="col-form-label">Correlativo:</label>
+                        {{ form.correlativo }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.conjunto.id_for_label }}" class="col-form-label">Conjunto:</label>
+                        {{ form.conjunto }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.clave_inbal.id_for_label }}" class="col-form-label">Clave INBAL:</label>
+                        {{ form.clave_inbal }}
+                    </div>
+                    
+                    <div class="form-group form-check-inline">
+                        <label for="{{ form.registro_unico_inah.id_for_label }}" class="col-form-label">Registro Único INAH:</label>
+                        {{ form.registro_unico_inah }}
+                    </div>
+                </div>
+                </div>
+
+
+
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ form.estado_conservacion.id_for_label }}">Estado de Conservación del Inmueble:</label>
+                    {{ form.estado_conservacion }}
+                </div>
+        </div>
+    </div>
+</div>
+
+<div class="separador">
+    <div class="form-section">
+        <h3>Información de Terreno:</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Superficie en m²</th>
+                        <th>Superficie en ha</th>
+                        <th>Superficie de desplante en m²</th>
+                        <th>Superficie construida en m²</th>
+                        <th>Superficie Útil o Rentable en M2</th>
+                        <th>Zona en la que se Ubica el Inmueble</th>
+                        <th>Calidad de Construcción</th>
+                        <th>Servicios</th>
+                        <th>No. Telefónico del Inmueble</th>
+                        <th>Fecha de Inicio de Construcción</th>
+                        <th>Siglo de Construcción</th>
+                        <th>Fecha de Última Remodelación</th>
+                        <th>Características Especiales</th>
+                        <th>Estado de Conservación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ task.superficie_del_terreno_en_M2 }}</td>
+                        <td>{{ task.superficie_del_terreno_HA }}</td>
+                        <td>{{ task.superficie_de_desplante_en_M2 }}</td>
+                        <td>{{ task.superficie_construida_en_M2 }}</td>
+                        <td>{{ task.superficie_util_m2 }}</td>
+                        <td>{{ task.get_zona_ubicacion_display }}</td>
+                        <td>{{ task.get_calidad_construccion_display }}</td>
+                        <td>{{ task.get_servicios_display }}</td>
+                        <td>{{ task.telefono_inmueble }}</td>
+                        <td>{{ task.fecha_inicio_construccion }}</td>
+                        <td>{{ task.siglo_construccion }}</td>
+                        <td>{{ task.fecha_ultima_remodelacion }}</td>
+                        <td>
+                            {% if task.monumento %} Monumento {% endif %}
+                            {% if task.historico %} Histórico {% endif %}
+                            {% if task.artistico %} Artístico {% endif %}
+                            {% if task.arqueologico %} Arqueológico {% endif %}
+                        </td>
+                        <td>{{ task.get_estado_conservacion_display }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="separador">
+    <div class="form-section">
+        <h3>Información de Edificación:</h3>
+        <div class="table-responsive">
+            <table class="table table-striped-columns">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Edificación</th>
+                        <th>Tipo de inmueble</th>
+                        <th>Propietario de la Edificación</th>
+                        <th>Niveles por Edificio</th>
+                        <th>Superficie Construida (m²)</th>
+                        <th>Fecha de Construcción</th>
+                        <th>Características de la Edificación</th>
+                        <th>Uso de la Edificación</th>
+                        <th>Calidad de la Edificación</th>
+                        <th>Cajones de Estacionamiento</th>
+                        <th>Rampa de Acceso</th>
+                        <th>Ruta de Evacuación</th>
+                        <th>Sanitario para Personas con Discapacidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for edificacion in task.edificacion_set.all %}
+                        <tr>
+                            <td>{{ edificacion.nombre_edificacion }}</td>
+                            <td>{{ edificacion.tipo_de_inmueble }}</td>
+                            <td>{{ edificacion.propietario_de_la_edificacion }}</td>
+                            <td>{{ edificacion.niveles_por_edificio }}</td>
+                            <td>{{ edificacion.superficie_construida_por_edificacion_m2 }}</td>
+                            <td>{{ edificacion.fecha_construccion_por_edificacion }}</td>
+                            <td>{{ edificacion.caracteristicas_de_la_edificacion }}</td>
+                            <td>{{ edificacion.uso_por_edificacion }}</td>
+                            <td>{{ edificacion.calidad_de_la_edificacion }}</td>
+                            <td>{{ edificacion.cajones_de_estacionamiento_por_edificacion }}</td>
+                            <td>{{ edificacion.rampa_de_acceso }}</td>
+                            <td>{{ edificacion.ruta_de_evacuacion }}</td>
+                            <td>{{ edificacion.sanitario_para_personas_con_discapacidad }}</td>
+                            <td>
+                                <a href="{% url 'editar_edificacion' edificacion.id %}" class="btn ">Modificar</a>
+                                <a href="{% url 'borrar_edificacion' edificacion.id %}" class="btn ">Borrar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="separador">
+    <fieldset>
+      <h2>Proporcione los datos de las Edificio Verde:</h2>
+      {% if task.edificio_verde_set.exists %}
+      <table class="expedientes-cedoc-table">
+        <thead>
+          <tr>
+            <th>Edificio Verde</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for edificio_verde in task.edificio_verde_set.all %}
+            <tr>
+              <td>{{ edificio_verde.edificio_verde_data }}</td>
+              <td>
+                <button class="delete-edificio-verde-btn btn btn-outline-danger btn-sm" data-url="{% url 'delete_edificio_verde' task_id=task.id edificio_verde_id=edificio_verde.id %}">Eliminar</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ edificio_verde_form.edificio_verde_data.id_for_label }}">Edificio Verde::</label>
+            {{ edificio_verde_form.edificio_verde_data }}
+        </div>
+        <button type="submit" class="btn btn-outline-success">Guardar</button>
+    </form>
+
+
+       
+  </fieldset>
+</div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // Ocultar campos por defecto
+        $("#tipo_inmueble_rural, #uso_dominante_zona, #clasificacion_por_edad, #categoria, #grado_consolidacion ").show();
+
+        $("#datas").hide();
+        // Función para establecer los campos como "SIN INFORMACIÓN"
+        function setFieldsToNoInfo() {
+            $("#tipo_inmueble_rural, #uso_dominante_zona, #clasificacion_por_edad, #categoria, #grado_consolidacion").val('SIN INFORMACIÓN');
+        }
+
+        // Mostrar u ocultar campos basados en la selección de Zona
+        function showHideFields(selectedValue) {
+            if (selectedValue === "rural") {
+                $("#uso_dominante_zona, #clasificacion_por_edad, #categoria, #grado_consolidacion").hide();
+                $("#tipo_inmueble_rural").show();
+                setFieldsToNoInfo();
+            } else if (selectedValue === 'urbana') {
+                $("#uso_dominante_zona, #clasificacion_por_edad, #categoria, #grado_consolidacion").show();
+                $("#tipo_inmueble_rural").hide();
+                setFieldsToNoInfo();
+            } else {
+                $("#tipo_inmueble_rural, #uso_dominante_zona, #clasificacion_por_edad, #categoria, #grado_consolidacion").hide();
+                setFieldsToNoInfo();
+            }
+        }
+
+        function showDatas(selectedValue) {
+            if (selectedValue === "SI") {
+                $("#datas").show();
+            } else {
+                $("#datas").hide();
+
+            }
+        }
+
+        // Obtener el valor actual de Zona y mostrar campos correspondientes
+        var initialZonaValue = $('#{{ form.zona_ubicacion.auto_id }}').val();
+        showHideFields(initialZonaValue);
+
+        // Mostrar u ocultar campos y establecer valores como "SIN INFORMACIÓN" cuando cambia la selección de Zona
+        $('#{{ form.zona_ubicacion.auto_id }}').change(function() {
+            var selectedValue = $(this).val();
+            showHideFields(selectedValue);
+        });
+
+        // Obtener el valor actual de Zona y mostrar campos correspondientes
+        var caracEspeciales = $('#{{ form.monumento.auto_id }}, #{{ form.historico.auto_id }}, #{{ form.artistico.auto_id }}, #{{ form.arqueologico.auto_id }}').val();
+        showDatas(caracEspeciales);
+
+        // Mostrar u ocultar campos y establecer valores como "SIN INFORMACIÓN" cuando cambia la selección de Zona
+        $('#{{ form.monumento.auto_id }}, #{{ form.historico.auto_id }}, #{{ form.artistico.auto_id }}, #{{ form.arqueologico.auto_id }}').change(function() {
+            var selectedValue = $(this).val();
+            showDatas(selectedValue);
+        });
+
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadUsoPorEdificacion() {
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
+            var uso_por_edificacion = [...new Set(data.map(item => item.uso_por_edificacion))];
+            var selectUsoPorEdificacion = $('#{{ edificacion_form.usoEdificacion.auto_id }}');
+
+            selectUsoPorEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(uso_por_edificacion, function(index, value){
+                selectUsoPorEdificacion.append($('<option>').text(value).attr('value', value));
+            });
+
+            // Obtén el valor seleccionado actual
+            var selectedUsoPorEdificacion = '{{ edificacion_form.instance.usoEdificacion }}';
+            selectUsoPorEdificacion.val(selectedUsoPorEdificacion);
+
+            // Al cargar los datos de "Uso por Edificación", también cargamos los datos de "Calidad de la Edificación" inicialmente.
+            loadCalidadDeLaEdificacion();
+        });
+    }
+
+    function loadCalidadDeLaEdificacion() {
+        var selectUsoPorEdificacion = $('#{{ edificacion_form.usoEdificacion.auto_id }}').val(); // Obtén el valor seleccionado de "Uso por Edificación"
+        // Realiza una petición para cargar los datos de "Calidad de la Edificación" en función de la selección de "Uso por Edificación".
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
+            var calidad = [...new Set(data.filter(item => item.uso_por_edificacion === selectUsoPorEdificacion)
+                                .map(item => item.calidad_edificacion))];
+            var selectCalidadDeLaEdificacion = $('#{{ edificacion_form.calidadEdificacion.auto_id }}');
+            selectCalidadDeLaEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(calidad, function(index, value) {
+                selectCalidadDeLaEdificacion.append($('<option>').text(value).attr('value', value));
+            });
+
+            // Obtén el valor seleccionado actual
+            var selectedCalidadDeLaEdificacion = '{{ edificacion_form.instance.calidadEdificacion }}';
+            selectCalidadDeLaEdificacion.val(selectedCalidadDeLaEdificacion);
+        });
+    }
+
+    $(document).ready(function() {
+        loadUsoPorEdificacion();
+
+        $('#{{ edificacion_form.usoEdificacion.auto_id }}').change(function() {
+            loadCalidadDeLaEdificacion();
+        });
+    }); 
+
+</script>
+
+
+<script>
+    function validateDate(input) {
+        const selectedDate = new Date(input.value);
+        const currentDate = new Date();
+    
+        if (selectedDate > currentDate) {
+            document.getElementById('dateAlertLocal').style.display = 'block';
+            input.value = ''; // Borra el valor si es posterior a la fecha actual
+        } else {
+            document.getElementById('dateAlertLocal').style.display = 'none';
+        }
+    }
+    </script>

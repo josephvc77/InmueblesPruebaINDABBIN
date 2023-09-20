@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  /* Estilos generales para el formulario de eliminación de tarea */
+  .delete-task-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .form-group .error-message {
+    color: #dc3545;
+  }
+
+  .delete-task-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  .delete-task-form a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #007BFF;
+  }
+</style>
+
+<div class="delete-task-form">
+  <h1>Eliminar tarea: {{ task.title }}</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if form.errors %}
+      <div class="form-group error-message">
+        {{ form.errors.password }}
+      </div>
+    {% endif %}
+    <button type="submit">Eliminar</button>
+  </form>
+
+  <a href="{% url 'tasks' %}">Cancelar</a>
+</div>
+
+{% endblock %}

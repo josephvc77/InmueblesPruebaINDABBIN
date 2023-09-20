@@ -1,0 +1,149 @@
+<div class="tab-content" id="tab-aprovechamiento">
+    <div class="section">
+
+                <div class="form-group">
+                    <label for="{{ form.aprovechamiento.id_for_label }}">Aprovechamiento</label>
+                    {{ form.aprovechamiento }}
+                </div>
+        
+                <div class="form-group form-check-inline" id="inmueble-publico-fields">
+                    <label for="{{ form.inmueble_con_atencion_al_publico.id_for_label }}">Inmueble con Atención al Público</label>
+                    {{ form.inmueble_con_atencion_al_publico }}
+                </div>
+
+                <div class="form-group form-check-inline" id="data-Publico">
+                    <label for="{{ form.poblacion_beneficiada.id_for_label }}">Población Beneficiada:</label>
+                    {{ form.poblacion_beneficiada }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="data-Publico">
+                    <label for="{{ form.poblacion_servicio.id_for_label }}">Población a la que da Servicio:</label>
+                    {{ form.poblacion_servicio }}
+                </div>
+        <br>
+                <div class="form-group form-check-inline" id="gasto-mantenimiento-fields">
+                    <label for="{{ form.gasto_anual_de_mantenimiento.id_for_label }}">Gasto Anual de Mantenimiento ($):</label>
+                    {{ form.gasto_anual_de_mantenimiento }}
+                </div>
+        <br>
+                <div class="form-group form-check-inline" id="inmueble-condominio-fields">
+                    <label for="{{ form.inmueble_en_condominio.id_for_label }}">Inmueble en Condominio</label>
+                    {{ form.inmueble_en_condominio }}
+                </div>
+                <div class="form-group form-check-inline" id="data-InCondominio">
+                    <label for="{{ form.superficie_total.id_for_label }}">Superficie Total:</label>
+                    {{ form.superficie_total }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="data-InCondominio">
+                    <label for="{{ form.indiviso.id_for_label }}">Indiviso ($) :</label>
+                    {{ form.indiviso }}
+                </div>
+        <br>
+                <div class="form-group form-check-inline" id="cuenta-proyecto-fields">
+                    <label for="{{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado.id_for_label }}">Cuenta con Proyecto de Uso Inmediato Desarrollado</label>
+                    {{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado }}
+                </div>
+
+                <div class="form-group form-check-inline" id="data-ProyectoID">
+                    <label for="{{ form.inversion_requerida.id_for_label }}">Inversión Requerida ($):</label>
+                    {{ form.inversion_requerida }}
+                </div>
+                
+                <div class="form-group form-check-inline" id="data-ProyectoID">
+                    <label for="{{ form.fuente_financiamiento.id_for_label }}">Fuente de Financiamiento:</label>
+                    {{ form.fuente_financiamiento }}
+                </div>
+                <br>
+                <div class="form-group form-check-inline" id="data-ProyectoID">
+                    <label for="{{ form.fecha_solicitud.id_for_label }}">Fecha de Solicitud:</label>
+                    {{ form.fecha_solicitud }}
+                </div>
+        
+                <div class="form-group" id="inmueble-no-aprovechable-fields">
+                    <label for="{{ form.inmueble_no_aprovechable_especificar.id_for_label }}">Inmueble no Aprovechable/Especificar</label>
+                    {{ form.inmueble_no_aprovechable_especificar }}
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+
+                // Función para reiniciar los valores de los campos ocultos
+    
+
+                function showProyectoInmediato(selectedValue) {
+                    if (selectedValue === 'true') {
+                        $(" #data-ProyectoID").show();
+                    } else{
+                        $(" #data-ProyectoID").hide();
+                    }
+                }
+
+                function showatencionPublico(selectedValue) {
+                    if (selectedValue === 'true') {
+                        $(" #data-Publico").show();
+                    } else{
+                        $(" #data-Publico").hide();
+                        
+                    }
+                }
+
+                function showinmuebleCondominio(selectedValue) {
+                    if (selectedValue === 'true') {
+                        $(" #data-InCondominio").show();
+                    } else{
+                        $(" #data-InCondominio").hide();
+                    }
+                }
+        
+                // Mostrar u ocultar campos basados en la selección de Aprovechamiento
+                function showHideFields(selectedValue) {
+              
+                    $("#inmueble-publico-fields, #gasto-mantenimiento-fields, #inmueble-condominio-fields, #cuenta-proyecto-fields, #inmueble-no-aprovechable-fields").hide();
+        
+                    if (selectedValue === "SIN INFORMACIÓN" || selectedValue === "APROVECHADO" || selectedValue === "NO APROVECHADO") {
+                        $("#inmueble-publico-fields, #gasto-mantenimiento-fields, #inmueble-condominio-fields").show();
+                        $('#data-ProyectoID').hide();
+                    } else if (selectedValue === "APROVECHABLE") {
+                        $("#inmueble-publico-fields, #gasto-mantenimiento-fields, #inmueble-condominio-fields, #cuenta-proyecto-fields").show();
+                    } else if (selectedValue === "NO APROVECHABLE") {
+                        $("#inmueble-publico-fields, #gasto-mantenimiento-fields, #inmueble-condominio-fields, #inmueble-no-aprovechable-fields").show();
+                    }
+                }
+        
+                // Obtener el valor actual de Aprovechamiento y mostrar campos correspondientes
+                var initialAprovechamientoValue = $('#{{ form.aprovechamiento.auto_id }}').val();
+                showHideFields(initialAprovechamientoValue);
+                // Mostrar u ocultar campos y reiniciar valores cuando cambia la selección de Aprovechamiento
+                $('#{{ form.aprovechamiento.auto_id }}').change(function() {
+                    var selectedValue = $(this).val();
+                    showHideFields(selectedValue);
+                });
+
+                var proyectoInmediato = $('#{{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado.auto_id }}').val();
+                showProyectoInmediato(proyectoInmediato);
+                // Mostrar u ocultar campos y reiniciar valores cuando cambia la selección de Aprovechamiento
+                $('#{{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado.auto_id }}').change(function() {
+                    var selectedValue = $(this).val();
+                    showProyectoInmediato(selectedValue);
+                });
+
+                var atencionPublico = $('#{{ form.inmueble_con_atencion_al_publico.auto_id }}').val();
+                showatencionPublico(atencionPublico);
+                // Mostrar u ocultar campos y reiniciar valores cuando cambia la selección de Aprovechamiento
+                $('#{{ form.inmueble_con_atencion_al_publico.auto_id }}').change(function() {
+                    var selectedValue = $(this).val();
+                    showatencionPublico(selectedValue);
+                });
+
+                var inmuebleCondominio = $('#{{ form.inmueble_en_condominio.auto_id }}').val();
+                showinmuebleCondominio(inmuebleCondominio);
+                // Mostrar u ocultar campos y reiniciar valores cuando cambia la selección de Aprovechamiento
+                $('#{{ form.inmueble_en_condominio.auto_id }}').change(function() {
+                    var selectedValue = $(this).val();
+                    showinmuebleCondominio(selectedValue);
+                });
+            });
+        </script>

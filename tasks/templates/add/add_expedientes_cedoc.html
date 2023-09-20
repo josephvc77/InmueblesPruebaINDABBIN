@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block titulo %}Agregar Expedientes CEDOC{% endblock %}
+
+
+    {% block content %}
+<h1>Agregar Expedientes CEDOC</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ expedientes_cedoc_form.as_p }}
+    <button type="submit">Guardar</button>
+    <a href="{% url 'task_detail' task_id=task.id %}"  class="btn-cancelar">Cancelar</a>
+</form>
+<style>
+    form {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    /* Estilo para los campos del formulario */
+    form label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    form input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+    
+    /* Estilo para el botón de guardar */
+    form button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    
+    /* Estilo para el botón de cancelar */
+    form a.btn-secondary {
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+    
+    /* Estilo para el título */
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .btn-cancelar{
+        text-decoration: none;
+        background-color: #cd2528;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    
+</style>
+{% endblock %}

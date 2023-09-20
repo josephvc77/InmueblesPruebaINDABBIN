@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Reporte de Tarea</title>
+    <style>
+      /* Agrega tus estilos personalizados aquí */
+      .encabezado {
+        text-align: right;
+        padding: 20px;
+      }
+
+      .logos img {
+        max-width: 100px;
+        margin-bottom: 10px;
+      }
+
+      .logos p {
+        font-size: 14px;
+        color: #333;
+      }
+
+      h1 {
+        color: #333;
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      h2 {
+        color: #666;
+        margin-top: 20px;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+
+      .disposiciones-legales {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        margin-top: 20px;
+        background-color: #9d2449;
+        color: #ffffff;
+      }
+
+      .disposiciones-legales th,
+      .disposiciones-legales td {
+        border: 1px solid #000000;
+        padding: 5px;
+        text-align: center;
+        background-color: #9d2449;
+      }
+
+      .disposiciones-legales th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      /* Estilo para el contenido del encabezado */
+      .disposiciones-legales td,
+      .legales {
+        background-color: #ffffff !important;
+        font-style: italic;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #000000;
+        text-align: center;
+      }
+
+      .sub {
+        position: relative;
+        text-align: center;
+      }
+
+
+      .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #000000;
+        margin-top: 20px;
+        padding: 5px;
+      }
+
+      .report-table th,
+      .report-table td {
+        border: 1px solid #000000;
+      }
+
+      .report-table td{
+        text-align: justify;
+        margin-left: 5em;
+      }
+
+      .report-table td .data-field{
+        margin-right: 5em; 
+           }
+
+      .report-table th {
+        background-color: #9d2449;
+        color: white; /* Color del texto en el encabezado */
+        font-weight: bold;
+        font-size: 16px;
+
+        text-align: center;
+      }
+
+      /* Estilo para los encabezados de sección */
+      th .section-header {
+        background-color: #9d2449;
+        color: white; /* Color del texto en el encabezado */
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .data-row {
+        display: flex;
+        text-align: center;
+      }
+
+      .data-field {
+        font-weight: bold;
+        font-size: 12px;
+        margin-right: 5px;
+        top: 1em;
+      }
+
+      .data-value {
+        position: relative;
+        margin-top: 1em;
+        font-size: 12px;
+        margin-left: 2em !important;
+        text-decoration: underline;
+      }
+
+      .rfi{
+        position: relative;
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="encabezado">
+      <img src="{{ logo_url }}" alt="Logo">
+      <p>
+        DIRECCIÓN GENERAL DE POLÍTICA Y GESTIÓN INMOBILIARIA<br />
+        SUBDIRECCIÓN DE REGISTRO E INVENTARIO<br />
+        DIRECCIÓN DE REGISTRO PÚBLICO Y CONTROL INMOBILIARIO
+      </p>
+      <br />
+      <h4 class="sub">
+        INVENTARIO DEL PATRIMONIO INMOBILIARIO FEDERAL Y PARAESTATAL<br />
+        CÉDULA DE INVENTARIO
+      </h4>
+      <span class="fecha">FECHA DE EMISIÓN: </span>
+    </section>
+    <hr />
+
+    <table class="disposiciones-legales">
+      <thead>
+        <tr>
+          <th>DISPOSICIONES LEGALES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="legales">
+          <td>
+            De conformidad con el artículo 37, fracción I de la Ley General de
+            Bienes Nacionales, la Secretaría de Hacienda y Crédito Público tiene
+            a su cargo el Inventario del Patrimonio Inmobiliario Federal y
+            Paraestatal, el cual opera de acuerdo a lo establecido en el Acuerdo
+            por el que se emiten las Normas y Procedimientos para la Integración
+            del Sistema de Información Inmobiliaria Federal y Paraestatal.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    
+    <div class="rfi"> <span class="data-field">REGISTRO FEDERAL INMOBILIARIO (RFI) : </span><p>{{task.rfi}}</p></div>
+
+    <table class="report-table">
+      <tr>
+        <th class="section-header">Datos Generales</th>
+      </tr>
+      <td>
+        <br>
+        <div class="data-row">
+          <span class="data-field"> Título de la Tarea:</span>
+          <span class="data-value">  {{ task.title }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Sección del Inventario:</span>
+          <span class="data-value">  {{ task.seccion_del_inventario }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Dependencia Administradora:</span>
+          <span class="data-value">  {{ task.Dependencia_Administradora }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Causa de Alta:</span>
+          <span class="data-value">  {{ task.causa_alta }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Sector:</span>
+          <span class="data-value">  {{ task.Sector }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Institución que Administra el Inmueble:</span>
+          <span class="data-value">  {{ task.Nombre_de_la_institucion_que_administra_el_inmueble }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Naturaleza Jurídica de la Institución:</span>
+          <span class="data-value">  {{ task.Naturaleza_Juridica_de_la_Institucion }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Denominación del Inmueble: </span>
+          <span class="data-value"> {{ task.Denominaciones_anteriores }}</span>
+        </div>
+        <br /><br />
+       
+      </td>
+    </table>
+    <table class="report-table">
+      <tr>
+        <th class="section-header">Folios Reales</th>
+        <th class="section-header">Números de Planos</th>
+        <th class="section-header">Expedientes CEDOC</th>
+        <th style="font-size: 12px;" class="section-header">NO. IDENTIFICADOR DEL EXPEDIENTE INSTITUCIÓN</th>
+      </tr>
+      <td>
+        {% if task.foliosreales_set.exists %}
+          {% for folio_real in task.foliosreales_set.all %}
+            <div class="data-row">
+              <span class="data-field">⭕ {{ folio_real.folios_reales_data }}</span><br>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </td>
+      <td>
+        {% if task.numeros_planos.exists %}
+          {% for numero_plano in task.numeros_planos.all %}
+            <div class="data-row">
+              <span class="data-field">⭕ {{ numero_plano.numero_plano_data }}</span><br>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </td>
+      <td>
+        {% if task.expedientes_cedoc_set.exists %}
+          {% for expediente_cedoc in task.expedientes_cedoc_set.all %}
+            <div class="data-row"> <br /><br />
+              <span class="data-field">⭕ {{ expediente_cedoc.expediente_cedoc_data }}</span><br>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </td>
+      <td>
+        <div class="data-row">
+          <span class="data-field">⭕ {{ task.no_de_identificador_del_expediente_institucion}}</span><br>
+        </div>
+      </td>
+    </table>
+    <table class="report-table">
+      <tr>
+        <th class="section-header">Ubicación</th>
+      </tr>
+      <td>
+        <br>
+        <div class="data-row">
+          <span class="data-field">Pais: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.pais }} &nbsp  &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field">&nbsp &nbsp &nbsp  Entidad Federativa: &nbsp </span>
+          <span class="data-value"> &nbsp &nbsp &nbsp {{ task.entidad_federativa }} &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field">Municipio/Alcaldía: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.municipio_alcaldia }}&nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp Localidad: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.localidad }}&nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field">Componente Espacial: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.componente_espacial }}&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field">Tipo de Vialidad: &nbsp</span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.tipo_vialidad }}&nbsp &nbsp &nbsp </span>
+        </div>
+        <br><br>
+        <div class="data-row">
+          <span class="data-field">Nombre de Vialidad: &nbsp</span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.nombre_vialidad }}&nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field">&nbsp &nbsp  Número Exterior: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp{{ task.numero_exterior }}&nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp Número Exterior 2: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.numero_exterior_2 }}&nbsp &nbsp &nbsp </span>
+        </div>
+        <br><br>
+        <div class="data-row">
+          <span class="data-field">Número Interior: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp {{ task.numero_interior }}&nbsp &nbsp &nbsp &nbsp &nbsp</span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp &nbspCódigo Postal: &nbsp </span>
+          <span class="data-value"> &nbsp &nbsp &nbsp &nbsp{{ task.codigo_postal }} &nbsp &nbsp &nbsp &nbsp</span>
+        </div><br /><br />
+        <div class="data-row">
+          <span class="data-field">Tipo Asentamiento: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp{{ task.tipo_asentamiento }}&nbsp &nbsp &nbsp &nbsp</span>
+        </div><br /><br />
+        <div class="data-row">
+          <span class="data-field">Nombre de Asentamiento: &nbsp </span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.nombre_asentamiento }}&nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field">Entre Vialidades: &nbsp  </span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.entre_vialidades_referencia1 }}&nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field">&nbsp &nbsp &nbsp Entre Vialidades:&nbsp  </span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.entre_vialidades_referencia2 }}&nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field">Vialidad Posterior:&nbsp  </span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.vialidad_posterior }}&nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field">Descripción de Ubicación:&nbsp  </span>
+          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.descripcion_ubicacion }}&nbsp &nbsp &nbsp </span>
+        </div>
+      </td>
+    </table>
+ 
+    <table class="report-table">
+      <tr>
+        <th class="section-header">Datos Generales</th>
+      </tr>
+      <td>
+        <br>
+        <div class="data-row">
+          <span class="data-field"> Título de la Tarea:</span>
+          <span class="data-value">  {{ task.title }}</span>
+        </div>
+        <br /><br />
+      </td>
+    </table>
+
+    <!-- Agrega más secciones de acuerdo a tus necesidades -->
+  </body>
+</html>
