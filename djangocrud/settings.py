@@ -91,13 +91,14 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'prueba_inmuebles',
+        'NAME': 'prueba_inmueble',
         'USER': 'root',
         'PASSWORD': '$Ic0DiDgt1c!',
         'HOST': '192.168.101.199',
         'PORT': '3306',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
