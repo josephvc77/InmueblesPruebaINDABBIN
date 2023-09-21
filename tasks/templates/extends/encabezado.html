@@ -42,7 +42,7 @@
         {% endfor %}
     </ul>
 {% endif %}
-            <h2>Folios Reales Asignados:</h2>
+            <h3>Folios Reales Asignados:</h3>
             {% if task.foliosreales_set.exists %}
             <table class="folios-reales-table">
                 <thead>
@@ -77,7 +77,7 @@
         <br><br>
         <div class="separador">
         <fieldset>
-          <h2>Proporcione los datos de los numeros de planos:</h2>
+          <h3>Proporcione los datos de los numeros de planos:</h3>
           {% if task.numeros_planos.exists %}
           <table class="expedientes-cedoc-table">
               <thead>
@@ -111,7 +111,7 @@
       <br><br>
       <div class="separador">
           <fieldset>
-            <h2>Expedientes CEDOC Asignados:</h2>
+            <h3>Expedientes CEDOC Asignados:</h3>
             {% if task.expedientes_cedoc_set.exists %}
             <table class="expedientes-cedoc-table">
               <thead>

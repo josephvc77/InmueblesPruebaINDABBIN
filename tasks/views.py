@@ -112,6 +112,14 @@ def tasks_completed(request):
     })
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Mensaje
+from .forms import MensajeForm
+
+
+
+
+
 from django.contrib.auth.decorators import login_required
 from .forms import TaskCreateForm
 
@@ -132,9 +140,9 @@ def create_task(request):
             return redirect('tasks')
     else:
         form = TaskCreateForm(user=request.user)
-
     context = {'form': form}
     return render(request, 'create_task.html', context)
+
 
 
 @login_required
@@ -178,6 +186,8 @@ def task_detail(request, task_id):
         expediente_cedoc_data_form = Expedientes_CEDOCForm(request.POST)
         edificacion_form = EdificacionForm(request.POST)
         baja_form = BajaForm(request.POST)
+        mensaje_form = MensajeForm(request.POST)
+        
         
         if documento_propiedad_form.is_valid():
             # Validación adicional para verificar si hay datos antes de guardar
@@ -234,6 +244,14 @@ def task_detail(request, task_id):
                 ocupaciones.task = task
                 ocupaciones.save()
                 return redirect('task_detail', task_id=task_id)
+            
+        if mensaje_form.is_valid():
+            mensaje_form.instance.enviado_por = request.user
+            if any(mensaje_form.cleaned_data.values()):
+                mensaje = mensaje_form.save(commit=False)
+                mensaje.task = task
+                mensaje.save()
+                return redirect('tasks',)
             
         if documento_ocupacion_form.is_valid():
             if any(documento_ocupacion_form.cleaned_data.values()):
@@ -314,6 +332,7 @@ def task_detail(request, task_id):
         edificacion_form = EdificacionForm()
         instituciones_ocupantes_form = InstitucionesOcupantesForm()
         baja_form = BajaForm()
+        mensaje_form = MensajeForm(request.POST)
 
 
     return render(request, 'task_detail.html', {
@@ -335,6 +354,7 @@ def task_detail(request, task_id):
         'numero_plano_data_form': numero_plano_data_form,
         'expediente_cedoc_data_form': expediente_cedoc_data_form,
         'baja_form': baja_form,
+        'mensaje_form': mensaje_form
         
     })
 

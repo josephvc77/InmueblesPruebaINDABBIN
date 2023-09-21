@@ -11,17 +11,69 @@ body {
   }
   
   body.dark-mode {
-    background-color: #333; /* Color de fondo oscuro */
+    background-color:  rgb(25, 29, 30); /* Color de fondo oscuro */
     color: #fff; /* Color de texto claro */
   }
 
   form.dark-mode{
-    background-color: #333; /* Color de fondo oscuro */
+    background-color:  rgb(25, 29, 30); /* Color de fondo oscuro */
     color: #fff; /* Color de texto claro */
   }
 
+  body.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  /* Estilo para los elementos específicos en modo oscuro */
+  .dark-mode .navbar {
+    background-color:  rgb(25, 29, 30)333;
+  }
+  
+  /* Cambia el color de los iconos en modo oscuro si es necesario */
+  .dark-mode .icon {
+    background-image: url('icon-dark.png');
+  }
+
+  .dark-mode .fa-moon {
+    color: #ffffff; 
+  }
+
+  .dark-mode .card, .dark-mode  .contenedor-menu, .dark-mode .tab-content  {
+    background-color:  rgb(25, 29, 30); /
+  }
+  
+ 
+  .dark-mode .card-body{
+    color: #fff; 
+  }
+
+  .dark-mode .search-form ,.dark-mode .totals-card,.dark-mode .form-create-task, .dark-mode .sidebar,.dark-mode input,.dark-mode select, .dark-mode  textarea, .dark-mode .totals-card, .dark-mode .form-control,.dark-mode #prioridad-select, .dark-mode .task-detail-container, .dark-mode .task-form,.dark-mode .table  {
+    background-color:  rgb(25, 29, 30); 
+    color: #fff; 
+  }
+
+  .dark-mode .title,.dark-mode .card-header{
+    background-color: rgb(77, 6, 27);
+    color: #fff; 
+  }
+
+  .dark-mode .title2, .dark-mode .btn .btn-outline{
+    background-color: rgb(87, 64, 20);;
+    color: #fff; 
+  }
+
+  .dark-mode .tab.active, .dark-mode .card-footer{
+    background-color: rgb(87, 64, 20);;
+    color: #fff; 
+  }
+
+  .dark-mode .tab{
+    background-color: rgb(77, 6, 27);
+  }
   .user{
     display: flex;
+    margin: 10px;
   }
 
 
@@ -385,10 +437,10 @@ table th {
 /* Ajustes para la sección principal del formulario */
 #tab-encabezado .section {
     padding: 20px;
-    border: 1px solid #ddd;
+    border: none;
     margin-bottom: 30px;
-    background-color: #f9f9f9;
     font-size: 12px;
+    border-radius: 20px;
 }
 
 /* Estilo para los enlaces "Agregar" */

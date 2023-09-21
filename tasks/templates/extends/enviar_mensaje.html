@@ -1,0 +1,46 @@
+<div class="tab-content" id="tab-mensajes">
+  <div class="section">
+
+    <div class="container">
+      <h2>Mensajes Recibidos</h2>
+      <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Remitente</th>
+                  <th>Asunto</th>
+                  <th>Mensaje</th>
+                  <th>Fecha de Envío</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for mensaje in task.mensaje_set.all %}
+              <tr>
+                  <td>{{ mensaje.enviado_por }}</td>
+                  <td>{{ mensaje.asunto }}</td>
+                  <td>{{ mensaje.mensaje }}</td>
+                  <td>{{ mensaje.fecha_envio }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ mensaje_form.asunto.id_for_label }}">Asunto:</label>
+            {{ mensaje_form.asunto }}
+        </div>
+        <div class="form-group">
+            <label for="{{ mensaje_form.mensaje.id_for_label }}">Mensaje:</label>
+            {{ mensaje_form.mensaje }}
+        </div>
+        <div class="form-group">
+            <label for="{{ mensaje_form.enviar_a.id_for_label }}">Enviar A:</label>
+            {{ mensaje_form.enviar_a }}
+        </div>
+        <button class="btn btn-outline-success" type="submit">Enviar mensaje</button>
+    </form>
+  </div>
+</div>
+

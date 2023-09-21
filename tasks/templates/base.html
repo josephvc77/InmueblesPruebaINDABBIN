@@ -18,6 +18,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+  <div id="loader-container">
+    <div id="loader"></div>
+  </div>
     <div class="containerT">
       
         <h1 class="title">Centro de Informes INDAABIN</h1>
@@ -37,6 +40,9 @@
           {% if user.is_authenticated %}
            <button id="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
            <a href="{%url 'tasks' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
+           <div class="buzon">
+           </div>
+          
            {% else %}
            <!-- <a href="/signin/" class="btn-signin">Login</a> -->
            {% endif %}

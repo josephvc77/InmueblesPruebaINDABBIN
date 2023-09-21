@@ -830,3 +830,14 @@ class Task_Condia(models.Model):
     
     def __str__(self):
         return self.Nombre_inmueble
+
+class Mensaje(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Inmueble")
+    asunto = models.CharField(max_length=200, null=True)
+    mensaje = models.TextField(null=True)
+    enviar_a = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario" ,related_name='mensajes_enviados')
+    enviado_por = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Enviado por" ,related_name='mensajes_recibidos', null=True, blank=True)
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.asunto
