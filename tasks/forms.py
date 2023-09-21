@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ClearableFileInput, ModelForm
-from .models import Colindancias, DatosAvaluos, DatosTerceros, Documento_ocupacion, DocumentoPropiedad, Edificacion, EdificioVerde, Expedientes_CEDOC, FoliosReales, InstitucionesOcupantes, NumeroPlano, Ocupaciones, Task, Task_Condia, TramitesDisposicion
+from .models import Colindancias, DatosAvaluos, DatosTerceros, Documento_ocupacion, DocumentoPropiedad, Edificacion, EdificioVerde, Expedientes_CEDOC, FoliosReales, InstitucionesOcupantes, Mensaje, NumeroPlano, Ocupaciones, Task, Task_Condia, TramitesDisposicion
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -142,7 +142,7 @@ class ColindanciasForm(ModelForm):
     class Meta:
         model = Colindancias
         fields = ['orientacion', 'colindancia', 'medida_en_metros']
-
+from django.contrib.auth.models import User
 class TaskCreateForm(ModelForm):
     class Meta:
         model = Task
@@ -155,6 +155,13 @@ class TaskCreateForm(ModelForm):
         if not user.is_superuser:
             # Si el usuario no es superusuario, excluye el campo 'assigned_to'
             self.fields.pop('assigned_to')
+            
+class MensajeForm(forms.ModelForm):
+    class Meta:
+        model = Mensaje
+        fields = ['asunto', 'mensaje', 'enviar_a', 'enviado_por']  # Elimina 'enviado_por' ya que se llenará automáticamente
+    enviar_a = forms.ModelChoiceField(queryset=User.objects.all(), label='Enviar A')
+
 
 
 class PasswordConfirmationForm(forms.Form):
@@ -224,3 +231,5 @@ class Task_CONDIA_Form(forms.ModelForm):
     class Meta:
         model = Task_Condia
         fields = ['Nombre_inmueble']
+        
+        

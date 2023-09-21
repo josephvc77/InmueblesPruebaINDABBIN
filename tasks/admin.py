@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Colindancias, DatosAvaluos, DatosTerceros, DocumentoPropiedad, Edificacion, EdificioVerde, Expedientes_CEDOC, FoliosReales, InstitucionesOcupantes, NumeroPlano, Ocupaciones, Task, TramitesDisposicion
+from .models import Colindancias, DatosAvaluos, DatosTerceros, DocumentoPropiedad, Edificacion, EdificioVerde, Expedientes_CEDOC, FoliosReales, InstitucionesOcupantes, Mensaje, NumeroPlano, Ocupaciones, Task, TramitesDisposicion
 
 # Define TabularInline para cada modelo
 
@@ -68,3 +68,17 @@ class AllModelsAdmin(admin.ModelAdmin):
 
 # Registra la clase personalizada que contiene todos los modelos
 admin.site.register(Task, AllModelsAdmin)
+
+from django.contrib import admin
+from .models import Mensaje
+
+
+class MensajeAdmin(admin.ModelAdmin):
+    list_display = ('task' ,'enviar_a', 'asunto', 'mensaje', 'fecha_envio')
+    list_filter = ('enviar_a', 'asunto', 'fecha_envio')
+    def enviar_a_custom(self, obj):
+        return obj.enviar_a
+
+    # Establece un nombre personalizado para la columna
+    enviar_a_custom.short_description = 'Usuario'
+admin.site.register(Mensaje, MensajeAdmin)

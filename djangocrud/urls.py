@@ -76,6 +76,7 @@ urlpatterns = [
     
     
     path('dar_de_baja_task/<int:task_id>/', views.dar_de_baja_task, name='dar_de_baja_task'),
+
 ]
 
 if settings.DEBUG:

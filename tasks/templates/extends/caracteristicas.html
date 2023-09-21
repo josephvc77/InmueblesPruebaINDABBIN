@@ -219,7 +219,7 @@
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.clave_dgsm_pc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
+                        <label for="{{ form.clave_dgsmpc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
                         {{ form.clave_dgsmpc_conaculta }}
                     </div>
                     
@@ -326,7 +326,7 @@
     <div class="form-section">
         <h3>Información de Edificación:</h3>
         <div class="table-responsive">
-            <table class="table table-striped-columns">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nombre de la Edificación</th>
@@ -374,7 +374,7 @@
 </div>
 <div class="separador">
     <fieldset>
-      <h2>Proporcione los datos de las Edificio Verde:</h2>
+      <h3>Proporcione los datos de las Edificio Verde:</h3>
       {% if task.edificio_verde_set.exists %}
       <table class="expedientes-cedoc-table">
         <thead>
