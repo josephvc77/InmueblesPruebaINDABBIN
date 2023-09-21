@@ -11,6 +11,8 @@ class TaskFilePath(object):
 
 
 class Task(models.Model):
+    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_tasks')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_tasks')
     rfi = models.CharField(max_length=9, blank=True)
     CHOICES = (
     ('Si', 'Si'),
