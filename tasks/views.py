@@ -112,20 +112,29 @@ def tasks_completed(request):
     })
 
 
+from django.contrib.auth.decorators import login_required
+from .forms import TaskCreateForm
+
 @login_required
 def create_task(request):
-    if request.method == "POST":
-        form = TaskCreateForm(request.POST)
-        form.instance.user = request.user
+    if request.method == 'POST':
+        form = TaskCreateForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+            # Asignar la tarea al usuario seleccionado (si se ha seleccionado)
+            assigned_to = form.cleaned_data['assigned_to']
+            if assigned_to:
+                task.assigned_to = assigned_to
+                task.user = assigned_to  # Asignar la tarea al usuario seleccionado
+            else:
+                task.user = request.user  # El usuario actual crea la tarea
+            task.save()
             return redirect('tasks')
-        else:
-            return render(request, 'create_task.html', {"form": form, "error": "Error creating task."})
     else:
-        form = TaskCreateForm()
-        return render(request, 'create_task.html', {"form": form})
+        form = TaskCreateForm(user=request.user)
 
+    context = {'form': form}
+    return render(request, 'create_task.html', context)
 
 
 @login_required

@@ -146,8 +146,15 @@ class ColindanciasForm(ModelForm):
 class TaskCreateForm(ModelForm):
     class Meta:
         model = Task
-        fields = ['NombreInmueble', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble']
+        fields = ['NombreInmueble', 'assigned_to', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble']
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(TaskCreateForm, self).__init__(*args, **kwargs)
+        
+        if not user.is_superuser:
+            # Si el usuario no es superusuario, excluye el campo 'assigned_to'
+            self.fields.pop('assigned_to')
 
 
 class PasswordConfirmationForm(forms.Form):
