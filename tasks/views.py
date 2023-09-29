@@ -1120,3 +1120,37 @@ def dar_de_baja_task(request, task_id):
         return render(request, 'baja.html', {'task': task, 'form': form})
 
     return redirect('tasks')
+
+
+import openpyxl
+from django.shortcuts import render, redirect
+from .models import Task  # Asegúrate de importar tu modelo de tarea
+
+def import_excel(request):
+    if request.method == 'POST':
+        excel_file = request.FILES['excel_file']
+
+        if excel_file.name.endswith('.xlsx'):
+            try:
+                # Abrir el archivo Excel y leer los datos
+                workbook = openpyxl.load_workbook(excel_file)
+                worksheet = workbook.active
+
+                for row in worksheet.iter_rows(values_only=True):
+                    # Supongamos que tu archivo Excel tiene columnas 'nombre' y 'descripcion'
+                    nombre, descripcion = row
+                    # Crea una nueva tarea con los datos del archivo Excel
+                    Task.objects.create(nombre=nombre, descripcion=descripcion)
+
+                # Redirigir nuevamente a la página de tareas
+                return redirect('tasks')
+
+            except Exception as e:
+                error_message = f"No se pudo importar el archivo: {str(e)}"
+                return render(request, 'tasks.html', {'error_message': error_message})
+
+        else:
+            error_message = "El archivo debe estar en formato .xlsx"
+            return render(request, 'tasks.html', {'error_message': error_message})
+
+    return render(request, 'tasks.html')
