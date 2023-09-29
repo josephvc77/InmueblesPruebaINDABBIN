@@ -64,7 +64,6 @@
       <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
       <div class="card-footer">
         <a href="{% url 'task_detail' task.id %}" class="btn btn-outline">Ver detalles</a>
-      
       </div>
     </div>
     {% endfor %}
