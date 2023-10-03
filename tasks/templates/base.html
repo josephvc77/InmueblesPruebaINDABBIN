@@ -35,7 +35,6 @@
       </div>
       <div dark class="contenedor-menu">
           <button id="modoOscuroBtn"><i class="fas fa-moon"></i></i></button>
-          {% if user.is_authenticated %}
            <button id="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
            <a href="{%url 'tasks' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
            <div class="buzon">
