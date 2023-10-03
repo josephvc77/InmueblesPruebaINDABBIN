@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %} {% endblock %}</title>
     {% load static%}
+    <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
     <link href="{% static 'inicio/css/styles.css'%}" rel='stylesheet' type='text/css'>
     <link href="{% static 'inicio/css/menu.css'%}" rel='stylesheet' type='text/css'>
 
@@ -18,19 +19,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
+  {% if user.is_authenticated %}
     <div class="containerT">
       
         <h1 class="title">Centro de Informes INDAABIN</h1>
         <h2 class="title2">
           SISTEMA DE INVENTARIO DEL PATRIMONIO INMOBILIARIO FEDERAL Y PARESTATAL
-          {% if user.is_authenticated %}
+          
           <br><br>
           <p class="user">Bienvenido: {{user}}</p>
           <a href="/logout" class="salir">Salir <i class="fa-solid fa-right-to-bracket"></i></a>
           
-          {% else %}
-          {% endif %}
+         
         </h2>
       </div>
       <div dark class="contenedor-menu">
@@ -40,9 +40,7 @@
            <a href="{%url 'tasks' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
            <div class="buzon">
            </div>
-          
-           {% else %}
-           <!-- <a href="/signin/" class="btn-signin">Login</a> -->
+
            {% endif %}
       </div>
       <div class="sidebar" id="sidebar">
