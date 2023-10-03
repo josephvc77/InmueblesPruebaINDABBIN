@@ -98,7 +98,7 @@
   }
 
   .bg {
-    background: url(../static/inicio/img/bg.png)0px 0px / 100% 100% no-repeat;
+
     background-size: cover;
     width: 50%;
     height: 100vh;
@@ -165,17 +165,14 @@
 
 <div class="container">
   <div class="contenedor-logo">
-    <img class="logo-sgis" src="../static/inicio/img/logo-sgis.png">
-    <img class="logo-GM" src="../static/inicio/img/logo.png" alt="">
+    <img class="logo-sgis" src="{% static 'inicio/img/logo-sgis.png' %}">
+    <img class="logo-GM" src="{% static 'inicio/img/logo.png' %}" alt="">
   </div>
   <div class="bg">
+    <img src="{% static 'inicio/img/bg.png' %}">
   </div>
   <form method="POST" onsubmit="return validateForm();">
     {% csrf_token %}
-    <div class="form-group" style="z-index: -100;">
-        <label for="site-select">Selecciona un sitio:</label>
-        {{ site_selection_form.site }}
-    </div>
     <div class="form-group">
         <input type="text" name="{{ form.username.name }}" placeholder="Usuario" class="form-control form-control-sm">
     </div>
@@ -189,7 +186,7 @@
     </div>
     <button type="submit">Ingresar</button>
     <div class="alert alert-danger" id="alert" role="alert">
-        <img class="icon" src="../static/inicio/icons/triangle-exclamation-solid.svg" alt=""> Ingresa tus credenciales
+      <img class="icon" src="{% static 'inicio/icons/triangle-exclamation-solid.svg' %}" alt=""> Ingresa tus credenciales
     </div>
 </form>
 
