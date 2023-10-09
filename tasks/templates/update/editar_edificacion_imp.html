@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">Editar Edificación</h1>
+                    <form method="post" class="task-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="{{ inmueble.nombre_edificacion.id_for_label }}">Nombre de la Edificación:</label>
+                            {{ inmueble.nombre_edificacion }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.propietario_de_la_edificacion.id_for_label }}">Propietario de la Edificación:</label>
+                            {{ inmueble.propietario_de_la_edificacion }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.niveles_por_edificio.id_for_label }}">Niveles por Edificio:</label>
+                            {{ inmueble.niveles_por_edificio }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.tipo_de_inmueble.id_for_label }}">Tipo de Inmueble:</label>
+                            {{ inmueble.tipo_de_inmueble }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.superficie_construida_por_edificacion_m2.id_for_label }}">Superficie Construida (m²):</label>
+                            {{ inmueble.superficie_construida_por_edificacion_m2 }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.fecha_construccion_por_edificacion.id_for_label }}">Fecha de Construcción:</label>
+                            {{ inmueble.fecha_construccion_por_edificacion }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.caracteristicas_de_la_edificacion.id_for_label }}">Características de la Edificación:</label>
+                            {{ inmueble.caracteristicas_de_la_edificacion }}
+                        </div>
+
+                        <div class="form-group form-check-inline width-label">
+                          <label for="{{ inmueble.usoEdificacion.id_for_label }}">Uso por Edificación:</label>
+                          <select id="{{ inmueble.usoEdificacion.auto_id }}" name="{{ inmueble.usoEdificacion.name }}"></select>
+                      </div>
+              
+                      <div class="form-group">
+                          <label for="{{ inmueble.calidadEdificacion.id_for_label }}">Calidad de la Edificación:</label>
+                          <select id="{{ inmueble.calidadEdificacion.auto_id }}" name="{{ inmueble.calidadEdificacion.name }}"></select>
+                      </div>
+
+                        <div class="form-group">
+                            <label for="{{ inmueble.cajones_de_estacionamiento_por_edificacion.id_for_label }}">Cajones de Estacionamiento:</label>
+                            {{ inmueble.cajones_de_estacionamiento_por_edificacion }}
+                        </div>
+
+                        <div class="form-group form-check-inline">
+                            <label for="{{ inmueble.rampa_de_acceso.id_for_label }}">Rampa de Acceso:</label>
+                            {{ inmueble.rampa_de_acceso }}
+                        </div>
+
+                        <div class="form-group form-check-inline">
+                            <label for="{{ inmueble.ruta_de_evacuacion.id_for_label }}">Ruta de Evacuación:</label>
+                            {{ inmueble.ruta_de_evacuacion }}
+                        </div>
+
+                        <div class="form-group form-check-inline">
+                            <label for="{{ inmueble.sanitario_para_personas_con_discapacidad.id_for_label }}">Sanitario para Personas con Discapacidad:</label>
+                            {{ inmueble.sanitario_para_personas_con_discapacidad }}
+                        </div>
+                        <br><br>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadUsoPorEdificacionEdit() {
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
+            var uso_por_edificacion = [...new Set(data.map(item => item.uso_por_edificacion))];
+            var selectUsoPorEdificacion = $('#{{ inmueble.usoEdificacion.auto_id }}');
+
+            selectUsoPorEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(uso_por_edificacion, function(index, value){
+                var selected = value === '{{ inmueble.instance.usoEdificacion  }}' ? 'selected' : '';
+                selectUsoPorEdificacion.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+            // Al cargar los datos de "Uso por Edificación", también cargamos los datos de "Calidad de la Edificación" inicialmente.
+            loadCalidadDeLaEdificacionEdit();
+        });
+    }
+
+    function loadCalidadDeLaEdificacionEdit() {
+        var selectUsoPorEdificacion = $('#{{ inmueble.usoEdificacion.auto_id }}').val(); // Obtén el valor seleccionado de "Uso por Edificación"
+        // Realiza una petición para cargar los datos de "Calidad de la Edificación" en función de la selección de "Uso por Edificación".
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
+            var calidad = [...new Set(data.filter(item => item.uso_por_edificacion === selectUsoPorEdificacion) // Cambia "calidad_edificacion" por "uso_por_edificacion"
+                                .map(item => item.calidad_edificacion))];
+            var selectCalidadDeLaEdificacion = $('#{{ inmueble.calidadEdificacion.auto_id }}');
+            selectCalidadDeLaEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(calidad, function(index, value) {
+                var selected = value === '{{ inmueble.instance.calidadEdificacion }}' ? 'selected' : '';
+                selectCalidadDeLaEdificacion.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+        });
+    }
+        
+
+    $(document).ready(function() {
+        loadUsoPorEdificacionEdit();
+
+        $('#{{ inmueble.usoEdificacion.auto_id }}').change(function() {
+            loadCalidadDeLaEdificacionEdit();
+        });
+    });
+</script>
+{% endblock %}

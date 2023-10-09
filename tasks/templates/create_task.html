@@ -4,8 +4,9 @@
 
 <h1>Crear Alta</h1>
 
+
 {{ error }}
-<form action="{% url 'create_task' %}" class="form-create-task" enctype="multipart/form-data" method="POST">
+<form action="{% url 'create_task' %}" enctype="multipart/form-data" method="POST">
   {% csrf_token %}
   <div class="form-group">
     <label for="{{ form.NombreInmueble.id_for_label }}">Nombre del Inmueble::</label>
@@ -44,7 +45,6 @@ form {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f7f7f7;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

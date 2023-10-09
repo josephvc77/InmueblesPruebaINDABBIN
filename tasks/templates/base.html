@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %} {% endblock %}</title>
-    {% load static%}
+    {% load static %}
     <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
     <link href="{% static 'inicio/css/styles.css'%}" rel='stylesheet' type='text/css'>
     <link href="{% static 'inicio/css/menu.css'%}" rel='stylesheet' type='text/css'>
@@ -22,12 +22,15 @@
   {% if user.is_authenticated %}
     <div class="containerT">
       
-        <h1 class="title">Centro de Informes INDAABIN</h1>
+        <h1 class="title">SISTEMA DE INVENTARIO DE INMUEBLES FEDERALES SEP</h1>
         <h2 class="title2">
-          SISTEMA DE INVENTARIO DEL PATRIMONIO INMOBILIARIO FEDERAL Y PARESTATAL
+          <div id="reloj">
+            <p>Fecha y hora actual:</p>
+            <p id="fecha-hora"></p>
+          </div>
           
           <br><br>
-          <p class="user">Bienvenido: {{user}}</p>
+          <p class="user">Bienvenido: &nbsp &nbsp <i class="fas fa-user"></i> &nbsp {{user}}</p>
           <a href="/logout" class="salir">Salir <i class="fa-solid fa-right-to-bracket"></i></a>
           
          
@@ -35,19 +38,26 @@
       </div>
       <div dark class="contenedor-menu">
           <button id="modoOscuroBtn"><i class="fas fa-moon"></i></i></button>
+
            <button id="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
            <a href="{%url 'tasks' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
-           <div class="buzon">
-           </div>
-
+ 
+           <!-- <a href="/signin/" class="btn-signin">Login</a> -->
            {% endif %}
       </div>
       <div class="sidebar" id="sidebar">
         <ul class="cont-menu">
           {% if user.is_authenticated %}
           <a class="btn-pendientes" href="{%url 'tasks' %}"><li><i class="logo fa-solid fa-file-pen"></i><hr class="hr">Pendientes</li></a>
-          <a class="btn-alta" href="{%url 'tasks_completed' %}"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Tareas Completas</li></a>
-          <a class="btn-baja" href="{% url 'create_task' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>
+          <a class="btn-completados" href="{%url 'tasks_completed' %}"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Tareas Completas</li></a>
+          <a class="btn-baja" href="{% url 'inmuebles_baja' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
+  
+          <a class="btn-alta" href="{% url 'create_task' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>
+          <a class="btn-importados" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Inmuebles Importados</li></a>
+          <a class="btn-importados_completed" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">InImp Completados</a>
+          <br>
+          <a class="btn-baja-importados" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas Importados</a>
+          
           <div class="log"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/SEP_Logo_2019.svg/768px-SEP_Logo_2019.svg.png" class="img-logo"></div>
           {% else %}
           <a class="btn-alta" href="'/signin"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Login</li></a>
@@ -66,19 +76,82 @@
         overflow: hidden;
     }
   
-  .contenedor-menu.dark-mode{
-      background-color: #333;
-      position: relative;
-      width: 100%;
-      margin: 0 auto;
-      display: flex;
-      overflow: hidden;
-  }
 
   
   
       
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function mostrarFechaYHora() {
+    const fechaHora = new Date();
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    };
+    const fechaHoraFormateada = fechaHora.toLocaleString('es-MX', options);
+
+    $('#fecha-hora').text(fechaHoraFormateada);
+  }
+
+  // Actualiza la hora cada segundo (1000 milisegundos)
+  setInterval(mostrarFechaYHora, 1000);
+
+  // Mostrar la hora y fecha actual al cargar la página
+  $(document).ready(function() {
+    mostrarFechaYHora();
+  });
+</script>
+
+    <script>
+      // Función para activar el modo oscuro
+      function activarModoOscuro() {
+        // Agrega una clase al elemento body para aplicar estilos de modo oscuro
+        document.body.classList.add('dark-mode');
+        
+        // Almacena la preferencia en el almacenamiento local del navegador
+        localStorage.setItem('modoOscuro', 'activado');
+      }
+    
+      // Función para desactivar el modo oscuro
+      function desactivarModoOscuro() {
+        // Remueve la clase dark-mode del elemento body
+        document.body.classList.remove('dark-mode');
+        
+        // Almacena la preferencia en el almacenamiento local del navegador
+        localStorage.setItem('modoOscuro', 'desactivado');
+      }
+    
+      // Verifica la preferencia almacenada en el almacenamiento local al cargar la página
+      window.addEventListener('load', function() {
+        const modoOscuro = localStorage.getItem('modoOscuro');
+        if (modoOscuro === 'activado') {
+          activarModoOscuro();
+        }
+      });
+    
+      // Maneja el clic en el botón para cambiar entre modo oscuro y modo claro
+      const botonModoOscuro = document.getElementById('modoOscuroBtn');
+      botonModoOscuro.addEventListener('click', function() {
+        if (document.body.classList.contains('dark-mode')) {
+          desactivarModoOscuro();
+        } else {
+          activarModoOscuro();
+        }
+      });
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+      }
+    
+
+    </script>
     
     <script src="{% static 'inicio/js/app.js' %}"></script>
     <script src="https://kit.fontawesome.com/91cca0bc27.js" crossorigin="anonymous"></script>

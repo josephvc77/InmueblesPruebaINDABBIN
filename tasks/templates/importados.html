@@ -42,49 +42,82 @@
   <div class="totals-card">
     <div class="totals-container">
       <p class="total-label">Pendientes:</p>
-      <p class="total-value">{{ total_pending_tasks }}</p>
+      <p class="total-value">{{ total_pending_inmuebles }}</p>
     </div>
-    <h3>Inmuebles Registrados </h3>
+    <h3>Inmuebles Importados Registrados </h3>
     <div class="totals-container">
       <p class="total-label">Completadas:</p>
-      <p class="total-value">{{ total_completed_tasks }}</p>
+      <p class="total-value">{{ total_completed_inmuebles }}</p>
     </div>
   </div>
-  {% if tasks %}
-  <div class="card-container">
-    {% for task in tasks %}
-    <div class="card">
-      <div class="card-header">
-        <h3>{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdf' task.id %}" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h3>
-      </div>
-      <div class="card-body">
-        <div class="scroll-content">
-          <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
 
-          <p><strong>RFI:</strong> {{ task.rfi }}</p>
-          <p><strong>Sector:</strong> {{ task.Sector }}</p>
-          <p><strong>Institución Administradora:</strong> {{ task.Nombre_de_la_institucion_que_administra_el_inmueble }}</p>
-          <p><strong>Sección del Inventario:</strong> {{ task.seccion_del_inventario }}</p>
-          <p><strong>Causa de Alta:</strong> {{ task.causa_alta }}</p>
-          <p><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
-          <p class="priority-paragraph {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
-            Prioridad: {{ task.prioridad }}
-          </p>
-        </div>
-      </div>
-     
-      <p class="completado">Creado el: {{ task.created|date:'j M Y' }}</p>
-      <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
-      <div class="card-footer">
-        <a href="{% url 'task_detail' task.id %}" class="btn btn-outline">Ver detalles</a>
-      
+
+{% if inmuebles %}
+<div class="card-container">
+  {% for task in inmuebles %}
+  <div class="card">
+    <div class="card-header">
+      <h5>{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdf' task.id %}" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
+    </div>
+    <div class="card-body">
+      <div class="scroll-content">
+        <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
+
+        <p><strong>RFI:</strong> {{ task.rfi }}</p>
+        <p><strong>Sector:</strong> {{ task.Sector }}</p>
+        <p><strong>Institución Administradora:</strong> {{ task.Nombre_de_la_institucion_que_administra_el_inmueble }}</p>
+        <p><strong>Sección del Inventario:</strong> {{ task.seccion_del_inventario }}</p>
+        <p><strong>Causa de Alta:</strong> {{ task.causa_alta }}</p>
+        <p><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
+        <p class="priority-paragraph {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
+          Prioridad: {{ task.prioridad }}
+        </p>
       </div>
     </div>
-    {% endfor %}
+   
+    <p class="completado">Creado el: {{ task.creado}}</p>
+    <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
+    <div class="card-footer">
+      <a href="{% url 'task_detail_importados' task.id %}" class="btn btn-outline">Ver detalles</a>
+    
+    </div>
   </div>
-  {% else %}
-    <p>No se encontraron tareas que coincidan con la búsqueda.</p>
-  {% endif %}
+  {% endfor %}
+</div>
+<div class="text-center">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      {% if inmuebles.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
+      </li>
+      {% endif %}
+      
+      <li class="page-item active"><span class="page-link">{{ inmuebles.number }}</span></li>
+      
+      {% if inmuebles.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+{% else %}
+  <p>No se encontraron tareas que coincidan con la búsqueda.</p>
+{% endif %}
+
 
 
 
@@ -99,15 +132,12 @@
     });
   </script>
 <style>
+
+  .buscar{
+    margin-left: 10px;
+  }
   .excel {
     width: 170px;
-}
-.buscar{
-  margin-left: 10px;
-}
-  .form-group {
-    margin-left: 20px;
-    margin-right: 20px;
 }
   .priority-paragraph {
     font-weight: bold; /* Hace que el texto de la prioridad sea negrita */
@@ -155,7 +185,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    max-width: 550px; /* Aumenta el ancho de la tarjeta */
+    max-width: 500px; /* Aumenta el ancho de la tarjeta */
     max-height: 500px;
     margin: 15px;
   }
@@ -196,6 +226,10 @@
     padding-bottom: 1em;
   }
 
+  .form-group {
+    margin-left: 20px;
+    margin-right: 20px;
+}
   .card-footer{
     background-color: #DDC9A3;
   }

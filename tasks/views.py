@@ -1,5 +1,6 @@
 
 import os
+from unittest import loader
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -11,8 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 
 from djangocrud import settings
-from .forms import BajaForm, ColindanciasForm, DatosAvaluosForm, DatosTercerosForm, DocumentoOcupacionForm, DocumentoPropiedadForm, EdificacionForm, Edificio_VerdeForm, InstitucionesOcupantesForm, OcupacionesForm, PasswordConfirmationForm, TramitesDisposicionForm
-from .models import Colindancias, DatosAvaluos, DatosTerceros, Documento_ocupacion, DocumentoPropiedad, Edificacion, EdificioVerde, Expedientes_CEDOC, FoliosReales, InstitucionesOcupantes, NumeroPlano, Ocupaciones, Task, TramitesDisposicion
+
+from .forms import BajaForm, ColindanciasForm, ColindanciasFormIMP, DatosAvaluosForm, DatosAvaluosFormIMP, DatosTercerosForm, DatosTercerosFormIMP, DocumentoOcupacionForm, DocumentoOcupacionFormIMP, DocumentoPropiedadForm, DocumentoPropiedadFormIMP, EdificacionForm, EdificacionFormIMP, Edificio_VerdeForm, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesForm, InstitucionesOcupantesFormIMP, Numero_PlanoFormIMP, OcupacionesForm, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionForm, TramitesDisposicionFormIMP
+from .models import Colindancias, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, TramitesDisposicion
 
 from .forms import Expedientes_CEDOCForm, FoliosRealesForm, Numero_PlanoForm, TaskCreateForm, TaskForm
 
@@ -45,11 +47,12 @@ def signup(request):
         return render(request, 'signup.html', {"form": UserCreationForm, "error": "Passwords did not match."})
 
 
-from django.db.models import Q
 @login_required
 def tasks(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')  # Obtén el valor de prioridad desde la solicitud GET
+
+    inmuebles = Inmueble.objects.all()
 
     tasks = Task.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -57,11 +60,22 @@ def tasks(request):
         Q(municipio_alcaldia__icontains=search_query) |
         Q(entidad_federativa__icontains=search_query),
         user=request.user,
-        datecompleted__isnull=True
+        datecompleted__isnull=True,
+        estado='Activo'  # Filtra las tareas en estado 'Activo'
     )
 
     if prioridad:
         tasks = tasks.filter(prioridad=prioridad)  # Filtra las tareas por prioridad si se ha seleccionado una
+        
+    paginator = Paginator(inmuebles, 20)  # Muestra 20 inmuebles por página
+
+    page = request.GET.get('page')
+    try:
+        inmuebles = paginator.page(page)
+    except PageNotAnInteger:
+        inmuebles = paginator.page(1)
+    except EmptyPage:
+        inmuebles = paginator.page(paginator.num_pages)
 
     total_pending_tasks = tasks.count()  # Total de tareas pendientes por completar
     total_completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).count()  # Total de tareas completadas
@@ -71,7 +85,72 @@ def tasks(request):
         'search_query': search_query,
         'total_pending_tasks': total_pending_tasks,
         'total_completed_tasks': total_completed_tasks,
+        'inmuebles': inmuebles, 
     })
+
+    
+    
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Inmueble
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Inmueble
+
+@login_required
+def tasks_importados(request):
+    search_query = request.GET.get('q', '')
+    prioridad = request.GET.get('prioridad', '')
+
+    inmuebles_list = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=True,
+        estado='Activo'  # Filtra las tareas en estado 'Activo'
+    ).order_by('NombreInmueble')
+
+    if prioridad:
+        inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
+
+    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
+
+    page = request.GET.get('page')
+    try:
+        inmuebles = paginator.page(page)
+    except PageNotAnInteger:
+        inmuebles = paginator.page(1)
+    except EmptyPage:
+        inmuebles = paginator.page(paginator.num_pages)
+
+    total_pending_inmuebles = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=True
+    ).count()  # Total de inmuebles pendientes por completar
+
+    total_completed_inmuebles = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=False
+    ).count()  # Total de inmuebles completados
+
+    return render(request, 'importados.html', {
+        'inmuebles': inmuebles, 
+        'search_query': search_query,
+        'total_pending_inmuebles': total_pending_inmuebles,
+        'total_completed_inmuebles': total_completed_inmuebles,
+    })
+
+
+
 @login_required
 def principal(request):
     return render(request, 'tasks.html')
@@ -101,6 +180,16 @@ def tasks_completed(request):
         user=request.user,
         datecompleted__isnull=True
     ).count()  # Total de tareas pendientes por completar
+    
+    paginator = Paginator(tasks, 20)  # Muestra 20 tasks por página
+
+    page = request.GET.get('page')
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)
 
     total_completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).count()  # Total de tareas completadas
 
@@ -110,6 +199,213 @@ def tasks_completed(request):
         'total_pending_tasks': total_pending_tasks,
         'total_completed_tasks': total_completed_tasks,
     })
+    
+
+@login_required
+def inmuebles_baja(request):
+    search_query = request.GET.get('q', '')
+    prioridad = request.GET.get('prioridad', '')
+
+    tasks = Task.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        user=request.user,
+        estado='Baja'  # Filtra las tareas con estado 'Baja'
+    ).order_by('-datecompleted')
+
+    if prioridad:
+        tasks = tasks.filter(prioridad=prioridad)
+
+    total_pending_tasks = Task.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        user=request.user,
+        datecompleted__isnull=True
+    ).count()  # Total de tareas pendientes por completar
+    
+    paginator = Paginator(tasks, 20)  # Muestra 20 tasks por página
+
+    page = request.GET.get('page')
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)
+
+    total_completed_tasks = Task.objects.filter(user=request.user, estado='Baja').count()  # Total de tareas en estado 'Baja'
+
+    return render(request, 'tasks.html', {
+        'tasks': tasks,
+        'search_query': search_query,
+        'total_pending_tasks': total_pending_tasks,
+        'total_completed_tasks': total_completed_tasks,
+    })
+
+
+
+@login_required
+def inmuebles_baja_importados(request):
+    search_query = request.GET.get('q', '')
+    prioridad = request.GET.get('prioridad', '')
+
+    inmuebles_list = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        estado='Baja'  # Filtra los inmuebles con estado 'Baja'
+    )
+
+    if prioridad:
+        inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
+
+    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
+
+    page = request.GET.get('page')
+    try:
+        inmuebles = paginator.page(page)
+    except PageNotAnInteger:
+        inmuebles = paginator.page(1)
+    except EmptyPage:
+        inmuebles = paginator.page(paginator.num_pages)
+
+    total_pending_inmuebles = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=True
+    ).count()  # Total de inmuebles pendientes por completar
+
+    total_completed_inmuebles = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=False
+    ).count()  # Total de inmuebles completados
+
+    return render(request, 'importados.html', {
+        'inmuebles': inmuebles, 
+        'search_query': search_query,
+        'total_pending_inmuebles': total_pending_inmuebles,
+        'total_completed_inmuebles': total_completed_inmuebles,
+    })
+
+
+@login_required
+def tasks_completed_importados(request):
+    search_query = request.GET.get('q', '')
+    prioridad = request.GET.get('prioridad', '')
+
+    inmuebles_list = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=False
+        
+    ).order_by('-datecompleted')
+
+    if prioridad:
+        inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
+
+    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
+
+    page = request.GET.get('page')
+    try:
+        inmuebles = paginator.page(page)
+    except PageNotAnInteger:
+        inmuebles = paginator.page(1)
+    except EmptyPage:
+        inmuebles = paginator.page(paginator.num_pages)
+
+    total_pending_inmuebles = Inmueble.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query) |
+        Q(municipio_alcaldia__icontains=search_query) |
+        Q(entidad_federativa__icontains=search_query),
+        datecompleted__isnull=True
+    ).count()  # Total de inmuebles pendientes por completar
+
+    total_completed_inmuebles = Inmueble.objects.filter(datecompleted__isnull=False).count()  # Total de inmuebles completados
+
+    return render(request, 'importados.html', {
+        'inmuebles': inmuebles,
+        'search_query': search_query,
+        'total_pending_inmuebles': total_pending_inmuebles,
+        'total_completed_inmuebles': total_completed_inmuebles,
+    })
+    
+    
+@login_required
+def complete_task(request, task_id):
+    task = get_object_or_404(Task, pk=task_id, user=request.user)
+    if request.method == 'POST':
+        task.datecompleted = timezone.now()
+        task.save()
+        return redirect('tasks')
+    
+@login_required
+def bajas(request, task_id):
+    task = get_object_or_404(Task, pk=task_id, user=request.user)
+    if task.estado == 'Activo':
+        if request.method == 'POST':
+            form = BajaForm(request.POST)
+            if form.is_valid():
+                task.estado = 'Baja'
+                task.save()
+                return redirect('inmuebles_baja')
+        else:
+            form = BajaForm()
+
+
+def bajas_importados(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if task.estado == 'Activo':
+        if request.method == 'POST':
+            form = BajaForm(request.POST)
+            if form.is_valid():
+                task.estado = 'Baja'
+                task.save()
+                return redirect('inmuebles_baja_importados')
+        else:
+            form = BajaForm()
+
+
+def complete_task_importados(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        task.datecompleted = timezone.now()
+        task.save()
+        return redirect('tasks_importados')
+
+
+
+@login_required
+def dar_de_baja_task(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+
+    if task.estado == 'Activo':
+        if request.method == 'POST':
+            # Procesar el formulario de dar de baja
+            form = BajaForm(request.POST)
+            if form.is_valid():
+                task.estado = 'Baja'
+                task.save()
+                return redirect('task_detail', task_id=task_id)
+        else:
+            # Mostrar el formulario para dar de baja
+            form = BajaForm()
+
+        return render(request, 'baja.html', {'task': task, 'form': form})
+
+    return redirect('tasks')
 
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -360,6 +656,177 @@ def task_detail(request, task_id):
 
 
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Inmueble
+from .forms import InmuebleForm
+
+@login_required
+def task_detail_importados(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    
+    if request.method == 'POST':
+        inmueble = InmuebleForm(request.POST, request.FILES, instance=task)
+        edificio_verde_form = Edificio_VerdeFormIMP(request.POST)
+        documento_propiedad_form = DocumentoPropiedadFormIMP(request.POST, request.FILES)
+        datos_avaluos_form = DatosAvaluosFormIMP(request.POST)
+        ocupaciones_form = OcupacionesFormIMP(request.POST)
+        documento_ocupacion_form = DocumentoOcupacionFormIMP(request.POST)
+        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP(request.POST)
+        datos_terceros_form = DatosTercerosFormIMP(request.POST)
+        colindancia_form = ColindanciasFormIMP(request.POST)
+        tramite_disposicion_form = TramitesDisposicionFormIMP(request.POST)
+        folios_reales_data_form = FoliosRealesFormIMP(request.POST)
+        numero_plano_data_form = Numero_PlanoFormIMP(request.POST)
+        expediente_cedoc_data_form = Expedientes_CEDOCFormIMP(request.POST)
+        edificacion_form = EdificacionFormIMP(request.POST)
+        
+        if documento_propiedad_form.is_valid():
+            # Validación adicional para verificar si hay datos antes de guardar
+            if any(documento_propiedad_form.cleaned_data.values()):
+                documento_propiedad = documento_propiedad_form.save(commit=False)
+                documento_propiedad.task = task
+                documento_propiedad.save()
+                return redirect('task_detail_importados', task_id=task_id)
+        
+        if datos_avaluos_form.is_valid():
+            if any(datos_avaluos_form.cleaned_data.values()):
+                datos_avaluo = datos_avaluos_form.save(commit=False)
+                datos_avaluo.task = task
+                datos_avaluo.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if folios_reales_data_form.is_valid():
+            if any(folios_reales_data_form.cleaned_data.values()):
+                # Obtener el folio real del formulario
+                folio_real = folios_reales_data_form.cleaned_data['folios_reales_data']
+
+                # Verificar si el folio real ya existe en la base de datos
+                folio_real_existente = FoliosRealesIMP.objects.filter(task=task, folios_reales_data=folio_real).exists()
+
+                if not folio_real_existente:
+                    # El folio real no existe, guardar el formulario
+                    folios_reales_data = folios_reales_data_form.save(commit=False)
+                    folios_reales_data.task = task
+                    folios_reales_data.save()
+                    return redirect('task_detail_importados', task_id=task_id)
+                else:
+                    # El folio real ya existe, mostrar una alerta
+                    messages.error(request, 'El folio real ya existe en esta tarea.')
+            else:
+                print(f"Form errors: {folios_reales_data_form.errors}")
+            
+        if numero_plano_data_form.is_valid():
+            if any(numero_plano_data_form.cleaned_data.values()):
+                numero_plano_data = numero_plano_data_form.save(commit=False)
+                numero_plano_data.task = task
+                numero_plano_data.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if expediente_cedoc_data_form.is_valid():
+            if any(expediente_cedoc_data_form.cleaned_data.values()):
+                expediente_cedoc_data = expediente_cedoc_data_form.save(commit=False)
+                expediente_cedoc_data.task = task
+                expediente_cedoc_data.save()
+                return redirect('task_detail_importados', task_id=task_id)
+        
+        if ocupaciones_form.is_valid():
+            if any(ocupaciones_form.cleaned_data.values()):
+                ocupaciones = ocupaciones_form.save(commit=False)
+                ocupaciones.task = task
+                ocupaciones.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if documento_ocupacion_form.is_valid():
+            if any(documento_ocupacion_form.cleaned_data.values()):
+                documento_ocupacion = documento_ocupacion_form.save(commit=False)
+                documento_ocupacion.task = task
+                documento_ocupacion.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if instituciones_ocupantes_form.is_valid():
+            if any(instituciones_ocupantes_form.cleaned_data.values()):
+                instituciones_ocupantes = instituciones_ocupantes_form.save(commit=False)
+                instituciones_ocupantes.task = task
+                instituciones_ocupantes.save()
+                return redirect('task_detail_importados', task_id=task_id)
+        
+        if datos_terceros_form.is_valid():
+            if any(datos_terceros_form.cleaned_data.values()):
+                datos_terceros = datos_terceros_form.save(commit=False)
+                datos_terceros.task = task
+                datos_terceros.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if edificio_verde_form.is_valid():
+            if any(edificio_verde_form.cleaned_data.values()):
+                edificio_verde = edificio_verde_form.save(commit=False)
+                edificio_verde.task = task
+                edificio_verde.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if colindancia_form.is_valid():
+             if any(colindancia_form.cleaned_data.values()):
+                colindancia = colindancia_form.save(commit=False)
+                colindancia.task = task
+                colindancia.save()      
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if tramite_disposicion_form.is_valid():
+             if any(tramite_disposicion_form.cleaned_data.values()):
+                tramite_disposicion = tramite_disposicion_form.save(commit=False)
+                tramite_disposicion.task = task
+                tramite_disposicion.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if edificacion_form.is_valid():
+             if any(edificacion_form.cleaned_data.values()):
+                edificacion = edificacion_form.save(commit=False)
+                edificacion.task = task
+                edificacion.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        
+        if inmueble.is_valid():
+            inmueble.save()  # Guardar los cambios en la tarea
+            return redirect('tasks_importados')  # Redireccionar a 'tasks_importados' después de guardar
+        
+    else:
+        inmueble = InmuebleForm(instance=task)
+        documento_propiedad_form = DocumentoPropiedadFormIMP()
+        datos_avaluos_form = DatosAvaluosFormIMP()
+        ocupaciones_form = OcupacionesFormIMP()
+        documento_ocupacion_form = DocumentoOcupacionFormIMP()
+        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP()
+        datos_terceros_form = DatosTercerosFormIMP()
+        edificio_verde_form = Edificio_VerdeFormIMP()
+        colindancia_form = ColindanciasFormIMP()
+        tramite_disposicion_form = TramitesDisposicionFormIMP()
+        folios_reales_data_form = FoliosRealesFormIMP()
+        numero_plano_data_form = Numero_PlanoFormIMP()
+        expediente_cedoc_data_form = Expedientes_CEDOCFormIMP()
+        edificacion_form = EdificacionFormIMP()
+        instituciones_ocupantes_form = InstitucionesOcupantesForm()
+        
+    return render(request, 'task_detail_importados.html', {
+        'task': task,
+        'inmueble': inmueble,
+        'folios_reales_data_form': folios_reales_data_form,
+        'edificio_verde_form': edificio_verde_form,
+        'edificacion_form': edificacion_form,
+        'documento_propiedad_form': documento_propiedad_form,
+        'datos_avaluos_form': datos_avaluos_form,
+        'ocupaciones_form': ocupaciones_form,
+        'documento_ocupacion_form': documento_ocupacion_form,
+        'instituciones_ocupantes_form': instituciones_ocupantes_form,
+        'datos_terceros_form': datos_terceros_form,
+        'colindancia_form': colindancia_form,
+        'tramite_disposicion_form': tramite_disposicion_form,
+        'numero_plano_data_form': numero_plano_data_form,
+        'expediente_cedoc_data_form': expediente_cedoc_data_form,
+    })
+
+        
+
 @login_required
 def guardar_documento_ocupacion(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
@@ -415,11 +882,85 @@ def guardar_datos_terceros(request, task_id):
     else:
         return JsonResponse({"success": False})
     
+
+
+def guardar_documento_ocupacionIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        documento_ocupacion_form = DocumentoOcupacionFormIMP(request.POST)
+
+        if documento_ocupacion_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            documento_ocupacion = documento_ocupacion_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            documento_ocupacion.task = task
+            documento_ocupacion.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+
+
+def guardar_instituciones_ocupantesIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP(request.POST)
+
+        if instituciones_ocupantes_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            instituciones_ocupantes = instituciones_ocupantes_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            instituciones_ocupantes.task = task
+            instituciones_ocupantes.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+
+
+
+def guardar_datos_tercerosIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        datos_terceros_form = DatosTercerosFormIMP(request.POST)
+
+        if datos_terceros_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            datos_terceros = datos_terceros_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            datos_terceros.task = task
+            datos_terceros.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+    
 @login_required
 def guardar_docPropiedad(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     if request.method == 'POST':
         documento_propiedad_form = DocumentoPropiedadForm(request.POST, request.FILES)
+
+        if documento_propiedad_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            documento_propiedad = documento_propiedad_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            documento_propiedad.task = task
+            documento_propiedad.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+    
+
+def guardar_docPropiedadIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        documento_propiedad_form = DocumentoPropiedadFormIMP(request.POST, request.FILES)
 
         if documento_propiedad_form.is_valid():
             # Realiza cualquier validación adicional si es necesario
@@ -452,6 +993,24 @@ def guardar_Avaluo(request, task_id):
     else:
         return JsonResponse({"success": False})
     
+
+def guardar_AvaluoIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        datos_avaluos_form = DatosAvaluosFormIMP(request.POST)
+
+        if datos_avaluos_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            datos_avaluo = datos_avaluos_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            datos_avaluo.task = task
+            datos_avaluo.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+    
 @login_required
 def guardar_Ocupaciones(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
@@ -470,6 +1029,23 @@ def guardar_Ocupaciones(request, task_id):
     else:
         return JsonResponse({"success": False})
 
+
+def guardar_OcupacionesIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        ocupaciones_form = OcupacionesFormIMP(request.POST)
+
+        if ocupaciones_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            ocupaciones = ocupaciones_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            ocupaciones.task = task
+            ocupaciones.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
                 
 # Eliminar folios
 def delete_folio_real(request, task_id, folio_real_id):
@@ -507,10 +1083,52 @@ def delete_expediente_cedoc(request, task_id, expediente_cedoc_id):
     return JsonResponse({'success': True})
 
 
+               
+# Eliminar folios
+def delete_folio_realIMP(request, task_id, folio_real_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    folio_real = get_object_or_404(FoliosRealesIMP, pk=folio_real_id, task=task)
+    
+    # Eliminar el folio real
+    folio_real.delete()
+    
+    # Devolver una respuesta JSON indicando que la eliminación fue exitosa
+    return JsonResponse({'success': True})
+
+
+def delete_numero_planoIMP(request, task_id, numero_plano_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    numero_plano = get_object_or_404(NumeroPlanoIMP, pk=numero_plano_id, task=task)
+
+    # Eliminar el número de plano
+    numero_plano.delete()
+
+    # Devolver una respuesta JSON indicando que la eliminación fue exitosa
+    return JsonResponse({'success': True})
+
+
+
+def delete_expediente_cedocIMP(request, task_id, expediente_cedoc_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    expediente_cedoc = get_object_or_404(Expedientes_CEDOCIMP, pk=expediente_cedoc_id, task=task)
+
+    # Eliminar el expediente cedoc
+    expediente_cedoc.delete()
+
+    # Devolver una respuesta JSON indicando que la eliminación fue exitosa
+    return JsonResponse({'success': True})
+
 @login_required
 def delete_edificio_verde(request, task_id, edificio_verde_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     edificio_verde = get_object_or_404(EdificioVerde, pk=edificio_verde_id, task=task)
+    edificio_verde.delete()
+    return JsonResponse({'success': True})
+
+
+def delete_edificio_verdeIMP(request, task_id, edificio_verde_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    edificio_verde = get_object_or_404(EdificioVerdeIMP, pk=edificio_verde_id, task=task)
     edificio_verde.delete()
     return JsonResponse({'success': True})
 
@@ -528,13 +1146,7 @@ def delete_tramite(request, task_id, tramite_id):
 #     tramite.delete()
 #     return redirect('task_detail', task_id=task_id)
 
-@login_required
-def complete_task(request, task_id):
-    task = get_object_or_404(Task, pk=task_id, user=request.user)
-    if request.method == 'POST':
-        task.datecompleted = timezone.now()
-        task.save()
-        return redirect('tasks')
+
 
 @login_required
 def delete_task(request, task_id):
@@ -608,6 +1220,23 @@ def editar_edificacion(request, edificacion_id):
         'form': form,
         'edificacion': edificacion,
     })
+    
+@login_required
+def editar_edificacionIMP(request, edificacion_id):
+    edificacion = get_object_or_404(EdificacionIMP, pk=edificacion_id)
+
+    if request.method == 'POST':
+        inmueble = EdificacionFormIMP(request.POST, instance=edificacion)
+        if inmueble.is_valid():
+            inmueble.save()
+            return redirect('task_detail_importados', task_id=edificacion.task.id)
+    else:
+        inmueble = EdificacionFormIMP(instance=edificacion)
+
+    return render(request, 'update/editar_edificacion_imp.html', {
+        'inmueble': inmueble,
+        'edificacion': edificacion,
+    })
 
 @login_required
 def borrar_edificacion(request, edificacion_id):
@@ -621,6 +1250,17 @@ def borrar_edificacion(request, edificacion_id):
         'edificacion': edificacion,
     })
     
+@login_required
+def borrar_edificacionIMP(request, edificacion_id):
+    edificacion = get_object_or_404(EdificacionIMP, pk=edificacion_id)
+    
+    if request.method == 'POST':
+        edificacion.delete()
+        return redirect('task_detail_importados', task_id=edificacion.task.id)
+    
+    return render(request, 'borrar_edificacion.html', {
+        'edificacion': edificacion,
+    })
 
 
 
@@ -644,6 +1284,26 @@ def eliminar_documento(request, documento_id):
     task_id = documento.task_id
     documento.delete()
     return redirect('task_detail', task_id=task_id)
+
+# Edicion Titulo De Propiedad
+@login_required
+def editar_documentoIMP(request, documento_id):
+    documento = get_object_or_404(DocumentoPropiedadIMP, id=documento_id)
+    if request.method == 'POST':
+        form = DocumentoPropiedadFormIMP(request.POST, request.FILES, instance=documento)
+        if form.is_valid():
+            form.save()
+            return redirect('task_detail_importados', task_id=documento.task_id)
+    else:
+        form = DocumentoPropiedadForm(instance=documento)
+    return render(request, 'update/editar_documentoIMP.html', {'form': form, 'documento': documento})
+
+
+def eliminar_documentoIMP(request, documento_id):
+    documento = get_object_or_404(DocumentoPropiedadIMP, id=documento_id)
+    task_id = documento.task_id
+    documento.delete()
+    return redirect('task_detail_importados', task_id=task_id)
 
 # Edicion avaluo
 @login_required
@@ -670,6 +1330,31 @@ def eliminar_avaluo(request, avaluo_id):
     avaluo.delete()
     return redirect('task_detail', task_id=task_id)
 
+# Edicion avaluo
+@login_required
+def editar_avaluoIMP(request, avaluo_id):
+    avaluo = get_object_or_404(DatosAvaluosIMP, id=avaluo_id)
+
+    if request.method == 'POST':
+        form = DatosAvaluosFormIMP(request.POST, instance=avaluo)
+        if form.is_valid():
+            form.save()
+            return redirect('task_detail_importados', task_id=avaluo.task_id)  # Redirige a la página de detalle de la tarea
+    else:
+        form = DatosAvaluosForm(instance=avaluo)
+
+    return render(request, 'update/editar_avaluoIMP.html', {
+        'avaluo': avaluo,
+        'form': form,
+    })
+    
+@login_required
+def eliminar_avaluoIMP(request, avaluo_id):
+    avaluo = get_object_or_404(DatosAvaluosIMP, pk=avaluo_id)
+    task_id = avaluo.task_id
+    avaluo.delete()
+    return redirect('task_detail_importados', task_id=task_id)
+
 
 # Edicion Ocupacion
 @login_required
@@ -695,6 +1380,30 @@ def eliminar_ocupacion(request, ocupacion_id):
     task_id = ocupacion.task_id
     ocupacion.delete()
     return redirect('task_detail', task_id=task_id)
+
+@login_required
+def editar_ocupacionIMP(request, ocupacion_id):
+    ocupacion = get_object_or_404(OcupacionesIMP, id=ocupacion_id)
+
+    if request.method == 'POST':
+        form = OcupacionesFormIMP(request.POST, instance=ocupacion)
+        if form.is_valid():
+            form.save()
+            return redirect('task_detail_importados', task_id=ocupacion.task_id)  # Redirige a la página de detalle de la tarea
+    else:
+        form = OcupacionesForm(instance=ocupacion)
+
+    return render(request, 'update/editar_ocupacionIMP.html', {
+        'ocupacion': ocupacion,
+        'form': form,
+    })
+
+@login_required
+def eliminar_ocupacionIMP(request, ocupacion_id):
+    ocupacion = get_object_or_404(OcupacionesIMP, pk=ocupacion_id)
+    task_id = ocupacion.task_id
+    ocupacion.delete()
+    return redirect('task_detail_importados', task_id=task_id)
 
 
 from django.shortcuts import get_object_or_404, redirect
@@ -724,12 +1433,34 @@ def deleteDatosTerceros(request, datos_terceros_id):
     return redirect('task_detail', task_id=task_id)
 
 
+def eliminar_docOcupacionIMP(request, docOcupacion_id):
+    docOcupacion = get_object_or_404(Documento_ocupacionIMP, pk=docOcupacion_id)
+    task_id = docOcupacion.task_id
+    docOcupacion.delete()
+    return redirect('task_detail_importados', task_id=task_id)
+
+
+def eliminar_DatoInstitucionOcupanteIMP(request, datoInstitucionOcupante_id):
+    datoInstitucionOcupante = get_object_or_404(InstitucionesOcupantesIMP, pk=datoInstitucionOcupante_id)
+    task_id = datoInstitucionOcupante.task_id
+    datoInstitucionOcupante.delete()
+    return redirect('task_detail_importados', task_id=task_id)
+
+
+def deleteDatosTercerosIMP(request, datos_terceros_id):
+    datos_terceros = get_object_or_404(DatosTercerosIMP, pk=datos_terceros_id)
+    task_id = datos_terceros.task_id
+    datos_terceros.delete()
+    return redirect('task_detail_importados', task_id=task_id)
+
+
 
 from django.shortcuts import get_object_or_404, render
 from .models import Task
 from .utils import render_to_pdf
 from django.http import HttpResponse
 
+@login_required
 def generate_pdf(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
 
@@ -1101,56 +1832,57 @@ def export_tasks_to_excel(request):
 
     return response
 
+
+
+import pandas as pd
+
+excel_file = os.path.join(os.path.dirname(__file__), 'data/prueba1.xlsx')
+csv_file = os.path.join(os.path.dirname(__file__), 'data/inmueblePrueba1.csv')
+
+# Lee el archivo Excel
+df = pd.read_excel(excel_file)
+
+# Guarda los datos en un archivo CSV
+df.to_csv(csv_file, index=False)
+
+
+
+from tasks.resource import InmuebleResource
+
+from tablib import Dataset 
+ 
+from django.http import HttpResponse
+from django.shortcuts import render
+from tablib import Dataset
+
+
+from tablib import Dataset
+from django.contrib import messages
 @login_required
-def dar_de_baja_task(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-
-    if task.estado == 'Activo':
-        if request.method == 'POST':
-            # Procesar el formulario de dar de baja
-            form = BajaForm(request.POST)
-            if form.is_valid():
-                task.estado = 'Baja'
-                task.save()
-                return redirect('task_detail', task_id=task_id)
-        else:
-            # Mostrar el formulario para dar de baja
-            form = BajaForm()
-
-        return render(request, 'baja.html', {'task': task, 'form': form})
-
-    return redirect('tasks')
-
-
-import openpyxl
-from django.shortcuts import render, redirect
-from .models import Task  # Asegúrate de importar tu modelo de tarea
-
-def import_excel(request):
+def importar(request):
     if request.method == 'POST':
-        excel_file = request.FILES['excel_file']
+        inmueble_resource = InmuebleResource()
+        dataset = Dataset()
+        
+        archivo = request.FILES['archivo']
 
-        if excel_file.name.endswith('.xlsx'):
-            try:
-                # Abrir el archivo Excel y leer los datos
-                workbook = openpyxl.load_workbook(excel_file)
-                worksheet = workbook.active
-
-                for row in worksheet.iter_rows(values_only=True):
-                    # Supongamos que tu archivo Excel tiene columnas 'nombre' y 'descripcion'
-                    nombre, descripcion = row
-                    # Crea una nueva tarea con los datos del archivo Excel
-                    Task.objects.create(nombre=nombre, descripcion=descripcion)
-
-                # Redirigir nuevamente a la página de tareas
-                return redirect('tasks')
-
-            except Exception as e:
-                error_message = f"No se pudo importar el archivo: {str(e)}"
-                return render(request, 'tasks.html', {'error_message': error_message})
-
+        if archivo.name.endswith('.csv'):
+            imported_data = dataset.load(archivo.read().decode('utf-8'), format='csv')
+        elif archivo.name.endswith(('xls', 'xlsx')):
+            imported_data = dataset.load(archivo.read(), format='xlsx')
         else:
-            error_message = "El archivo debe estar en formato .xlsx"
-            return render(request, 'tasks.html', {'error_message': error_message})
+            messages.error(request, 'El archivo no es ni un archivo CSV ni un archivo Excel válido.')
+            return render(request, 'importar.html')
 
-    return render(request, 'tasks.html')
+        result = inmueble_resource.import_data(dataset, dry_run=True)
+        
+        if not result.has_errors():
+            # Realiza la importación real
+            result = inmueble_resource.import_data(dataset, dry_run=False)
+            messages.success(request, 'Los datos se importaron con éxito.')
+        else:
+            messages.error(request, 'Se encontraron errores en la importación.')
+
+    return render(request, 'importar.html')
+
+

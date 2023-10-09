@@ -2,7 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Reporte de Tarea</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
+    <title>Reporte Inmueble {{ task.NombreInmueble }}</title>
     <style>
       /* Agrega tus estilos personalizados aquí */
       .encabezado {
@@ -79,7 +81,7 @@
         border-collapse: collapse;
         border: 1px solid #000000;
         margin-top: 20px;
-        padding: 5px;
+        padding: 2px;
       }
 
       .report-table th,
@@ -100,7 +102,7 @@
         background-color: #9d2449;
         color: white; /* Color del texto en el encabezado */
         font-weight: bold;
-        font-size: 16px;
+        font-size: 12px;
 
         text-align: center;
       }
@@ -137,6 +139,15 @@
       .rfi{
         position: relative;
         margin-top: 1em;
+      }
+
+      td.formulario{
+        text-align: left !important;
+        margin-left: -1em;
+      }
+      tr.titlesup{
+        text-align: center;
+        background-color: #9d2449;
       }
     </style>
   </head>
@@ -187,37 +198,37 @@
       <td>
         <br>
         <div class="data-row">
-          <span class="data-field"> Título de la Tarea:</span>
-          <span class="data-value">  {{ task.title }}</span>
+          <span class="data-field"> Título de la Tarea: </span>
+          <span class="data-value">  {{ task.NombreInmueble }}</span>
         </div>
         <br /><br />
         <div class="data-row">
-          <span class="data-field"> Sección del Inventario:</span>
+          <span class="data-field"> Sección del Inventario: </span>
           <span class="data-value">  {{ task.seccion_del_inventario }}</span>
         </div>
         <br /><br />
         <div class="data-row">
-          <span class="data-field"> Dependencia Administradora:</span>
+          <span class="data-field"> Dependencia Administradora: </span>
           <span class="data-value">  {{ task.Dependencia_Administradora }}</span>
         </div>
         <br /><br />
         <div class="data-row">
-          <span class="data-field"> Causa de Alta:</span>
+          <span class="data-field"> Causa de Alta: </span>
           <span class="data-value">  {{ task.causa_alta }}</span>
         </div>
         <br /><br />
         <div class="data-row">
-          <span class="data-field"> Sector:</span>
+          <span class="data-field"> Sector: </span>
           <span class="data-value">  {{ task.Sector }}</span>
         </div>
         <br /><br />
         <div class="data-row">
-          <span class="data-field"> Institución que Administra el Inmueble:</span>
+          <span class="data-field"> Institución que Administra el Inmueble: </span>
           <span class="data-value">  {{ task.Nombre_de_la_institucion_que_administra_el_inmueble }}</span>
         </div>
         <br /><br />
         <div class="data-row">
-          <span class="data-field"> Naturaleza Jurídica de la Institución:</span>
+          <span class="data-field"> Naturaleza Jurídica de la Institución: </span>
           <span class="data-value">  {{ task.Naturaleza_Juridica_de_la_Institucion }}</span>
         </div>
         <br /><br />
@@ -269,6 +280,7 @@
         </div>
       </td>
     </table>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <table class="report-table">
       <tr>
         <th class="section-header">Ubicación</th>
@@ -351,7 +363,29 @@
           <span class="data-field">Descripción de Ubicación:&nbsp  </span>
           <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.descripcion_ubicacion }}&nbsp &nbsp &nbsp </span>
         </div>
+        <div class="data-row">
+          <span class="data-field"> Colindancias:</span>
+        </div>
+        
       </td>
+      <table class="report-table">
+        <thead class="thead-light">
+          <tr>
+            <th class="section-header">Orientación</th>
+            <th class="section-header">Colindancia</th>
+            <th class="section-header">Medida en Metros</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for colindancia in task.colindancias_set.all %}
+          <tr>
+            <td class="formulario">{{ colindancia.orientacion }}</td>
+            <td class="formulario">{{ colindancia.colindancia }}</td>
+            <td class="formulario">{{ colindancia.medida_en_metros }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </table>
  
     <table class="report-table">
@@ -362,12 +396,346 @@
         <br>
         <div class="data-row">
           <span class="data-field"> Título de la Tarea:</span>
-          <span class="data-value">  {{ task.title }}</span>
+          <span class="data-value">  {{ task.NombreInmueble }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Sección del Inventario:</span>
+          <span class="data-value">  {{ task.seccion_del_inventario }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Dependencia Administradora:</span>
+          <span class="data-value">  {{ task.Dependencia_Administradora }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Sector:</span>
+          <span class="data-value">  {{ task.Sector }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Naturaleza Jurídica de la Institución:</span>
+          <span class="data-value">  {{ task.Naturaleza_Juridica_de_la_Institucion }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> SubSección:</span>
+          <span class="data-value">  {{ task.subSeccion }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Denominaciones anteriores:</span>
+          <span class="data-value">  {{ task.Denominaciones_anteriores }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Causa alta:</span>
+          <span class="data-value">  {{ task.causa_alta }}</span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Prioridad:</span>
+          <span class="data-value">  {{ task.prioridad }}</span>
         </div>
         <br /><br />
       </td>
     </table>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <table class="report-table">
+      <tr>
+        <th class="section-header">CARACTERÍSTICAS
+        </th>
+      </tr>
+      <td>
+        <br>
+        <div class="data-row">
+          <span class="data-field"> Superficie del Terreno en m² : </span>
+          <span class="data-value">  {{ task.superficie_del_terreno_en_M2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Superficie del Terreno en HA : </span>
+          <span class="data-value">  {{ task.superficie_del_terreno_HA }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Superficie de Desplante en m² : </span>
+          <span class="data-value">  {{ task.superficie_de_desplante_en_M2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Superficie Útil o Rentable en m² : </span>
+          <span class="data-value">  {{ task.superficie_util_m2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Superficie Construida en m² : </span>
+          <span class="data-value">  {{ task.superficie_construida_en_M2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Número de Cuenta Catastral : </span>
+          <span class="data-value"> </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Zona en la que se ubica : </span>
+          <span class="data-value">  {{ task.zona_ubicacion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Uso Dominante de la Zona : </span>
+          <span class="data-value">  {{ task.uso_dominante_zona }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp &nbsp Categoría :</span>
+          <span class="data-value">  {{ task.categoria }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Clasificación por Edad :</span>
+          <span class="data-value">  {{ task.clasificacion_edad }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp Grado de Consolidación :</span>
+          <span class="data-value">  {{ task.grado_consolidacion }} &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Tipo de Inmueble : </span>
+          <span class="data-value">  {{ task.tipo_inmueble_rural }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Fecha de Construcción del Inmueble : </span>
+          <span class="data-value">  {{ task.fecha_inicio_construccion }}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp Fecha de Última Remodelación :</span>
+          <span class="data-value">  {{ task.fecha_ultima_remodelacion }} &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Siglo de Construcción : </span>
+          <span class="data-value">  {{ task.siglo_construccion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp  </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp Calidad de Construcción :</span>
+          <span class="data-value">  {{ task.calidad_construccion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Servicio : </span>
+          <span class="data-value">  {{ task.servicios }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp  </span>
+        </div>
+        <div class="data-row">
+          <span class="data-field"> &nbsp &nbsp &nbsp Número Telefónico : </span>
+          <span class="data-value">  {{ task.telefono_inmueble }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
+        </div>
+        <br /><br />
+        <div class="data-row">
+          <span class="data-field"> Estado de Conservación : </span>
+          <span class="data-value">  {{ task.estado_conservacion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp  </span>
+        </div>
+      </td>
+    </table>
 
+    <table class="report-table">
+      <tr>
+        <th class="section-header">TITULO DE PROPIEDAD
+        </th>
+      </tr>
+      <td>
+        <br>
+              {% for documento in task.documentopropiedad_set.all %}
+              <span class="data-field"> Propietario del inmueble según documento de propiedad: </span> <span class="data-value">&nbsp &nbsp  {{ documento.propietario_inmueble }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Institución Propietario:  </span> <span class="data-value">&nbsp &nbsp  {{ documento.institucion_propietario }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
+              <span class="data-field"> Superficie en m² amparada por el título de propiedad: </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ documento.superficie_amparada_m2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Tipo Documento: </span> <span class="data-value">&nbsp &nbsp  {{ documento.tipo_documento }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp   Número de Documento: </span> <span class="data-value">&nbsp &nbsp  {{ documento.numero_de_documento }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Fecha del Documento: </span> <span class="data-value"> &nbsp &nbsp {{ documento.fecha_creacion_DOC }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp  Expedido por: </span> <span class="data-value"> &nbsp &nbsp {{ documento.expedido_por }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Inscripción en RPPF: </span> <span class="data-value"> {{ documento.inscripcion_rppf }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp  Folio Real Federal: </span> <span class="data-value"> &nbsp &nbsp  {{ documento.folio_real_federal }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Fecha Inscripción Federal: </span> <span class="data-value"> &nbsp &nbsp {{ documento.fecha_inscripcion_federal }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp   Inscripción en Registro Local: </span> <span class="data-value">&nbsp &nbsp   {{ documento.inscripcion_registro_local }}  &nbsp &nbsp&nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Folio Real Local: </span> <span class="data-value"> {{ documento.folio_real_local }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp   Folio Real Auxiliar: </span> <span class="data-value">&nbsp &nbsp  {{ documento.folio_real_auxiliar }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Nombre del Libro: </span> <span class="data-value"> {{ documento.nombre_libro }}</span>
+              <span class="data-field"> Tomo o Volumen: </span> <span class="data-value"> {{ documento.tomo_o_volumen }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp   Número: </span>  <span class="data-value"> &nbsp &nbsp {{ documento.numero }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Foja o Folio:  </span>  <span class="data-value"> {{ documento.foja_o_folio }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp   Sección: </span>   <span class="data-value">&nbsp &nbsp  {{ documento.seccion }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <span class="data-field"> &nbsp &nbsp &nbsp    Fecha Inscripcion local: </span>  <span class="data-value">  {{ documento.fecha_inscripcion_local }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+              <br>
+              <hr>
+              
+              {% endfor %}
+            </td>
+          </table>
+
+          <table class="report-table">
+            <tr>
+              <th class="section-header">USO</th>
+            </tr>
+            <td>
+              <br>
+              <span class="data-field"> Usuario principal: </span> <span class="data-value">&nbsp &nbsp  {{ task.usuario_principal_del_inmueble }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Uso genérico : </span> <span class="data-value">&nbsp &nbsp  {{ task.usoGenerico }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Uso específico: </span> <span class="data-value">&nbsp &nbsp  {{ task.usoEspecifico }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Uso de Suelo Autorizado: </span> <span class="data-value">&nbsp &nbsp  {{ task.uso_de_suelo_autorizado }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+              <span class="data-field"> Número de empleados: </span> <span class="data-value">&nbsp &nbsp  {{ task.numero_de_empleados_en_el_inmueble }} &nbsp &nbsp &nbsp &nbsp </span>
+            </td>
+          </table>
+          <table class="report-table">
+            <tr>
+              <th>Tipo de Documento</th>
+              <th>Fecha de Documento</th>
+              <th>Inscripción RPPF</th>
+              <th>Folio Real Federal</th>
+              <th>Fecha de Inscripción Federal</th>
+
+          </tr>
+      </thead>
+      <tbody>
+          {% for documento_ocupacion in task.documento_ocupacion_set.all %}
+          <tr>
+              <td class="formulario">{{ documento_ocupacion.tipo_de_documento }}</td>
+              <td class="formulario">{{ documento_ocupacion.fecha_documento }}</td>
+              <td class="formulario">{{ documento_ocupacion.inscripcion_RPPF }}</td>
+              <td class="formulario">{{ documento_ocupacion.folio_real_federal }}</td>
+              <td class="formulario">{{ documento_ocupacion.fecha_inscripcion_federal }}</td>
+
+              <!-- Agrega aquí las celdas correspondientes a las columnas adicionales -->
+          </tr>
+          {% empty %}
+          <tr>
+              <td colspan="5">No hay registros de documentos de ocupación.</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+          </table>
+          <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Institución Pública Ocupante</th>
+                    <th>Superficie Asignada</th>
+                    <th>Uso de la Institución Ocupante</th>
+                    <th>Superficie Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for institucion_ocupante in task.institucionesocupantes_set.all %}
+                <tr>
+                    <td class="formulario">{{ institucion_ocupante.institucion_publica_ocupante }}</td>
+                    <td class="formulario">{{ institucion_ocupante.superficie_asignada }}</td>
+                    <td class="formulario">{{ institucion_ocupante.uso_institucion_ocupante }}</td>
+                    <td class="formulario">{{ institucion_ocupante.superficie_disponible }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay registros de instituciones ocupantes.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      <table class="report-table">
+        <tr>
+          <th class="section-header">Terceros Usuarios</th>
+        </tr>
+        <td>
+          <br>
+                {% for datos_terceros in task.datosterceros_set.all %}
+                <span class="data-field"> Tipo de Terceros Usuarios: </span> <span class="data-value">&nbsp &nbsp  {{ datos_terceros.tipo_usuario_tercero }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Beneficiario:  </span> <span class="data-value">&nbsp &nbsp  {{ datos_terceros.beneficiario }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
+                <span class="data-field"> Nombre Beneficiario: </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ datos_terceros.nombre_beneficiario }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> RFC: </span> <span class="data-value">&nbsp &nbsp  {{ datos_terceros.rfc }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field"> &nbsp &nbsp &nbsp   Fecha de Inicio Vigencia: </span> <span class="data-value">&nbsp &nbsp  {{ datos_terceros.fecha_inicio_vigencia }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Fecha de Término Vigencia: </span> <span class="data-value"> &nbsp &nbsp {{ datos_terceros.fecha_termino_vigencia }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+                <span class="data-field"> &nbsp &nbsp &nbsp  Prórroga: </span> <span class="data-value"> &nbsp &nbsp {{ datos_terceros.prorroga }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Inscripción Folio Real Federal: </span> <span class="data-value"> {{ datos_terceros.inscripcion_folio_real_federal }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+                <span class="data-field"> &nbsp &nbsp &nbsp  Superficie Objeto de la Ocupación (metros): </span> <span class="data-value"> &nbsp &nbsp  {{ datos_terceros.superficie_objeto_ocupacion_metros }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Uso: </span> <span class="data-value"> &nbsp &nbsp {{ datos_terceros.uso }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
+
+                {% empty %}
+                <p>No hay registros de Usuarios Terceros.</p>
+                <br>
+                <hr>
+                
+                {% endfor %}
+              </td>
+            </table>
+
+            <table class="report-table">
+              <tr>
+                <th class="section-header">Aprovechamiento</th>
+              </tr>
+              <td>
+                <br>
+                <span class="data-field"> Aprovechamiento : </span> <span class="data-value">&nbsp &nbsp  {{ task.aprovechamiento }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Inmueble con Atención al Público :  </span> <span class="data-value">&nbsp &nbsp  {{ task.inmueble_con_atencion_al_publico }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
+                <span class="data-field"> Población Beneficiada : </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.poblacion_beneficiada }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Población a la que da Servicio : </span> <span class="data-value">&nbsp &nbsp  {{ task.poblacion_servicio }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Cuenta con Proyecto de Uso Inmediato Desarrollado : </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.cuenta_con_proyecto_de_uso_inmediato_desarrollado }}  &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Inversión Requerida ($): </span> <span class="data-value">&nbsp &nbsp  {{ task.inversion_requerida }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Fuente de Financiamiento : </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.fuente_financiamiento }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Fecha de Solicitud : </span> <span class="data-value">&nbsp &nbsp  {{ task.fecha_solicitud }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Inmueble no Aprovechable/Especificar : </span> <span class="data-value">&nbsp &nbsp  {{ task.inmueble_no_aprovechable_especificar }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Superficie Total : </span> <span class="data-value">&nbsp &nbsp  {{ task.superficie_total }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Indiviso ($) : </span> <span class="data-value">&nbsp &nbsp  {{ task.indiviso }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
+              </td>
+            </table>
+
+            <table class="report-table">
+              <tr>
+                <th class="section-header">Valor</th>
+              </tr>
+              <td>
+                <br>
+                <span class="data-field"> Valor Contable (S) : </span> <span class="data-value">&nbsp &nbsp  {{ task.valor_contable }} &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Fecha Valor Contable :  </span> <span class="data-value">&nbsp &nbsp  {{ task.fecha_valor_contable }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
+                <span class="data-field"> Valor Asegurable (S) : </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.valor_asegurable }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Fecha Valor Asegurable : </span> <span class="data-value">&nbsp &nbsp  {{ task.fecha_valor_asegurable }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Valor de Adquisición (S) : </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.valor_adquisicion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Fecha de Valor de Adquisición (es) : </span> <span class="data-value">&nbsp &nbsp  {{ task.fecha_valor_adquisicion }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Valor de Terreno (S) : </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.valor_terreno }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Valor de Construcción (S) : </span> <span class="data-value">&nbsp &nbsp  {{ task.valor_construccion }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
+                <span class="data-field"> Valor Catastral del Terreno: </span> <span class="data-value">&nbsp &nbsp  {{ task.valor_catastral_terreno }} &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Valor Catastral de la Construcción (es) :  </span> <span class="data-value">&nbsp &nbsp  {{ task.valor_catastral_construccion }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
+                <span class="data-field"> Valor Total Catastral (es) : </span> <span class="data-value">&nbsp &nbsp  {{ task.valor_total_catastral }} &nbsp &nbsp &nbsp &nbsp </span>
+                <span class="data-field">&nbsp &nbsp &nbsp Fecha Valor Catastral :  </span> <span class="data-value">&nbsp &nbsp  {{ task.fecha_valor_catastral }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
+                <span class="data-field"> Documentación Soporte :  </span> <span class="data-value">&nbsp &nbsp  {{ task.documentacion_soporte }}&nbsp &nbsp &nbsp &nbsp &nbsp</span>
+
+              </td>
+            </table>
+
+            <table class="report-table">
+              <thead>
+                  <tr>
+                      <th>Número de Avalúo</th>
+                      <th>Valor de Avalúo</th>
+                      <th>Fecha Valor de Avalúo</th>
+                      <th>Uso del Avalúo</th>
+                      <th>Valor de Terreno</th>
+                      <th>Valor de Construcción</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for avaluo in task.datosavaluos_set.all %}
+                  <tr>
+                      <td class="formulario">{{ avaluo.numero_de_avaluo }}</td>
+                      <td class="formulario">{{ avaluo.valor_de_avaluo }}</td>
+                      <td class="formulario">{{ avaluo.fecha_valor_de_avaluo }}</td>
+                      <td class="formulario">{{ avaluo.uso_del_avaluo }}</td>
+                      <td class="formulario">{{ avaluo.valor_de_terreno }}</td>
+                      <td class="formulario">{{ avaluo.valor_de_construccion }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay ravaluos registrados.</td>
+                    </tr>
+                    {% endfor %}
+              </tbody>
+          </table>
     <!-- Agrega más secciones de acuerdo a tus necesidades -->
   </body>
 </html>

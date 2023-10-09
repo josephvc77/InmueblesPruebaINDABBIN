@@ -1,4 +1,4 @@
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
@@ -27,12 +27,12 @@
   }
 
   form {
-    position: relative;
+    position: absolute;
     max-width: 408px;
     margin: 5px auto;
-    top: -22em;
+    top: 42%;
     width: 33%;
-    left: 11em;
+    right: 11em;
     height: 4%;
 } 
 
@@ -97,8 +97,7 @@
     left: 10em;
   }
 
-  .bg {
-
+  .bg img {
     background-size: cover;
     width: 50%;
     height: 100vh;
@@ -159,20 +158,24 @@
     font-size: 18px;
   }
 </style>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <p>{{ error }}</p>
 {% load static%}
+
 <div class="container">
   <div class="contenedor-logo">
     <img class="logo-sgis" src="{% static 'inicio/img/logo-sgis.png' %}">
     <img class="logo-GM" src="{% static 'inicio/img/logo.png' %}" alt="">
   </div>
+  {% static 'inicio/css/styles.css'%}"
   <div class="bg">
     <img src="{% static 'inicio/img/bg.png' %}">
   </div>
   <form method="POST" onsubmit="return validateForm();">
     {% csrf_token %}
+
     <div class="form-group">
         <input type="text" name="{{ form.username.name }}" placeholder="Usuario" class="form-control form-control-sm">
     </div>
@@ -186,7 +189,7 @@
     </div>
     <button type="submit">Ingresar</button>
     <div class="alert alert-danger" id="alert" role="alert">
-      <img class="icon" src="{% static 'inicio/icons/triangle-exclamation-solid.svg' %}" alt=""> Ingresa tus credenciales
+        <img class="icon" src="{% static 'inicio/icons/triangle-exclamation-solid.svg' %}" alt=""> Ingresa tus credenciales
     </div>
 </form>
 

@@ -1,0 +1,240 @@
+<div class="tab-content" id="tab-tramites-ocupaciones">
+  <div class="section">
+    <h3>Ocupaciones Registradas:</h3>
+    <div class="table-responsive" id="tablaOcupaciones">
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo de Procedimiento</th>
+          <th>Nombre Ocupante</th>
+          <th>Superficie Invadida</th>
+          <th>No. Expediente</th>
+          <th>Juzgado</th>
+          <th>Estatus del Procedimiento</th>
+          <th>Suspensión del Acto</th>
+          <th>Recuperado</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ocupacion in task.ocupaciones.all %}
+        <tr>
+          <td>{{ ocupacion.get_tipo_procedimiento_display }}</td>
+          <td>{{ ocupacion.nombre_ocupante }}</td>
+          <td>{{ ocupacion.superficie_invadida }}</td>
+          <td>{{ ocupacion.no_expediente }}</td>
+          <td>{{ ocupacion.juzgado }}</td>
+          <td>{{ ocupacion.get_estatus_procedimiento_display }}</td>
+          <td>{{ ocupacion.suspension_acto }}</td>
+          <td>{{ ocupacion.recuperado }}</td>
+          <td>
+            <a href="{% url 'editar_ocupacionIMP' ocupacion.id %}" class="btn btn-warning btn-sm">Editar</a>
+            <a href="{% url 'eliminar_ocupacionIMP' ocupacion_id=ocupacion.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta ocupación?')">Eliminar</a>
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+    <div class="separador">
+      <h4>Agregar nueva Ocupación:</h4>
+      <form method="post" id="ocupacionForm" enctype="multipart/form-data">
+        {% csrf_token %}
+      
+        <div class="form-group form-check-inline width-label">
+          <label for="{{ ocupaciones_form.nombre_ocupante.id_for_label }}">Nombre Ocupante:</label>
+          {{ ocupaciones_form.nombre_ocupante }}
+        </div>
+        <div class="form-group form-check-inline width-label">
+          <label for="{{ ocupaciones_form.superficie_invadida.id_for_label }}">Superficie Invadida:</label>
+          {{ ocupaciones_form.superficie_invadida }}
+        </div>
+        
+        <div class="form-group form-check-inline width-label">
+          <label for="{{ ocupaciones_form.tipo_procedimiento.id_for_label }}">Tipo de Procedimiento:</label>
+          {{ ocupaciones_form.tipo_procedimiento }}
+        </div>
+        <br>
+        <div class="form-group form-check-inline width-label" id="data-Expediente">
+          <label for="{{ ocupaciones_form.no_expediente.id_for_label }}">No. Expediente:</label>
+          {{ ocupaciones_form.no_expediente }}
+        </div>
+        <div class="form-group form-check-inline width-label" id="data-juzgado">
+          <label for="{{ ocupaciones_form.juzgado.id_for_label }}">Juzgado:</label>
+          {{ ocupaciones_form.juzgado }}
+        </div>
+        <div class="form-group form-check-inline width-label" id="data-procedimiento">
+          <label for="{{ ocupaciones_form.estatus_procedimiento.id_for_label }}">Estatus del Procedimiento:</label>
+          {{ ocupaciones_form.estatus_procedimiento }}
+        </div>
+        <div class="form-group form-check-inline width-label" id="data-acto">
+          <label for="{{ ocupaciones_form.suspension_acto.id_for_label }}">Suspensión del Acto:</label>
+          {{ ocupaciones_form.suspension_acto }}
+        </div>
+        <div class="form-group form-check-inline width-label" id="data-recuperado">
+          <label for="{{ ocupaciones_form.recuperado.id_for_label }}">Recuperado:</label>
+          {{ ocupaciones_form.recuperado }}
+        </div>
+
+      <div class="form-group form-check-inline" id="fecha_recuperado">
+        <label for="{{ ocupaciones_form.fecha_recuperado.id_for_label }}">Fecha Recuperación:</label>
+        <input type="date" id="{{ ocupaciones_form.fecha_recuperado.id_for_label }}" name="{{ ocupaciones_form.fecha_recuperado.name }}" class="form-control" value="{{ ocupaciones_form.fecha_recuperado.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this)">
+    </div>
+
+    <div id="dateAlertLocal" class="alert alert-danger" style="display: none;">
+      La fecha no puede ser posterior a la fecha actual.
+  </div>
+  
+        <button type="submit" id="guardarOcupacion" class="btn btn-outline-success">Guardar Ocupación</button>
+      </form>
+    </div>
+
+    <div class="separador">
+
+      <h4>Trámites de Disposición Guardados:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Trámite de Disposición</th>
+            <th>Estatus</th>
+            <th>Número de Expediente</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tramite in task.dispocisiones.all %}
+        <tr>
+            <td>{{ tramite.tramite_disposicion }}</td>
+            <td>{{ tramite.estatus }}</td>
+            <td>{{ tramite.numero_de_expediente }}</td>
+            <td >
+              <button class="delete-tramite-btn btn btn-outline-danger btn-sm" data-url="{% url 'delete_tramite' task_id=task.id tramite_id=tramite.id %}"> Eliminar Tramite</button>
+          </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+      <h4>Agregar nuevo Trámite de Disposición:</h4>
+      <form method="post" id="tramiteDisposicionForm" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="{{ tramite_disposicion_form.tramite_disposicion.id_for_label }}">Trámite de Disposición:</label>
+              {{ tramite_disposicion_form.tramite_disposicion }}
+          </div>
+          <div class="form-group">
+              <label for="{{ tramite_disposicion_form.estatus.id_for_label }}">Estatus:</label>
+              {{ tramite_disposicion_form.estatus }}
+          </div>
+          <div class="form-group">
+              <label for="{{ tramite_disposicion_form.numero_de_expediente.id_for_label }}">Número de Expediente:</label>
+              {{ tramite_disposicion_form.numero_de_expediente }}
+          </div>
+          <button type="submit" id="guardarTramiteDisposicion" class="btn btn-outline-success">Guardar Trámite de Disposición</button>
+      </form>
+  </div>
+  </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+  $("#data-Expediente, #data-juzgado, #data-procedimiento, #data-acto, #data-recuperado, #data-fecha_recuperado").hide();
+
+       
+  function showtipoProcedimiento(selectedValue){
+      if (selectedValue === "administrativo" || selectedValue === 'averiguacion_previa' || selectedValue === 'judicial') {
+          $("#data-Expediente, #data-juzgado, #data-procedimiento, #data-acto, #data-recuperado").show();
+      } else {
+          $("#data-Expediente, #data-juzgado, #data-procedimiento, #data-acto, #data-recuperado").hide();
+      }
+  }
+
+  function showrecuperado(selectedValue){
+    if (selectedValue === "Si") {
+        $("#fecha_recuperado").show();
+    } else {
+        $("#fecha_recuperado").hide();
+    }
+}
+
+
+    var tipoProcedimiento = $('#{{ ocupaciones_form.tipo_procedimiento.auto_id }}').val();
+                showtipoProcedimiento(tipoProcedimiento);
+                // Mostrar u ocultar campos y reiniciar valores cuando cambia la selección de Aprovechamiento
+                $('#{{ ocupaciones_form.tipo_procedimiento.auto_id }}').change(function() {
+                    var selectedValue = $(this).val();
+                    showtipoProcedimiento(selectedValue);
+                });
+
+    var recuperado = $('#{{ ocupaciones_form.recuperado.auto_id }}').val();
+          showrecuperado(recuperado);
+              // Mostrar u ocultar campos y reiniciar valores cuando cambia la selección de Aprovechamiento
+              $('#{{ ocupaciones_form.recuperado.auto_id }}').change(function() {
+                  var selectedValue = $(this).val();
+                  showrecuperado(selectedValue);
+              });
+            });
+</script>
+<script>
+    
+  $(document).ready(function() {
+      // Agrega un manejador de eventos al botón "Guardar" de Documento de Ocupación
+      $("#guardarOcupacion").click(function(event) {
+          var formData = $("#ocupacionForm").serialize();
+          event.preventDefault();
+  
+          // Realiza una solicitud Ajax para guardar los datos del formulario de Documento de Ocupación
+          $.ajax({
+              url: "{% url 'guardar_OcupacionesIMP' task_id=task.id %}",
+              type: "POST",
+              data: formData,
+              success: function(response) {
+                  if (response.success) {
+                      // Actualiza la tabla después de guardar
+                      $("#tablaOcupaciones").load("{% url 'task_detail_importados' task_id=task.id %} #tablaOcupaciones");
+                      
+                      // Restablece el formulario de Documento de Ocupación
+                      $("#ocupacionForm")[0].reset();
+                  } else {
+                      alert("Hubo un error al guardar el formulario de Ocupaciones.");
+                  }
+              },
+              error: function() {
+                  alert("Se produjo un error al enviar el formulario de Ocupaciones");
+              },
+          });
+      });
+  });
+</script>
+<script>
+  function validateDate(input, alertType) {
+      var selectedDate = new Date(input.value);
+      var currentDate = new Date();
+      var alertId = input.id === "{{ ocupaciones_form.fecha_recuperado.id_for_label }}" ? "dateAlertFederal" : "dateAlertLocal";
+
+      if (selectedDate > currentDate) {
+          var alert = document.getElementById(alertId);
+          alert.style.display = 'block';
+
+          // Agregamos estilos para hacer la alerta flotante
+          alert.style.position = 'fixed';
+          alert.style.top = '10px';
+          alert.style.right = '10px';
+          alert.style.zIndex = '1000'; // Asegura que esté por encima de otros elementos
+
+          input.value = ''; // Limpia el campo de fecha
+
+          // Cierra la alerta después de 5 segundos (5000 ms)
+          setTimeout(function() {
+              alert.style.display = 'none';
+          }, 5000);
+      } else {
+          document.getElementById(alertId).style.display = 'none';
+      }
+  }
+</script>

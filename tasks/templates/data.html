@@ -1,0 +1,5 @@
+<form method="post" action="{% url 'task_detail_importados' task.id%}">
+    {% csrf_token %}
+    {{ inmueble.as_p }}
+    <button type="submit">Guardar</button>
+</form>

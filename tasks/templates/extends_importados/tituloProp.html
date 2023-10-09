@@ -117,7 +117,7 @@
     <div class="form-section">
         <h3>Documentos de Propiedad:</h3>
         <div class="table-responsive" id="tablaDocPropiedad">
-            <table class="table">
+            <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr>
                         <th>Propietario del inmueble según documento de propiedad:</th>
@@ -148,7 +148,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for documento in task.documentopropiedad_set.all %}
+                    {% for documento in task.docprop.all %}
                         <tr>
                             <td>{{ documento.propietario_inmueble }}</td>
                             <td>{{ documento.institucion_propietario }}</td>
@@ -181,8 +181,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'editar_documento' documento_id=documento.id %}" class="btn btn-sm"> Editar </a>
-                                <a href="{% url 'eliminar_documento' documento_id=documento.id %}" class="btn btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este documento de propiedad?')">Eliminar</a> 
+                                <a href="{% url 'editar_documentoIMP' documento_id=documento.id %}" class="btn btn-sm"> Editar </a>
+                                <a href="{% url 'eliminar_documentoIMP' documento_id=documento.id %}" class="btn btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este documento de propiedad?')">Eliminar</a> 
                             </td>
                         </tr>
                     {% endfor %}
@@ -281,13 +281,13 @@
 
             // Realiza una solicitud Ajax para guardar los datos del formulario de Datos de Terceros
             $.ajax({
-                url: "{% url 'guardar_docPropiedad' task_id=task.id %}",
+                url: "{% url 'guardar_docPropiedadIMP' task_id=task.id %}",
                 type: "POST",
                 data: formData,
                 success: function(response) {
                     if (response.success) {
                         // Actualiza la tabla después de guardar
-                        $("#tablaDocPropiedad").load("{% url 'task_detail' task_id=task.id %} #tablaDocPropiedad");
+                        $("#tablaDocPropiedad").load("{% url 'task_detail_importados' task_id=task.id %} #tablaDocPropiedad");
 
                         // Restablece el formulario de Datos de Terceros
                         $("#docPropiedadForm")[0].reset();

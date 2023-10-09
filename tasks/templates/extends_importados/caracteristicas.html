@@ -97,165 +97,165 @@
         <div id="form-terreno" class="form-section">
             <div class="separador">
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.superficie_del_terreno_en_M2.id_for_label }}">Superficie del terreno en M2:</label>
-                    {{ form.superficie_del_terreno_en_M2 }}
+                    <label for="{{ inmueble.superficie_del_terreno_en_M2.id_for_label }}">Superficie del terreno en M2:</label>
+                    {{ inmueble.superficie_del_terreno_en_M2 }}
                   </div>
                   <div class="form-group form-check-inline">
-                    <label for="{{ form.superficie_del_terreno_HA.id_for_label }}">superficie del terreno HA:</label>
-                    {{ form.superficie_del_terreno_HA }}
+                    <label for="{{ inmueble.superficie_del_terreno_HA.id_for_label }}">superficie del terreno HA:</label>
+                    {{ inmueble.superficie_del_terreno_HA }}
                   </div>
                   <div class="form-group form-check-inline">
-                    <label for="{{ form.superficie_de_desplante_en_M2.id_for_label }}">superficie de desplante en M2:</label>
-                    {{ form.superficie_de_desplante_en_M2 }}
+                    <label for="{{ inmueble.superficie_de_desplante_en_M2.id_for_label }}">superficie de desplante en M2:</label>
+                    {{ inmueble.superficie_de_desplante_en_M2 }}
                   </div>
                   <div class="form-group form-check-inline">
-                    <label for="{{ form.superficie_construida_en_M2.id_for_label }}">superficie construida en M2:</label>
-                    {{ form.superficie_construida_en_M2 }}
+                    <label for="{{ inmueble.superficie_construida_en_M2.id_for_label }}">superficie construida en M2:</label>
+                    {{ inmueble.superficie_construida_en_M2 }}
                   </div>
                   <div class="form-group form-check-inline">
-                    <label for="{{ form.superficie_util_m2.id_for_label }}">Superficie Útil o Rentable en M2:</label>
-                    {{ form.superficie_util_m2 }}
+                    <label for="{{ inmueble.superficie_util_m2.id_for_label }}">Superficie Útil o Rentable en M2:</label>
+                    {{ inmueble.superficie_util_m2 }}
                 </div>
                 
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.zona_ubicacion.id_for_label }}">Zona en la que se Ubica el Inmueble:</label>
-                    {{ form.zona_ubicacion }}
+                    <label for="{{ inmueble.zona_ubicacion.id_for_label }}">Zona en la que se Ubica el Inmueble:</label>
+                    {{ inmueble.zona_ubicacion }}
                 </div>
                 
                 <div class="form-group form-check-inline" id="tipo_inmueble_rural">
-                    <label for="{{ form.tipo_inmueble_rural.id_for_label }}">Tipo de Inmueble Rural:</label>
-                    {{ form.tipo_inmueble_rural}}
+                    <label for="{{ inmueble.tipo_inmueble_rural.id_for_label }}">Tipo de Inmueble Rural:</label>
+                    {{ inmueble.tipo_inmueble_rural}}
                 </div>
                 
                 <div class="form-group form-check-inline" id="uso_dominante_zona">
-                    <label for="{{ form.uso_dominante_zona.id_for_label }}">Uso Dominante de la Zona:</label>
-                    {{ form.uso_dominante_zona }}
+                    <label for="{{ inmueble.uso_dominante_zona.id_for_label }}">Uso Dominante de la Zona:</label>
+                    {{ inmueble.uso_dominante_zona }}
                 </div>
                 
                 <div class="form-group form-check-inline" id="clasificacion_por_edad">
-                    <label for="{{ form.clasificacion_edad.id_for_label }}">Clasificación por Edad:</label>
-                    {{ form.clasificacion_edad }}
+                    <label for="{{ inmueble.clasificacion_edad.id_for_label }}">Clasificación por Edad:</label>
+                    {{ inmueble.clasificacion_edad }}
                 </div>
                 
                 <div class="form-group form-check-inline" id="categoria">
-                    <label for="{{ form.categoria.id_for_label }}">Categoría:</label>
-                    {{ form.categoria }}
+                    <label for="{{ inmueble.categoria.id_for_label }}">Categoría:</label>
+                    {{ inmueble.categoria }}
                 </div>
                 
                 <div class="form-group form-check-inline" id="grado_consolidacion">
-                    <label for="{{ form.grado_consolidacion.id_for_label }}">Grado de Consolidación:</label>
-                    {{ form.grado_consolidacion }}
+                    <label for="{{ inmueble.grado_consolidacion.id_for_label }}">Grado de Consolidación:</label>
+                    {{ inmueble.grado_consolidacion }}
                 </div>
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.calidad_construccion.id_for_label }}">Calidad de Construcción:</label>
-                    {{ form.calidad_construccion }}
-                </div>
-                
-                <div class="form-group form-check-inline">
-                    <label for="{{ form.servicios.id_for_label }}">Servicios:</label>
-                    {{ form.servicios }}
+                    <label for="{{ inmueble.calidad_construccion.id_for_label }}">Calidad de Construcción:</label>
+                    {{ inmueble.calidad_construccion }}
                 </div>
                 
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.telefono_inmueble.id_for_label }}">No. Telefónico del Inmueble:</label>
-                    {{ form.telefono_inmueble }}
+                    <label for="{{ inmueble.servicios.id_for_label }}">Servicios:</label>
+                    {{ inmueble.servicios }}
                 </div>
                 
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.fecha_inicio_construccion.id_for_label }}">Fecha de Inicio de Construcción del Inmueble:</label>
-                    {{ form.fecha_inicio_construccion }}
+                    <label for="{{ inmueble.telefono_inmueble.id_for_label }}">No. Telefónico del Inmueble:</label>
+                    {{ inmueble.telefono_inmueble }}
                 </div>
                 
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.siglo_construccion.id_for_label }}">Siglo de Construcción:</label>
-                    {{ form.siglo_construccion }}
+                    <label for="{{ inmueble.fecha_inicio_construccion.id_for_label }}">Fecha de Inicio de Construcción del Inmueble:</label>
+                    {{ inmueble.fecha_inicio_construccion }}
                 </div>
                 
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.fecha_ultima_remodelacion.id_for_label }}">Fecha de Última Remodelación del Inmueble:</label>
-                    {{ form.fecha_ultima_remodelacion }}
+                    <label for="{{ inmueble.siglo_construccion.id_for_label }}">Siglo de Construcción:</label>
+                    {{ inmueble.siglo_construccion }}
+                </div>
+                
+                <div class="form-group form-check-inline">
+                    <label for="{{ inmueble.fecha_ultima_remodelacion.id_for_label }}">Fecha de Última Remodelación del Inmueble:</label>
+                    {{ inmueble.fecha_ultima_remodelacion }}
                 </div>
                 <div class="separador">
                 <div class="form-group">
                     <h4>Características Especiales del Inmueble:</h4><br>
                     <div class="form-check form-check-inline">
-                        {{ form.monumento }}
-                        <label class="form-check-label" for="{{ form.monumento.id_for_label }}">Monumento</label>
+                        {{ inmueble.monumento }}
+                        <label class="form-check-label" for="{{ inmueble.monumento.id_for_label }}">Monumento</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        {{ form.historico }}
-                        <label class="form-check-label" for="{{ form.historico.id_for_label }}">Histórico</label>
+                        {{ inmueble.historico }}
+                        <label class="form-check-label" for="{{ inmueble.historico.id_for_label }}">Histórico</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        {{ form.artistico }}
-                        <label class="form-check-label" for="{{ form.artistico.id_for_label }}">Artístico</label>
+                        {{ inmueble.artistico }}
+                        <label class="form-check-label" for="{{ inmueble.artistico.id_for_label }}">Artístico</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        {{ form.arqueologico }}
-                        <label class="form-check-label" for="{{ form.arqueologico.id_for_label }}">Arqueológico</label>
+                        {{ inmueble.arqueologico }}
+                        <label class="form-check-label" for="{{ inmueble.arqueologico.id_for_label }}">Arqueológico</label>
                     </div>
 
                     
                     <br>
                     <div id="datas">
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.clave_inah.id_for_label }}" class="col-form-label">Clave INAH:</label>
-                        {{ form.clave_inah }}
+                        <label for="{{ inmueble.clave_inah.id_for_label }}" class="col-form-label">Clave INAH:</label>
+                        {{ inmueble.clave_inah }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.folio_real_inah.id_for_label }}" class="col-form-label">Folio Real INAH:</label>
-                        {{ form.folio_real_inah }}
+                        <label for="{{ inmueble.folio_real_inah.id_for_label }}" class="col-form-label">Folio Real INAH:</label>
+                        {{ inmueble.folio_real_inah }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.no_plano_inah.id_for_label }}" class="col-form-label">No Plano INAH:</label>
-                        {{ form.no_plano_inah }}
+                        <label for="{{ inmueble.no_plano_inah.id_for_label }}" class="col-form-label">No Plano INAH:</label>
+                        {{ inmueble.no_plano_inah }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.clave_cnmh.id_for_label }}" class="col-form-label">Clave CNMH:</label>
-                        {{ form.clave_cnmh }}
+                        <label for="{{ inmueble.clave_cnmh.id_for_label }}" class="col-form-label">Clave CNMH:</label>
+                        {{ inmueble.clave_cnmh }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.clave_dgsm_pc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
-                        {{ form.clave_dgsmpc_conaculta }}
+                        <label for="{{ inmueble.clave_dgsm_pc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
+                        {{ inmueble.clave_dgsmpc_conaculta }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.fecha_inscripcion_unesco.id_for_label }}" class="col-form-label">Fecha Inscripción UNESCO:</label>
-                        {{ form.fecha_inscripcion_unesco }}
+                        <label for="{{ inmueble.fecha_inscripcion_unesco.id_for_label }}" class="col-form-label">Fecha Inscripción UNESCO:</label>
+                        {{ inmueble.fecha_inscripcion_unesco }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.observaciones_historicas.id_for_label }}" class="col-form-label">Observaciones Históricas:</label>
-                        {{ form.observaciones_historicas }}
+                        <label for="{{ inmueble.observaciones_historicas.id_for_label }}" class="col-form-label">Observaciones Históricas:</label>
+                        {{ inmueble.observaciones_historicas }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.siglo_o_periodo.id_for_label }}" class="col-form-label">Siglo o Periodo:</label>
-                        {{ form.siglo_o_periodo }}
+                        <label for="{{ inmueble.siglo_o_periodo.id_for_label }}" class="col-form-label">Siglo o Periodo:</label>
+                        {{ inmueble.siglo_o_periodo }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.correlativo.id_for_label }}" class="col-form-label">Correlativo:</label>
-                        {{ form.correlativo }}
+                        <label for="{{ inmueble.correlativo.id_for_label }}" class="col-form-label">Correlativo:</label>
+                        {{ inmueble.correlativo }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.conjunto.id_for_label }}" class="col-form-label">Conjunto:</label>
-                        {{ form.conjunto }}
+                        <label for="{{ inmueble.conjunto.id_for_label }}" class="col-form-label">Conjunto:</label>
+                        {{ inmueble.conjunto }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.clave_inbal.id_for_label }}" class="col-form-label">Clave INBAL:</label>
-                        {{ form.clave_inbal }}
+                        <label for="{{ inmueble.clave_inbal.id_for_label }}" class="col-form-label">Clave INBAL:</label>
+                        {{ inmueble.clave_inbal }}
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ form.registro_unico_inah.id_for_label }}" class="col-form-label">Registro Único INAH:</label>
-                        {{ form.registro_unico_inah }}
+                        <label for="{{ inmueble.registro_unico_inah.id_for_label }}" class="col-form-label">Registro Único INAH:</label>
+                        {{ inmueble.registro_unico_inah }}
                     </div>
                 </div>
                 </div>
@@ -265,8 +265,8 @@
                 </div>
                 
                 <div class="form-group form-check-inline">
-                    <label for="{{ form.estado_conservacion.id_for_label }}">Estado de Conservación del Inmueble:</label>
-                    {{ form.estado_conservacion }}
+                    <label for="{{ inmueble.estado_conservacion.id_for_label }}">Estado de Conservación del Inmueble:</label>
+                    {{ inmueble.estado_conservacion }}
                 </div>
         </div>
     </div>
@@ -326,7 +326,7 @@
     <div class="form-section">
         <h3>Información de Edificación:</h3>
         <div class="table-responsive">
-            <table class="table table-striped-columns">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nombre de la Edificación</th>
@@ -346,7 +346,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for edificacion in task.edificacion_set.all %}
+                    {% for edificacion in task.edificaciones.all %}
                         <tr>
                             <td>{{ edificacion.nombre_edificacion }}</td>
                             <td>{{ edificacion.tipo_de_inmueble }}</td>
@@ -362,8 +362,8 @@
                             <td>{{ edificacion.ruta_de_evacuacion }}</td>
                             <td>{{ edificacion.sanitario_para_personas_con_discapacidad }}</td>
                             <td>
-                                <a href="{% url 'editar_edificacion' edificacion.id %}" class="btn ">Modificar</a>
-                                <a href="{% url 'borrar_edificacion' edificacion.id %}" class="btn ">Borrar</a>
+                                <a href="{% url 'editar_edificacionIMP' edificacion.id %}" class="btn ">Modificar</a>
+                                <a href="{% url 'borrar_edificacionIMP' edificacion.id %}" class="btn ">Borrar</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -376,7 +376,7 @@
     <fieldset>
       <h2>Proporcione los datos de las Edificio Verde:</h2>
       {% if task.edificio_verde_set.exists %}
-      <table class="expedientes-cedoc-table">
+      <table class="table expedientes-cedoc-table">
         <thead>
           <tr>
             <th>Edificio Verde</th>
@@ -388,7 +388,7 @@
             <tr>
               <td>{{ edificio_verde.edificio_verde_data }}</td>
               <td>
-                <button class="delete-edificio-verde-btn btn btn-outline-danger btn-sm" data-url="{% url 'delete_edificio_verde' task_id=task.id edificio_verde_id=edificio_verde.id %}">Eliminar</button>
+                <button class="delete-edificio-verde-btn btn btn-outline-danger btn-sm" data-url="{% url 'delete_edificio_verdeIMP' task_id=task.id edificio_verde_id=edificio_verde.id %}">Eliminar</button>
               </td>
             </tr>
           {% endfor %}
@@ -398,7 +398,7 @@
     <form method="post">
         {% csrf_token %}
         <div class="form-group form-check-inline width-label">
-            <label for="{{ edificio_verde_form.edificio_verde_data.id_for_label }}">Edificio Verde::</label>
+            <label for="{{ edificio_verde_form.edificio_verde_data.id_for_label }}">Edificio Verde:</label>
             {{ edificio_verde_form.edificio_verde_data }}
         </div>
         <button type="submit" class="btn btn-outline-success">Guardar</button>
