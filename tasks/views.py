@@ -75,7 +75,8 @@ def tasks(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
+        inmuebles = [] 
+
 
     total_pending_tasks = tasks.count()  # Total de tareas pendientes por completar
     total_completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).count()  # Total de tareas completadas
@@ -124,7 +125,7 @@ def tasks_importados(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
+        inmuebles = []
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -189,7 +190,7 @@ def tasks_completed(request):
     except PageNotAnInteger:
         tasks = paginator.page(1)
     except EmptyPage:
-        tasks = paginator.page(paginator.num_pages)
+        inmuebles = []
 
     total_completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).count()  # Total de tareas completadas
 
@@ -235,7 +236,7 @@ def inmuebles_baja(request):
     except PageNotAnInteger:
         tasks = paginator.page(1)
     except EmptyPage:
-        tasks = paginator.page(paginator.num_pages)
+        inmuebles = []
 
     total_completed_tasks = Task.objects.filter(user=request.user, estado='Baja').count()  # Total de tareas en estado 'Baja'
 
@@ -272,7 +273,7 @@ def inmuebles_baja_importados(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
+        inmuebles = []
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -323,7 +324,7 @@ def tasks_completed_importados(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
+        inmuebles = []
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
