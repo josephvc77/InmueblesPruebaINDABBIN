@@ -735,7 +735,7 @@ def task_detail_importados(request, task_id):
                     return redirect('task_detail_importados', task_id=task_id)
                 else:
                     # El folio real ya existe, mostrar una alerta
-                    messages.error(request, 'El folio real ya existe en esta tarea.')
+                    print(request, 'El folio real ya existe en esta tarea.')
             else:
                 print(f"Form errors: {folios_reales_data_form.errors}")
             

@@ -40,7 +40,7 @@ class Task(models.Model):
     
     deadline = models.DateTimeField(null=True, blank=True)
     
-    NombreInmueble = models.CharField(max_length=200, verbose_name='Nombre del inmueble', null=True, blank=True)
+    NombreInmueble = models.CharField(max_length=200, verbose_name='Nombre del inmueble', null=True, blank=False)
     seccion_del_inventario = models.CharField(max_length=100, null=True, blank=True)
    
     Dependencia_Administradora = models.CharField(max_length=100, null=True, blank=True)

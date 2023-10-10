@@ -71,19 +71,25 @@
             Prioridad: {{ task.prioridad }} </p>
           <p>Entrega para: {{task.deadline}}</p>
 
-            {% if task.days_delayed > 0 or task.hours_delayed > 0 %}
-            <p style="color: red;">
-                Retrasada por:
-                {% if task.days_delayed > 0 %}
-                    {{ task.days_delayed }} días
-                {% endif %}
-                {% if task.hours_delayed > 0 %}
-                    {{ task.hours_delayed }} horas
-                {% endif %}
-            </p>
+          {% if task.completed %}
+          <p>Completada</p>
+        {% elif task.days_delayed > 0 %}
+          <p style="color: red;">
+            Retrasada por:
+            {{ task.days_delayed }} días
+            {% if task.hours_delayed > 0 %}
+              {{ task.hours_delayed }} horas
+            {% endif %}
+          </p>
+        {% elif task.hours_delayed > 0 %}
+          <p style="color: red;">
+            Retrasada por:
+            {{ task.hours_delayed }} horas
+          </p>
         {% else %}
-            <p>Tiempo restante: {{ task.days_remaining }} días {{ task.hours_remaining }} horas</p>
+          <p>Tiempo restante: {{ task.days_remaining }} días {{ task.hours_remaining }} horas</p>
         {% endif %}
+        
           
         </div>
       </div>
