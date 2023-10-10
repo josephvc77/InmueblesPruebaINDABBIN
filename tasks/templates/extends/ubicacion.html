@@ -181,6 +181,7 @@
             <th>Orientación</th>
             <th>Colindancia</th>
             <th>Medida en Metros</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -189,6 +190,9 @@
             <td>{{ colindancia.orientacion }}</td>
             <td>{{ colindancia.colindancia }}</td>
             <td>{{ colindancia.medida_en_metros }}</td>
+            <td>
+              <a href="{% url 'delete_colindancia' colindancia.id %}" class="btn ">Borrar</a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

@@ -38,6 +38,8 @@ class Task(models.Model):
     ]
     estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
     
+    deadline = models.DateTimeField(null=True, blank=True)
+    
     NombreInmueble = models.CharField(max_length=200, verbose_name='Nombre del inmueble', null=True, blank=True)
     seccion_del_inventario = models.CharField(max_length=100, null=True, blank=True)
    
@@ -1348,8 +1350,8 @@ class Inmueble(models.Model):
         verbose_name_plural = "Inmuebles Importados"
     
 class FoliosRealesIMP(models.Model):
-    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales')
-    folios_reales_data = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales_data')
+    folios_reales_data = models.CharField(max_length=100, unique=True, null=True, blank=False)
 
     def __str__(self):
         if self.folios_reales_data is not None:

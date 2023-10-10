@@ -68,8 +68,23 @@
           <p><strong>Causa de Alta:</strong> {{ task.causa_alta }}</p>
           <p><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
           <p class="priority-paragraph {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
-            Prioridad: {{ task.prioridad }}
-          </p>
+            Prioridad: {{ task.prioridad }} </p>
+          <p>Entrega para: {{task.deadline}}</p>
+
+            {% if task.days_delayed > 0 or task.hours_delayed > 0 %}
+            <p style="color: red;">
+                Retrasada por:
+                {% if task.days_delayed > 0 %}
+                    {{ task.days_delayed }} días
+                {% endif %}
+                {% if task.hours_delayed > 0 %}
+                    {{ task.hours_delayed }} horas
+                {% endif %}
+            </p>
+        {% else %}
+            <p>Tiempo restante: {{ task.days_remaining }} días {{ task.hours_remaining }} horas</p>
+        {% endif %}
+          
         </div>
       </div>
      

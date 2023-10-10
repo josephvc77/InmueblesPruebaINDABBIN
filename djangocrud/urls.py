@@ -42,7 +42,10 @@ urlpatterns = [
     path('get_entidades_federativas/', views.get_entidades_federativas, name='get_entidades_federativas'),
     path('get_municipios/<str:entidad_federativa>/', views.get_municipios_by_entidad_federativa, name='get_municipios'),
     path('task/<int:task_id>/delete_expediente_cedoc/<int:expediente_cedoc_id>/', views.delete_expediente_cedoc, name='delete_expediente_cedoc'),
+    
     path('task/<int:task_id>/delete_folio_real/<int:folio_real_id>/', views.delete_folio_real, name='delete_folio_real'),
+    
+    
     path('task/<int:task_id>/delete_numero_plano/<int:numero_plano_id>/', views.delete_numero_plano, name='delete_numero_plano'),
     path('editar_edificacion/<int:edificacion_id>/', views.editar_edificacion, name='editar_edificacion'),
     path('borrar_edificacion/<int:edificacion_id>/', views.borrar_edificacion, name='borrar_edificacion'),
@@ -55,14 +58,17 @@ urlpatterns = [
     
     # ///////////////////////////////////////////////////////////////////////////////////////////////
     
-    path('guardar_docPropiedad/<int:task_id>/', views.guardar_docPropiedad, name='guardar_docPropiedad'),
+    # path('guardar_docPropiedad/<int:task_id>/', views.guardar_docPropiedad, name='guardar_docPropiedad'),
     path('editar_documento/<int:documento_id>/', views.editar_documento, name='editar_documento'),
     path('eliminar_documento/<int:documento_id>/', views.eliminar_documento, name='eliminar_documento'),
+    
+    path('delete_colindancia/<int:colindancia_id>/', views.delete_colindancia, name='delete_colindancia'),
+    
+    path('delete_colindanciaIMP/<int:colindancia_id>/', views.delete_colindanciaIMP, name='delete_colindanciaIMP'),
     
     path('editar_documentoIMP/<int:documento_id>/', views.editar_documentoIMP, name='editar_documentoIMP'),
     path('eliminar_documentoIMP/<int:documento_id>/', views.eliminar_documentoIMP, name='eliminar_documentoIMP'),
     
-    path('guardar_docPropiedadIMP/<int:task_id>/', views.guardar_docPropiedadIMP, name='guardar_docPropiedadIMP'),
     
     path('guardar_Avaluo/<int:task_id>/', views.guardar_Avaluo, name='guardar_Avaluo'),
     path('editar_avaluo/<int:avaluo_id>/', views.editar_avaluo, name='editar_avaluo'),
