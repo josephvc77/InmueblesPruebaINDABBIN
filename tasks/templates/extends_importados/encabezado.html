@@ -32,54 +32,51 @@
           <p>⚠️Guarde primero sus cambios antes de agregar un folio, numero plano o expediente CEDOC⚠️</p>
 
           <div class="separador">
-            <fieldset>
-              {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                  {% endfor %}
-              </ul>
-              {% endif %}
-          
-              <h2>Folios Reales Asignados:</h2>
-              {% if task.foliosreales_set.exists %}
-              <div class="table-responsive" id="tablaFolios">
-              <table class="table folios-reales-table">
-                  <thead>
-                      <tr>
-                          <th>Folios Reales</th>
-                          <th>Acciones</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {% for folio_real in task.folios_reales_data.all %}
-                      <tr>
-                          <td>{{ folio_real.folios_reales_data }}</td>
-                          <td>
-                              <button class="delete-folio-real-btn btn btn-outline-danger" data-url="{% url 'delete_folio_real' task_id=task.id folio_real_id=folio_real.id %}">Eliminar</button>
-                          </td>
-                      </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-              </div>
-              {% endif %}
-          
-              <!-- Aquí debes incluir tu formulario para agregar un nuevo Folio Real -->
-              <form method="post" accept="{% url 'guardar_folio_real' %}" id="foliosrealesForm">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="{{ folios_reales_data_form.folios_reales_data.id_for_label }}">Agregar nuevo folio real:</label>
-                    {{ folios_reales_data_form.folios_reales_data }}
-                </div>
+          <fieldset>
+            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+            <h2>Folios Reales Asignados:</h2>
+            {% if task.folios_reales.exists %}
+            <table class="table folios-reales-table">
+                <thead>
+                    <tr>
+                        <th>Folios Reales</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for folio_real in task.folios_reales.all %}
+                    <tr>
+                        <td>{{ folio_real.folios_reales_data }}</td>
+                        <td>
+                            <button class="delete-folio-real-btn btn btn-outline-danger" data-url="{% url 'delete_folio_realIMP' task_id=task.id folio_real_id=folio_real.id %}">Eliminar</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+              <form method="post"  enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label for="{{ folios_reales_data_form.folios_reales_data.id_for_label }}">Agregar nuevo folio real:</label>
+                      {{ folios_reales_data_form.folios_reales_data }}
+                  </div>
                   <button type="submit" class="btn btn-outline-success">Agregar folio real</button>
               </form>
-          </fieldset>
+       
+        </fieldset>
           </div>
         <br><br>
         <div class="separador">
         <fieldset>
           <h2>Proporcione los datos de los numeros de planos:</h2>
+          {% if task.numeros_planos.exists %}
           <table class="table expedientes-cedoc-table">
               <thead>
                   <tr>
@@ -98,10 +95,7 @@
                   {% endfor %}
               </tbody>
           </table>
-
-
-
-
+          {% endif %}   
           <form method="post"  enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
@@ -116,6 +110,7 @@
       <div class="separador">
           <fieldset>
             <h2>Expedientes CEDOC Asignados:</h2>
+            {% if task.expedientes_deoc.exists %}
             <table class="table expedientes-cedoc-table">
               <thead>
                 <tr>
@@ -134,7 +129,7 @@
                 {% endfor %}
               </tbody>
             </table>
-
+          {% endif %}
              
           <form method="post"  enctype="multipart/form-data">
             {% csrf_token %}
@@ -154,41 +149,6 @@
           </fieldset>
         </div>
 </div>
-
-<!-- Agrega este bloque de scripts en tu plantilla -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $("form").on("submit", function(event) {
-            event.preventDefault(); // Evitar la recarga de la página
-
-            $.ajax({
-                type: "POST",
-                url: "{% url 'guardar_folio_realIMP' task_id=task.id %}",
-                data: $(this).serialize(),
-                dataType: "json",
-                success: function(response) {
-                    if (response.success) {
-                      alert("Folio real guardado con éxito.");
-                      $("#tablaFolios").load("{% url 'task_detail_importados' task_id=task.id %} #tablaFolios");
-                      
-                      // Restablece el formulario de Documento de Ocupación
-                      $("#foliosrealesForm")[0].reset();
-                        // Operación exitosa, puedes realizar acciones adicionales aquí
-                       
-                    } else {
-                        // Error en la operación, mostrar mensaje de error
-                        alert(response.message);
-                    }
-                },
-                error: function() {
-                    alert("Error en la solicitud.");
-                }
-            });
-        });
-    });
-</script>
-
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {

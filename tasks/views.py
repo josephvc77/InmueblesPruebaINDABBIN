@@ -448,6 +448,7 @@ from .forms import TaskCreateForm
 @login_required
 def create_task(request):
     if request.method == 'POST':
+        # Crear un formulario sin excluir el campo 'assigned_to' en este caso
         form = TaskCreateForm(request.POST, user=request.user)
         if form.is_valid():
             task = form.save(commit=False)
@@ -461,7 +462,6 @@ def create_task(request):
         form = TaskCreateForm(user=request.user)
     context = {'form': form}
     return render(request, 'create_task.html', context)
-
 
 
 

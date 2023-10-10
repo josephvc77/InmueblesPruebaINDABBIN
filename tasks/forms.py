@@ -90,13 +90,15 @@ class OcupacionesForm(forms.ModelForm):
 class TaskForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Creamos una instancia de FoliosRealesForm y la asignamos
+        # al atributo folios_reales_form para utilizarla en el template.
         self.folios_reales_form = FoliosRealesForm()
     class Meta:
         model = Task
         fields = [
                 # Encabezado - Datos generales
                   'rfi', 'rfiProv', 'NombreInmueble', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
-                  'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 
+                  'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 'deadline',
                   'descripcion_del_sentido_del_Dictamen','fecha_documento', 'subir_archivo','no_de_identificador_del_expediente_institucion', 
                 # Ubicación
                   'pais', 'entidad_federativa', 'municipio_alcaldia', 'localidad', 'componente_espacial','fotografia_de_la_ubicacion',
@@ -270,7 +272,7 @@ class InmuebleForm(forms.ModelForm):
                 # Valor
                   'valor_contable', 'fecha_valor_contable', 'valor_asegurable', 'fecha_valor_asegurable', 'valor_adquisicion', 'fecha_valor_adquisicion', 'valor_terreno', 
                   'valor_construccion', 'valor_catastral_terreno', 'valor_catastral_construccion', 'valor_total_catastral', 'fecha_valor_catastral', 'documentacion_soporte' ]
-        widgets = {
+    widgets = {
             'subir_archivo': CustomClearableFileInput,
             'fecha_documento': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
             'rfi': forms.TextInput(attrs={'disabled': 'disabled'}),
