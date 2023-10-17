@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, Task_Condia, TramitesDisposicion, TramitesDisposicionIMP
+from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, Task_Condia, TramitesDisposicion, TramitesDisposicionIMP
 
 # Define TabularInline para cada modelo
 
@@ -113,6 +113,8 @@ class TramitesDisposicionInlineIMP(admin.TabularInline):
 class InstitucionesOcupantesInlineIMP(admin.TabularInline):
     model = InstitucionesOcupantesIMP
 
+class MensajesInlineIMP(admin.TabularInline):
+    model = MensajeIMP
 
 # Agrega más TabularInline para otros modelos aquí...
 
@@ -132,6 +134,7 @@ class AllModelsAdminIMP(admin.ModelAdmin):
         DatosAvaluosInlineIMP,
         OcupacionesInlineIMP,
         TramitesDisposicionInlineIMP,
+        MensajesInlineIMP,
         
         
         

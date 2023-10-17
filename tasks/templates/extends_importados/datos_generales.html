@@ -101,6 +101,40 @@
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.prioridad.id_for_label }}">Prioridad:</label>
                 {{ inmueble.prioridad }}
+              </div><br>
+              <div class="form-group form-check-inline">
+                <label for="{{ inmueble.assigned_to.id_for_label }}">Asignar a:</label>
+                {{ inmueble.assigned_to }}
+                {% if not request.user.is_superuser %}
+                <p>No tienes permisos para asignar tareas a otros usuarios.</p>
+              {% endif %}
               </div>
+              <div class="form-group form-check-inline">
+                <label for="{{ inmueble.deadline.id_for_label }}">Fecha y hora límite:</label>
+                <input type="text" id="deadline-picker-{{ task.id }}" name="deadline" value="{{ inmueble.deadline|date:'Y-m-d H:i' }}">
+            </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const taskId = "{{ task.id }}";
+            const deadlinePicker = document.getElementById(`deadline-picker-${taskId}`);
+    
+            const storedDeadline = localStorage.getItem(`deadline_${taskId}`);
+            const dateStr = storedDeadline || "{{ inmueble.deadline|date:'Y-m-d H:i' }}";
+    
+            const picker = flatpickr(deadlinePicker, {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                defaultDate: dateStr,
+                onChange: function (selectedDates, dateStr) {
+                    localStorage.setItem(`deadline_${taskId}`, dateStr);
+                },
+            });
+        });
+    </script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    

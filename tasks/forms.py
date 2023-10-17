@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ClearableFileInput, ModelForm
-from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, Task_Condia, TramitesDisposicion, TramitesDisposicionIMP
+from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, Task_Condia, TramitesDisposicion, TramitesDisposicionIMP
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -98,7 +98,7 @@ class TaskForm(ModelForm):
         fields = [
                 # Encabezado - Datos generales
                   'rfi', 'rfiProv', 'NombreInmueble', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
-                  'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 'deadline',
+                  'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 
                   'descripcion_del_sentido_del_Dictamen','fecha_documento', 'subir_archivo','no_de_identificador_del_expediente_institucion', 
                 # Ubicación
                   'pais', 'entidad_federativa', 'municipio_alcaldia', 'localidad', 'componente_espacial','fotografia_de_la_ubicacion',
@@ -156,8 +156,6 @@ class TaskCreateForm(ModelForm):
             # Oculta el campo 'assigned_to' si el usuario no es superusuario
             self.fields['assigned_to'].widget = forms.HiddenInput()
             
-            
-            
 class ColindanciasForm(ModelForm):
     class Meta:
         model = Colindancias
@@ -166,10 +164,14 @@ class ColindanciasForm(ModelForm):
 class MensajeForm(forms.ModelForm):
     class Meta:
         model = Mensaje
-        fields = ['asunto', 'mensaje', 'enviar_a', 'enviado_por']  # Elimina 'enviado_por' ya que se llenará automáticamente
+        fields = ['asunto', 'mensaje', 'enviar_a', 'estado']  # Elimina 'enviado_por' ya que se llenará automáticamente
     enviar_a = forms.ModelChoiceField(queryset=User.objects.all(), label='Enviar A')
 
-
+class MensajeFormIMP(forms.ModelForm):
+    class Meta:
+        model = MensajeIMP
+        fields = ['asunto', 'mensaje', 'enviar_a_imp', 'estado', 'enlace']  # Elimina 'enviado_por' ya que se llenará automáticamente
+    enviar_a_imp = forms.ModelChoiceField(queryset=User.objects.all(), label='Enviar A')
 
 class PasswordConfirmationForm(forms.Form):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
@@ -245,7 +247,7 @@ class InmuebleForm(forms.ModelForm):
         model = Inmueble
         fields = [
                 # Encabezado - Datos generales
-                  'rfi', 'rfiProv', 'NombreInmueble', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
+                  'rfi', 'assigned_to', 'deadline', 'rfiProv', 'NombreInmueble', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
                   'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 
                   'descripcion_del_sentido_del_Dictamen','fecha_documento', 'subir_archivo','no_de_identificador_del_expediente_institucion', 
                 # Ubicación
@@ -272,10 +274,9 @@ class InmuebleForm(forms.ModelForm):
                 # Valor
                   'valor_contable', 'fecha_valor_contable', 'valor_asegurable', 'fecha_valor_asegurable', 'valor_adquisicion', 'fecha_valor_adquisicion', 'valor_terreno', 
                   'valor_construccion', 'valor_catastral_terreno', 'valor_catastral_construccion', 'valor_total_catastral', 'fecha_valor_catastral', 'documentacion_soporte' ]
-    widgets = {
+        widgets = {
             'subir_archivo': CustomClearableFileInput,
             'fecha_documento': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'rfi': forms.TextInput(attrs={'disabled': 'disabled'}),
             'entidad_federativa': forms.Select(attrs={'onchange': "loadMunicipios(this.value);"}),  # Añadir el widget para el campo entidad_federativa
             'municipio_alcaldia': forms.Select,  # Añadir el widget para el campo municipio_alcaldia
             'fecha_valor_contable': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
@@ -283,6 +284,7 @@ class InmuebleForm(forms.ModelForm):
             'fecha_valor_adquisicion': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
             'fecha_valor_catastral': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
     }
+    
 
 class DocumentoOcupacionFormIMP(forms.ModelForm):
     class Meta:

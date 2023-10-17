@@ -14,7 +14,8 @@
 
       <div class="task-form-container">
         <div class="tabs">
-          <div class="tab active" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab active" data-tab="tab-mensajes">Pendientes</div>
+          <div class="tab " data-tab="tab-encabezado">Encabezado</div>
           <div class="tab" data-tab="tab-descripcion">Datos Generales</div>
           <div class="tab" data-tab="tab-ubicacion">Ubicación</div>
           <div class="tab" data-tab="tab-caracteristicas">Características</div>
@@ -24,11 +25,12 @@
           <div class="tab" data-tab="tab-valor">Valor</div>
           <div class="tab" data-tab="tab-tramites-ocupaciones">Trámites y Ocupaciones</div>
           <div class="tab" data-tab="tab-observaciones">Observaciones</div>
+          
      
         </div>
 
         <div class="form-group form-check-inline centered">
-          <label>RFI:  {{inmueble.rfi}}</label>
+          <label>RFI: {{ inmueble.rfi }}</label>
       </div>
       <div class="form-group form-check-inline">
           <label for="{{ form.rfiProv.id_for_label }}">RFI Provicional:</label>
@@ -46,29 +48,32 @@
         {% include 'extends_importados/valor.html' %}
         {% include 'extends_importados/tramites_ocupaciones.html' %}
         {% include 'extends_importados/observaciones.html' %}
+        {% include 'extends_importados/enviar_mensaje.html' %}
 
 
         <button type="submit" class="btn btn-primary">Actualizar</button>
       </div>
     </form>
+
+
+  <div class="buttons">
+    <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
+      <i class="fas fa-file-pdf"></i> Generar PDF
+    </a>
+
+      <form id="complete-form" action="{% url 'complete_task_importados' task.id %}" method="POST">
+        {% csrf_token %}
+        <button type="button" class="btn btn-success" onclick="showCompleteConfirmation()">Completar</button>
+      </form>
+      <form id="delete-form" action="{% url 'bajas_importados' task.id %}" method="POST">
+        {% csrf_token %}
+        <button type="button" class="btn btn-warning" id="darDeBajaButton">Dar de baja</button>
+      </form>
+
   </div>
+</div>
 
-  <a href="{% url 'generate_pdf' task.id %}" class="btn btn-primary" target="_blank">
-    <i class="fas fa-file-pdf"></i> Generar PDF
-</a>
-
-
-  <div class="task-action-buttons">
-    <form id="complete-form" action="{% url 'complete_task_importados' task.id %}" method="POST">
-      {% csrf_token %}
-      <button type="button" class="btn btn-success" onclick="showCompleteConfirmation()">Completar</button>
-    </form>
-
-    <form id="delete-form" action="{% url 'bajas_importados' task.id %}" method="POST">
-      {% csrf_token %}
-      <button type="button" class="btn btn-warning" id="darDeBajaButton">Dar de baja</button>
-  </form>
-  </div>
+  
 
 <style>
   /* Estilos para centrar horizontalmente elementos con la clase "centered" */
@@ -79,6 +84,16 @@
   text-align: center;
   margin: 0 auto;
 }
+.buttons{
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;
+  margin-bottom: 40px;
+}
+
 
 </style>
 <!-- SweetAlert -->

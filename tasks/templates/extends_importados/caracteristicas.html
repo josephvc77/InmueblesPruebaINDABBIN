@@ -48,9 +48,10 @@
                     <input type="date" id="{{ edificacion_form.fecha_construccion_por_edificacion.id_for_label }}" name="{{ edificacion_form.fecha_construccion_por_edificacion.name }}" class="form-control" value="{{ edificacion_form.fecha_construccion_por_edificacion.value|default:'' }}" onchange="validateDate(this)">
                 </div>
                 
-                <div id="dateAlertLocal" class="alert alert-danger" style="display: none; position: fixed; top: 10px; right: 10px; z-index: 1000;">
+                <div id="dateAlertLocal" class="alert alert-danger" style="display: none;">
                     La fecha no puede ser posterior a la fecha actual.
                 </div>
+                
                 
                 <div class="form-group">
                     <label for="{{ edificacion_form.caracteristicas_de_la_edificacion.id_for_label }}">Características de la Edificación:</label>
@@ -218,7 +219,7 @@
                     </div>
                     
                     <div class="form-group form-check-inline">
-                        <label for="{{ inmueble.clave_dgsm_pc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
+                        <label for="{{ inmueble.clave_dgsmpc_conaculta.id_for_label }}" class="col-form-label">Clave DGSMPC-CONACULTA:</label>
                         {{ inmueble.clave_dgsmpc_conaculta }}
                     </div>
                     
@@ -447,21 +448,21 @@
         }
 
         // Obtener el valor actual de Zona y mostrar campos correspondientes
-        var initialZonaValue = $('#{{ form.zona_ubicacion.auto_id }}').val();
+        var initialZonaValue = $('#{{ inmueble.zona_ubicacion.auto_id }}').val();
         showHideFields(initialZonaValue);
 
         // Mostrar u ocultar campos y establecer valores como "SIN INFORMACIÓN" cuando cambia la selección de Zona
-        $('#{{ form.zona_ubicacion.auto_id }}').change(function() {
+        $('#{{ inmueble.zona_ubicacion.auto_id }}').change(function() {
             var selectedValue = $(this).val();
             showHideFields(selectedValue);
         });
 
         // Obtener el valor actual de Zona y mostrar campos correspondientes
-        var caracEspeciales = $('#{{ form.monumento.auto_id }}, #{{ form.historico.auto_id }}, #{{ form.artistico.auto_id }}, #{{ form.arqueologico.auto_id }}').val();
+        var caracEspeciales = $('#{{ inmueble.monumento.auto_id }}, #{{ inmueble.historico.auto_id }}, #{{ inmueble.artistico.auto_id }}, #{{ inmueble.arqueologico.auto_id }}').val();
         showDatas(caracEspeciales);
 
         // Mostrar u ocultar campos y establecer valores como "SIN INFORMACIÓN" cuando cambia la selección de Zona
-        $('#{{ form.monumento.auto_id }}, #{{ form.historico.auto_id }}, #{{ form.artistico.auto_id }}, #{{ form.arqueologico.auto_id }}').change(function() {
+        $('#{{ inmueble.monumento.auto_id }}, #{{ inmueble.historico.auto_id }}, #{{ inmueble.artistico.auto_id }}, #{{ inmueble.arqueologico.auto_id }}').change(function() {
             var selectedValue = $(this).val();
             showDatas(selectedValue);
         });

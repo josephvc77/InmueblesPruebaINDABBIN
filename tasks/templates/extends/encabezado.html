@@ -44,7 +44,7 @@
 {% endif %}
             <h2>Folios Reales Asignados:</h2>
             {% if task.foliosreales_set.exists %}
-            <table class="table folios-reales-table">
+            <table class="folios-reales-table">
                 <thead>
                     <tr>
                         <th>Folios Reales</th>
@@ -79,7 +79,7 @@
         <fieldset>
           <h2>Proporcione los datos de los numeros de planos:</h2>
           {% if task.numeros_planos.exists %}
-          <table class="table expedientes-cedoc-table">
+          <table class="expedientes-cedoc-table">
               <thead>
                   <tr>
                       <th>Numero Plano</th>
@@ -113,7 +113,7 @@
           <fieldset>
             <h2>Expedientes CEDOC Asignados:</h2>
             {% if task.expedientes_cedoc_set.exists %}
-            <table class="table expedientes-cedoc-table">
+            <table class="expedientes-cedoc-table">
               <thead>
                 <tr>
                   <th>Expediente CEDOC</th>

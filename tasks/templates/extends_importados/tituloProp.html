@@ -4,7 +4,7 @@
         <div class="form-section">
             <h3>Agregar Nuevo Documento de Propiedad</h3>
             <br>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" id="docPropiedadForm" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group form-check-inline">
                     <label for="{{ documento_propiedad_form.propietario_inmueble.id_for_label }}">Propietario del inmueble según documento de propiedad:</label>
@@ -98,19 +98,18 @@
 
                 <div class="form-group form-check-inline" id="fecha_inscripcion_local">
                     <label for="{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}">Fecha Inscripción Local:</label>
-                    <input type="date" id="{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}"  name="{{ documento_propiedad_form.fecha_inscripcion_local.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_inscripcion_local.value|default:'' }}" onchange="validateDate(this)" >
+                    <input type="date" id="{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}"  name="{{ documento_propiedad_form.fecha_inscripcion_local.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_inscripcion_local.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this)" >
                 </div>
                 
                 <div id="dateAlertLocal" class="alert alert-danger" style="display: none;">
                     La fecha no puede ser posterior a la fecha actual.
                 </div>
                 
-                
                 <div class="form-group">
                     <label for="{{ documento_propiedad_form.archivo.id_for_label }}">Archivo Adjunto:</label>
                     {{ documento_propiedad_form.archivo }}
                 </div>
-                <button class="btn btn-outline-success" type="submit">Agregar Documento</button>
+                <button class="btn btn-outline-success" type="submit" id="guardarDocPropiedad">Agregar Documento</button>
             </form>
         </div>
     </div>
@@ -244,18 +243,34 @@
     });
 </script>
 <script>
-    function validateDate(input) {
-        const selectedDate = new Date(input.value);
-        const currentDate = new Date();
-    
+    function validateDate(input, alertType) {
+        var selectedDate = new Date(input.value);
+        var currentDate = new Date();
+        var alertId = input.id === "{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}" ? "dateAlertFederal" : "dateAlertLocal";
+
         if (selectedDate > currentDate) {
-            document.getElementById('dateAlertLocal').style.display = 'block';
-            input.value = ''; // Borra el valor si es posterior a la fecha actual
+            var alert = document.getElementById(alertId);
+            alert.style.display = 'block';
+
+            // Agregamos estilos para hacer la alerta flotante
+            alert.style.position = 'fixed';
+            alert.style.top = '10px';
+            alert.style.right = '10px';
+            alert.style.zIndex = '1000'; // Asegura que esté por encima de otros elementos
+
+            input.value = ''; // Limpia el campo de fecha
+
+            // Cierra la alerta después de 5 segundos (5000 ms)
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 5000);
         } else {
-            document.getElementById('dateAlertLocal').style.display = 'none';
+            document.getElementById(alertId).style.display = 'none';
         }
     }
-    </script>
+</script>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

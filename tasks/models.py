@@ -40,7 +40,7 @@ class Task(models.Model):
     
     deadline = models.DateTimeField(null=True, blank=True)
     
-    NombreInmueble = models.CharField(max_length=200, verbose_name='Nombre del inmueble', null=True, blank=False)
+    NombreInmueble = models.CharField(max_length=200, verbose_name='Nombre del inmueble', null=True, blank=True)
     seccion_del_inventario = models.CharField(max_length=100, null=True, blank=True)
    
     Dependencia_Administradora = models.CharField(max_length=100, null=True, blank=True)
@@ -846,6 +846,13 @@ class Mensaje(models.Model):
     enviar_a = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario" ,related_name='mensajes_enviados')
     enviado_por = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Enviado por" ,related_name='mensajes_recibidos', null=True, blank=True)
     fecha_envio = models.DateTimeField(auto_now_add=True)
+    ESTADO_CHOICES = [
+        ('Completado', 'Completado'),
+        ('En Revisión', 'En Revisión'),
+        ('No Completado', 'No Completado'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='No Completado')
+
 
     def __str__(self):
         return self.asunto
@@ -853,6 +860,7 @@ class Mensaje(models.Model):
 from django.db import models
 
 class Inmueble(models.Model):
+    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_inmueble')
     NombreInmueble = models.CharField(max_length=300, verbose_name='Nombre del inmueble', null=True, blank=True)
     rfi = models.CharField(max_length=15, null=True, blank=True)
     CHOICES = (
@@ -873,6 +881,8 @@ class Inmueble(models.Model):
     ]
     estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
     seccion_del_inventario = models.CharField(max_length=500, null=True, blank=True)
+    
+    deadline = models.DateTimeField(null=True, blank=True)
    
     Dependencia_Administradora = models.CharField(max_length=500, null=True, blank=True)
     
@@ -1350,8 +1360,8 @@ class Inmueble(models.Model):
         verbose_name_plural = "Inmuebles Importados"
     
 class FoliosRealesIMP(models.Model):
-    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales_data')
-    folios_reales_data = models.CharField(max_length=100, unique=True, null=True, blank=False)
+    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales')
+    folios_reales_data = models.CharField(max_length=100, unique=True, null=True, blank=True)
 
     def __str__(self):
         if self.folios_reales_data is not None:
@@ -1671,3 +1681,19 @@ class DatosTercerosIMP(models.Model):
     inscripcion_folio_real_federal = models.CharField(max_length=255,null=True, blank=True)
     superficie_objeto_ocupacion_metros = models.DecimalField(max_digits=10,decimal_places=2,null=True , blank=True)
     uso = models.CharField( max_length=255,null=True, blank=True )
+    
+    
+class MensajeIMP(models.Model):
+    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='mensajes',verbose_name="Inmueble")
+    asunto = models.CharField(max_length=200, null=True)
+    mensaje = models.TextField(null=True)
+    enviar_a_imp = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Destino", related_name='mensajes_enviados_imp')
+    enviado_por_imp = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Enviado", related_name='mensajes_recibidos_imp')
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+    ESTADO_CHOICES = [
+        ('Completado', 'Completado'),
+        ('En Revisión', 'En Revision'),
+        ('No Completado', 'No Completado'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='No Completado')
+    enlace = models.CharField(max_length=200, null=True, blank=True)

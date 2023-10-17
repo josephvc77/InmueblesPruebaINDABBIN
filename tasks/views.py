@@ -13,8 +13,8 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import BajaForm, ColindanciasForm, ColindanciasFormIMP, DatosAvaluosForm, DatosAvaluosFormIMP, DatosTercerosForm, DatosTercerosFormIMP, DocumentoOcupacionForm, DocumentoOcupacionFormIMP, DocumentoPropiedadForm, DocumentoPropiedadFormIMP, EdificacionForm, EdificacionFormIMP, Edificio_VerdeForm, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesForm, InstitucionesOcupantesFormIMP, Numero_PlanoFormIMP, OcupacionesForm, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionForm, TramitesDisposicionFormIMP
-from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, TramitesDisposicion
+from .forms import BajaForm, ColindanciasForm, ColindanciasFormIMP, DatosAvaluosForm, DatosAvaluosFormIMP, DatosTercerosForm, DatosTercerosFormIMP, DocumentoOcupacionForm, DocumentoOcupacionFormIMP, DocumentoPropiedadForm, DocumentoPropiedadFormIMP, EdificacionForm, EdificacionFormIMP, Edificio_VerdeForm, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesForm, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionForm, TramitesDisposicionFormIMP
+from .models import Colindancias, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, TramitesDisposicion
 
 from .forms import Expedientes_CEDOCForm, FoliosRealesForm, Numero_PlanoForm, TaskCreateForm, TaskForm
 
@@ -148,7 +148,29 @@ def tasks_importados(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = []
+        inmuebles = paginator.page(paginator.num_pages)
+        
+        
+    for task in inmuebles:
+        if task.deadline:
+            now = datetime.now(timezone.utc)  # Usa la zona horaria UTC para now
+            time_remaining = task.deadline - now
+            days_remaining = time_remaining.days
+            seconds_remaining = time_remaining.seconds
+            hours_remaining, seconds_remaining = divmod(seconds_remaining, 3600)  # Convertir segundos en horas y segundos sobrantes
+            # Calcular los días y las horas de retraso
+            if days_remaining < 0:
+                days_delayed = abs(days_remaining)
+                hours_delayed = hours_remaining
+            else:
+                days_delayed = 0
+                hours_delayed = 0
+
+            # Agregar los valores calculados al objeto de tarea
+            task.days_remaining = days_remaining
+            task.hours_remaining = hours_remaining
+            task.days_delayed = days_delayed
+            task.hours_delayed = hours_delayed
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -213,7 +235,7 @@ def tasks_completed(request):
     except PageNotAnInteger:
         tasks = paginator.page(1)
     except EmptyPage:
-        inmuebles = []
+        tasks = paginator.page(paginator.num_pages)
 
     total_completed_tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).count()  # Total de tareas completadas
 
@@ -259,7 +281,7 @@ def inmuebles_baja(request):
     except PageNotAnInteger:
         tasks = paginator.page(1)
     except EmptyPage:
-        inmuebles = []
+        tasks = paginator.page(paginator.num_pages)
 
     total_completed_tasks = Task.objects.filter(user=request.user, estado='Baja').count()  # Total de tareas en estado 'Baja'
 
@@ -296,7 +318,7 @@ def inmuebles_baja_importados(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = []
+        inmuebles = paginator.page(paginator.num_pages)
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -347,7 +369,7 @@ def tasks_completed_importados(request):
     except PageNotAnInteger:
         inmuebles = paginator.page(1)
     except EmptyPage:
-        inmuebles = []
+        inmuebles = paginator.page(paginator.num_pages)
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -443,19 +465,19 @@ from .forms import MensajeForm
 from django.contrib.auth.decorators import login_required
 from .forms import TaskCreateForm
 
-
-
 @login_required
 def create_task(request):
     if request.method == 'POST':
-        # Crear un formulario sin excluir el campo 'assigned_to' en este caso
         form = TaskCreateForm(request.POST, user=request.user)
         if form.is_valid():
             task = form.save(commit=False)
+            # Asignar la tarea al usuario seleccionado (si se ha seleccionado)
             assigned_to = form.cleaned_data['assigned_to']
             if assigned_to:
                 task.assigned_to = assigned_to
-            task.user = request.user
+                task.user = assigned_to  # Asignar la tarea al usuario seleccionado
+            else:
+                task.user = request.user  # El usuario actual crea la tarea
             task.save()
             return redirect('tasks')
     else:
@@ -506,7 +528,7 @@ def task_detail(request, task_id):
         expediente_cedoc_data_form = Expedientes_CEDOCForm(request.POST)
         edificacion_form = EdificacionForm(request.POST)
         baja_form = BajaForm(request.POST)
-        mensaje_form = MensajeForm(request.POST)
+        mensaje_form = MensajeForm(request.POST, prefix='mensaje')
         
         
         if documento_propiedad_form.is_valid():
@@ -571,7 +593,7 @@ def task_detail(request, task_id):
                 mensaje = mensaje_form.save(commit=False)
                 mensaje.task = task
                 mensaje.save()
-                return redirect('tasks',)
+                return redirect('tasks')
             
         if documento_ocupacion_form.is_valid():
             if any(documento_ocupacion_form.cleaned_data.values()):
@@ -652,7 +674,7 @@ def task_detail(request, task_id):
         edificacion_form = EdificacionForm()
         instituciones_ocupantes_form = InstitucionesOcupantesForm()
         baja_form = BajaForm()
-        mensaje_form = MensajeForm(request.POST)
+        mensaje_form = MensajeForm(prefix='mensaje') 
 
 
     return render(request, 'task_detail.html', {
@@ -678,6 +700,15 @@ def task_detail(request, task_id):
         
     })
 
+from django.http import JsonResponse
+
+def completar_mensaje(request, mensaje_id):
+    if request.method == 'POST':
+        mensaje = Mensaje.objects.get(id=mensaje_id)
+        mensaje.estado = 'completado'
+        mensaje.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -703,6 +734,7 @@ def task_detail_importados(request, task_id):
         numero_plano_data_form = Numero_PlanoFormIMP(request.POST)
         expediente_cedoc_data_form = Expedientes_CEDOCFormIMP(request.POST)
         edificacion_form = EdificacionFormIMP(request.POST)
+        mensaje_form = MensajeFormIMP(request.POST, prefix='mensaje')
         
         if documento_propiedad_form.is_valid():
             # Validación adicional para verificar si hay datos antes de guardar
@@ -735,7 +767,7 @@ def task_detail_importados(request, task_id):
                     return redirect('task_detail_importados', task_id=task_id)
                 else:
                     # El folio real ya existe, mostrar una alerta
-                    print(request, 'El folio real ya existe en esta tarea.')
+                    messages.error(request, 'El folio real ya existe en esta tarea.')
             else:
                 print(f"Form errors: {folios_reales_data_form.errors}")
             
@@ -751,6 +783,14 @@ def task_detail_importados(request, task_id):
                 expediente_cedoc_data = expediente_cedoc_data_form.save(commit=False)
                 expediente_cedoc_data.task = task
                 expediente_cedoc_data.save()
+                return redirect('task_detail_importados', task_id=task_id)
+            
+        if mensaje_form.is_valid():
+            mensaje_form.instance.enviado_por_imp = request.user
+            if any(mensaje_form.cleaned_data.values()):
+                mensaje = mensaje_form.save(commit=False)
+                mensaje.task = task
+                mensaje.save()
                 return redirect('task_detail_importados', task_id=task_id)
         
         if ocupaciones_form.is_valid():
@@ -830,6 +870,7 @@ def task_detail_importados(request, task_id):
         expediente_cedoc_data_form = Expedientes_CEDOCFormIMP()
         edificacion_form = EdificacionFormIMP()
         instituciones_ocupantes_form = InstitucionesOcupantesForm()
+        mensaje_form = MensajeFormIMP(prefix='mensaje') 
         
     return render(request, 'task_detail_importados.html', {
         'task': task,
@@ -847,7 +888,17 @@ def task_detail_importados(request, task_id):
         'tramite_disposicion_form': tramite_disposicion_form,
         'numero_plano_data_form': numero_plano_data_form,
         'expediente_cedoc_data_form': expediente_cedoc_data_form,
+        'mensaje_form': mensaje_form,
     })
+    
+
+def completar_mensajeIMP(request, mensaje_id):
+    if request.method == 'POST':
+        mensaje = MensajeIMP.objects.get(id=mensaje_id)
+        mensaje.estado = 'completado'
+        mensaje.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
         
 
@@ -886,8 +937,6 @@ def guardar_instituciones_ocupantes(request, task_id):
             return JsonResponse({"success": False})
     else:
         return JsonResponse({"success": False})
-    
-    
 
 
 @login_required
@@ -964,6 +1013,42 @@ def guardar_datos_tercerosIMP(request, task_id):
     else:
         return JsonResponse({"success": False})
     
+@login_required
+def guardar_docPropiedad(request, task_id):
+    task = get_object_or_404(Task, pk=task_id, user=request.user)
+    if request.method == 'POST':
+        documento_propiedad_form = DocumentoPropiedadForm(request.POST, request.FILES)
+
+        if documento_propiedad_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            documento_propiedad = documento_propiedad_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            documento_propiedad.task = task
+            documento_propiedad.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+    
+
+def guardar_docPropiedadIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    if request.method == 'POST':
+        documento_propiedad_form = DocumentoPropiedadFormIMP(request.POST, request.FILES)
+
+        if documento_propiedad_form.is_valid():
+            # Realiza cualquier validación adicional si es necesario
+            documento_propiedad = documento_propiedad_form.save(commit=False)
+            # Asegúrate de obtener la tarea relacionada correctamente
+            documento_propiedad.task = task
+            documento_propiedad.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
+
 
 @login_required
 def guardar_Avaluo(request, task_id):
@@ -1073,22 +1158,7 @@ def delete_expediente_cedoc(request, task_id, expediente_cedoc_id):
     return JsonResponse({'success': True})
 
 
-# Eliminar colindancia
-@login_required
-def delete_colindancia(request, colindancia_id):
-    colindancia = get_object_or_404(Colindancias, id=colindancia_id)
-    task_id = colindancia.task_id
-    colindancia.delete()
-    return redirect('task_detail', task_id=task_id)
-
-# Eliminar colindancia
-@login_required
-def delete_colindanciaIMP(request, colindancia_id):
-    colindancia = get_object_or_404(ColindanciasIMP, id=colindancia_id)
-    task_id = colindancia.task_id
-    colindancia.delete()
-    return redirect('task_detail_importados', task_id=task_id)
-
+               
 # Eliminar folios
 def delete_folio_realIMP(request, task_id, folio_real_id):
     task = get_object_or_404(Inmueble, pk=task_id)
@@ -1485,7 +1555,25 @@ def generate_pdf(request, task_id):
 
     return HttpResponse("Error al generar el PDF.", status=500)
 
+@login_required
+def generate_pdfIMP(request, task_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
 
+    context = {
+        'task': task,
+        'STATIC_URL': settings.STATIC_URL
+    }
+
+    pdf = render_to_pdf('pdf_template.html', context)
+
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"task_{task_id}.pdf"
+        content = f"inline; filename={filename}"
+        response['Content-Disposition'] = content
+        return response
+
+    return HttpResponse("Error al generar el PDF.", status=500)
 
 
 import pandas as pd

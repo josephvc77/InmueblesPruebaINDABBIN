@@ -8,7 +8,7 @@
   <div class="input-group">
     <input type="text" name="q" placeholder="Buscar por Nombre, RFI, Entidad Federativa o Municipio" value="{{ search_query }}" class="form-control">
     <div class="input-group-append">
-      <button class="btn btn-outline-primary buscar" type="submit">Buscar</button>
+      <button class="btn btn-outline-primary" type="submit">Buscar</button>
     </div>
   </div>
   <div class="form-group">
@@ -20,7 +20,7 @@
       <option value="Baja">Baja</option>
     </select>
   </div>
-  <a href="{% url 'export_tasks_to_excel' %}" class="btn btn-outline-success btn-sm excel">Exportar Excel <i class="fas fa-file-excel"></i></a>
+  <a href="{% url 'export_tasks_to_excel' %}" class="btn btn-outline-success btn-sm m-2">Exportar Excel <i class="fas fa-file-excel"></i></a>
 
 
 {% if mensaje %}
@@ -57,7 +57,7 @@
   {% for task in inmuebles %}
   <div class="card">
     <div class="card-header">
-      <h5>{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdf' task.id %}" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
+      <h5>{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
     </div>
     <div class="card-body">
       <div class="scroll-content">
@@ -65,18 +65,56 @@
 
         <p><strong>RFI:</strong> {{ task.rfi }}</p>
         <p><strong>Sector:</strong> {{ task.Sector }}</p>
-        <p><strong>Institución Administradora:</strong> {{ task.Nombre_de_la_institucion_que_administra_el_inmueble }}</p>
         <p><strong>Sección del Inventario:</strong> {{ task.seccion_del_inventario }}</p>
         <p><strong>Causa de Alta:</strong> {{ task.causa_alta }}</p>
         <p><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
         <p class="priority-paragraph {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
           Prioridad: {{ task.prioridad }}
         </p>
+        {% if task.assigned_to %}
+        <label for="assigned_to">Tarea asignada a:</label>
+        <p style="background-color: #691c32; width: 60%; margin: 10px; padding: 5px; color: #ccc">{{ task.assigned_to }}</p>
+      {% endif %}
+      
+            {% if task.deadline %}
+              <p>Entrega para: {{task.deadline}}</p>
+              {% endif %}
+              {% if task.completed %}
+              <p>Completada</p>
+            {% elif task.days_delayed > 0 %}
+              <p style="color: red;">
+                Retrasada por:
+                {{ task.days_delayed }} días
+                {% if task.hours_delayed > 0 %}
+                  {{ task.hours_delayed }} horas
+                {% endif %}
+              </p>
+            {% elif task.hours_delayed > 0 %}
+              <p style="color: red;">
+                Retrasada por:
+                {{ task.hours_delayed }} horas
+              </p>
+            {% elif task.days_remaining > 0 or task.hours_remaining > 0 %}
+              <p>
+                Tiempo restante:
+                {{ task.days_remaining }} días
+                {{ task.hours_remaining }} horas
+              </p>
+            {% else %}
+              <p>La tarea no tiene plazo de entrega</p>
+            {% endif %}
+        
+
+      
       </div>
     </div>
    
     <p class="completado">Creado el: {{ task.creado}}</p>
+    
+    {% if task.datecompleted %}
     <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
+  {% endif %}
+  
     <div class="card-footer">
       <a href="{% url 'task_detail_importados' task.id %}" class="btn btn-outline">Ver detalles</a>
     
@@ -133,12 +171,6 @@
   </script>
 <style>
 
-  .buscar{
-    margin-left: 10px;
-  }
-  .excel {
-    width: 170px;
-}
   .priority-paragraph {
     font-weight: bold; /* Hace que el texto de la prioridad sea negrita */
     margin-bottom: 10px; /* Agrega espacio debajo del párrafo de prioridad */
@@ -180,13 +212,13 @@
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 550px;
-    height: 550px;
+    height: 650px;
     padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     max-width: 500px; /* Aumenta el ancho de la tarjeta */
-    max-height: 500px;
+    max-height: 600px;
     margin: 15px;
   }
 
@@ -226,10 +258,6 @@
     padding-bottom: 1em;
   }
 
-  .form-group {
-    margin-left: 20px;
-    margin-right: 20px;
-}
   .card-footer{
     background-color: #DDC9A3;
   }
@@ -239,8 +267,7 @@
     background-color: #f7f7f7;
     border: 1px solid #e1e1e1;
     border-radius: 4px;
-    padding-left: 20px;
-    padding-top: 0px;
+    padding: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
@@ -309,7 +336,17 @@
     width: 20px;
   }
 
-
+  /* Estilo para el formulario de búsqueda */
+.search-form {
+  display: flex;
+  align-items: center;
+  background-color: #f7f7f7;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
 
 /* Estilo para el campo de entrada de texto */
 .search-form input[type="text"] {
