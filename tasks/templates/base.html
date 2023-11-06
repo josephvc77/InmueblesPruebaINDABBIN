@@ -47,7 +47,7 @@
            <a href="{%url 'tasks_importados' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
 
 
-           <a  href="{% url 'calendar' %}" class="btn-calendar">Eventos
+           <a style="background-color: #1a252f; display: flex;align-content: center; justify-content: space-evenly;align-items: baseline; position: absolute; right: 6em; color: #fff; text-decoration: none; padding: 2px 8px; border: 0.5px solid #fff; border-radius: 10px;" href="{% url 'calendar' %}" class="btn-calendar"> Eventos
             <i class="far fa-calendar"></i>
         </a>
 
@@ -314,6 +314,12 @@ left: -.3em;
  
     </style>
     <script>
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+      }
+      
       // Función para activar el modo oscuro
       function activarModoOscuro() {
         // Agrega una clase al elemento body para aplicar estilos de modo oscuro
