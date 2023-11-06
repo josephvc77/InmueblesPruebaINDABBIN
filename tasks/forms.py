@@ -244,7 +244,7 @@ class InmuebleForm(forms.ModelForm):
         model = Inmueble
         fields = [
                 # Encabezado - Datos generales
-                  'rfi', 'assigned_to', 'deadline', 'rfiProv', 'NombreInmueble', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
+                  'rfi', 'assigned_to', 'deadline', 'rfiProv', 'NombreInmueble', 'UR', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
                   'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 
                   'descripcion_del_sentido_del_Dictamen','fecha_documento', 'subir_archivo','no_de_identificador_del_expediente_institucion', 
                 # Ubicación

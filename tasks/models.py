@@ -874,6 +874,18 @@ class Inmueble(models.Model):
     default='No', null=True, blank=True
 )
     
+    UR_CHOICES = [
+        ('CGEE', 'CGEE'),
+        ('DGB', 'DGB'),
+        ('DGBTEPD', 'DGBTEPD'),
+        ('DGCFT', 'DGCFT'),
+        ('DGETAyCM', 'DGETAyCM'),
+        ('DGETI', 'DGETI'),
+        ('DGRMyS', 'DGRMyS'),
+        ('RESEMS', 'RESEMS'),
+    ]
+    UR = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
+    
     ESTADO_CHOICES = [
         ('Activo', 'Activo'),
         ('Baja', 'Baja'),
@@ -890,6 +902,8 @@ class Inmueble(models.Model):
         ('SECRETARÍA DE EDUCACIÓN PÚBLICA', 'SECRETARÍA DE EDUCACIÓN PÚBLICA'),
     ]
     Sector = models.CharField(max_length=200, choices=SECTOR_INSTITUCION_CHOICES, null=True, blank=True)
+    
+    
     
    
     NOMBRE_INSTITUCION_CHOICES = [
