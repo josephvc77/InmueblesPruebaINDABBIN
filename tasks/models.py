@@ -830,14 +830,14 @@ class DatosTerceros(models.Model):
     superficie_objeto_ocupacion_metros = models.DecimalField(max_digits=10,decimal_places=2,null=True , blank=True)
     uso = models.CharField( max_length=255,null=True, blank=True )
 
-
-# MODELO CONDIA
-
-class Task_Condia(models.Model):
-    Nombre_inmueble = models.CharField(max_length=50)
-    
-    def __str__(self):
-        return self.Nombre_inmueble
+class Events(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255,null=True,blank=True)
+    start = models.DateTimeField(null=True,blank=True)
+    end = models.DateTimeField(null=True,blank=True)
+ 
+    class Meta:  
+        db_table = "tblevents"
 
 class Mensaje(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Inmueble")
@@ -1681,6 +1681,8 @@ class DatosTercerosIMP(models.Model):
     inscripcion_folio_real_federal = models.CharField(max_length=255,null=True, blank=True)
     superficie_objeto_ocupacion_metros = models.DecimalField(max_digits=10,decimal_places=2,null=True , blank=True)
     uso = models.CharField( max_length=255,null=True, blank=True )
+    
+    
     
     
 class MensajeIMP(models.Model):

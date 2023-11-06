@@ -1,0 +1,512 @@
+<div class="tab-content" id="tab-archivos">
+    <div class="section">
+      <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-1" style="cursor: pointer;">Solicitud de espacio o notificación a la UR <i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-1" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="solicitud_espacio">Solicitud de espacio o notificación a la UR:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" multiple name="solicitud_espacio" id="solicitud_espacio">
+                    <div class="input-group-btn">
+                      {% if task.solicitud_espacio %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.solicitud_espacio.url }}', '1')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-1" class="hidden">
+              <iframe id="pdf-viewer-1" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-2" style="cursor: pointer;">Tabla de superficie máxima a ocupar por institución (SMOI) <i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-2" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="tabla_superficie_maxima">Tabla de superficie máxima a ocupar por institución (SMOI):</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="tabla_superficie_maxima" id="tabla_superficie_maxima">
+                    <div class="input-group-btn">
+                      {% if task.tabla_superficie_maxima %}
+                        <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.tabla_superficie_maxima.url }}', '2')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div id="pdf-container-2" class="hidden">
+                    <iframe id="pdf-viewer-2" src="" width="100%" height="600"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+      <h5 class="contenedor-archivos" id="toggle-archivos-3" style="cursor: pointer;">Justificación y autorización del arrendamiento ante el INDAABIN <i class="fas fa-chevron-down"></i></h5>
+      <div class="row" id="tasks-container-3" style="display: none;">
+          <div class="form-group form-check-inline archivo-style">
+              <label for="justificacion_arrendamiento">Justificación y autorización del arrendamiento ante el INDAABIN:</label>
+              <div class="input-group">
+                  <input type="file" class="form-control" name="justificacion_arrendamiento" id="justificacion_arrendamiento">
+                  <div class="input-group-btn">
+                    {% if task.justificacion_arrendamiento %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.justificacion_arrendamiento.url }}', '3')">
+                          <i class="fas fa-file-upload"></i> Ver PDF
+                      </button>
+                      {% endif %}
+                  </div>
+              </div>
+              <div id="pdf-container-3" class="hidden">
+                  <iframe id="pdf-viewer-3" src="" width="100%" height="600"></iframe>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="container">
+    <h5 class="contenedor-archivos" id="toggle-archivos-4" style="cursor: pointer;">Solicitud de disponibilidad de inmuebles de propiedad federal y respuesta del INDAABINN <i class="fas fa-chevron-down"></i></h5>
+    <div class="row" id="tasks-container-4" style="display: none;">
+        <div class="form-group form-check-inline archivo-style">
+            <label for="solicitud_disponibilidad">Solicitud de disponibilidad de inmuebles de propiedad federal y respuesta del INDAABINN:</label>
+            <div class="input-group">
+                <input type="file" class="form-control" name="solicitud_disponibilidad" id="solicitud_disponibilidad">
+                <div class="input-group-btn">
+                  {% if task.solicitud_disponibilidad %}
+                    <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.solicitud_disponibilidad.url }}', '4')">
+                        <i class="fas fa-file-upload"></i> Ver PDF
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="pdf-container-4" class="hidden">
+                <iframe id="pdf-viewer-4" src="" width="100%" height="600"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-5" style="cursor: pointer;">Solicitud y/o autorización del arrendamiento (Oficialía Mayor) <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-5" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="solicitud_arrendamiento_oficialia">Solicitud y/o autorización del arrendamiento (Oficialía Mayor):</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="solicitud_arrendamiento_oficialia" id="solicitud_arrendamiento_oficialia">
+              <div class="input-group-btn">
+                {% if task.solicitud_arrendamiento_oficialia %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.solicitud_arrendamiento_oficialia.url }}', '5')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-5" class="hidden">
+              <iframe id="pdf-viewer-5" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-6" style="cursor: pointer;">Notificación al propietario para arrendar el inmueble <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-6" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="notificacion_propietario_arrendar">Notificación al propietario para arrendar el inmueble:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="notificacion_propietario_arrendar" id="notificacion_propietario_arrendar">
+              <div class="input-group-btn">
+                {% if task.notificacion_propietario_arrendar %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.notificacion_propietario_arrendar.url }}', '6')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-6" class="hidden">
+              <iframe id="pdf-viewer-6" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+    
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-7" style="cursor: pointer;">Solicitud de justipreciación de renta <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-7" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="solicitud_justipreciacion_renta">Solicitud de justipreciación de renta:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="solicitud_justipreciacion_renta" id="solicitud_justipreciacion_renta">
+              <div class="input-group-btn">
+                {% if task.solicitud_justipreciacion_renta %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.solicitud_justipreciacion_renta.url }}', '7')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-7" class="hidden">
+              <iframe id="pdf-viewer-7" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-8" style="cursor: pointer;">Notificación de pago de derechos del INDAABIN <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-8" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="notificacion_pago_derechos">Notificación de pago de derechos del INDAABIN:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="notificacion_pago_derechos" id="notificacion_pago_derechos">
+              <div class="input-group-btn">
+                {% if task.notificacion_pago_derechos %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.notificacion_pago_derechos.url }}', '8')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-8" class="hidden">
+              <iframe id="pdf-viewer-8" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-9" style="cursor: pointer;">Dictamen de justipreciación de renta <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-9" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="dictamen_justipreciacion_renta">Dictamen de justipreciación de renta:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="dictamen_justipreciacion_renta" id="dictamen_justipreciacion_renta">
+              <div class="input-group-btn">
+                {% if task.dictamen_justipreciacion_renta %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.dictamen_justipreciacion_renta.url }}', '9')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-9" class="hidden">
+              <iframe id="pdf-viewer-9" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-10" style="cursor: pointer;">Oficio de revisión jurídica y respuesta <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-10" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="oficio_revision_juridica_respuesta">Oficio de revisión jurídica y respuesta:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="oficio_revision_juridica_respuesta" id="oficio_revision_juridica_respuesta">
+              <div class="input-group-btn">
+                {% if task.oficio_revision_juridica_respuesta %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.oficio_revision_juridica_respuesta.url }}', '10')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-10" class="hidden">
+              <iframe id="pdf-viewer-10" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-11" style="cursor: pointer;">Justificación plurianual <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-11" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="justificacion_plurianual">Justificación plurianual:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="justificacion_plurianual" id="justificacion_plurianual">
+              <div class="input-group-btn">
+                {% if task.justificacion_plurianual %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.justificacion_plurianual.url }}', '11')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-11" class="hidden">
+              <iframe id="pdf-viewer-11" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-12" style="cursor: pointer;">Oficio de solicitud y registro obligacional (UAJ) <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-12" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="oficio_solicitud_registro_obligacional">Oficio de solicitud y registro obligacional (UAJ):</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="oficio_solicitud_registro_obligacional" id="oficio_solicitud_registro_obligacional">
+              <div class="input-group-btn">
+                {% if task.oficio_solicitud_registro_obligacional %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.oficio_solicitud_registro_obligacional.url }}', '12')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-12" class="hidden">
+              <iframe id="pdf-viewer-12" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+      
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-13" style="cursor: pointer;">Registro de contrato en página del INDAABIN <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-13" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="registro_contrato_pagina_indaabin">Registro de contrato en página del INDAABIN:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="registro_contrato_pagina_indaabin" id="registro_contrato_pagina_indaabin">
+              <div class="input-group-btn">
+                {% if task.registro_contrato_pagina_indaabin %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.registro_contrato_pagina_indaabin.url }}', '13')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-13" class="hidden">
+              <iframe id="pdf-viewer-13" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-14" style="cursor: pointer;">Contrato de arrendamiento y convenios <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-14" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="contrato_arrendamiento_convenios">Contrato de arrendamiento y convenios:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="contrato_arrendamiento_convenios" id="contrato_arrendamiento_convenios">
+              <div class="input-group-btn">
+                {% if task.contrato_arrendamiento_convenios %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.contrato_arrendamiento_convenios.url }}', '14')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-14" class="hidden">
+              <iframe id="pdf-viewer-14" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-15" style="cursor: pointer;">Notificación a la UR y Subdirección de Obras para la elaboración de los planos de adecuación de oficinas <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-15" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="notificacion_ur_subdireccion_obras_planos">Notificación a la UR y Subdirección de Obras para la elaboración de los planos de adecuación de oficinas:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="notificacion_ur_subdireccion_obras_planos" id="notificacion_ur_subdireccion_obras_planos">
+              <div class="input-group-btn">
+                {% if task.notificacion_ur_subdireccion_obras_planos %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.notificacion_ur_subdireccion_obras_planos.url }}', '15')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-15" class="hidden">
+              <iframe id="pdf-viewer-15" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-16" style="cursor: pointer;">Anexo 1 al contrato de arrendamiento, acta-recepción del inmueble <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-16" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="anexo_contrato_acta_recepcion_inmueble">Anexo 1 al contrato de arrendamiento, acta-recepción del inmueble:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="anexo_contrato_acta_recepcion_inmueble" id="anexo_contrato_acta_recepcion_inmueble">
+              <div class="input-group-btn">
+                {% if task.anexo_contrato_acta_recepcion_inmueble %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.anexo_contrato_acta_recepcion_inmueble.url }}', '16')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-16" class="hidden">
+              <iframe id="pdf-viewer-16" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-17" style="cursor: pointer;">Inventario y las condiciones de instalaciones y equipos propios del inmueble, validado por la Subdirección de Obras <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-17" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="documentos_inventario_condiciones">Inventario y las condiciones de instalaciones y equipos propios del inmueble, validado por la Subdirección de Obras:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="documentos_inventario_condiciones" id="documentos_inventario_condiciones">
+              <div class="input-group-btn">
+                {% if task.documentos_inventario_condiciones %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_inventario_condiciones.url }}', '17')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-17" class="hidden">
+              <iframe id="pdf-viewer-17" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-18" style="cursor: pointer;">Dictamen de seguridad estructural emitido por un Director Responsable del Inmueble <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-18" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="documentos_dictamen_seguridad_estructural">Dictamen de seguridad estructural emitido por un Director Responsable del Inmueble:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="documentos_dictamen_seguridad_estructural" id="documentos_dictamen_seguridad_estructural">
+              <div class="input-group-btn">
+                {% if task.documentos_dictamen_seguridad_estructural %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_dictamen_seguridad_estructural.url }}', '18')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-18" class="hidden">
+              <iframe id="pdf-viewer-18" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-19" style="cursor: pointer;">Usos permitidos y en general todas las limitaciones derivadas de las características del inmueble <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-19" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="documentos_usos_limitaciones">Usos permitidos y en general todas las limitaciones derivadas de las características del inmueble:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="documentos_usos_limitaciones" id="documentos_usos_limitaciones">
+              <div class="input-group-btn">
+                {% if task.documentos_usos_limitaciones %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_usos_limitaciones.url }}', '19')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-19" class="hidden">
+              <iframe id="pdf-viewer-19" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-20" style="cursor: pointer;">Acta-Entrega de los trabajos de adecuación de oficinas a cargo de la Subdirección de obras <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-20" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="documentos_acta_entrega_trabajos">Acta-Entrega de los trabajos de adecuación de oficinas a cargo de la Subdirección de obras:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="documentos_acta_entrega_trabajos" id="documentos_acta_entrega_trabajos">
+              <div class="input-group-btn">
+                {% if task.documentos_acta_entrega_trabajos %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_acta_entrega_trabajos.url }}', '20')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-20" class="hidden">
+              <iframe id="pdf-viewer-20" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-21" style="cursor: pointer;">Anexo 2 al contrato de arrendamiento plano de distribución de personal (adecuación de oficinas autorizado) <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-21" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="anexo_contrato_plano_distribucion_personal">Anexo 2 al contrato de arrendamiento plano de distribución de personal (adecuación de oficinas autorizado):</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="anexo_contrato_plano_distribucion_personal" id="anexo_contrato_plano_distribucion_personal">
+              <div class="input-group-btn">
+                {% if task.anexo_contrato_plano_distribucion_personal %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.anexo_contrato_plano_distribucion_personal.url }}', '21')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-21" class="hidden">
+              <iframe id="pdf-viewer-21" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-22" style="cursor: pointer;">Oficio de notificación de disponibilidad del inmueble a la UR <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-22" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="notificacion_disponibilidad_ur">Oficio de notificación de disponibilidad del inmueble a la UR:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="notificacion_disponibilidad_ur" id="notificacion_disponibilidad_ur">
+              <div class="input-group-btn">
+                {% if task.notificacion_disponibilidad_ur %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.notificacion_disponibilidad_ur.url }}', '22')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-22" class="hidden">
+              <iframe id="pdf-viewer-22" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <h5 class="contenedor-archivos" id="toggle-archivos-23" style="cursor: pointer;">Actas-entrega de asignación de espacio a las Unidades Administrativas <i class="fas fa-chevron-down"></i></h5>
+  <div class="row" id="tasks-container-23" style="display: none;">
+      <div class="form-group form-check-inline archivo-style">
+          <label for="actas_entrega_asignacion_espacio">Actas-entrega de asignación de espacio a las Unidades Administrativas:</label>
+          <div class="input-group">
+              <input type="file" class="form-control" name="actas_entrega_asignacion_espacio" id="actas_entrega_asignacion_espacio">
+              <div class="input-group-btn">
+                {% if task.actas_entrega_asignacion_espacio %}
+                  <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.actas_entrega_asignacion_espacio.url }}', '23')">
+                      <i class="fas fa-file-upload"></i> Ver PDF
+                  </button>
+                  {% endif %}
+              </div>
+          </div>
+          <div id="pdf-container-23" class="hidden">
+              <iframe id="pdf-viewer-23" src="" width="100%" height="600"></iframe>
+          </div>
+      </div>
+  </div>
+</div>
+    </div>
+</div>
+

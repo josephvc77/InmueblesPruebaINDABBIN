@@ -20,7 +20,10 @@
       <option value="Baja">Baja</option>
     </select>
   </div>
-  <a href="{% url 'export_tasks_to_excel' %}" class="btn btn-outline-success btn-sm m-2">Exportar Excel <i class="fas fa-file-excel"></i></a>
+  <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-outline-success btn-sm m-2">Exportar Excel <i class="fas fa-file-excel"></i></a>
+
+
+
 
 
 {% if mensaje %}
@@ -44,7 +47,7 @@
       <p class="total-label">Pendientes:</p>
       <p class="total-value">{{ total_pending_inmuebles }}</p>
     </div>
-    <h3>Inmuebles Importados Registrados </h3>
+    <h3 style="color: #4b4b4b;">Inmuebles Importados Registrados </h3>
     <div class="totals-container">
       <p class="total-label">Completadas:</p>
       <p class="total-value">{{ total_completed_inmuebles }}</p>
@@ -57,23 +60,27 @@
   {% for task in inmuebles %}
   <div class="card">
     <div class="card-header">
-      <h5>{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
+      <h5 class="text-center">{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
     </div>
     <div class="card-body">
       <div class="scroll-content">
         <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
 
         <p><strong>RFI:</strong> {{ task.rfi }}</p>
-        <p><strong>Sector:</strong> {{ task.Sector }}</p>
-        <p><strong>Sección del Inventario:</strong> {{ task.seccion_del_inventario }}</p>
-        <p><strong>Causa de Alta:</strong> {{ task.causa_alta }}</p>
-        <p><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
-        <p class="priority-paragraph {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
+        <p class="text-center">{{ task.Sector }}</p>
+        <p style="color: #83710f;" class="text-center">{{ task.seccion_del_inventario }}</p>
+        <p class="text-center"><strong>Causa de Alta:</strong> <br>{{ task.causa_alta }}</p>
+        <p class="text-center"><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
+        <p class="text-center"><strong>Municipio :</strong> {{ task.municipio_alcaldia }}</p>
+        <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
           Prioridad: {{ task.prioridad }}
         </p>
         {% if task.assigned_to %}
-        <label for="assigned_to">Tarea asignada a:</label>
-        <p style="background-color: #691c32; width: 60%; margin: 10px; padding: 5px; color: #ccc">{{ task.assigned_to }}</p>
+        <p class="text-center" for="assigned_to">Tarea asignada a:</p>
+        <div class="asigned">
+          <p class="text-center">{{ task.assigned_to.first_name }} {{ task.assigned_to.last_name }}<br> {{ task.assigned_to }}</p>
+        </div>
+        
       {% endif %}
       
             {% if task.deadline %}
@@ -82,7 +89,7 @@
               {% if task.completed %}
               <p>Completada</p>
             {% elif task.days_delayed > 0 %}
-              <p style="color: red;">
+              <p style="color: rgb(179, 73, 73);">
                 Retrasada por:
                 {{ task.days_delayed }} días
                 {% if task.hours_delayed > 0 %}
@@ -100,23 +107,24 @@
                 {{ task.days_remaining }} días
                 {{ task.hours_remaining }} horas
               </p>
+              
             {% else %}
-              <p>La tarea no tiene plazo de entrega</p>
+            
             {% endif %}
         
-
       
       </div>
     </div>
-   
+    {% if task.creado %}
     <p class="completado">Creado el: {{ task.creado}}</p>
+    {% endif %}
     
     {% if task.datecompleted %}
     <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
   {% endif %}
   
     <div class="card-footer">
-      <a href="{% url 'task_detail_importados' task.id %}" class="btn btn-outline">Ver detalles</a>
+      <a style="background-color: #691c32; border-radius: 20px; color: #fff; width: 150px; margin: 0 auto;" href="{% url 'task_detail_importados' task.id %}" class="btn btn-outline">Ver detalles</a>
     
     </div>
   </div>
@@ -171,6 +179,10 @@
   </script>
 <style>
 
+  
+ .asigned {
+  display: flex;align-items: center; flex-direction: column;background-color: #691c32; width: 90%; margin: 10px; padding: 5px; color: #ccc;margin-left:20px; border-radius:5px }
+
   .priority-paragraph {
     font-weight: bold; /* Hace que el texto de la prioridad sea negrita */
     margin-bottom: 10px; /* Agrega espacio debajo del párrafo de prioridad */
@@ -181,7 +193,7 @@
   }
   
   .media-priority {
-    color: #d3b300; /* Color para prioridad Media */
+    color: #8d7a0e; /* Color para prioridad Media */
   }
   
   .baja-priority {
@@ -207,10 +219,11 @@
   justify-content: flex-end;
 }
   .card {
-    border: 1px solid #7c7c7c;
+
     border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #e1c77b24;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+
     width: 550px;
     height: 650px;
     padding: 0;
@@ -248,7 +261,7 @@
   }
 
   .card-footer {
-    text-align: right;
+    text-align: center;
   }
 
   .card-header{

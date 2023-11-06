@@ -1,6 +1,8 @@
 <div class="tab-content" id="tab-uso">
+    
     <div class="section">
 
+        
         <div class="form-group">
             <label for="{{ inmueble.usuario_principal_del_inmueble.id_for_label }}">Usuario Principal del Inmueble:</label>
             <select id="{{ inmueble.usuario_principal_del_inmueble.auto_id }}" name="{{ inmueble.usuario_principal_del_inmueble.html_name }}"></select>
@@ -494,37 +496,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<!-- Agrega esto a tu plantilla HTML -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Agrega un manejador de eventos a los enlaces de eliminación
-        $(".eliminar-btn").click(function(event) {
-            // Evita que el enlace de eliminación realice su acción predeterminada
-            event.preventDefault();
 
-            // Obtiene la URL de eliminación del atributo "href" del enlace
-            var deleteUrl = $(this).attr("href");
-
-            // Realiza una solicitud Ajax para eliminar el elemento
-            $.ajax({
-                url: deleteUrl,
-                type: "POST",
-                success: function(response) {
-                    if (response.success) {
-                        // Actualiza la tabla después de eliminar
-                        $("#tablaInstitucionesOcupantesContainer").load("{% url 'task_detail_importados' task_id=task.id %} #tablaInstitucionesOcupantesContainer");
-                    } else {
-                        alert("Hubo un error al eliminar el elemento.");
-                    }
-                },
-                error: function() {
-                    alert("Se produjo un error al enviar la solicitud de eliminación.");
-                },
-            });
-        });
-    });
-</script>
 
 
 <script>

@@ -8,7 +8,7 @@
                 {% for mensaje in task.mensajes.all %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <div class="card-header" style="display: flex;">
+                        <div class="card-header" style="display: flex; background-color:#691c32; color:aliceblue ">
                             {{ mensaje.asunto }} 
                         </div>
                         <div class="card-body">
@@ -39,7 +39,7 @@
 
         <h2 id="toggle-newtask" style="cursor: pointer;">Crear nueva tarea <i class="fas fa-chevron-down"></i></h2>
 
-        <form id="form-container" method="post" enctype="multipart/form-data" style="display: block;">
+        <form id="form-container" method="post" enctype="multipart/form-data" style="display: none;">
       {% csrf_token %}
       <div class="form-group">
           <label for="{{ mensaje_form.asunto.id_for_label }}">Asunto:</label>
@@ -142,3 +142,4 @@
         });
     });
 </script>
+

@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, Task_Condia, TramitesDisposicion, TramitesDisposicionIMP
+
+from condia.models import TareasCondia
+from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task,  TramitesDisposicion, TramitesDisposicionIMP
 
 # Define TabularInline para cada modelo
 
@@ -147,3 +149,7 @@ class AllModelsAdminIMP(admin.ModelAdmin):
 
 # Registra la clase personalizada que contiene todos los modelos
 admin.site.register(Inmueble, AllModelsAdminIMP)
+
+
+
+admin.site.register(TareasCondia)

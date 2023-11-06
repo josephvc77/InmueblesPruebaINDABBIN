@@ -14,9 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from djangocrud import settings
 from tasks import views
+from condia import views as views_condia
+
+app_name = 'tasks'
 
 urlpatterns = [
     path('', views.tasks_importados, name='tasks_importados'),
@@ -110,6 +113,9 @@ urlpatterns = [
     path('generate_pdfIMP/<int:task_id>/', views.generate_pdfIMP, name='generate_pdfIMP'),
 
     path('export_tasks_to_excel/', views.export_tasks_to_excel, name='export_tasks_to_excel'),
+    path('export_tasks_to_excelIMP/', views.export_tasks_to_excelIMP, name='export_tasks_to_excelIMP'),
+    
+    
     path('task/<int:task_id>/delete_tramite/<int:tramite_id>/', views.delete_tramite, name='delete_tramite'),
     
     
@@ -124,6 +130,31 @@ urlpatterns = [
     
     path('editar_edificacionIMP/<int:edificacion_id>/', views.editar_edificacionIMP, name='editar_edificacionIMP'),
     path('borrar_edificacionIMP/<int:edificacion_id>/', views.borrar_edificacionIMP, name='borrar_edificacionIMP'),
+    
+    path('task/<int:task_id>/delete_ColindanciaIMP/<int:colindancia_id>/', views.delete_ColindanciaIMP, name='delete_ColindanciaIMP'),
+    
+    path('calendar/', views.calendar, name='calendar'),
+    
+    # CONDIA ------------------------------------------------------------------
+    path('keep_session_alive/', views.keep_session_alive, name='keep_session_alive'),
+
+    
+    path('signupCondia/', views_condia.signupCondia, name='signupCondia'),
+    path('signinCondia/', views_condia.signinCondia, name='signinCondia'),
+    
+    path('logout_condia/', views_condia.signout_condia, name='logout_condia'),
+    
+    path('task_condia/', views_condia.task_condia, name='task_condia'),
+    
+    path('create_task_CONDIA/', views_condia.create_task_CONDIA, name='create_task_CONDIA'),
+    
+    path('tasks/<int:task_id>/', views_condia.task_detail_condia, name='task_detail_condia'),
+    path('all_events/', views.all_events, name='all_events'), 
+    path('add_event/', views.add_event, name='add_event'), 
+    path('update/', views.update, name='update'),
+    path('remove/', views.remove, name='remove')
+    
+
 ]
 
 if settings.DEBUG:

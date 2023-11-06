@@ -1,0 +1,150 @@
+{% extends 'basecondia.html' %}
+{% block titulo %} Detalles {{ task.titulo }} {% endblock %}
+
+{% block content %}
+  <div class="task-detail-container">
+    <h2 style="color: #91733d;">{{ task.titulo }}</h2>
+    {{ error }}
+
+    <form method="POST" enctype="multipart/form-data" class="task-form">
+      {% csrf_token %}
+      
+      <!-- Campos del formulario -->
+
+
+      <div class="task-form-container">
+        <div class="tabs">
+          <div class="tab active" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab " data-tab="tab-archivos">Archivos Carpeta 1</div>
+          <div class="tab " data-tab="tab-archivos2">Archivos Carpeta 2-3</div>
+          <div class="tab " data-tab="tab-generales">Datos Generales</div>
+        </div>
+
+
+        {% include 'extends_condia/encabezado.html' %}
+        {% include 'extends_condia/archivos.html' %}
+        {% include 'extends_condia/archivos2.html' %}
+        {% include 'extends_condia/generales.html' %}
+
+
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const targetTab = tab.dataset.tab;
+      tabs.forEach((tab) => tab.classList.remove('active'));
+      tabContents.forEach((content) => content.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+</script>
+
+      
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
+<script>
+  $(document).ready(function() {
+      $("[id^='toggle-archivos']").click(function() {
+          // Obtén el número de la sección desde el ID del elemento clicado
+          var sectionNumber = $(this).attr("id").split("-")[2];
+          var tasksContainer = $("#tasks-container-" + sectionNumber);
+
+          tasksContainer.slideToggle();
+
+          if ($(this).find("i").hasClass("fa-chevron-down")) {
+              $(this).find("i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+          } else {
+              $(this).find("i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+          }
+      });
+  });
+</script>
+<script>
+  function mostrarPDF(pdfURL, sectionNumber) {
+    const pdfViewer = document.getElementById(`pdf-viewer-${sectionNumber}`);
+    pdfViewer.src = pdfURL;
+    document.getElementById(`pdf-container-${sectionNumber}`).classList.remove('hidden');
+  }
+</script>
+
+
+
+<style>
+
+.archivo-style {
+  width: 90%;
+  height: 100%;
+  margin-left: 3em;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.archivo-style input[type="file"] {
+  width: 100%;
+}
+.fa-chevron-up {
+  font-size: 25px;
+  margin-bottom: 6px;
+}
+
+.archivo-style label {
+  font-size: 16px;
+  color: #333;
+}
+
+.archivo-style label::after {
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+}
+
+.archivo-style label::after:hover {
+  color: #777;
+}
+
+.archivo-style .input-group-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.archivo-style .input-group-btn .btn {
+  border: 0;
+  background-color: transparent;
+  color: #4a5cff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.archivo-style .input-group-btn .btn i {
+  font-size: 20px;
+}
+
+.archivo-style .input-group-btn .btn:hover {
+  color: #999;
+}
+
+.contenedor-archivos{
+  padding: 10px;
+  border-radius: 20px;
+  border: .1px solid #333;
+  border-bottom-color: #c03c3c
+
+}
+</style>
+
+{% endblock %}
+
+
+

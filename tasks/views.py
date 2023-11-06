@@ -14,7 +14,7 @@ from django.views import View
 from djangocrud import settings
 
 from .forms import BajaForm, ColindanciasForm, ColindanciasFormIMP, DatosAvaluosForm, DatosAvaluosFormIMP, DatosTercerosForm, DatosTercerosFormIMP, DocumentoOcupacionForm, DocumentoOcupacionFormIMP, DocumentoPropiedadForm, DocumentoPropiedadFormIMP, EdificacionForm, EdificacionFormIMP, Edificio_VerdeForm, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesForm, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionForm, TramitesDisposicionFormIMP
-from .models import Colindancias, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, TramitesDisposicion
+from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Events, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, TramitesDisposicion, TramitesDisposicionIMP
 
 from .forms import Expedientes_CEDOCForm, FoliosRealesForm, Numero_PlanoForm, TaskCreateForm, TaskForm
 
@@ -23,11 +23,7 @@ from .forms import Expedientes_CEDOCForm, FoliosRealesForm, Numero_PlanoForm, Ta
 # Vista para cerrar sesión automáticamente
 from django.contrib.auth import logout
 
-class AutoLogoutView(View):
-    def get(self, request):
-        if request.user.is_authenticated:
-            logout(request)
-        return redirect('home')
+
 
 def signup(request):
     if request.method == 'GET':
@@ -127,6 +123,8 @@ from .models import Inmueble
 def tasks_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
+    
+    mensajes = MensajeIMP.objects.all()
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -193,7 +191,63 @@ def tasks_importados(request):
         'search_query': search_query,
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
+        'mensajes' : mensajes,
     })
+    
+@login_required
+def calendar(request):  
+    mensajes = MensajeIMP.objects.all()
+    all_events = Events.objects.all()
+
+    return render(request,'calendar.html', {
+        'mensajes' : mensajes,
+        "events":all_events
+    })
+
+@login_required
+def all_events(request):                                                                                                 
+    all_events = Events.objects.all()                                                                                    
+    out = []                                                                                                             
+    for event in all_events:                                                                                             
+        out.append({                                                                                                     
+            'title': event.name,                                                                                         
+            'id': event.id,                                                                                              
+            'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),                                                         
+            'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"),                                                             
+        })                                                                                                               
+                                                                                                                      
+    return JsonResponse(out, safe=False) 
+
+@login_required 
+def add_event(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    event = Events(name=str(title), start=start, end=end)
+    event.save()
+    data = {}
+    return JsonResponse(data)
+ 
+@login_required 
+def update(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    id = request.GET.get("id", None)
+    event = Events.objects.get(id=id)
+    event.start = start
+    event.end = end
+    event.name = title
+    event.save()
+    data = {}
+    return JsonResponse(data)
+ 
+def remove(request):
+    id = request.GET.get("id", None)
+    event = Events.objects.get(id=id)
+    event.delete()
+    data = {}
+    return JsonResponse(data)
 
 
 
@@ -251,6 +305,8 @@ def tasks_completed(request):
 def inmuebles_baja(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
+    
+    mensajes = MensajeIMP.objects.all()
 
     tasks = Task.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -290,6 +346,7 @@ def inmuebles_baja(request):
         'search_query': search_query,
         'total_pending_tasks': total_pending_tasks,
         'total_completed_tasks': total_completed_tasks,
+        'mensajes': mensajes,
     })
 
 
@@ -298,6 +355,7 @@ def inmuebles_baja(request):
 def inmuebles_baja_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
+    mensajes = MensajeIMP.objects.all()
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -341,6 +399,7 @@ def inmuebles_baja_importados(request):
         'search_query': search_query,
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
+        'mensajes': mensajes,
     })
 
 
@@ -348,6 +407,8 @@ def inmuebles_baja_importados(request):
 def tasks_completed_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
+    
+    mensajes = MensajeIMP.objects.all()
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -386,6 +447,7 @@ def tasks_completed_importados(request):
         'search_query': search_query,
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
+        'mensajes': mensajes,
     })
     
     
@@ -410,7 +472,7 @@ def bajas(request, task_id):
         else:
             form = BajaForm()
 
-
+@login_required
 def bajas_importados(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if task.estado == 'Activo':
@@ -423,7 +485,7 @@ def bajas_importados(request, task_id):
         else:
             form = BajaForm()
 
-
+@login_required
 def complete_task_importados(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -486,6 +548,16 @@ def create_task(request):
     return render(request, 'create_task.html', context)
 
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+
+@csrf_exempt
+@login_required
+def keep_session_alive(request):
+    # Esta vista simplemente devuelve una respuesta JSON para mantener viva la sesión.
+    return JsonResponse({'message': 'Session alive'})
+
 
 @login_required
 def signout(request):
@@ -499,7 +571,7 @@ def signin(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('tasks')
+            return redirect('tasks_importados')
     else:
         form = AuthenticationForm()
     
@@ -702,6 +774,7 @@ def task_detail(request, task_id):
 
 from django.http import JsonResponse
 
+@login_required
 def completar_mensaje(request, mensaje_id):
     if request.method == 'POST':
         mensaje = Mensaje.objects.get(id=mensaje_id)
@@ -791,7 +864,7 @@ def task_detail_importados(request, task_id):
                 mensaje = mensaje_form.save(commit=False)
                 mensaje.task = task
                 mensaje.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('tasks_importados')
         
         if ocupaciones_form.is_valid():
             if any(ocupaciones_form.cleaned_data.values()):
@@ -891,7 +964,7 @@ def task_detail_importados(request, task_id):
         'mensaje_form': mensaje_form,
     })
     
-
+@login_required
 def completar_mensajeIMP(request, mensaje_id):
     if request.method == 'POST':
         mensaje = MensajeIMP.objects.get(id=mensaje_id)
@@ -1205,6 +1278,12 @@ def delete_edificio_verdeIMP(request, task_id, edificio_verde_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     edificio_verde = get_object_or_404(EdificioVerdeIMP, pk=edificio_verde_id, task=task)
     edificio_verde.delete()
+    return JsonResponse({'success': True})
+
+def delete_ColindanciaIMP(request, task_id, colindancia_id):
+    task = get_object_or_404(Inmueble, pk=task_id)
+    colindancia = get_object_or_404(ColindanciasIMP, pk=colindancia_id, task=task)
+    colindancia.delete()
     return JsonResponse({'success': True})
 
 @login_required
@@ -1926,6 +2005,357 @@ def export_tasks_to_excel(request):
     return response
 
 
+def export_tasks_to_excelIMP(request):
+    # Obtener todas las tareas del usuario logueado
+    inmueble = Inmueble.objects.filter()
+
+    # Crear una lista vacía para almacenar los datos de tareas y modelos relacionados
+    data = []
+
+    # Recorrer todas las tareas y obtener los datos necesarios
+    for task in inmueble:
+        task_data = {
+            'rfi': task.rfi,
+            'rfiProv': task.rfiProv,
+            'NombreInmueble': task.NombreInmueble,
+            'seccion_del_inventario': task.seccion_del_inventario,
+            'causa_alta': task.causa_alta,
+            'prioridad': task.prioridad,
+            'Sector': task.Sector,
+            'Nombre_de_la_institucion_que_administra_el_inmueble': task.Nombre_de_la_institucion_que_administra_el_inmueble,
+            'Naturaleza_Juridica_de_la_Institucion': task.Naturaleza_Juridica_de_la_Institucion,
+            'Denominaciones_anteriores': task.Denominaciones_anteriores,
+            'Dependencia_Administradora': task.Dependencia_Administradora,
+            'subSeccion': task.subSeccion,
+            'certificado_de_seguridad': task.certificado_de_seguridad,
+            'sentido_del_Dictamen': task.sentido_del_Dictamen,
+            'descripcion_del_sentido_del_Dictamen': task.descripcion_del_sentido_del_Dictamen,
+            'fecha_documento': task.fecha_documento,
+            'subir_archivo': task.subir_archivo,
+            'no_de_identificador_del_expediente_institucion': task.no_de_identificador_del_expediente_institucion,
+            # Ubicacion
+            'pais': task.pais,
+            'entidad_federativa': task.entidad_federativa,
+            'municipio_alcaldia': task.municipio_alcaldia,
+            'localidad': task.localidad,
+            'componente_espacial': task.componente_espacial,
+            'fotografia_de_la_ubicacion': task.fotografia_de_la_ubicacion,
+            'tipo_vialidad': task.tipo_vialidad,
+            'nombre_vialidad': task.nombre_vialidad,
+            'numero_exterior': task.numero_exterior,
+            'numero_exterior_2': task.numero_exterior_2,
+            'numero_interior': task.numero_interior,
+            'tipo_asentamiento': task.tipo_asentamiento,
+            'nombre_asentamiento': task.nombre_asentamiento,
+            'codigo_postal': task.codigo_postal,
+            'entre_vialidades_referencia1': task.entre_vialidades_referencia1,
+            'entre_vialidades_referencia2': task.entre_vialidades_referencia2,
+            'vialidad_posterior': task.vialidad_posterior,
+            'descripcion_ubicacion': task.descripcion_ubicacion,
+            'datum': task.datum,
+            'utmx': task.utmx,
+            'utmy': task.utmy,
+            'utm_zona': task.utm_zona,
+            'latitud': task.latitud,
+            'longitud': task.longitud,
+            
+            # Caracteristicas
+            'superficie_del_terreno_en_M2': task.superficie_del_terreno_en_M2,
+            'superficie_del_terreno_HA': task.superficie_del_terreno_HA,
+            'superficie_de_desplante_en_M2': task.superficie_de_desplante_en_M2,
+            'superficie_construida_en_M2': task.superficie_construida_en_M2,
+            'superficie_util_m2': task.superficie_util_m2,
+            'zona_ubicacion': task.zona_ubicacion,
+            'tipo_inmueble_rural': task.tipo_inmueble_rural,
+            'uso_dominante_zona': task.uso_dominante_zona,
+            'calidad_construccion': task.calidad_construccion,
+            'clasificacion_edad': task.clasificacion_edad,
+            'categoria': task.categoria,
+            'grado_consolidacion': task.grado_consolidacion,
+            'servicios': task.servicios,
+            'telefono_inmueble': task.telefono_inmueble,
+            'fecha_inicio_construccion': task.fecha_inicio_construccion,
+            'siglo_construccion': task.siglo_construccion,
+            'fecha_ultima_remodelacion': task.fecha_ultima_remodelacion,
+            'monumento': task.monumento,
+            'historico': task.historico,
+            'artistico': task.artistico,
+            'arqueologico': task.arqueologico,
+            'clave_inah': task.clave_inah,
+            'folio_real_inah': task.folio_real_inah,
+            'no_plano_inah': task.no_plano_inah,
+            'clave_cnmh': task.clave_cnmh,
+            'clave_dgsmpc_conaculta': task.clave_dgsmpc_conaculta,
+            'fecha_inscripcion_unesco': task.fecha_inscripcion_unesco,
+            'observaciones_historicas': task.observaciones_historicas,
+            'siglo_o_periodo': task.siglo_o_periodo,
+            'correlativo': task.correlativo,
+            'conjunto': task.conjunto,
+            'clave_inbal': task.clave_inbal,
+            'registro_unico_inah': task.registro_unico_inah,
+            'estado_conservacion': task.estado_conservacion,
+
+            # Uso
+            'usuario_principal_del_inmueble': task.usuario_principal_del_inmueble,
+            'usoGenerico': task.usoGenerico,
+            'usoEspecifico': task.usoEspecifico,
+            'uso_de_suelo_autorizado': task.uso_de_suelo_autorizado,
+            'numero_de_empleados_en_el_inmueble': task.numero_de_empleados_en_el_inmueble,
+            'documento_que_autoriza_ocupacion': task.documento_que_autoriza_ocupacion,
+            'numero_de_documentos_de_ocupacion': task.numero_de_documentos_de_ocupacion,
+            'instituciones_ocupantes': task.instituciones_ocupantes,
+            'usuarios_terceros': task.usuarios_terceros,
+            # Aprovechamiento
+            'aprovechamiento': task.aprovechamiento,
+            'inmueble_con_atencion_al_publico': task.inmueble_con_atencion_al_publico,
+            'poblacion_beneficiada': task.poblacion_beneficiada,
+            'poblacion_servicio': task.poblacion_servicio,
+            'cuenta_con_proyecto_de_uso_inmediato_desarrollado': task.cuenta_con_proyecto_de_uso_inmediato_desarrollado,
+            'inversion_requerida': task.inversion_requerida,
+            'fuente_financiamiento': task.fuente_financiamiento,
+            'fecha_solicitud': task.fecha_solicitud,
+            'inmueble_no_aprovechable_especificar': task.inmueble_no_aprovechable_especificar,
+            'gasto_anual_de_mantenimiento': task.gasto_anual_de_mantenimiento,
+            'inmueble_en_condominio': task.inmueble_en_condominio,
+            'superficie_total': task.superficie_total,
+            'indiviso': task.indiviso,
+
+            # Valor
+            'valor_contable': task.valor_contable,
+            'fecha_valor_contable': task.fecha_valor_contable,
+            'valor_asegurable': task.valor_asegurable,
+            'fecha_valor_asegurable': task.fecha_valor_asegurable,
+            'valor_adquisicion': task.valor_adquisicion,
+            'fecha_valor_adquisicion': task.fecha_valor_adquisicion,
+            'valor_terreno': task.valor_terreno,
+            'valor_construccion': task.valor_construccion,
+            'valor_catastral_terreno': task.valor_catastral_terreno,
+            'valor_catastral_construccion': task.valor_catastral_construccion,
+            'valor_total_catastral': task.valor_total_catastral,
+            'fecha_valor_catastral': task.fecha_valor_catastral,
+            'documentacion_soporte': task.documentacion_soporte,         
+            # Agrega otros campos de tarea según sea necesario...
+
+            
+        }
+
+        # Consulta para obtener la Edificacion relacionada con la tarea actual (si existe)
+        edificaciones = EdificacionIMP.objects.filter(task=task)
+        
+        # Crear una lista para almacenar los datos de todas las edificaciones relacionadas
+        edificaciones_data = []
+
+        for edificacion in edificaciones:
+            edificacion_data = {
+                'tipo_de_inmueble': edificacion.tipo_de_inmueble,
+                'nombre_edificacion': edificacion.nombre_edificacion,
+                'propietario_de_la_edificacion': edificacion.propietario_de_la_edificacion,
+                'niveles_por_edificio': edificacion.niveles_por_edificio,
+                'superficie_construida_por_edificacion_m2': edificacion.superficie_construida_por_edificacion_m2,
+                'fecha_construccion_por_edificacion': edificacion.fecha_construccion_por_edificacion,
+                'caracteristicas_de_la_edificacion': edificacion.caracteristicas_de_la_edificacion,
+                'usoEdificacion': edificacion.usoEdificacion,
+                'calidadEdificacion': edificacion.calidadEdificacion,
+                'cajones_de_estacionamiento_por_edificacion': edificacion.cajones_de_estacionamiento_por_edificacion,
+                'rampa_de_acceso': edificacion.rampa_de_acceso,
+                'ruta_de_evacuacion': edificacion.ruta_de_evacuacion,
+                'sanitario_para_personas_con_discapacidad': edificacion.sanitario_para_personas_con_discapacidad,
+            }
+
+            edificaciones_data.append(edificacion_data)
+
+        # Ahora, el 'task_data' incluirá la lista de edificaciones relacionadas
+        task_data['edificaciones'] = edificaciones_data
+        
+         # Consulta para obtener todas las colindancias relacionadas con la tarea actual
+        colindancias = ColindanciasIMP.objects.filter(task=task)
+        
+        colindancias_data = []
+
+        for colindancia in colindancias:
+            colindancia_data = {
+                'orientacion': colindancia.orientacion,
+                'colindancia': colindancia.colindancia,
+                'medida_en_metros': colindancia.medida_en_metros,
+            }
+
+            colindancias_data.append(colindancia_data)
+
+        # Ahora, el 'task_data' incluirá la lista de colindancias relacionadas
+        task_data['colindancias'] = colindancias_data
+        
+    
+        
+        # DOCUMENTO DE OCUPACION-------------------------------------------------------
+        documento_ocupacion = Documento_ocupacionIMP.objects.filter(task=task)
+        documento_ocupacion_data = []
+        for doc_ocupacion in documento_ocupacion:
+            documento_de_ocupacion = {
+                'tipo_de_documento': doc_ocupacion.tipo_de_documento,
+                'fecha_documento': doc_ocupacion.fecha_documento,
+                'inscripcion_RPPF': doc_ocupacion.inscripcion_RPPF,
+                'folio_real_federal': doc_ocupacion.folio_real_federal,
+                'fecha_inscripcion_federal': doc_ocupacion.fecha_inscripcion_federal
+            }
+            documento_ocupacion_data.append(documento_de_ocupacion)
+        task_data['documento_ocupacion'] = documento_ocupacion_data
+        
+            # INSTITUCIONES OCUPANTES-------------------------------------------------------
+        instituciones_ocupantes = InstitucionesOcupantesIMP.objects.filter(task=task)
+        
+        instituciones_ocupantes_data = []
+        
+        for inst_ocupante in instituciones_ocupantes:
+            Instituciones_ocupantes = {
+                'institucion_publica_ocupante': inst_ocupante.institucion_publica_ocupante,
+                'superficie_asignada': inst_ocupante.superficie_asignada,
+                'uso_institucion_ocupante': inst_ocupante.uso_institucion_ocupante,
+                'superficie_disponible': inst_ocupante.superficie_disponible
+            }
+            instituciones_ocupantes_data.append(Instituciones_ocupantes)
+        task_data['instituciones_ocupantes'] = instituciones_ocupantes_data
+        
+        
+        # DATOS TERCEROS-------------------------------------------------------------
+        dato_terceros = DatosTercerosIMP.objects.filter(task=task)
+        datos_terceros_data = []
+        for datos in dato_terceros:
+            datos_terceros = {
+                'tipo_usuario_tercero': datos.tipo_usuario_tercero,
+                'beneficiario': datos.beneficiario,
+                'nombre_beneficiario': datos.nombre_beneficiario,
+                'rfc': datos.rfc,
+                'fecha_inicio_vigencia': datos.fecha_inicio_vigencia,
+                'fecha_termino_vigencia': datos.fecha_termino_vigencia,
+                'prorroga': datos.prorroga,
+                'inscripcion_folio_real_federal': datos.inscripcion_folio_real_federal,
+                'superficie_objeto_ocupacion_metros': datos.superficie_objeto_ocupacion_metros,
+                'uso': datos.uso
+            }
+            datos_terceros_data.append(datos_terceros)
+        task_data['dato_terceros'] = datos_terceros_data
+            
+        
+        # TRAMITE DE DISPOSICION--------------------------------------------------
+        tramites_disposicion = TramitesDisposicionIMP.objects.filter(task=task)
+        tramites_disposicion_data = []
+        for tramite in tramites_disposicion:
+            tramites_de_disposicion = {
+                'tramite_disposicion': tramite.tramite_disposicion,
+                'estatus': tramite.estatus,
+                'numero_de_expediente': tramite.numero_de_expediente
+            }
+            tramites_disposicion_data.append(tramites_de_disposicion)
+        task_data['tramites_disposicion'] = tramites_disposicion_data
+        
+        # OCUPACIONES-----------------------------------------------------------
+        ocupaciones = OcupacionesIMP.objects.filter(task=task)
+        ocupaciones_data = []
+        for ocupacion in ocupaciones:
+            ocupacion_data = {
+                'tipo_procedimiento': ocupacion.tipo_procedimiento,
+                'nombre_ocupante': ocupacion.nombre_ocupante,
+                'superficie_invadida': ocupacion.superficie_invadida,
+                'no_expediente': ocupacion.no_expediente,
+                'juzgado': ocupacion.juzgado,
+                'estatus_procedimiento': ocupacion.estatus_procedimiento,
+                'suspension_acto': ocupacion.suspension_acto,
+                'recuperado': ocupacion.recuperado,
+                'fecha_recuperado': ocupacion.fecha_recuperado
+            }
+            ocupaciones_data.append(ocupacion_data)  
+        task_data['ocupaciones'] = ocupaciones_data
+        
+        
+        # DATOS AVALUOS----------------------------------------------------------
+        datos_avaluos = DatosAvaluosIMP.objects.filter(task=task)
+        datos_avaluos_data = []
+        for dato_avaluo in datos_avaluos:
+            datos_avaluo_data = {
+                'numero_de_avaluo': dato_avaluo.numero_de_avaluo,
+                'valor_de_avaluo': dato_avaluo.valor_de_avaluo,
+                'fecha_valor_de_avaluo': dato_avaluo.fecha_valor_de_avaluo,
+                'uso_del_avaluo': dato_avaluo.uso_del_avaluo,
+                'valor_de_terreno': dato_avaluo.valor_de_terreno,
+                'valor_de_construccion': dato_avaluo.valor_de_construccion
+            }
+            datos_avaluos_data.append(datos_avaluo_data)
+        task_data['datos_avaluos'] = datos_avaluos_data
+                
+                
+        # DOCUMENTOS DE PROPIEDAD------------------------------------------------- 
+        doc_propiedads = DocumentoPropiedadIMP.objects.filter(task=task)
+        doc_propiedads_data =[]
+        for doc_propiedad in doc_propiedads:
+            doc_propiedad_data = {
+                'fecha_creacion_DOC': doc_propiedad.fecha_creacion_DOC,
+                'archivo': doc_propiedad.archivo,
+                'propietario_inmueble': doc_propiedad.propietario_inmueble,
+                'institucion_propietario': doc_propiedad.institucion_propietario,
+                'superficie_amparada_m2': doc_propiedad.superficie_amparada_m2,
+                'tipo_documento': doc_propiedad.tipo_documento,
+                'numero_de_documento': doc_propiedad.numero_de_documento,
+                'expedido_por': doc_propiedad.expedido_por,
+                'inscripcion_rppf': doc_propiedad.inscripcion_rppf,
+                'folio_real_federal': doc_propiedad.folio_real_federal,
+                'fecha_inscripcion_federal': doc_propiedad.fecha_inscripcion_federal,
+                'inscripcion_registro_local': doc_propiedad.inscripcion_registro_local,
+                'folio_real_local': doc_propiedad.folio_real_local,
+                'folio_real_auxiliar': doc_propiedad.folio_real_auxiliar,
+                'nombre_libro': doc_propiedad.nombre_libro,
+                'tomo_o_volumen': doc_propiedad.tomo_o_volumen,
+                'numero': doc_propiedad.numero,
+                'foja_o_folio': doc_propiedad.foja_o_folio,
+                'seccion': doc_propiedad.seccion,
+                'fecha_inscripcion_local': doc_propiedad.fecha_inscripcion_local
+            }
+            doc_propiedads_data.append(doc_propiedad_data)
+        task_data['doc_propiedads'] = doc_propiedads_data
+        
+        # Folios Reales
+        folios_reales = FoliosRealesIMP.objects.filter(task=task)
+        folios_reales_data = []  # Utiliza una lista para almacenar los datos de folios reales
+        for folio_real in folios_reales:
+            folio_real_data = {
+                'Folio': folio_real.folios_reales_data
+            }
+            folios_reales_data.append(folio_real_data)  # Agrega cada diccionario a la lista
+        task_data['folios_reales'] = folios_reales_data  # Asigna la lista de datos a 'folios_reales' en task_data
+
+        
+        
+        # # Obtener datos de FoliosReales relacionados con la tarea
+        # folios_reales_data = task.foliosreales_set.values_list('folios_reales_data', flat=True)
+
+        # # Obtener datos de NumeroPlano relacionados con la tarea
+        # numero_plano_data = task.numeros_planos.values_list('numero_plano_data', flat=True)
+
+        # # Obtener datos de Expedientes_CEDOC relacionados con la tarea
+        # expedientes_cedoc_data = task.expedientes_cedoc_set.values_list('expediente_cedoc_data', flat=True)
+
+        # edificio_verde_data = task.edificio_verde_set.values_list('edificio_verde_data', flat=True)
+
+        # Combinar todos los datos en un solo diccionario
+        # task_data.update({
+            # 'folios_reales': ', '.join(folios_reales_data),
+            # 'numero_plano': ', '.join(numero_plano_data),
+            # 'expedientes_cedoc': ', '.join(expedientes_cedoc_data),
+            # 'edificio_verde': ', '.join(edificio_verde_data)
+        # })
+
+        data.append(task_data)
+
+    # Convertir la lista de datos a un DataFrame de Pandas
+    df = pd.DataFrame(data)
+
+    # Crear la respuesta del archivo Excel
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="InmueblesImportados.xlsx"'
+
+    # Escribir el DataFrame en el archivo Excel
+    df.to_excel(response, index=False, engine='openpyxl')
+
+    return response
 
 import pandas as pd
 

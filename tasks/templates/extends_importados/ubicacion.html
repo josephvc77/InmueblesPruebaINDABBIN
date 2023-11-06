@@ -42,12 +42,7 @@
     </div>
 
     {% if task.fotografia_de_la_ubicacion %}
-    <img
-      width="150"
-      src="{{ inmueble.fotografia_de_la_ubicacion.url }}"
-      alt="Fotografía de ubicación"
-      onclick="openModal('{{ inmueble.fotografia_de_la_ubicacion.url }}')"
-    />
+    <img width="150" src="{{ inmueble.fotografia_de_la_ubicacion.url }}" alt="Fotografía de ubicación" onclick="openModal('{{ inmueble.fotografia_de_la_ubicacion.url }}')"/>
     {% else %}
     <p>No hay fotografía de ubicación disponible.</p>
     {% endif %}
@@ -182,6 +177,7 @@
           <th>Orientación</th>
           <th>Colindancia</th>
           <th>Medida en Metros</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -190,6 +186,9 @@
           <td>{{ colindancia.orientacion }}</td>
           <td>{{ colindancia.colindancia }}</td>
           <td>{{ colindancia.medida_en_metros }}</td>
+          <td>
+            <button class="delete-colindancia-btn btn btn-outline-danger btn-sm" data-url="{% url 'delete_ColindanciaIMP' task_id=task.id colindancia_id=colindancia.id %}">Eliminar</button>
+        </td>
         </tr>
         {% endfor %}
       </tbody>
