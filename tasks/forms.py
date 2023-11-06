@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ClearableFileInput, ModelForm
-from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, Task_Condia, TramitesDisposicion, TramitesDisposicionIMP
+
+from condia.models import TareasCondia
+from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task, TramitesDisposicion, TramitesDisposicionIMP
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -236,18 +238,13 @@ class SiteSelectionForm(forms.Form):
     )
     
         
-class Task_CONDIA_Form(forms.ModelForm):
-    class Meta:
-        model = Task_Condia
-        fields = ['Nombre_inmueble']
-        
         
 class InmuebleForm(forms.ModelForm):
     class Meta:
         model = Inmueble
         fields = [
                 # Encabezado - Datos generales
-                  'rfi', 'assigned_to', 'deadline', 'rfiProv', 'NombreInmueble', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
+                  'rfi', 'assigned_to', 'deadline', 'rfiProv', 'NombreInmueble', 'UR', 'seccion_del_inventario', 'causa_alta', 'prioridad', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble', 'Naturaleza_Juridica_de_la_Institucion', 
                   'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 
                   'descripcion_del_sentido_del_Dictamen','fecha_documento', 'subir_archivo','no_de_identificador_del_expediente_institucion', 
                 # Ubicación
@@ -403,3 +400,39 @@ class OcupacionesFormIMP(forms.ModelForm):
             'recuperado',
             'fecha_recuperado'
         )
+        
+        
+# CONDIA ---------------------------------------------------------------------
+
+class CondiaForm(forms.ModelForm):
+    class Meta:
+        model = TareasCondia
+        fields = [
+            'titulo', 'descripcion','uso_inmueble','riuf','superficie_rentable',
+            'superficie_terreno','superficie_construida','personal_ocupante','uso_suelo','renta_mensual_civa_segun_contrato', 'monto_por_m2_civa','ubicacion',
+            'no_contrato','fecha_firma_contrato','monto_mensual_dictamen_estructural', 'tipo_de_proceso',
+            'correo1','correo2','razon_social','propietario_representante','identificacion_oficial',
+            'email','domicilio_fiscal','justificacion_de_renta','nombre_asentamiento', 'codigo_postal','descripcion_ubicacion', 'fotoPresentacion', 
+            # Archivos
+            
+            'solicitud_espacio', 'tabla_superficie_maxima', 'justificacion_arrendamiento', 'solicitud_disponibilidad', 'solicitud_arrendamiento_oficialia', 'notificacion_propietario_arrendar',
+            'solicitud_justipreciacion_renta', 'notificacion_pago_derechos', 'dictamen_justipreciacion_renta', 'oficio_revision_juridica_respuesta', 'justificacion_plurianual', 'oficio_solicitud_registro_obligacional',
+            'registro_contrato_pagina_indaabin', 'contrato_arrendamiento_convenios', 'notificacion_ur_subdireccion_obras_planos', 'anexo_contrato_acta_recepcion_inmueble', 'documentos_inventario_condiciones',
+            'documentos_dictamen_seguridad_estructural', 'documentos_usos_limitaciones', 'documentos_acta_entrega_trabajos', 'anexo_contrato_plano_distribucion_personal', 'notificacion_disponibilidad_ur',
+            'actas_entrega_asignacion_espacio', 'documentos_legales_escritura_inmueble', 'documentos_legales_acta_constitutiva', 'documentos_legales_escritura_cambio_regimen', 'documentos_legales_poder_notarial',
+            'documentos_legales_cedula_fiscal', 'documentos_legales_identificacion_oficial', 'documentos_legales_comprobante_domicilio_fiscal', 'documentos_tecnicos_planos_arquitectonicos', 
+            'documentos_tecnicos_constancia_seguridad_estructural', 'documentos_tecnicos_visto_bueno_seguridad_operacion', 'documentos_tecnicos_ultimo_pago_predial', 'documentos_tecnicos_ultimo_pago_agua',
+            'documentos_tecnicos_ultimo_pago_energia', 'fundamento_legal'
+        ]
+        widgets = {
+            'renta_mensual_civa_segun_contrato': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa un Monto', 'id': 'renta_mensual_civa_segun_contrato'}),
+            'monto_por_m2_civa': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa un Monto',}),
+            'ubicacion': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa la Ubicación',}),
+        }
+
+class CreateTaskCondiaForm(forms.ModelForm):
+    class Meta:
+        model = TareasCondia
+        fields = [
+            'titulo', 'descripcion'
+        ]

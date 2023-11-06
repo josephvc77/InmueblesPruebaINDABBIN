@@ -1,0 +1,27 @@
+<div class="tab-content" id="tab-generales">
+    <div class="section">
+
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ form.titulo.id_for_label }}">Nombre del Inmueble:</label>
+            {{ form.titulo }}
+        </div>
+
+      <div class="form-group form-check-inline">
+          <label for="{{ form.tipo_de_proceso.id_for_label }}">Tipo de tramite:</label>
+          {{ form.tipo_de_proceso }}
+      </div>
+      <br>
+      <div class="form-group form-check-inline width-label">
+          <label for="{{ form.descripcion.id_for_label }}">Descripción:</label>
+          {{ form.descripcion }}
+      </div>
+      <fieldset>
+          <legend>Subir Caratula</legend>
+          <div class="form-group form-check-inline">
+            <label for="{{ form.fotoPresentacion.id_for_label }}">Subir Archivo:</label>
+            {{ form.fotoPresentacion }}
+          </div>
+        </fieldset>
+
+    </div>
+</div>

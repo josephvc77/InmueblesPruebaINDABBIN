@@ -28,12 +28,13 @@
           
      
         </div>
-
-        <div class="form-group form-check-inline centered">
-          <label>RFI: {{ inmueble.rfi }}</label>
-      </div>
+        <div class="form-group form-check-inline width-label centered">
+          <h5>RFI: </h5>
+          <input class="form-control form-control-sm text-center" type="text" id="{{inmueble.rfi.id}}" name="{{inmueble.rfi.name}}" value='{{inmueble.rfi.value}}' readonly >
+        </div>
+        
       <div class="form-group form-check-inline">
-          <label for="{{ form.rfiProv.id_for_label }}">RFI Provicional:</label>
+          <label for="{{ inmueble.rfiProv.id_for_label }}">RFI Provicional:</label>
           {{ inmueble.rfiProv }}
       </div>
         
@@ -51,10 +52,11 @@
         {% include 'extends_importados/enviar_mensaje.html' %}
 
 
-        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <button type="submit" class="btn btn-outline-primary">Actualizar</button>
       </div>
     </form>
 
+    
 
   <div class="buttons">
     <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
@@ -94,6 +96,67 @@
   margin-bottom: 40px;
 }
 
+.archivo-style {
+  width: 90%;
+  height: 100%;
+  margin-left: 3em;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.archivo-style input[type="file"] {
+  width: 100%;
+}
+.fa-chevron-up {
+  font-size: 25px;
+  margin-bottom: 6px;
+}
+
+.archivo-style label {
+  font-size: 16px;
+  color: #333;
+}
+
+.archivo-style label::after {
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+}
+
+.archivo-style label::after:hover {
+  color: #777;
+}
+
+.archivo-style .input-group-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.archivo-style .input-group-btn .btn {
+  border: 0;
+  background-color: transparent;
+  color: #4a5cff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.archivo-style .input-group-btn .btn i {
+  font-size: 20px;
+}
+
+.archivo-style .input-group-btn .btn:hover {
+  color: #999;
+}
+
+.contenedor-archivos{
+  padding: 10px;
+  border-radius: 20px;
+  border: .1px solid #333;
+  border-bottom-color: #c03c3c
+
+}
 
 </style>
 <!-- SweetAlert -->
@@ -101,6 +164,23 @@
 
 
 <script>
+
+  // Obtener el número de notificaciones no leídas del usuario
+const notificationsCount = `{{ user.mensajes.unread.count }}`;
+
+// Actualizar el badge en el botón de notificaciones
+const notificationsBadge = document.getElementById('notifications-count');
+notificationsBadge.textContent = notificationsCount;
+
+// Si el número de notificaciones no leídas es mayor que 0, mostrar el botón de notificaciones
+if (notificationsCount > 0) {
+  const notificationsButton = document.querySelector('.notifications');
+  notificationsButton.classList.remove('d-none');
+} else {
+  const notificationsButton = document.querySelector('.notifications');
+  notificationsButton.classList.add('d-none');
+}
+
   document.addEventListener('DOMContentLoaded', function () {
     function confirmAndDelete(button, message) {
       button.addEventListener('click', function (event) {
@@ -136,6 +216,7 @@
     const deleteNumeroPlanoButtons = document.querySelectorAll('.delete-numero-plano-btn');
     const deleteEdificioVerdeButtons = document.querySelectorAll('.delete-edificio-verde-btn');
     const deleteTramiteDisposicion = document.querySelectorAll('.delete-tramite-btn');
+    const deleteColindancia = document.querySelectorAll('.delete-colindancia-btn');
 
     deleteExpedienteCedocButtons.forEach(button => {
       confirmAndDelete(button, '¿Estás seguro de que deseas eliminar este expediente cedoc?');
@@ -153,6 +234,9 @@
     });
     deleteTramiteDisposicion.forEach(button => {
       confirmAndDelete(button, '¿Estás seguro de que deseas eliminar este Tramite?');
+    });
+    deleteColindancia.forEach(button => {
+      confirmAndDelete(button, '¿Estás seguro de que deseas eliminar esta Colindancia?');
     });
   });
 </script>
@@ -272,5 +356,7 @@
     });
   </script>
 {% endif %}
+
+
 
 {% endblock %}

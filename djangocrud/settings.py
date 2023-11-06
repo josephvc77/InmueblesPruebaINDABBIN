@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'import_export',
     'crispy_forms',
-    'fontawesomefree'
+    'fontawesomefree',
+    'condia',
 ]
 
 
@@ -61,8 +62,7 @@ MIDDLEWARE = [
     
 ]
 
-AUTO_LOGOUT_DELAY = 1800 
-
+AUTO_LOGOUT_DELAY = 10800
 
 
 ROOT_URLCONF = 'djangocrud.urls'
@@ -186,3 +186,6 @@ LOGIN_URL = '/signin'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'  # Configuración predeterminada para permitir mostrar en iframes del mismo origen
