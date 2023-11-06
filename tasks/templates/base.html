@@ -58,7 +58,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li></li>
-                {% for mensaje in mensajes %}
+                {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
                 <li>
                     <a class="dropdown-item" href="{% url 'task_detail_importados' mensaje.task.id %}">
                       <h5>Inmueble: {{ mensaje.task.NombreInmueble }}</h5>

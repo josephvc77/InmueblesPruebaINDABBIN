@@ -37,7 +37,9 @@
         <!-- <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p> -->
 
         <h3 style="color: #5f5e5e;"> </h3><br>
+          {% if  task.fotoPresentacion %}
           <img width="150px" style=" margin-left: 145px;" src="{{task.fotoPresentacion.url}}" alt="">
+          {% endif %}
         <h2 style="color:#691c32" class="text-center"><strong>{{task.tipo_de_proceso}}</strong></h2>
         <P class="text-center">
           {{ task.ubicacion }}, <br>

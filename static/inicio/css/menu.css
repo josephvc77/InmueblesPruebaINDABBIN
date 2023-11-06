@@ -67,7 +67,7 @@ body {
 
 
   .user{
-    position: relative;
+    display: flex;
   }
 
 
@@ -203,7 +203,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     border: none;
-    color: #1a252f;
+    color: #6f7271;
     background-color: transparent;
     left: 1em;
 }
@@ -215,7 +215,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     border: none;
-    color: #1a252f;
+    color: #6f7271;
     background-color: transparent;
     left: 1em;
 }
@@ -251,7 +251,7 @@ body {
 
 .btn-home{
     position: relative;
-    color: #1a252f;
+    color: #6f7271;
     left: 2em;
     font-size: 16px;
 }
@@ -587,15 +587,4 @@ table th {
       margin-bottom: 5px;
       border-radius: 5px;
     }
-  }
-
-  .btn-calendar{
-    position: absolute;
-    right: 7em;
-    color: #ffff;
-    background-color: #1a252f;
-    padding: 3px 12px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    text-decoration: none;
   }
