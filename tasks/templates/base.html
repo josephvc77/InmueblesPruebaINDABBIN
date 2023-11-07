@@ -47,9 +47,11 @@
            <a href="{%url 'tasks_importados' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
 
 
-           <a style="background-color: #1a252f; display: flex;align-content: center; justify-content: space-evenly;align-items: baseline; position: absolute; right: 6em; color: #fff; text-decoration: none; padding: 2px 8px; border: 0.5px solid #fff; border-radius: 10px;" href="{% url 'calendar' %}" class="btn-calendar"> Eventos
-            <i class="far fa-calendar"></i>
+           <a href="{% url 'calendar' %}" class="btn-calendar"> Eventos
+            <i class="far fa-calendar m-1"></i>
+            <span class="badge badge-danger">{{ eventos|length }}</span>  <!-- Muestra el contador aquí -->
         </a>
+        
 
            <div class="dropdown notifications">
             <button style="background-color: #1a252f; width: 80%; height: 80%;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,14 +86,14 @@
       <div class="sidebar" id="sidebar">
         <ul class="cont-menu">
           {% if user.is_authenticated %}
-          <a class="btn-importados" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Inmuebles Importados</li></a>
-          <a class="btn-importados_completed" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">InImp Completados</a>
+          <a class="btn-pendientes" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Pendientes</li></a>
+          <a class="btn-completados" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">Completados</a>
           <br>
-          <a class="btn-baja-importados" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas Importados</a>
+          <a class="btn-baja" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
 
-          <a class="btn-pendientes" href="{%url 'tasks' %}"><li><i class="logo fa-solid fa-file-pen"></i><hr class="hr">Pendientes</li></a>
+          <!-- <a class="btn-pendientes" href="{%url 'tasks' %}"><li><i class="logo fa-solid fa-file-pen"></i><hr class="hr">Pendientes</li></a>
           <a class="btn-completados" href="{%url 'tasks_completed' %}"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Tareas Completas</li></a>
-          <a class="btn-baja" href="{% url 'inmuebles_baja' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
+          <a class="btn-baja" href="{% url 'inmuebles_baja' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a> -->
   
           <a class="btn-alta" href="{% url 'create_task' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>
           
@@ -100,6 +102,11 @@
           <a class="btn-alta" href="'/signin"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Login</li></a>
           {% endif %}
       </div>
+
+      <div class="custom-scrollbar">
+        <!-- Contenido aquí -->
+    </div>
+    
     {% block content %}
 
 
@@ -130,6 +137,20 @@
         border: 1px solid #ccc;
       }
  
+      .btn-calendar{
+        background-color: #1a252f; 
+        display: flex;
+        align-content: center; 
+        justify-content: space-evenly;
+        align-items: baseline; 
+        position: absolute;
+        right: 6em; 
+        color: #fff; 
+        text-decoration: none; padding: 2px 8px;
+        border: 0.1px solid #ccc; 
+        border-radius: 5px;
+      }
+      
       
       
       .containerT{
@@ -306,6 +327,24 @@ flex-shrink: 0;
 top: .2em;
 left: -.3em;
 }
+
+/* Establecer el ancho y color del scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px; /* Ancho del scrollbar */
+  background-color: #f0f0f0; /* Color de fondo del scrollbar */
+}
+
+/* Cambiar el color del scrollbar cuando se desplaza */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #0077b6; /* Color del scrollbar desplazado */
+}
+
+/* Para navegadores Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin; /* Ancho del scrollbar */
+  scrollbar-color: #0077b6 #f0f0f0; /* Color del scrollbar desplazado y fondo */
+}
+
 @media (max-width: 768px) {
   .email {
     display: none;

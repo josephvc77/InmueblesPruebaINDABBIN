@@ -12,25 +12,42 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="prioridad-select">Prioridad:</label>
     <select id="prioridad-select" name="prioridad" class="form-control m-2">
-      <option value="">Todas</option>
+      <option value="">Prioridad <i class="fas fa-chevron-down"></i></option>
       <option value="Alta">Alta</option>
       <option value="Media">Media</option>
       <option value="Baja">Baja</option>
     </select>
   </div>
+  <div class="form-group">
+    <select style="cursor:pointer" id="ur-select" name="ur"  class="form-control m-2">
+        <option value="">UR <i class="fas fa-chevron-down"></i></option>
+        <option value="CGEE">CGEE</option>
+        <option value="DGB">DGB</option>
+        <option value="DGBTEPD">DGBTEPD</option>
+        <option value="DGCFT">DGCFT</option>
+        <option value="DGETAyCM">DGETAyCM</option>
+        <option value="DGETI">DGETI</option>
+        <option value="DGRMyS">DGRMyS</option>
+        <option value="RESEMS">RESEMS</option>
+    </select>
+</div>
+<div class="form-group">
+  <select style="cursor:pointer" id="ordenar-por" name="ordenar" class="form-control m-2">
+      <option value="">Ordenar <i class="fas fa-chevron-down"></i></option>
+      <option value="az">A a Z</option>
+      <option value="za">Z a A</option>
+      <option value="nuevo">Más nuevo</option>
+      <option value="viejo">Más viejo</option>
+      
+  </select>
+</div>
+
   <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-outline-success btn-sm m-2">Exportar Excel <i class="fas fa-file-excel"></i></a>
-
-
-
-
 
 {% if mensaje %}
     <p>{{ mensaje }}</p>
 {% endif %}
-
-
 
 </form>
 
@@ -72,6 +89,7 @@
         <p class="text-center"><strong>Causa de Alta:</strong> <br>{{ task.causa_alta }}</p>
         <p class="text-center"><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
         <p class="text-center"><strong>Municipio :</strong> {{ task.municipio_alcaldia }}</p>
+        <p class="text-center"><strong>UR :</strong> {{ task.UR }}</p>
         <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
           Prioridad: {{ task.prioridad }}
         </p>
@@ -118,6 +136,8 @@
     {% if task.creado %}
     <p class="completado">Creado el: {{ task.creado}}</p>
     {% endif %}
+
+
     
     {% if task.datecompleted %}
     <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
@@ -135,23 +155,23 @@
     <ul class="pagination justify-content-center">
       {% if inmuebles.has_previous %}
       <li class="page-item">
-        <a class="page-link" href="?page=1" aria-label="Previous">
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
       </li>
       {% endif %}
-      
+
       <li class="page-item active"><span class="page-link">{{ inmuebles.number }}</span></li>
-      
+
       {% if inmuebles.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
@@ -159,6 +179,8 @@
     </ul>
   </nav>
 </div>
+
+
 
 {% else %}
   <p>No se encontraron tareas que coincidan con la búsqueda.</p>
@@ -176,9 +198,25 @@
       // Envía automáticamente el formulario cuando cambie la selección
       this.form.submit();
     });
+
+    var urSelect = document.getElementById("ur-select");
+    urSelect.addEventListener("change", function(){
+      this.form.submit();
+    })
+
+    var OrdenarPor = document.getElementById("ordenar-por");
+    OrdenarPor.addEventListener("change", function(){
+      this.form.submit();
+    })
+
   </script>
 <style>
 
+  .fas fa-caret-down {
+    color: red !important;
+    font-size: 16px;
+  }
+  
   
  .asigned {
   display: flex;align-items: center; flex-direction: column;background-color: #691c32; width: 90%; margin: 10px; padding: 5px; color: #ccc;margin-left:20px; border-radius:5px }
@@ -231,7 +269,7 @@
     flex-direction: column;
     justify-content: space-between;
     max-width: 500px; /* Aumenta el ancho de la tarjeta */
-    max-height: 600px;
+    max-height: 620px;
     margin: 15px;
   }
 
