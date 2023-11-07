@@ -143,7 +143,7 @@ class AllModelsAdminIMP(admin.ModelAdmin):
         # Agrega más TabularInline aquí para otros modelos...
     ]
 
-    list_display = ('NombreInmueble','rfi','pais', 'entidad_federativa', 'created')
+    list_display = ('NombreInmueble','rfi','pais', 'entidad_federativa')
     search_fields = ('rfi', 'NombreInmueble', 'pais')
     list_filter = ('user', 'pais')
 
