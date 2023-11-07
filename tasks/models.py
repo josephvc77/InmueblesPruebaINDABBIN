@@ -933,7 +933,9 @@ class Inmueble(models.Model):
 
     Denominaciones_anteriores = models.CharField(max_length=400,  null=True, blank=True)
     creado = models.CharField(max_length=20,null=True, blank=True)
-    updated = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
     datecompleted = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

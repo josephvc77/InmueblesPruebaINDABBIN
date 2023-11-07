@@ -144,7 +144,7 @@ class TaskForm(ModelForm):
 from django.contrib.auth.models import User
 class TaskCreateForm(ModelForm):
     class Meta:
-        model = Task
+        model = Inmueble
         fields = ['NombreInmueble', 'assigned_to', 'causa_alta', 'prioridad', 'deadline', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble']
         widgets = {
                 'deadline': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa', 'type': 'date'}),

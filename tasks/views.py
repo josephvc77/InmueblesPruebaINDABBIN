@@ -108,7 +108,8 @@ def tasks(request):
         'inmuebles': inmuebles, 
     })
 
-    
+from django.shortcuts import render
+
     
 from django.db.models import Q
 from django.shortcuts import render
@@ -118,13 +119,30 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render
 from .models import Inmueble
+from urllib.parse import urlencode
+from django.http import HttpResponse
+
 
 @login_required
 def tasks_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
+    ur = request.GET.get('ur', '')
+    orden = request.GET.get('ordenar', '')
     
+    request.session['search_query'] = search_query
+    request.session['prioridad'] = prioridad
+    request.session['ur'] = ur
+    request.session['ordenar'] = orden
+
     mensajes = MensajeIMP.objects.all()
+    
+    eventos = Events.objects.all()
+    
+    # Obtener los valores de búsqueda y filtros de la sesión
+    search_query = request.session.get('search_query', '')
+    prioridad = request.session.get('prioridad', '')
+    ur = request.session.get('ur', '')
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -133,20 +151,29 @@ def tasks_importados(request):
         Q(entidad_federativa__icontains=search_query),
         datecompleted__isnull=True,
         estado='Activo'  # Filtra las tareas en estado 'Activo'
-    ).order_by('NombreInmueble')
+    ).order_by('updated')
 
     if prioridad:
         inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
-
+        
+    if ur:
+        inmuebles_list = inmuebles_list.filter(UR=ur)
+        
+    # Aplicar filtros de orden
+    if orden == 'az':
+        inmuebles_list = inmuebles_list.order_by('NombreInmueble')
+    elif orden == 'za':
+        inmuebles_list = inmuebles_list.order_by('-NombreInmueble')
+    elif orden == 'nuevo':
+        inmuebles_list = inmuebles_list.order_by('-updated')
+    elif orden == 'viejo':
+        inmuebles_list = inmuebles_list.order_by('creado')
+        
+        
     paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
 
     page = request.GET.get('page')
-    try:
-        inmuebles = paginator.page(page)
-    except PageNotAnInteger:
-        inmuebles = paginator.page(1)
-    except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
+    inmuebles = paginator.get_page(page)
         
         
     for task in inmuebles:
@@ -191,17 +218,23 @@ def tasks_importados(request):
         'search_query': search_query,
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
-        'mensajes' : mensajes,
+        'mensajes' : mensajes, 
+        'prioridad': prioridad,
+        'ur': ur,
+        'eventos' : eventos,
+        'orden': orden,
     })
     
 @login_required
 def calendar(request):  
     mensajes = MensajeIMP.objects.all()
+    eventos = Events.objects.all()
     all_events = Events.objects.all()
 
     return render(request,'calendar.html', {
         'mensajes' : mensajes,
-        "events":all_events
+        "events":all_events,
+        "eventos" : eventos,
     })
 
 @login_required
@@ -356,6 +389,7 @@ def inmuebles_baja_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     mensajes = MensajeIMP.objects.all()
+    eventos = Events.objects.all()
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -400,6 +434,7 @@ def inmuebles_baja_importados(request):
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
         'mensajes': mensajes,
+        'eventos': eventos,
     })
 
 
@@ -409,6 +444,7 @@ def tasks_completed_importados(request):
     prioridad = request.GET.get('prioridad', '')
     
     mensajes = MensajeIMP.objects.all()
+    eventos = Events.objects.all()
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -448,6 +484,7 @@ def tasks_completed_importados(request):
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
         'mensajes': mensajes,
+        'eventos': eventos,
     })
     
     
@@ -541,7 +578,7 @@ def create_task(request):
             else:
                 task.user = request.user  # El usuario actual crea la tarea
             task.save()
-            return redirect('tasks')
+            return redirect('tasks_importados')
     else:
         form = TaskCreateForm(user=request.user)
     context = {'form': form}
