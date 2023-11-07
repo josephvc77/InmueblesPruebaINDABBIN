@@ -151,7 +151,7 @@ def tasks_importados(request):
         Q(entidad_federativa__icontains=search_query),
         datecompleted__isnull=True,
         estado='Activo'  # Filtra las tareas en estado 'Activo'
-    ).order_by('updated')
+    ).order_by('-updated')
 
     if prioridad:
         inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
@@ -168,7 +168,6 @@ def tasks_importados(request):
         inmuebles_list = inmuebles_list.order_by('-updated')
     elif orden == 'viejo':
         inmuebles_list = inmuebles_list.order_by('creado')
-        
         
     paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
 

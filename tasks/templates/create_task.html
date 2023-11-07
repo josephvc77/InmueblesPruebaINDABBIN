@@ -40,8 +40,43 @@
     <p>No tienes permisos para asignar tareas a otros usuarios.</p>
   {% endif %}
 </div>
-  <button type="submit">Generar Alta</button>
+
+<div class="form-group form-check-inline" id="fecha_documento_group">
+  <label for="{{ form.creado.id_for_label }}">Fecha de Creación:</label>
+  <input type="date" id="{{ form.creado.id_for_label }}" name="{{ form.creado.name }}" class="form-control" value="{{ form.creado.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'creado')">
+</div>
+<div id="dateAlertDocumento" class="alert alert-danger" style="display: none;"></div>
+
+<button type="submit">Generar Alta</button>
 </form>
+
+<script>
+  function validateDate(input, alertType) {
+      var selectedDate = new Date(input.value);
+      var currentDate = new Date();
+
+      if (selectedDate > currentDate) {
+          var alert = document.getElementById('dateAlertDocumento');
+          alert.textContent = 'La fecha no puede ser posterior a la fecha actual.';
+          alert.style.display = 'block';
+
+          // Agregamos estilos para hacer la alerta flotante
+          alert.style.position = 'fixed';
+          alert.style.top = '10px';
+          alert.style.right = '10px';
+          alert.style.zIndex = '1000'; // Asegura que esté por encima de otros elementos
+
+          input.value = ''; // Limpia el campo de fecha
+
+          // Cierra la alerta después de 5 segundos (5000 ms)
+          setTimeout(function() {
+              alert.style.display = 'none';
+          }, 5000);
+      } else {
+          document.getElementById('dateAlertDocumento').style.display = 'none';
+      }
+  }
+</script>
 <style>
   /* Estilos generales para el formulario */
 form {
