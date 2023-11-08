@@ -4,10 +4,24 @@
     box-sizing: border-box;
 }
 
+/* Establecer el ancho y color del scrollbar del body */
+body::-webkit-scrollbar {
+    width: 10px; /* Ancho del scrollbar */
+    background-color: #111010; /* Color de fondo del scrollbar */
+}
+
+/* Cambiar el color del scrollbar del body cuando se desplaza */
+body::-webkit-scrollbar-thumb {
+    background-color: #0077b6; /* Color del scrollbar desplazado */
+}
+
+
 body {
     background-color: #fff; /* Color de fondo claro */
     color: #000; /* Color de texto oscuro */
     transition: background-color 0.3s, color 0.3s; /* Transiciones suaves */
+    scrollbar-width: thin; /* Ancho del scrollbar */
+    scrollbar-color: #0077b6 #f0f0f0; /* Color del scrollbar desplazado y fondo */
   }
   
   body.dark-mode {
@@ -59,7 +73,7 @@ body {
   }
 
   
-  .dark-mode .contenedor-menu, .dark-mode .search-form ,.dark-mode  .totals-card ,.dark-mode #prioridad-select{
+  .dark-mode .contenedor-menu, .dark-mode .search-form ,.dark-mode  .totals-card ,.dark-mode #prioridad-select,.dark-mode #ur-select, .dark-mode #ordenar-por{
     border: 1px #1c1b1b solid;
     background-color: rgb(15, 18, 19);
     color: #fff; 
@@ -67,7 +81,7 @@ body {
 
 
   .user{
-    position: relative;
+    display: flex;
   }
 
 
@@ -203,7 +217,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     border: none;
-    color: #1a252f;
+    color: #6f7271;
     background-color: transparent;
     left: 1em;
 }
@@ -215,7 +229,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     border: none;
-    color: #1a252f;
+    color: #6f7271;
     background-color: transparent;
     left: 1em;
 }
@@ -251,7 +265,7 @@ body {
 
 .btn-home{
     position: relative;
-    color: #1a252f;
+    color: #6f7271;
     left: 2em;
     font-size: 16px;
 }
@@ -587,15 +601,4 @@ table th {
       margin-bottom: 5px;
       border-radius: 5px;
     }
-  }
-
-  .btn-calendar{
-    position: absolute;
-    right: 7em;
-    color: #ffff;
-    background-color: #1a252f;
-    padding: 3px 12px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    text-decoration: none;
   }

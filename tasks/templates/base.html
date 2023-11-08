@@ -47,7 +47,7 @@
            <a href="{%url 'tasks_importados' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
 
 
-           <a href="{% url 'calendar' %}" class="btn-calendar"> Eventos
+           <a href="{% url 'calendar' %}" class="btn-calendar"> <span class="events">Eventos</span>
             <i class="far fa-calendar m-1"></i>
             <span class="badge badge-danger">{{ eventos|length }}</span>  <!-- Muestra el contador aquí -->
         </a>
@@ -86,8 +86,8 @@
       <div class="sidebar" id="sidebar">
         <ul class="cont-menu">
           {% if user.is_authenticated %}
-          <a class="btn-pendientes" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Pendientes</li></a>
-          <a class="btn-completados" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">Completados</a>
+          <a class="btn-pendientes" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Completados</li></a>
+          <a class="btn-completados" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">Terminados</a>
           <br>
           <a class="btn-baja" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
 
@@ -350,6 +350,31 @@ left: -.3em;
     display: none;
   }
 }
+
+.events{
+  display: flex;
+}
+
+@media (max-width: 560px) {
+
+  a.salir{
+    position: absolute;
+    margin-top: 40px;
+    right: 0;
+}
+.title{
+  font-size: 13px;
+ }
+ .events{
+  display: none;
+}
+
+
+  }
+
+
+
+
  
     </style>
     <script>

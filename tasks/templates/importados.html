@@ -43,7 +43,7 @@
   </select>
 </div>
 
-  <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-outline-success btn-sm m-2">Exportar Excel <i class="fas fa-file-excel"></i></a>
+  <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-outline-success btn-sm m-2 excell">Exportar Excel <i class="fas fa-file-excel"></i></a>
 
 {% if mensaje %}
     <p>{{ mensaje }}</p>
@@ -61,12 +61,12 @@
 
   <div class="totals-card">
     <div class="totals-container">
-      <p class="total-label">Pendientes:</p>
+      <p class="total-label">Completados:</p>
       <p class="total-value">{{ total_pending_inmuebles }}</p>
     </div>
     <h3 style="color: #4b4b4b;">Inmuebles Importados Registrados </h3>
     <div class="totals-container">
-      <p class="total-label">Completadas:</p>
+      <p class="total-label">Terminados:</p>
       <p class="total-value">{{ total_completed_inmuebles }}</p>
     </div>
   </div>
@@ -150,7 +150,7 @@
   </div>
   {% endfor %}
 </div>
-<div class="text-center">
+<div class="text-center paginador">
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       {% if inmuebles.has_previous %}
@@ -212,6 +212,8 @@
   </script>
 <style>
 
+
+
   .fas fa-caret-down {
     color: red !important;
     font-size: 16px;
@@ -257,20 +259,19 @@
   justify-content: flex-end;
 }
   .card {
-
     border-radius: 8px;
     background-color: #e1c77b24;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-
     width: 550px;
-    height: 650px;
+    height: 700px;
     padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    max-width: 500px; /* Aumenta el ancho de la tarjeta */
-    max-height: 620px;
+    max-width: 500px;
+    max-height: 700px;
     margin: 15px;
+    margin-bottom: 0em;
   }
 
   .completado{
@@ -418,6 +419,31 @@
   background-color: #f7f7f7;
   border-radius: 4px;
   cursor: pointer;
+}
+
+@media (max-width: 436px) {
+  #prioridad-select, #ordenar-por,#ur-select, .excell{
+    display: none;
+  }
+
+  .card {
+    width: 561px;
+    height: 770px;
+    max-height: 804px;
+    margin-bottom: 0em;
+  }
+
+  .card-container {
+
+    margin-bottom: 231px;
+}
+
+.paginador{
+  position: relative;
+  top: -10em;
+}
+
+
 }
 
 </style>
