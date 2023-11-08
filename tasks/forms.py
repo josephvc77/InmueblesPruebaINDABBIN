@@ -248,7 +248,7 @@ class InmuebleForm(forms.ModelForm):
                   'Denominaciones_anteriores', 'Dependencia_Administradora', 'subSeccion','certificado_de_seguridad', 'sentido_del_Dictamen', 
                   'descripcion_del_sentido_del_Dictamen','fecha_documento', 'subir_archivo','no_de_identificador_del_expediente_institucion', 
                 # Ubicación
-                  'pais', 'entidad_federativa', 'municipio_no_existente', 'municipio_alcaldia', 'localidad', 'componente_espacial','fotografia_de_la_ubicacion',
+                  'pais', 'entidad_federativa', 'municipio_alcaldia', 'localidad', 'componente_espacial','fotografia_de_la_ubicacion',
                   'tipo_vialidad', 'nombre_vialidad', 'numero_exterior', 'numero_exterior_2', 'numero_interior',
                   'tipo_asentamiento', 'nombre_asentamiento', 'codigo_postal', 'entre_vialidades_referencia1',
                   'entre_vialidades_referencia2', 'vialidad_posterior', 'descripcion_ubicacion', 'datum', 'utmx', 'utmy', 'utm_zona', 'latitud', 'longitud',  
