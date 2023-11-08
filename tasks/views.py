@@ -436,28 +436,42 @@ def inmuebles_baja_importados(request):
         'eventos': eventos,
     })
 
-
 @login_required
 def tasks_completed_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
+    ur = request.GET.get('ur', '')
+    orden = request.GET.get('ordenar', '')
     
     mensajes = MensajeIMP.objects.all()
     eventos = Events.objects.all()
 
+    # Filtra los inmuebles completados y aplica los filtros de búsqueda
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
         Q(rfi__icontains=search_query) |
         Q(municipio_alcaldia__icontains=search_query) |
         Q(entidad_federativa__icontains=search_query),
         datecompleted__isnull=False
-        
     ).order_by('-datecompleted')
 
     if prioridad:
         inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
+        
+    if ur:
+        inmuebles_list = inmuebles_list.filter(UR=ur)
 
-    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
+    # Aplica filtros de orden
+    if orden == 'az':
+        inmuebles_list = inmuebles_list.order_by('NombreInmueble')
+    elif orden == 'za':
+        inmuebles_list = inmuebles_list.order_by('-NombreInmueble')
+    elif orden == 'nuevo':
+        inmuebles_list = inmuebles_list.order_by('-datecompleted')
+    elif orden == 'viejo':
+        inmuebles_list = inmuebles_list.order_by('datecompleted')
+
+    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles completados por página
 
     page = request.GET.get('page')
     try:
@@ -467,23 +481,20 @@ def tasks_completed_importados(request):
     except EmptyPage:
         inmuebles = paginator.page(paginator.num_pages)
 
-    total_pending_inmuebles = Inmueble.objects.filter(
-        Q(NombreInmueble__icontains=search_query) |
-        Q(rfi__icontains=search_query) |
-        Q(municipio_alcaldia__icontains=search_query) |
-        Q(entidad_federativa__icontains=search_query),
-        datecompleted__isnull=True
-    ).count()  # Total de inmuebles pendientes por completar
-
     total_completed_inmuebles = Inmueble.objects.filter(datecompleted__isnull=False).count()  # Total de inmuebles completados
+    
+    total_pending_inmuebles = Inmueble.objects.filter(datecompleted__isnull=True).count()  # Total de inmuebles pendientes por completar
 
     return render(request, 'importados.html', {
         'inmuebles': inmuebles,
         'search_query': search_query,
-        'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
+        'total_pending_inmuebles': total_pending_inmuebles,
         'mensajes': mensajes,
         'eventos': eventos,
+        'prioridad': prioridad,
+        'ur': ur,
+        'orden': orden,
     })
     
     

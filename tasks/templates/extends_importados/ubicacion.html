@@ -24,6 +24,10 @@
       ></select>
     </div>
     <div class="form-group form-check-inline">
+      <label for="{{ inmueble.municipio_no_existente.id_for_label }}">En caso de no existir, agregar manuelmente el municipio:</label>
+      {{ inmueble.municipio_no_existente }}
+    </div>
+    <div class="form-group form-check-inline">
       <label for="{{ inmueble.localidad.id_for_label }}">Localidad:</label>
       {{ inmueble.localidad }}
     </div>

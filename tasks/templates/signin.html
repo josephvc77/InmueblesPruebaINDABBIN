@@ -113,29 +113,117 @@
     height: 100vh;
   }
 
-  @media (max-width: 768px) {
-   
-
-    .contenedor-logo{
-      position: relative;
-      left: 48%;
-      width: 100%;
-    }
-    .bg{
-      display: none;
-    }
-  }
   .alert {
     display: none;
     position: absolute;
-    top: -20em;
-    left: 13.3em;
-    width: 100%;
-    padding: 1.5em;
+    top: -23em;
+    left: 39em;
+    transform: translateX(-50%);
+    width: 18em;
+    padding: 10px 22px;
     background-color: #f89406;
     border: none;
     color: #ffffff;
     overflow: hidden;
+    font-size: 12px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .icon{
+    width: 20px
+  }
+
+  .labels{}
+
+  .ingresar{}
+
+  @media (max-width: 436px) {
+    /* Center the labels */
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .labels {
+      left: 0em;
+      display: flex;
+      flex-direction: column;
+      width: 19em;
+      margin: 0 auto;
+      position: relative;
+      top: 6em;
+    }
+  
+    /* Center the login form inputs and buttons */
+    .ingresar {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      top: 6em;
+      margin: 0 auto;
+      left: 6em;
+    }
+  
+    /* Center the logo container */
+    .contenedor-logo {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin: 0 auto; /* Center horizontally */
+    }
+  
+    /* Hide the background image */
+    .bg {
+      display: none;
+    }
+  
+    /* Center the logo */
+    .logo-sgis {
+      position: static;
+      margin-top: -15em;
+      width: 100%;
+    }
+  
+    form {
+      display: flex;
+      flex-wrap: nowrap;
+      margin: 0;
+      flex-direction: column;
+      justify-content: center;
+      right: 14em;
+    }
+
+    .alert {
+      display: none;
+      position: absolute;
+      top: -23em;
+      left: 13em;
+      transform: translateX(-50%);
+      width: 15em;
+      padding: 5px 21px;
+      background-color: #f89406;
+      border: none;
+      color: #ffffff;
+      overflow: hidden;
+      font-size: 12px;
+    }
+    .logo-GM {
+      width: 60%;
+      z-index: 128;
+      position: relative;
+      bottom: -10em;
+      left: 0em;
   }
 
   .password-input {
@@ -157,6 +245,7 @@
   .toggle-password i {
     font-size: 18px;
   }
+  }
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -169,13 +258,14 @@
     <img class="logo-sgis" src="{% static 'inicio/img/logo-sgis.png' %}">
     <img class="logo-GM" src="{% static 'inicio/img/logo.png' %}" alt="">
   </div>
-  {% static 'inicio/css/styles.css'%}"
+
   <div class="bg">
     <img src="{% static 'inicio/img/bg.png' %}">
   </div>
   <form method="POST" onsubmit="return validateForm();">
     {% csrf_token %}
 
+    <div class="labels">
     <div class="form-group">
         <input type="text" name="{{ form.username.name }}" placeholder="Usuario" class="form-control form-control-sm">
     </div>
@@ -187,7 +277,8 @@
             </span>
         </div>
     </div>
-    <button type="submit">Ingresar</button>
+  </div>
+    <button class="ingresar" type="submit">Ingresar</button>
     <div class="alert alert-danger" id="alert" role="alert">
         <img class="icon" src="{% static 'inicio/icons/triangle-exclamation-solid.svg' %}" alt=""> Ingresa tus credenciales
     </div>
@@ -216,7 +307,7 @@
     const passwordInput = document.querySelector('input[name="{{ form.password.name }}"]');
     
     if (usernameInput.value.trim() === '' || passwordInput.value.trim() === '') {
-      alertElement.style.display = 'block';
+      alertElement.style.display = 'flex';
       setTimeout(() => {
         alertElement.style.display = 'none';
       }, 5000); // Ocultar la alerta después de 5 segundos
