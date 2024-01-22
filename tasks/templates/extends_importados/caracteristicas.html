@@ -1,4 +1,4 @@
-<div class="tab-content" id="tab-caracteristicas">
+<div class="tab-content animated fadeIn" id="tab-caracteristicas">
     <div class="section">
         
         <div class="form-group">
@@ -10,7 +10,65 @@
             </select>
         </div>
     
+<script>
+ $(document).ready(function() {
+    // Almacena el elemento jQuery directamente, no su ID
+    var usoEdificacionSelect = $('#id_usoEdificacion');
+    var calidadEdificacionSelect = $('#id_calidadEdificacion');
 
+    // Llama a las funciones de carga con el elemento jQuery directo
+    loadUsoPorEdificacion(usoEdificacionSelect, calidadEdificacionSelect);
+
+    function loadUsoPorEdificacion(selectUsoPorEdificacion, selectCalidadDeLaEdificacion) {
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
+            console.log('Datos obtenidos de Firebase para Uso por Edificación:', data);
+            var uso_por_edificacion = [...new Set(data.map(item => item.uso_por_edificacion))];
+
+            selectUsoPorEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(uso_por_edificacion, function(index, value){
+                var option = $('<option>').text(value).attr('value', value);
+                selectUsoPorEdificacion.append(option);
+
+                // Verifica si el valor coincide con el valor predeterminado
+                if (value === selectUsoPorEdificacion.data('default-value')) {
+                    option.prop('selected', true);
+                }
+            });
+
+            // Al cargar los datos de "Uso por Edificación", también cargamos los datos de "Calidad de la Edificación" inicialmente.
+            loadCalidadDeLaEdificacion(selectUsoPorEdificacion, selectCalidadDeLaEdificacion);
+        });
+
+        // Manejar el evento change del select de uso por edificación
+        selectUsoPorEdificacion.on('change', function() {
+            loadCalidadDeLaEdificacion(selectUsoPorEdificacion, selectCalidadDeLaEdificacion);
+        });
+    }
+
+    function loadCalidadDeLaEdificacion(selectUsoPorEdificacion, selectCalidadDeLaEdificacion) {
+        // Obtén el valor seleccionado de "Uso por Edificación"
+        var selectedUsoPorEdificacion = selectUsoPorEdificacion.val();
+
+        // Realiza una petición para cargar los datos de "Calidad de la Edificación" en función de la selección de "Uso por Edificación".
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
+            var calidad = [...new Set(data.filter(item => item.uso_por_edificacion === selectedUsoPorEdificacion)
+                                .map(item => item.calidad_edificacion))];
+
+            selectCalidadDeLaEdificacion.empty(); // Limpiar opciones anteriores
+            $.each(calidad, function(index, value) {
+                var option = $('<option>').text(value).attr('value', value);
+                selectCalidadDeLaEdificacion.append(option);
+
+                // Verifica si el valor coincide con el valor predeterminado
+                if (value === selectCalidadDeLaEdificacion.data('default-value')) {
+                    option.prop('selected', true);
+                }
+            });
+        });
+    }
+});
+
+    </script>
 
         <!-- Formulario para Edificación -->
         <div id="form-edificacion" class="form-section form-group">
@@ -60,13 +118,14 @@
                 <br>
                 <div class="form-group form-check-inline width-label">
                     <label for="{{ edificacion_form.usoEdificacion.id_for_label }}">Uso por Edificación:</label>
-                    <select id="{{ edificacion_form.usoEdificacion.auto_id }}" name="{{ edificacion_form.usoEdificacion.html_name }}"></select>
+                    <select id="{{ edificacion_form.usoEdificacion.auto_id }}" name="{{ edificacion_form.usoEdificacion.html_name }}" data-default-value="{{ edificacion_form.instance.usoEdificacion }}"></select>
                 </div>
                 
                 <div class="form-group form-check-inline width-label">
                     <label for="{{ edificacion_form.calidadEdificacion.id_for_label }}">Calidad de la Edificación:</label>
-                    <select id="{{ edificacion_form.calidadEdificacion.auto_id }}" name="{{ edificacion_form.calidadEdificacion.html_name }}"></select>
+                    <select id="{{ edificacion_form.calidadEdificacion.auto_id }}" name="{{ edificacion_form.calidadEdificacion.html_name }}" data-default-value="{{ edificacion_form.instance.calidadEdificacion }}"></select>
                 </div>
+                
         <div class="form-group form-check-inline width-label">
             <label for="{{ edificacion_form.cajones_de_estacionamiento_por_edificacion.id_for_label }}">Cajones de Estacionamiento por Edificación:</label>
             {{ edificacion_form.cajones_de_estacionamiento_por_edificacion }}
@@ -317,6 +376,7 @@
                         </td>
                         <td>{{ task.get_estado_conservacion_display }}</td>
                     </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -355,17 +415,22 @@
                             <td>{{ edificacion.superficie_construida_por_edificacion_m2 }}</td>
                             <td>{{ edificacion.fecha_construccion_por_edificacion }}</td>
                             <td>{{ edificacion.caracteristicas_de_la_edificacion }}</td>
-                            <td>{{ edificacion.uso_por_edificacion }}</td>
-                            <td>{{ edificacion.calidad_de_la_edificacion }}</td>
+                            <td>{{ edificacion.usoEdificacion }}</td>
+                            <td>{{ edificacion.calidadEdificacion }}</td>
                             <td>{{ edificacion.cajones_de_estacionamiento_por_edificacion }}</td>
                             <td>{{ edificacion.rampa_de_acceso }}</td>
                             <td>{{ edificacion.ruta_de_evacuacion }}</td>
                             <td>{{ edificacion.sanitario_para_personas_con_discapacidad }}</td>
                             <td>
                                 <a href="{% url 'editar_edificacionIMP' edificacion.id %}" class="btn ">Modificar</a>
-                                <a href="{% url 'borrar_edificacionIMP' edificacion.id %}" class="btn ">Borrar</a>
+                                <a href="{% url 'borrar_edificacionIMP' edificacion_id=edificacion.id  %}" class="btn ">Borrar</a>
                             </td>
                         </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="14">No existen registros</td>
+                        </tr>
+
                     {% endfor %}
                 </tbody>
             </table>
@@ -410,8 +475,13 @@
 </div>
 </div>
 
+{% load static%}
+<script src="{% static 'inicio/js/caracteristicas.js'%}"></script>
 
 <script>
+
+
+
     $(document).ready(function() {
         // Ocultar campos por defecto
         $("#tipo_inmueble_rural, #uso_dominante_zona, #clasificacion_por_edad, #categoria, #grado_consolidacion ").show();
@@ -468,55 +538,10 @@
         });
 
     });
+
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function loadUsoPorEdificacion() {
-        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
-            var uso_por_edificacion = [...new Set(data.map(item => item.uso_por_edificacion))];
-            var selectUsoPorEdificacion = $('#{{ edificacion_form.usoEdificacion.auto_id }}');
 
-            selectUsoPorEdificacion.empty(); // Limpiar opciones anteriores
-            $.each(uso_por_edificacion, function(index, value){
-                selectUsoPorEdificacion.append($('<option>').text(value).attr('value', value));
-            });
-
-            // Obtén el valor seleccionado actual
-            var selectedUsoPorEdificacion = '{{ edificacion_form.instance.usoEdificacion }}';
-            selectUsoPorEdificacion.val(selectedUsoPorEdificacion);
-
-            // Al cargar los datos de "Uso por Edificación", también cargamos los datos de "Calidad de la Edificación" inicialmente.
-            loadCalidadDeLaEdificacion();
-        });
-    }
-
-    function loadCalidadDeLaEdificacion() {
-        var selectUsoPorEdificacion = $('#{{ edificacion_form.usoEdificacion.auto_id }}').val(); // Obtén el valor seleccionado de "Uso por Edificación"
-        // Realiza una petición para cargar los datos de "Calidad de la Edificación" en función de la selección de "Uso por Edificación".
-        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
-            var calidad = [...new Set(data.filter(item => item.uso_por_edificacion === selectUsoPorEdificacion)
-                                .map(item => item.calidad_edificacion))];
-            var selectCalidadDeLaEdificacion = $('#{{ edificacion_form.calidadEdificacion.auto_id }}');
-            selectCalidadDeLaEdificacion.empty(); // Limpiar opciones anteriores
-            $.each(calidad, function(index, value) {
-                selectCalidadDeLaEdificacion.append($('<option>').text(value).attr('value', value));
-            });
-
-            // Obtén el valor seleccionado actual
-            var selectedCalidadDeLaEdificacion = '{{ edificacion_form.instance.calidadEdificacion }}';
-            selectCalidadDeLaEdificacion.val(selectedCalidadDeLaEdificacion);
-        });
-    }
-
-    $(document).ready(function() {
-        loadUsoPorEdificacion();
-
-        $('#{{ edificacion_form.usoEdificacion.auto_id }}').change(function() {
-            loadCalidadDeLaEdificacion();
-        });
-    }); 
-
-</script>
 
 
 <script>

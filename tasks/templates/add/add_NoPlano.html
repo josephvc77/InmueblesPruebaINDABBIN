@@ -1,79 +1,74 @@
-{% extends 'base.html' %}
-{% block titulo %} Agregar Numero Plano {% endblock %}
 
 
-    {% block content %}
-<h1>Agregar Nuevo No. Plano</h1>
+{% block content %}
+{% load static%}
+{% if numero_plano_form.errors %}
+{% endif %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="{% static 'inicio/css/estilos-modales.css'%}" rel='stylesheet' type='text/css'>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ numero_plano_form.as_p }}
-    <button type="submit">Guardar</button>
-    <a href="{% url 'task_detail' task_id=task.id %}" class="btn-cancelar">Cancelar</a>
-</form>
-<style>
-    form {
-        margin-top: 20px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-    
-    /* Estilo para los campos del formulario */
-    form label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    
-    form input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        font-size: 14px;
-    }
-    
-    /* Estilo para el botón de guardar */
-    form button[type="submit"] {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-    
-    /* Estilo para el botón de cancelar */
-    form a.btn-secondary {
-        display: inline-block;
-        background-color: #6c757d;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        text-decoration: none;
-        margin-right: 10px;
-    }
-    
-    /* Estilo para el título */
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    
-    .btn-cancelar{
-        text-decoration: none;
-        background-color: #cd2528;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-    
-</style>
+    <form method="POST" id="numeroPlanoForm">
+        {% csrf_token %}
+        <div class="form-group">
+        <input type="text" class="form-control"  placeholder="Agregue el número plano" autocomplete="off"   required name="numero_plano_data" id="id_numero_plano_data" maxlength="8">
+    </div>
+    <div class="form-group form-check-inline">
+        <label for="id_archivo_Numero_Plano">Subir Archivo:</label>
+        <input type="file" class="form-control" required name="archivo_Numero_Plano" id="id_archivo_Numero_Plano">
+      </div>
+       
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-success" onclick="guardarNumeroPlano()">Guardar</button>
+        <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancelar</button>
+    </div>
+    </form>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function guardarNumeroPlano() {
+            // Prevenir la recarga de la página
+
+            // Obtén los datos del formulario
+            var formData = new FormData(document.getElementById('numeroPlanoForm'));
+
+            // Realiza la solicitud AJAX
+            $.ajax({
+                url: "{% url 'agregar_no_plano' task_id=inmueble.id %}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    // Maneja la respuesta (puedes mostrar un mensaje de éxito, cerrar el modal, etc.)
+                    console.log(data);
+                    // Cerrar el modal (si es necesario)
+                    $("#expedienteModal").modal("hide");
+                    // Mostrar la alerta de éxito
+                    swal("Éxito", "Número Plano agregado correctamente.", "success");
+                    // Recargar la página o realizar otras acciones según sea necesario
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000); // 5000 milisegundos = 5 segundos
+                },
+                error: function (error) {
+                    console.error(error);
+                    if (error.status === 400 && error.responseJSON && error.responseJSON.error_message) {
+                        swal("Error", error.responseJSON.error_message, "error");
+
+                        // Puedes mostrar los errores de formulario si es necesario
+                        var formErrors = error.responseJSON.errors;
+                        if (formErrors) {
+                            console.log(formErrors);
+                            // Manejar los errores de formulario, por ejemplo, resaltando los campos con errores
+                        }
+                    } else {
+                        swal("Error", "Se produjo un error al procesar la solicitud", "error");
+                    }
+                }
+            });
+        }
+    </script>
+
+
 {% endblock %}

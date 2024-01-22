@@ -1,29 +1,31 @@
-<div class="tab-content active" id="tab-mensajes">
+<div class="tab-content animated fadeIn" id="tab-mensajes">
     <div class="section">
   
         <div class="container">
-            <h2 id="toggle-tasks" style="cursor: pointer;">Tareas Pendientes <i class="fas fa-chevron-down"></i></h2>
-            <p id="pending-count">Tareas Pendientes: {{ task.mensajes.all|length }}</p>
+            <h2 id="toggle-tasks" style="cursor: pointer;">Tareas Pendientes {{ task.mensajes.all|length }} <i class="fas fa-chevron-down"></i></h2>
+            <button style="display: grid; margin: 0 auto; position: relative; top: -5em; left: 38%;width: 23%; font-size: 12px;" type="button" class="btn btn-primary msjbtn" data-toggle="modal" data-target="#nuevoMensajeModal">
+                Mensaje nuevo
+            </button>
             <div class="row" id="tasks-container" style="display: none;">
-                {% for mensaje in task.mensajes.all %}
+                {% for mensaje in task.mensajes.all|dictsort:"estado" %}
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card shadow mb-5 bg-body-tertiary rounded">
                         <div class="card-header" style="display: flex; background-color:#691c32; color:aliceblue ">
                             {{ mensaje.asunto }} 
                         </div>
                         <div class="card-body">
-                            <p><strong>Tarea para:</strong> {{ mensaje.enviar_a_imp }}</p>
-                            <p class="card-text">Mensaje: {{ mensaje.mensaje }}</p>
+                            <p>Enviado por:  <span class="badge bg-primary"> {{ mensaje.enviado_por_imp }}</span> Para: <span class="badge bg-success"> {{ mensaje.enviar_a_imp }} </span> </p>
+                            <p class="card-text"><strong>Mensaje: </strong><br>{{ mensaje.mensaje }}</p>
                             {% if mensaje.enlace %}
                             <a href="{{ mensaje.enlace }}" target="_blank">Ir a One Drive</a>
-                        {% endif %}
+                            {% endif %}
                             <br><br><br>
-
-                            <p><strong>Recibido el:</strong> {{ mensaje.fecha_envio|date:'j M Y'  }}</p>
+        
+                            <p style="font-size: 12px; text-align: right;"><strong>Recibido: </strong> {{ mensaje.fecha_envio|date:'D j/M/Y'  }}</p>
                         
                         </div>
                         <div style="background-color: #00000000;" class="card-footer">
-
+        
                             
                             {% if mensaje.estado != 'completado' %}
                                 <button class="btn btn-outline-success btn-sm" onclick="completarMensaje('{{ mensaje.id }}')">Completar</button>
@@ -37,35 +39,65 @@
         </div>
 
 
-        <h2 id="toggle-newtask" style="cursor: pointer;">Crear nueva tarea <i class="fas fa-chevron-down"></i></h2>
 
-        <form id="form-container" method="post" enctype="multipart/form-data" style="display: none;">
-      {% csrf_token %}
-      <div class="form-group">
-          <label for="{{ mensaje_form.asunto.id_for_label }}">Asunto:</label>
-          {{ mensaje_form.asunto }}
-      </div>
-      <div class="form-group">
-          <label for="{{ mensaje_form.mensaje.id_for_label }}">Mensaje:</label>
-          {{ mensaje_form.mensaje }}
-      </div>
-      <div class="form-group form-check-inline ">
-          <label for="{{ mensaje_form.enviar_a_imp.id_for_label }}">Enviar A:</label>
-          {{ mensaje_form.enviar_a_imp }}
-      </div>
-      <div class="form-group form-check-inline ">
-          <label for="{{ mensaje_form.estado.id_for_label }}">Estatus:</label>
-          {{ mensaje_form.estado }} 
-      </div>
-      <div class="form-group form-check-inline ">
-        <label for="{{ mensaje_form.enlace.id_for_label }}">En caso de requerirse, agregue enlace a OneDrive:</label>
-        {{ mensaje_form.enlace }} 
+        <!-- Modal de Mensaje nuevo -->
+       <!-- Modal de Mensaje nuevo -->
+       <div class="modal fade" id="nuevoMensajeModal" tabindex="-1" role="dialog" aria-labelledby="nuevoMensajeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nuevoMensajeModalLabel">Mensaje nuevo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido del formulario de mensaje nuevo -->
+                    <form id="form-container" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ mensaje_form.asunto.id_for_label }}">Asunto:</label>
+                            {{ mensaje_form.asunto }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ mensaje_form.mensaje.id_for_label }}">Mensaje:</label>
+                            {{ mensaje_form.mensaje }}
+                        </div>
+                        <div class="form-group form-check-inline">
+                            <label for="{{ mensaje_form.enviar_a_imp.id_for_label }}">Enviar A:</label>
+                            {{ mensaje_form.enviar_a_imp }}
+                        </div>
+                                <div class="form-group form-check-inline">
+                                    <label for="{{ mensaje_form.estado.id_for_label }}">Estatus:</label>
+                                    {{ mensaje_form.estado }}
+                                </div>
+                        <div class="form-group form-check-inline">
+                            <label for="{{ mensaje_form.enlace.id_for_label }}">En caso de requerirse, agregue enlace a OneDrive:</label>
+                            {{ mensaje_form.enlace }}
+                        </div>
+                        <button class="btn btn-outline-success" type="submit">Enviar mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  
-      <button class="btn btn-outline-success" type="submit">Enviar mensaje</button>
-  </form>
-    </div>
-  </div>
+</div>
+</div>
+<!-- JavaScript para inicializar el modal -->
+<script>
+    $(document).ready(function() {
+        $('#nuevoMensajeModal').on('hidden.bs.modal', function () {
+            // Limpiar el formulario al cerrar el modal
+            $('#form-container').trigger("reset");
+        });
+    });
+</script>
+
+<!-- Asegúrate de incluir las bibliotecas de Bootstrap y jQuery antes de este código -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
   <script>
     function completarMensaje(mensajeId) {
         // Envía una solicitud AJAX al servidor para marcar el mensaje como "Completado".
@@ -126,20 +158,12 @@
     });
     </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const toggleTasks = document.getElementById("toggle-newtask");
-        const formContainer = document.getElementById("form-container");
-
-        toggleTasks.addEventListener("click", function() {
-            if (formContainer.style.display === "none" || formContainer.style.display === "") {
-                formContainer.style.display = "block";
-                toggleTasks.innerHTML = "Crear nueva tarea <i class='fas fa-chevron-up'></i>"; // Cambia la flecha hacia arriba
-            } else {
-                formContainer.style.display = "none";
-                toggleTasks.innerHTML = "Crear nueva tarea <i class='fas fa-chevron-down'></i>"; // Cambia la flecha hacia abajo
-            }
-        });
-    });
-</script>
+<style>
+    @media (max-width: 560px) {
+    .msjbtn{
+        width: 45% !important;
+        left: 30% !important;
+    }
+}
+</style>
 

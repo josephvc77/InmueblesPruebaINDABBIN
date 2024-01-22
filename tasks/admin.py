@@ -1,78 +1,11 @@
 from django.contrib import admin
 
 from condia.models import TareasCondia
-from .models import Colindancias, ColindanciasIMP, DatosAvaluos, DatosAvaluosIMP, DatosTerceros, DatosTercerosIMP, Documento_ocupacion, Documento_ocupacionIMP, DocumentoPropiedad, DocumentoPropiedadIMP, Edificacion, EdificacionIMP, EdificioVerde, EdificioVerdeIMP, Expedientes_CEDOC, Expedientes_CEDOCIMP, FoliosReales, FoliosRealesIMP, Inmueble, InstitucionesOcupantes, InstitucionesOcupantesIMP, Mensaje, MensajeIMP, NumeroPlano, NumeroPlanoIMP, Ocupaciones, OcupacionesIMP, Task,  TramitesDisposicion, TramitesDisposicionIMP
-
-# Define TabularInline para cada modelo
-
-class FoliosRealesInline(admin.TabularInline):
-    model = FoliosReales
-
-class Expedientes_CEDOCInline(admin.TabularInline):
-    model = Expedientes_CEDOC
-
-class NumeroPlanoInline(admin.TabularInline):
-    model = NumeroPlano
-
-class EdificacionInline(admin.TabularInline):
-    model = Edificacion
-    
-
-class EdificioVerdeInline(admin.TabularInline):
-    model = EdificioVerde
-    
-class DocumentoPropiedadInline(admin.TabularInline):
-    model = DocumentoPropiedad
-    
-class DatosAvaluosInline(admin.TabularInline):
-    model = DatosAvaluos
-    
-
-class OcupacionesInline(admin.TabularInline):
-    model = Ocupaciones
-    
-  
-class DatosTercerosInline(admin.TabularInline):
-    model = DatosTerceros
-
-class ColindanciasInline(admin.TabularInline):
-    model = Colindancias
-
-class TramitesDisposicionInline(admin.TabularInline):
-    model = TramitesDisposicion
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
 
 
-# Agrega más TabularInline para otros modelos aquí...
-
-# Define una clase personalizada para mostrar todos los modelos en una sola página
-class AllModelsAdmin(admin.ModelAdmin):
-    inlines = [
-        FoliosRealesInline,
-        Expedientes_CEDOCInline,
-        NumeroPlanoInline,
-        EdificacionInline,
-        EdificioVerdeInline,
-        DocumentoPropiedadInline,
-        DatosAvaluosInline,
-        OcupacionesInline,
-        DatosTercerosInline,
-        ColindanciasInline,
-        TramitesDisposicionInline
-        
-        # Agrega más TabularInline aquí para otros modelos...
-    ]
-
-    readonly_fields = ('created','updated' )
-    verbose_name = 'Tareas'
-    list_display = ('NombreInmueble','rfi','user','pais', 'entidad_federativa', 'datecompleted')
-    search_fields = ('rfi', 'user', 'pais')
-    list_filter = ('user', 'pais')
-
-# Registra la clase personalizada que contiene todos los modelos
-admin.site.register(Task, AllModelsAdmin)
-
-
-
+class DictamenEstructuralInlineIMP(admin.TabularInline):
+    model = DictamenEstructuralIMP
 
 class FoliosRealesInlineIMP(admin.TabularInline):
     model = FoliosRealesIMP
@@ -123,6 +56,7 @@ class MensajesInlineIMP(admin.TabularInline):
 # Define una clase personalizada para mostrar todos los modelos en una sola página
 class AllModelsAdminIMP(admin.ModelAdmin):
     inlines = [
+        DictamenEstructuralInlineIMP,
         FoliosRealesInlineIMP,
         NumeroPlanoInlineIMP,
         Expedientes_CEDOCInlineIMP,
@@ -147,9 +81,13 @@ class AllModelsAdminIMP(admin.ModelAdmin):
     search_fields = ('rfi', 'NombreInmueble', 'pais')
     list_filter = ('user', 'pais')
 
-# Registra la clase personalizada que contiene todos los modelos
-admin.site.register(Inmueble, AllModelsAdminIMP)
+from reversion.admin import VersionAdmin
 
+# Registra la clase personalizada que contiene todos los modelos y hereda de VersionAdmin
+@admin.register(Inmueble)
+class InmuebleAdmin(VersionAdmin, AllModelsAdminIMP):
+    pass
 
-
+# Registra los otros modelos
 admin.site.register(TareasCondia)
+# Registra otros modelos aquí...

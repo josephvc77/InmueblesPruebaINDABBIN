@@ -247,6 +247,11 @@ left: -.3em;
       
     </style>
     <script>
+      function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("active");
+}
+
       // Función para activar el modo oscuro
       function activarModoOscuro() {
         // Agrega una clase al elemento body para aplicar estilos de modo oscuro
