@@ -1,4 +1,4 @@
-<div class="tab-content" id="tab-uso">
+<div class="tab-content animated fadeIn low" id="tab-uso">
     
     <div class="section">
 
@@ -44,7 +44,7 @@
         
                 <div class="form-group form-check-inline" id="fecha_documento_group">
                     <label for="{{ documento_ocupacion_form.fecha_documento.id_for_label }}">Fecha de Documento:</label>
-                    <input type="date" id="{{ documento_ocupacion_form.fecha_documento.id_for_label }}" name="{{ documento_ocupacion_form.fecha_documento.name }}" class="form-control" value="{{ documento_ocupacion_form.fecha_documento.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_documento')">
+                    <input type="date" id="{{ documento_ocupacion_form.fecha_documento.id_for_label }}" name="{{ documento_ocupacion_form.fecha_documento.name }}" class="form-control" value="{{ documento_ocupacion_form.fecha_documento.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertDocumento')">
                 </div>
                 
                 <div id="dateAlertDocumento" class="alert alert-danger" style="display: none;">
@@ -64,7 +64,10 @@
         
                 <div class="form-group form-check-inline" id="fecha_inscripcion_federal">
                     <label for="{{ documento_ocupacion_form.fecha_inscripcion_federal.id_for_label }}">Fecha de Inscripción Federal:</label>
-                    <input type="date" id="{{ documento_ocupacion_form.fecha_inscripcion_federal.id_for_label }}" name="{{ documento_ocupacion_form.fecha_inscripcion_federal.name }}" class="form-control" value="{{ documento_ocupacion_form.fecha_inscripcion_federal.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_inscripcion_federal')">
+                    <input type="date" id="{{ documento_ocupacion_form.fecha_inscripcion_federal.id_for_label }}" name="{{ documento_ocupacion_form.fecha_inscripcion_federal.name }}" class="form-control" value="{{ documento_ocupacion_form.fecha_inscripcion_federal.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertFIF')">
+                </div>
+                <div id="dateAlertFIF" class="alert alert-danger" style="display: none;">
+                    La fecha no puede ser posterior a la fecha actual.
                 </div>
 
         
@@ -90,8 +93,17 @@
                         <td>{{ documento_ocupacion.tipo_de_documento }}</td>
                         <td>{{ documento_ocupacion.fecha_documento }}</td>
                         <td>{{ documento_ocupacion.inscripcion_RPPF }}</td>
+                        {% if documento_ocupacion.folio_real_federal %}
                         <td>{{ documento_ocupacion.folio_real_federal }}</td>
+                        {% else %}
+                        <td> </td>
+                        {% endif %}
+                        {% if documento_ocupacion.fecha_inscripcion_federal %}
                         <td>{{ documento_ocupacion.fecha_inscripcion_federal }}</td>
+                            {% else %}
+                            <td> </td>
+                        {% endif %}
+
                         <td>
                             <a href="{% url 'eliminar_docOcupacionIMP' docOcupacion_id=documento_ocupacion.id %}" class="btn btn-danger btn-sm eliminar-btn" data-tipo="documento_ocupacion" data-id="{{ documento_ocupacion.id }}">Eliminar</a>
                         </td>
@@ -122,12 +134,12 @@
 
                 <div class="form-group">
                     <label for="{{ instituciones_ocupantes_form.institucion_publica_ocupante.id_for_label }}">Institución Pública Ocupante:</label>
-                    <select id="{{ instituciones_ocupantes_form.institucion_publica_ocupante.auto_id }}" name="{{ instituciones_ocupantes_form.institucion_publica_ocupante.html_name }}"></select>
+                    <select required id="{{ instituciones_ocupantes_form.institucion_publica_ocupante.auto_id }}" name="{{ instituciones_ocupantes_form.institucion_publica_ocupante.html_name }}"></select>
                 </div>
 
                 <div class="form-group">
                     <label for="{{ instituciones_ocupantes_form.superficie_asignada.id_for_label }}">Superficie Asignada a la Institución Ocupante:</label>
-                    {{ instituciones_ocupantes_form.superficie_asignada }}
+                    <input type="number" name="superficie_asignada" id="id_superficie_asignada" required>
                 </div>
                 <div class="form-group">
                     <label for="{{ instituciones_ocupantes_form.uso_institucion_ocupante.id_for_label }}">Uso de la Institución Ocupante:</label>
@@ -206,18 +218,29 @@
         
                 <div class="form-group form-check-inline" id="fecha_inicio_vigencia">
                     <label for="{{ datos_terceros_form.fecha_inicio_vigencia.id_for_label }}">Fecha de Inicio Vigencia:</label>
-                    <input type="date" id="{{ datos_terceros_form.fecha_inicio_vigencia.id_for_label }}" name="{{ datos_terceros_form.fecha_inicio_vigencia.name }}" class="form-control" value="{{ datos_terceros_form.fecha_inicio_vigencia.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_inicio_vigencia')">
+                    <input type="date" id="{{ datos_terceros_form.fecha_inicio_vigencia.id_for_label }}" name="{{ datos_terceros_form.fecha_inicio_vigencia.name }}" class="form-control" value="{{ datos_terceros_form.fecha_inicio_vigencia.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertIVigencia')">
+                </div>
+
+                <div id="dateAlertIVigencia" class="alert alert-danger" style="display: none;">
+                    La fecha no puede ser posterior a la fecha actual.
                 </div>
 
                 <div class="form-group form-check-inline" id="fecha_termino_vigencia">
                     <label for="{{ datos_terceros_form.fecha_termino_vigencia.id_for_label }}">Fecha de termino Vigencia:</label>
-                    <input type="date" id="{{ datos_terceros_form.fecha_termino_vigencia.id_for_label }}" name="{{ datos_terceros_form.fecha_termino_vigencia.name }}" class="form-control" value="{{ datos_terceros_form.fecha_termino_vigencia.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'fecha_termino_vigencia')">
+                    <input type="date" id="{{ datos_terceros_form.fecha_termino_vigencia.id_for_label }}" name="{{ datos_terceros_form.fecha_termino_vigencia.name }}" class="form-control" value="{{ datos_terceros_form.fecha_termino_vigencia.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertTerminoVigencia')">
+                </div>
+                <div id="dateAlertTerminoVigencia" class="alert alert-danger" style="display: none;">
+                    La fecha no puede ser posterior a la fecha actual.
                 </div>
 
                 <div class="form-group form-check-inline" id="prorroga">
                     <label for="{{ datos_terceros_form.prorroga.id_for_label }}">Prórroga:</label>
-                    <input type="date" id="{{ datos_terceros_form.prorroga.id_for_label }}" name="{{ datos_terceros_form.prorroga.name }}" class="form-control" value="{{ datos_terceros_form.prorroga.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'prorroga')">
+                    <input type="date" id="{{ datos_terceros_form.prorroga.id_for_label }}" name="{{ datos_terceros_form.prorroga.name }}" class="form-control" value="{{ datos_terceros_form.prorroga.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertProrroga')">
                 </div>
+                <div id="dateAlertProrroga" class="alert alert-danger" style="display: none;">
+                    La fecha no puede ser posterior a la fecha actual.
+                </div>
+
 
                 <div class="form-group form-check-inline" id="">
                     <label for="{{ datos_terceros_form.inscripcion_folio_real_federal.id_for_label }}">Inscripción Folio Real Federal:</label>
@@ -319,35 +342,6 @@
     });
 </script>
 
-
-
-<script>
-    function validateDate(input, alertType) {
-        var selectedDate = new Date(input.value);
-        var currentDate = new Date();
-        var alertId = alertType === 'fecha_documento' || alertType === 'fecha_inscripcion_federal' || alertType === 'fecha_inicio_vigencia' || alertType === 'prorroga' || alertType === 'fecha_termino_vigencia'? 'dateAlertDocumento' : 'dateAlertFederal';
-
-        if (selectedDate > currentDate) {
-            var alert = document.getElementById(alertId);
-            alert.style.display = 'block';
-
-            // Agregamos estilos para hacer la alerta flotante
-            alert.style.position = 'fixed';
-            alert.style.top = '10px';
-            alert.style.right = '10px';
-            alert.style.zIndex = '1000'; // Asegura que esté por encima de otros elementos
-
-            input.value = ''; // Limpia el campo de fecha
-
-            // Cierra la alerta después de 5 segundos (5000 ms)
-            setTimeout(function() {
-                alert.style.display = 'none';
-            }, 5000);
-        } else {
-            document.getElementById(alertId).style.display = 'none';
-        }
-    }
-</script>
     
 <script>
     $(document).ready(function() {
@@ -465,40 +459,69 @@
 
 
 <script>
+    $(document).ready(function() {
+        // Manejador de clics para los botones de "Eliminar"
+        $(".eliminar-btn").click(function(event) {
+            event.preventDefault(); // Previene el comportamiento predeterminado del enlace
 
+            var url = $(this).attr("href"); // Obtiene la URL de eliminación
+            var tipo = $(this).data("tipo"); // Obtiene el tipo de elemento a eliminar
+            var id = $(this).data("id"); // Obtiene el ID del elemento a eliminar
+            var tablaContainerId = "#tabla" + tipo + "Container"; // Construye el ID del contenedor de la tabla
 
-$(document).ready(function() {
-    // Manejador de clics para los botones de "Eliminar"
-    $(".eliminar-btn").click(function(event) {
-        event.preventDefault(); // Previene el comportamiento predeterminado del enlace
-        
-        var url = $(this).attr("href"); // Obtiene la URL de eliminación
-        var tipo = $(this).data("tipo"); // Obtiene el tipo de elemento a eliminar
-        var id = $(this).data("id"); // Obtiene el ID del elemento a eliminar
-        
-        if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
-            // Realiza una solicitud AJAX para eliminar el elemento
-            $.ajax({
-                type: "POST", // O GET si lo prefieres
-                url: url,
-                data: {
-                    csrfmiddlewaretoken: "{{ csrf_token }}", // Asegúrate de enviar el token CSRF
-                },
-                success: function(response) {
-                    // Elimina la fila correspondiente en la tabla
-                    $("#" + tipo + "-" + id).remove();
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    // Maneja errores si es necesario
+            // Utiliza SweetAlert para la confirmación de eliminación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realiza una solicitud AJAX para eliminar el elemento
+                    $.ajax({
+                        type: "POST", // O GET si lo prefieres
+                        url: url,
+                        data: {
+                            csrfmiddlewaretoken: "{{ csrf_token }}", // Asegúrate de enviar el token CSRF
+                        },
+                        success: function(response) {
+                            // Elimina la fila correspondiente en la tabla
+                            $("#" + tipo + "-" + id).remove();
+                            // Actualiza la tabla después de eliminar
+                            $(tablaContainerId).load("{% url 'task_detail_importados' task_id=task.id %} " + tablaContainerId);
+                            // Muestra un mensaje de éxito con SweetAlert
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Eliminado exitosamente',
+                                showConfirmButton: false,
+                                timer: 2000 // Oculta automáticamente después de 2 segundos
+                            });
+                            // Recarga la página después de 3 segundos
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            // Maneja errores si es necesario
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Hubo un error al intentar eliminar el registro.'
+                            });
+                        }
+                    });
                 }
             });
-        }
+        });
     });
-});
 </script>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     $(document).ready(function() {
         // Agrega un manejador de eventos al botón "Guardar" de Documento de Ocupación
@@ -517,12 +540,34 @@ $(document).ready(function() {
                         
                         // Restablece el formulario de Documento de Ocupación
                         $("#documentoOcupacionForm")[0].reset();
+
+                        // Muestra un mensaje de éxito con SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado exitoso',
+                            text: 'Los datos se guardaron correctamente.',
+                            timer: 3000, // Oculta automáticamente después de 3 segundos
+                            showConfirmButton: false
+                        });
+                        setTimeout(function() {
+                                location.reload();
+                            }, 2000);
                     } else {
-                        alert("Hubo un error al guardar el formulario de Documento de Ocupación.");
+                        // Muestra un mensaje de error con SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un error al guardar, llene sus campos'
+                        });
                     }
                 },
                 error: function() {
-                    alert("Se produjo un error al enviar el formulario de Documento de Ocupación.");
+                    // Muestra un mensaje de error con SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Se produjo un error al enviar el formulario de Documento de Ocupación.'
+                    });
                 },
             });
         });
@@ -531,14 +576,14 @@ $(document).ready(function() {
 
 <script>
     $(document).ready(function() {
-        // Agrega un manejador de eventos al botón "Guardar" de Datos de Terceros
+        // Agrega un manejador de eventos al botón "Guardar" de Instituciones Ocupantes
         $("#guardarInstitucionesOcupantes").click(function(event) {
             // Evita que el formulario se envíe automáticamente
             event.preventDefault();
-            
+
             var formData = $("#institucionesOcupantesForm").serialize();
-    
-            // Realiza una solicitud Ajax para guardar los datos del formulario de Datos de Terceros
+
+            // Realiza una solicitud Ajax para guardar los datos del formulario de Instituciones Ocupantes
             $.ajax({
                 url: "{% url 'guardar_instituciones_ocupantesIMP' task_id=task.id %}",
                 type: "POST",
@@ -547,20 +592,42 @@ $(document).ready(function() {
                     if (response.success) {
                         // Actualiza la tabla después de guardar
                         $("#tablaInstitucionesOcupantesContainer").load("{% url 'task_detail_importados' task_id=task.id %} #tablaInstitucionesOcupantesContainer");
-                        
-                        // Restablece el formulario de Datos de Terceros
+
+                        // Restablece el formulario de Instituciones Ocupantes
                         $("#institucionesOcupantesForm")[0].reset();
+
+                        // Muestra una alerta de éxito con SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado exitosamente',
+                            showConfirmButton: false,
+                            timer: 2000 // Oculta automáticamente después de 2 segundos
+                        });
+                        setTimeout(function() {
+                                location.reload();
+                            }, 2000);
                     } else {
-                        alert("Hubo un error al guardar el formulario de Datos de Terceros.");
+                        // Muestra una alerta de error con SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un error al guardar, llene sus campos'
+                        });
                     }
                 },
                 error: function() {
-                    alert("Se produjo un error al enviar el formulario de Datos de Terceros.");
+                    // Muestra una alerta de error con SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Se produjo un error al enviar el formulario de Instituciones Ocupantes.'
+                    });
                 },
             });
         });
     });
 </script>
+
 <script>
     $(document).ready(function() {
         // Agrega un manejador de eventos al botón "Guardar" de Datos de Terceros
@@ -582,12 +649,33 @@ $(document).ready(function() {
 
                         // Restablece el formulario de Datos de Terceros
                         $("#datosTercerosForm")[0].reset();
+
+                        // Muestra una alerta de éxito con SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado exitosamente',
+                            showConfirmButton: false,
+                            timer: 2000 // Oculta automáticamente después de 2 segundos
+                        });
+                        setTimeout(function() {
+                                location.reload();
+                            }, 2000);
                     } else {
-                        alert("Hubo un error al guardar el formulario de Datos de Terceros.");
+                        // Muestra una alerta de error con SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un error al guardar, llene sus campos'
+                        });
                     }
                 },
                 error: function() {
-                    alert("Se produjo un error al enviar el formulario de Datos de Terceros.");
+                    // Muestra una alerta de error con SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Se produjo un error al enviar el formulario de Datos de Terceros.'
+                    });
                 },
             });
         });

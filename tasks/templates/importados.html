@@ -4,14 +4,14 @@
 
 {% block content %}
 
-<form class="search-form" method="GET">
+<form class="search-form animated fadeIn" method="GET">
   <div class="input-group">
     <input type="text" name="q" placeholder="Buscar por Nombre, RFI, Entidad Federativa o Municipio" value="{{ search_query }}" class="form-control">
     <div class="input-group-append">
       <button class="btn btn-outline-primary" type="submit">Buscar</button>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group animated fadeIn">
     <select id="prioridad-select" name="prioridad" class="form-control m-2">
       <option value="">Prioridad <i class="fas fa-chevron-down"></i></option>
       <option value="Alta">Alta</option>
@@ -19,7 +19,7 @@
       <option value="Baja">Baja</option>
     </select>
   </div>
-  <div class="form-group">
+  <div class="form-group animated fadeIn">
     <select style="cursor:pointer" id="ur-select" name="ur"  class="form-control m-2">
         <option value="">UR <i class="fas fa-chevron-down"></i></option>
         <option value="CGEE">CGEE</option>
@@ -32,7 +32,7 @@
         <option value="RESEMS">RESEMS</option>
     </select>
 </div>
-<div class="form-group">
+<div class="form-group animated fadeIn">
   <select style="cursor:pointer" id="ordenar-por" name="ordenar" class="form-control m-2">
       <option value="">Ordenar <i class="fas fa-chevron-down"></i></option>
       <option value="az">A a Z</option>
@@ -59,7 +59,7 @@
   <!-- Aquí se mostrará el mensaje -->
 </div>
 
-  <div class="totals-card">
+  <div class="totals-card animated fadeIn">
     <div class="totals-container">
       <p class="total-label">Completados:</p>
       <p class="total-value">{{ total_pending_inmuebles }}</p>
@@ -73,7 +73,7 @@
 
 
 {% if inmuebles %}
-<div class="card-container">
+<div class="card-container animated fadeIn">
   {% for task in inmuebles %}
   <div class="card">
     <div class="card-header">
@@ -183,7 +183,7 @@
 
 
 {% else %}
-  <p>No se encontraron tareas que coincidan con la búsqueda.</p>
+  <p class="m-5">No se encontraron tareas que coincidan con la búsqueda.</p>
 {% endif %}
 
 
@@ -263,7 +263,7 @@
     background-color: #e1c77b24;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
     width: 550px;
-    height: 700px;
+    height: 100%;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -428,7 +428,7 @@
 
   .card {
     width: 561px;
-    height: 770px;
+    height: 100%;
     max-height: 804px;
     margin-bottom: 0em;
   }

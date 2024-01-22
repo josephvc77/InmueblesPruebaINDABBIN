@@ -1,0 +1,88 @@
+
+{% block content %}
+{% load static%}
+{% if dictamen_estructural_form.errors %}
+{% endif %}
+<link href="{% static 'inicio/css/estilos-modales.css'%}" rel='stylesheet' type='text/css'>
+
+<form method="POST" id="dictamen_estructuralForm">
+    {% csrf_token %}
+    <div class="form-group form-check-inline">
+        <label for="{{ dictamen_estructural_form.sentido_del_Dictamen.id_for_label }}">Sentido del Dictamen:</label>
+        <select name="sentido_del_Dictamen" id="id_sentido_del_Dictamen" class="form-control">
+            <!-- Opciones adicionales -->
+            <option value="Inmueble Seguro">Inmueble Seguro</option>
+            <option value="Inmueble con daños menores que pueden repararse">Inmueble con daños menores que pueden repararse</option>
+            <option value="Inmueble con Daño estructural">Inmueble con Daño estructural</option>
+            <option value="Otros">Otros</option>
+        </select>
+    </div>
+    
+    
+    <div class="form-group form-check-inline">
+        <label for="{{ dictamen_estructural_form.certificado_de_seguridad.id_for_label }}">Inmueble seguro:</label>
+        <select name="certificado_de_seguridad" id="id_certificado_de_seguridad" class="form-control">
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+        </select>
+    </div>
+    
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Describa aquí el sentido del dictamen" autocomplete="off" required name="descripcion_del_sentido_del_Dictamen" id="id_descripcion_del_sentido_del_Dictamen">
+  </div>
+  <div class="form-group form-check-inline" id="fecha_documento">
+    <label for="{{ dictamen_estructural_form.fecha_documento.id_for_label }}">Fecha de Documento:</label>
+    <input required type="date" id="id_fecha_documento" name="fecha_documento" class="form-control" value="{{ dictamen_estructural_form.fecha_documento.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertInscripcionLocal')">
+</div>
+  <div class="form-group form-check-inline">
+    <input type="file" class="form-control" required name="subir_archivo_dictamen" id="id_subir_archivo_dictamen">
+  </div>
+
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="No. de Identificador del expediente" autocomplete="off" required name="no_de_identificador_del_expediente_institucion" id="id_no_de_identificador_del_expediente_institucion">
+  </div>
+  
+      <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-outline-success" onclick="guardarDictamen()">Guardar</button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancelar</button>
+      </div>
+  </form>
+  
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+      function guardarDictamen() {
+          var formData = new FormData(document.getElementById('dictamen_estructuralForm'));
+          $.ajax({
+              url: "{% url 'agregar_dictamen_estructural' task_id=inmueble.id %}",
+              type: "POST",
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                  console.log(data);
+                  $("#folioRealModal").modal("hide");
+                  swal("Éxito", "Dictamen Estructural agregado correctamente.", "success");
+                  setTimeout(function () {
+                      location.reload();
+                  }, 2000);
+              },
+              error: function (error) {
+                  console.error(error);
+                  if (error.status === 400 && error.responseJSON && error.responseJSON.error_message) {
+                      swal("Error", error.responseJSON.error_message, "error");
+                      var formErrors = error.responseJSON.errors;
+                      if (formErrors) {
+                          console.log(formErrors);
+                      }
+                  } else {
+                      swal("Error", "Se produjo un error al procesar la solicitud", "error");
+                  }
+              }
+          });
+      }
+  </script>
+
+ 
+  
+  {% endblock %}
+  

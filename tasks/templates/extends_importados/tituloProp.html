@@ -1,4 +1,4 @@
-<div class="tab-content" id="tab-tituloProp">
+<div class="tab-content animated fadeIn" id="tab-tituloProp">
     <div class="section">
         <div class="separador">
         <div class="form-section">
@@ -26,12 +26,12 @@
                     <label for="{{ documento_propiedad_form.numero_de_documento.id_for_label }}">Número de Documento:</label>
                     {{ documento_propiedad_form.numero_de_documento }}
                 </div>
-                <div class="form-group form-check-inline">
+                <div class="form-group form-check-inline" id="fecha_creacion_DOC">
                     <label for="{{ documento_propiedad_form.fecha_creacion_DOC.id_for_label }}">Fecha de Creación:</label>
-                    <input type="date" id="{{ documento_propiedad_form.fecha_creacion_DOC.id_for_label }}" name="{{ documento_propiedad_form.fecha_creacion_DOC.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_creacion_DOC.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this)" required>
+                    <input type="date" id="{{ documento_propiedad_form.fecha_creacion_DOC.id_for_label }}" name="{{ documento_propiedad_form.fecha_creacion_DOC.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_creacion_DOC.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertCreacion')" required>
                 </div>
                 
-                <div id="dateAlert" class="alert alert-danger" style="display: none;">
+                <div id="dateAlertCreacion" class="alert alert-danger" style="display: none;">
                     La fecha no puede ser posterior a la fecha actual.
                 </div>
                                         
@@ -49,7 +49,7 @@
                 </div>
                 <div class="form-group form-check-inline" id="fecha_inscripcion_federal">
                     <label for="{{ documento_propiedad_form.fecha_inscripcion_federal.id_for_label }}">Fecha Inscripción Federal:</label>
-                    <input type="date" id="{{ documento_propiedad_form.fecha_inscripcion_federal.id_for_label }}" name="{{ documento_propiedad_form.fecha_inscripcion_federal.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_inscripcion_federal.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this)">
+                    <input type="date" id="{{ documento_propiedad_form.fecha_inscripcion_federal.id_for_label }}" name="{{ documento_propiedad_form.fecha_inscripcion_federal.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_inscripcion_federal.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertFederal')">
                 </div>
                 
                 <div id="dateAlertFederal" class="alert alert-danger" style="display: none;">
@@ -98,10 +98,10 @@
 
                 <div class="form-group form-check-inline" id="fecha_inscripcion_local">
                     <label for="{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}">Fecha Inscripción Local:</label>
-                    <input type="date" id="{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}"  name="{{ documento_propiedad_form.fecha_inscripcion_local.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_inscripcion_local.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this)" >
+                    <input type="date" id="{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}" name="{{ documento_propiedad_form.fecha_inscripcion_local.name }}" class="form-control" value="{{ documento_propiedad_form.fecha_inscripcion_local.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertInscripcionLocal')">
                 </div>
                 
-                <div id="dateAlertLocal" class="alert alert-danger" style="display: none;">
+                <div id="dateAlertInscripcionLocal" class="alert alert-danger" style="display: none;">
                     La fecha no puede ser posterior a la fecha actual.
                 </div>
                 
@@ -128,12 +128,12 @@
                         <th>Fecha del Documento</th>
                         <th>Expedido por</th>
                         <th>Inscripción en RPPF</th>
-                        {% if inscripcion_rppf_exists %}
+                 
                             <th>Folio Real Federal</th>
                             <th>Fecha Inscripción Federal</th>
-                        {% endif %}
+                      
                         <th>Inscripción en Registro Local</th>
-                        {% if inscripcion_registro_local_exists %}
+                        
                             <th>Folio Real Local</th>
                             <th>Folio Real Auxiliar</th>
                             <th>Nombre del Libro</th>
@@ -142,7 +142,7 @@
                             <th>Foja o Folio</th>
                             <th>Sección</th>
                             <th>Fecha Inscripción Local</th>
-                        {% endif %}
+                        
                         <th>Archivo Adjunto</th>
                         <th>Acciones</th>
                     </tr>
@@ -158,12 +158,12 @@
                             <td>{{ documento.fecha_creacion_DOC }}</td>
                             <td>{{ documento.expedido_por }}</td>
                             <td>{{ documento.inscripcion_rppf }}</td>
-                            {% if inscripcion_rppf_exists %}
+                           
                                 <td>{{ documento.folio_real_federal }}</td>
                                 <td>{{ documento.fecha_inscripcion_federal }}</td>
-                            {% endif %}
+                         
                             <td>{{ documento.inscripcion_registro_local }}</td>
-                            {% if inscripcion_registro_local_exists %}
+                           
                                 <td>{{ documento.folio_real_local }}</td>
                                 <td>{{ documento.folio_real_auxiliar }}</td>
                                 <td>{{ documento.nombre_libro }}</td>
@@ -172,7 +172,7 @@
                                 <td>{{ documento.foja_o_folio }}</td>
                                 <td>{{ documento.seccion }}</td>
                                 <td>{{ documento.fecha_inscripcion_local }}</td>
-                            {% endif %}
+                          
                             <td>
                                 {% if documento.archivo %}
                                     <a href="{{ documento.archivo.url }}" target="_blank" class="">Ver Archivo</a>
@@ -243,36 +243,13 @@
     });
 </script>
 <script>
-    function validateDate(input, alertType) {
-        var selectedDate = new Date(input.value);
-        var currentDate = new Date();
-        var alertId = input.id === "{{ documento_propiedad_form.fecha_inscripcion_local.id_for_label }}" ? "dateAlertFederal" : "dateAlertLocal";
-
-        if (selectedDate > currentDate) {
-            var alert = document.getElementById(alertId);
-            alert.style.display = 'block';
-
-            // Agregamos estilos para hacer la alerta flotante
-            alert.style.position = 'fixed';
-            alert.style.top = '10px';
-            alert.style.right = '10px';
-            alert.style.zIndex = '1000'; // Asegura que esté por encima de otros elementos
-
-            input.value = ''; // Limpia el campo de fecha
-
-            // Cierra la alerta después de 5 segundos (5000 ms)
-            setTimeout(function() {
-                alert.style.display = 'none';
-            }, 5000);
-        } else {
-            document.getElementById(alertId).style.display = 'none';
-        }
-    }
+ 
 </script>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    
     $(document).ready(function() {
         loadInstitucionPropietaria();
     });

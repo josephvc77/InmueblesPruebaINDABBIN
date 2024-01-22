@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'fontawesomefree',
     'condia',
+    'reversion',
 ]
 
 
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tasks.middleware.AutoLogoutMiddleware',
+    'reversion.middleware.RevisionMiddleware',
     
 ]
 
@@ -108,6 +110,29 @@ DATABASES = {
     }
 }
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'bdinmuebles',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'preuba',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {

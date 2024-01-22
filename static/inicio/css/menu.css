@@ -25,7 +25,7 @@ body {
   }
   
   body.dark-mode {
-    background-color: rgb(0, 0, 0);
+    background-color: #0c1218;
     color: #fff; /* Color de texto claro */
   }
 
@@ -55,7 +55,7 @@ body {
   }
 
 .dark-mode .card , .dark-mode label{
-    background-color:  rgb(0, 0, 0);
+    background-color:  #111213;
   }
 
   .dark-mode .card-body {
@@ -491,10 +491,7 @@ fieldset {
     margin-bottom: 20px;
 }
 
-/* Estilo para las etiquetas de los campos */
-label {
-    font-weight: bold;
-}
+
 
 /* Estilo para los botones de acción */
 .btn {
