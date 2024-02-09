@@ -3,7 +3,7 @@
 
 {% block content %}
   <div class="task-detail-container ">
-    <h2>{{ task.NombreInmueble }}</h2>
+    <h2 class="text-center">{{ task.NombreInmueble }}</h2>
     {{ error }}
     <form method="post" action="{% url 'task_detail_importados' task.id%}" enctype="multipart/form-data" class="task-form" id="form_detail">
       {% csrf_token %}
@@ -12,7 +12,9 @@
 
 
 
+      
       <div class="task-form-container">
+        <div id="mobile-menu-button" class="mobile-menu-button"> &#9776; </div>
         <div class="tabs">
           <div class="tab active" data-tab="tab-encabezado">Encabezado</div>
           <div class="tab" data-tab="tab-descripcion">Datos Generales</div>
@@ -24,12 +26,25 @@
           <div class="tab" data-tab="tab-valor">Valor</div>
           <div class="tab" data-tab="tab-tramites-ocupaciones">Trámites y Ocupaciones</div>
           <div class="tab" data-tab="tab-observaciones">Observaciones</div>
-          
-     
         </div>
-        <div class="form-group form-check-inline width-label centered">
-          <h5>RFI: </h5>
+
+        <div class="tab-content">
+          <div class="tab-content-item" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab-content-item" data-tab="tab-descripcion">Datos Generales</div>
+          <div class="tab-content-item" data-tab="tab-ubicacion">Ubicación</div>
+          <div class="tab-content-item" data-tab="tab-caracteristicas">Características</div>
+          <div class="tab-content-item" data-tab="tab-tituloProp">TÍTULO DE PROPIEDAD</div>
+          <div class="tab-content-item" data-tab="tab-uso">Uso</div>
+          <div class="tab-content-item" data-tab="tab-aprovechamiento">Aprovechamiento</div>
+          <div class="tab-content-item" data-tab="tab-valor">Valor</div>
+          <div class="tab-content-item" data-tab="tab-tramites-ocupaciones">Trámites y Ocupaciones</div>
+          <div class="tab-content-item" data-tab="tab-observaciones">Observaciones</div>
+        </div>
+        <div class="form-group form-check-inline">
+          {% if inmueble.rfi %}
+          <label for="{{inmueble.rfi.id_for_label}}">RFI:</label>       
           <input class="form-control form-control-sm text-center" type="text" id="{{inmueble.rfi.id}}" name="{{inmueble.rfi.name}}" value='{{inmueble.rfi.value}}' readonly >
+          {% endif %}
         </div>
         
       <div class="form-group form-check-inline">
@@ -55,6 +70,8 @@
 
       </div>
     </form>
+
+    {% include 'extends_importados/scripts.html' %}
 
     {% load static%}
     
@@ -266,6 +283,78 @@ En lugar de guardar todos los datos en una sola instancia, estos formularios per
 }
 
 }
+.mobile-menu-button {
+    display: none; /* Ocultar por defecto en pantallas más grandes */
+    cursor: pointer;
+}
+
+@media (max-width: 436px) {
+
+    .tabs {
+        display: none; /* Ocultar las pestañas en pantallas más pequeñas */
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 70%; /* Ajusta según sea necesario */
+        max-width: 300px; /* Establece el ancho máximo del menú */
+        overflow-y: auto; /* Permite desplazamiento si el contenido es demasiado largo */
+        z-index: 1000; /* Ajusta según sea necesario para que esté por encima del contenido */
+    }
+
+    .mobile-menu-button {
+        display: block; /* Mostrar el botón de menú en pantallas más pequeñas */
+        position: fixed;
+        top: 5em;
+        right: 0;
+        font-size: 16px;
+        background-color: #c03c3c;
+        color: aliceblue;
+        padding-left: 15px;
+        padding-right: 10px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        cursor: pointer;
+        z-index: 1001; /* Ajusta según sea necesario para que esté por encima del menú */
+    }
+
+    .tabs.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        top: 11em;
+    }
+
+    .tab {
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+        background-color: #691c32;
+        color: white;
+        border-radius: 5px;
+        text-align: center;
+        width: 80%;
+        max-width: 200px; /* Ajusta según sea necesario */
+    }
+
+    .tab-content-item {
+        display: none; /* Ocultar el contenido de las pestañas en pantallas más pequeñas */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 10px;
+        background-color: #fff;
+    }
+
+    /* Estilo para mostrar el contenido de la pestaña activa */
+    .tab-content-item.active {
+        display: block;
+    }
+}
 
 </style>
 <!-- SweetAlert -->
@@ -273,6 +362,28 @@ En lugar de guardar todos los datos en una sola instancia, estos formularios per
 
 
 <script>
+// Agrega un evento al botón de menú hamburguesa
+document.getElementById('mobile-menu-button').addEventListener('click', function () {
+    // Muestra u oculta las pestañas y el contenido de las pestañas
+    document.querySelector('.tabs').classList.toggle('active');
+
+});
+
+// Agrega eventos a las pestañas para cambiar el contenido al hacer clic
+document.querySelectorAll('.tabs .tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+        // Oculta todas las pestañas
+        document.querySelectorAll('.tab-content-item').forEach(function (contentItem) {
+            contentItem.classList.remove('active');
+        });
+
+        // Muestra el contenido de la pestaña correspondiente
+        var tabId = tab.getAttribute('data-tab');
+        document.querySelector('.tab-content-item[data-tab="' + tabId + '"]').classList.add('active');
+    });
+});
+
+
 
   // Obtener el número de notificaciones no leídas del usuario
 const notificationsCount = `{{ user.mensajes.unread.count }}`;

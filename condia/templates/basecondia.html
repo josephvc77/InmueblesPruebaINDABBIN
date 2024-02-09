@@ -46,16 +46,7 @@
         <ul class="cont-menu">
           {% if user.is_authenticated %}
           <a class="btn-importados" href="{% url 'task_condia' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Inmuebles Importados</li></a>
-          <!-- <a class="btn-importados_completed" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">InImp Completados</a>
-          <br>
-          <a class="btn-baja-importados" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas Importados</a>
-
-          <a class="btn-pendientes" href="{%url 'tasks' %}"><li><i class="logo fa-solid fa-file-pen"></i><hr class="hr">Pendientes</li></a>
-          <a class="btn-completados" href="{%url 'tasks_completed' %}"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Tareas Completas</li></a>
-          <a class="btn-baja" href="{% url 'inmuebles_baja' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a> -->
-  
           <a class="btn-alta" href="{% url 'create_task_CONDIA' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>
-          
           <div class="log"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/SEP_Logo_2019.svg/768px-SEP_Logo_2019.svg.png" class="img-logo"></div>
           {% else %}
           <a class="btn-alta" href="'/signin"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Login</li></a>

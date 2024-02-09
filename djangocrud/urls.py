@@ -76,6 +76,9 @@ urlpatterns = [
     path('guardar_OcupacionesIMP/<int:task_id>/', views.guardar_OcupacionesIMP, name='guardar_OcupacionesIMP'),
     path('editar_ocupacionIMP/<int:ocupacion_id>/', views.editar_ocupacionIMP, name='editar_ocupacionIMP'),
     path('eliminar_ocupacionIMP/<int:ocupacion_id>/', views.eliminar_ocupacionIMP, name='eliminar_ocupacionIMP'),
+
+    path('eliminar_tramite/<int:tramite_id>/', views.eliminar_tramite, name='eliminar_tramite'),
+    
     
     path('generate_pdfIMP/<int:task_id>/', views.generate_pdfIMP, name='generate_pdfIMP'),
 

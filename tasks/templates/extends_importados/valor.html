@@ -11,7 +11,7 @@
                 {{ inmueble.fecha_valor_contable }}
             </div>
         </div>
-        
+
         <div class="separador">
             <h4>Datos Asegurables (S)</h4>
             <div class="form-group form-check-inline width-label">
@@ -23,7 +23,7 @@
                 {{ inmueble.fecha_valor_asegurable }}
             </div>
         </div>
-        
+
         <div class="separador">
             <h4>Datos de Adquisición</h4>
             <div class="form-group form-check-inline width-label">
@@ -31,7 +31,8 @@
                 {{ inmueble.valor_adquisicion }}
             </div>
             <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.fecha_valor_adquisicion.id_for_label }}">Fecha de Valor de Adquisición (es):</label>
+                <label for="{{ inmueble.fecha_valor_adquisicion.id_for_label }}">Fecha de Valor de Adquisición
+                    (es):</label>
                 {{ inmueble.fecha_valor_adquisicion }}
             </div>
             <div class="form-group form-check-inline width-label">
@@ -43,7 +44,7 @@
                 {{ inmueble.valor_construccion }}
             </div>
         </div>
-        
+
         <div class="separador">
             <h4>Datos Catastrales</h4>
             <div class="form-group form-check-inline width-label">
@@ -51,7 +52,8 @@
                 {{ inmueble.valor_catastral_terreno }}
             </div>
             <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_catastral_construccion.id_for_label }}">Valor Catastral de la Construcción (es):</label>
+                <label for="{{ inmueble.valor_catastral_construccion.id_for_label }}">Valor Catastral de la Construcción
+                    (es):</label>
                 {{ inmueble.valor_catastral_construccion }}
             </div>
             <div class="form-group form-check-inline width-label">
@@ -70,36 +72,40 @@
 
         <h3>Avaluos Registrados:</h3>
         <div class="table-responsive" id="tablaAvaluos">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Número de Avalúo</th>
-                    <th>Valor de Avalúo</th>
-                    <th>Fecha Valor de Avalúo</th>
-                    <th>Uso del Avalúo</th>
-                    <th>Valor de Terreno</th>
-                    <th>Valor de Construcción</th>
-                    <th class="text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for avaluo in task.avaluos.all %}
-                <tr>
-                    <td>{{ avaluo.numero_de_avaluo }}</td>
-                    <td>{{ avaluo.valor_de_avaluo }}</td>
-                    <td>{{ avaluo.fecha_valor_de_avaluo }}</td>
-                    <td>{{ avaluo.uso_del_avaluo }}</td>
-                    <td>{{ avaluo.valor_de_terreno }}</td>
-                    <td>{{ avaluo.valor_de_construccion }}</td>
-                    <td >
-                        <a href="{% url 'editar_avaluoIMP' avaluo.id %}"  class="btn btn-outline-warning btn-sm">Editar</a>
-                        <a href="{% url 'eliminar_avaluoIMP' avaluo_id=avaluo.id %}" class="btn btn-outline-danger btn-sm" id="delete" onclick="return confirm('¿Estás seguro de que deseas eliminar este avalúo?')"> Eliminar Avalúo</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Número de Avalúo</th>
+                        <th>Valor de Avalúo</th>
+                        <th>Fecha Valor de Avalúo</th>
+                        <th>Uso del Avalúo</th>
+                        <th>Valor de Terreno</th>
+                        <th>Valor de Construcción</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for avaluo in task.avaluos.all %}
+                    <tr>
+                        <td>{{ avaluo.numero_de_avaluo }}</td>
+                        <td>{{ avaluo.valor_de_avaluo }}</td>
+                        <td>{{ avaluo.fecha_valor_de_avaluo }}</td>
+                        <td>{{ avaluo.uso_del_avaluo }}</td>
+                        <td>{{ avaluo.valor_de_terreno }}</td>
+                        <td>{{ avaluo.valor_de_construccion }}</td>
+                        <td>
+                            <a href="{% url 'editar_avaluoIMP' avaluo.id %}"
+                                class="btn btn-outline-warning btn-sm">Editar</a>
+                            <a href="{% url 'eliminar_avaluoIMP' avaluo_id=avaluo.id %}"
+                                class="btn btn-outline-danger btn-sm" id="delete"
+                                onclick="return confirm('¿Estás seguro de que deseas eliminar este avalúo?')"> Eliminar
+                                Avalúo</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <div class="separador">
             <h4>
                 Agregar nuevo Avalúo de Otras Instituciones:</h4>
@@ -114,7 +120,8 @@
                     {{ datos_avaluos_form.valor_de_avaluo }}
                 </div>
                 <div class="form-group form-check-inline width-label">
-                    <label for="{{ datos_avaluos_form.fecha_valor_de_avaluo.id_for_label }}">Fecha Valor de Avalúo:</label>
+                    <label for="{{ datos_avaluos_form.fecha_valor_de_avaluo.id_for_label }}">Fecha Valor de
+                        Avalúo:</label>
                     {{ datos_avaluos_form.fecha_valor_de_avaluo }}
                 </div>
                 <div class="form-group ">
@@ -126,46 +133,12 @@
                     {{ datos_avaluos_form.valor_de_terreno }}
                 </div>
                 <div class="form-group form-check-inline width-label">
-                    <label for="{{ datos_avaluos_form.valor_de_construccion.id_for_label }}">Valor de Construcción:</label>
+                    <label for="{{ datos_avaluos_form.valor_de_construccion.id_for_label }}">Valor de
+                        Construcción:</label>
                     {{ datos_avaluos_form.valor_de_construccion }}
                 </div>
                 <button type="submit" id="guardarAvaluoIMP" class="btn btn-outline-success">Guardar Avaluos</button>
             </form>
         </div>
-     
-       
-      
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    
-    $(document).ready(function() {
-        // Agrega un manejador de eventos al botón "Guardar" de Documento de Ocupación
-        $("#guardarAvaluoIMP").click(function(event) {
-            var formData = $("#avaluoForm").serialize();
-            event.preventDefault();
-    
-            // Realiza una solicitud Ajax para guardar los datos del formulario de Documento de Ocupación
-            $.ajax({
-                url: "{% url 'guardar_AvaluoIMP' task_id=task.id %}",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    if (response.success) {
-                        // Actualiza la tabla después de guardar
-                        $("#tablaAvaluos").load("{% url 'task_detail_importados' task_id=task.id %} #tablaAvaluos");
-                        
-                        // Restablece el formulario de Documento de Ocupación
-                        $("#avaluoForm")[0].reset();
-                    } else {
-                        alert("Hubo un error al guardar el formulario de Avaluo.");
-                    }
-                },
-                error: function() {
-                    alert("Se produjo un error al enviar el formulario de Avaluo");
-                },
-            });
-        });
-    });
-</script>
