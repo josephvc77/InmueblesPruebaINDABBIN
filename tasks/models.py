@@ -136,7 +136,7 @@ class Inmueble(models.Model):
 
     entidad_federativa = models.CharField(max_length=100, blank=True, null=True)
     municipio_alcaldia = models.CharField(max_length=100, blank=True, null=True)
-    # municipio_no_existente = models.CharField(max_length=120, blank=True, null=True)
+    municipio_no_existente = models.CharField(max_length=120, blank=True, null=True)
     localidad = models.CharField(max_length=100, null=True, blank=True)
     fotografia_de_la_ubicacion = models.ImageField(upload_to='ubicacion_photos/', blank=True, null=True)
     COMPONENTE_ESPACIAL_CHOICES = [
