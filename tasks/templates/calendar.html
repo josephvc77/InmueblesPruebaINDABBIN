@@ -6,6 +6,10 @@
 <div class="col-md-12 animated fadeIn">    
     <div style="padding: 80px;" id='calendar'></div> 
 </div> 
+<!-- Incluye SweetAlert CSS y JS antes de tu script -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
@@ -40,7 +44,9 @@
                                 title: 'Evento añadido con éxito',
                                 showConfirmButton: false,
                                 timer: 1500
-                            });
+                            }).then(function() {
+            location.reload(); // Recarga la página después de cerrar la alerta
+        });
                         },
                         error: function (data) {
                             alert('Tenemos un Problema, favor de recargar el sitio de nuevo ;)!!!');
@@ -167,7 +173,65 @@
         --fc-today-bg-color: rgba(255,220,40,.15);
         --fc-now-indicator-color: red;
     }
+  /* Agrega algunos estilos para mejorar la legibilidad de las horas */
+  .fc-time {
+        font-size: 14px;
+    }
 
+    .fc-axis {
+        font-size: 14px;
+    }
+
+    .fc-widget-header {
+        font-size: 16px;
+    }
+
+    .fc-day-number {
+        font-size: 16px;
+    }
+
+    /* Personaliza el color del fondo del evento */
+    .fc-event {
+        background-color: #3788d8;
+        border-color: #3788d8;
+        color: #fff;
+    }
+
+    /* Personaliza el color del fondo del evento seleccionado */
+    .fc-highlight {
+        background-color: rgba(188, 232, 241, 0.3);
+    }
+
+    /* Personaliza el color del día de hoy */
+    .fc-today {
+        background-color: rgba(255, 220, 40, 0.15);
+    }
+
+    /* Personaliza el color del indicador de ahora */
+    .fc-now-indicator {
+        background-color: red;
+    }
+
+ 
+
+    /* Personaliza los estilos del botón del calendario al pasar el ratón sobre él */
+    .fc-button:hover {
+        background-color: #1e2b37;
+        border-color: #1a252f;
+    }
+
+    /* Personaliza los estilos del botón del calendario al hacer clic en él */
+    .fc-button:active {
+        background-color: #1a252f;
+        border-color: #151e27;
+    }
+
+    /* Personaliza los estilos del enlace "más" */
+    .fc-more {
+        background-color: #d0d0d0;
+        color: inherit;
+        font-size: 14px;
+    }
 
 
 

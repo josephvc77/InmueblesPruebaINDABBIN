@@ -1,148 +1,70 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function loadSeccionesInventario() {
-        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/1/inventario/.json', function(data) {
-            var secciones = [...new Set(data.map(item => item.seccion_inventario))];
-            var selectSecciones = $('#{{ inmueble.seccion_del_inventario.auto_id }}');
-
-            selectSecciones.empty(); // Limpiar opciones anteriores
-            $.each(secciones, function(index, value) {
-                var selected = value === '{{ inmueble.instance.seccion_del_inventario }}' ? 'selected' : '';
-                selectSecciones.append($('<option>').text(value).attr('value', value).prop('selected', selected));
-            });
-            loadDependenciasAdministradoras();
-        });
-    }
-
-    function loadDependenciasAdministradoras() {
-        var seccionInventario = $('#{{ inmueble.seccion_del_inventario.auto_id }}').val();
-        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/1/inventario/.json', function(data) {
-            var dependencias = [...new Set(data.filter(item => item.seccion_inventario === seccionInventario)
-                                    .map(item => item.dependencia_administradora))];
-            var selectDependencias = $('#{{ inmueble.Dependencia_Administradora.auto_id }}');
-            selectDependencias.empty(); // Limpiar opciones anteriores
-            $.each(dependencias, function(index, value) {
-                var selected = value === '{{ inmueble.instance.Dependencia_Administradora }}' ? 'selected' : '';
-                selectDependencias.append($('<option>').text(value).attr('value', value).prop('selected', selected));
-            });
-            loadSubsecciones();
-        });
-    }
-
-    function loadSubsecciones() {
-        var seccionInventario = $('#{{ inmueble.seccion_del_inventario.auto_id }}').val();
-        var dependenciaAdministradora = $('#{{ inmueble.Dependencia_Administradora.auto_id }}').val();
-        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/1/inventario/.json', function(data) {
-            var subsecciones = [...new Set(data.filter(item => item.seccion_inventario === seccionInventario && item.dependencia_administradora === dependenciaAdministradora)
-                                   .map(item => item.subSeccion))];
-            var selectSubsecciones = $('#{{ inmueble.subSeccion.auto_id }}');
-            selectSubsecciones.empty(); // Limpiar opciones anteriores
-            $.each(subsecciones, function(index, value) {
-                var selected = value === '{{ inmueble.instance.subSeccion }}' ? 'selected' : '';
-                selectSubsecciones.append($('<option>').text(value).attr('value', value).prop('selected', selected));
-            });
-        });
-    }
-
-    $(document).ready(function() {
-        loadSeccionesInventario();
-
-        $('#{{ inmueble.seccion_del_inventario.auto_id }}').change(function() {
-            loadDependenciasAdministradoras();
-        });
-
-        $('#{{ inmueble.Dependencia_Administradora.auto_id }}').change(function() {
-            loadSubsecciones();
-        });
-    });
-</script>
-
-
-    <div class="tab-content animated fadeIn" id="tab-descripcion">
-        <div class="section">
-            <div class="form-group">
-                <label for="{{ inmueble.NombreInmueble.id_for_label }}">Nombre del Inmueble:</label>
-                {{ inmueble.NombreInmueble }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.seccion_del_inventario.id_for_label }}">Sección del Inventario:</label>
-                <select id="{{ inmueble.seccion_del_inventario.auto_id }}" name="{{ inmueble.seccion_del_inventario.html_name }}"></select>
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.Dependencia_Administradora.id_for_label }}">Dependencia Administradora:</label>
-                <select id="{{ inmueble.Dependencia_Administradora.auto_id }}" name="{{ inmueble.Dependencia_Administradora.html_name }}"></select>
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.Sector.id_for_label }}">Sector:</label>
-                {{ inmueble.Sector }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.Nombre_de_la_institucion_que_administra_el_inmueble.id_for_label }}">Nombre de la Institución que administra el inmueble:</label>
-                {{ inmueble.Nombre_de_la_institucion_que_administra_el_inmueble }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.Naturaleza_Juridica_de_la_Institucion.id_for_label }}">Naturaleza Jurídica de la Institución:</label>
-                {{ inmueble.Naturaleza_Juridica_de_la_Institucion }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.subSeccion.id_for_label }}">SubSección:</label>
-                <select id="{{ inmueble.subSeccion.auto_id }}" name="{{ form.subSeccion.html_name }}"></select>
-            </div>
-
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.Denominaciones_anteriores.id_for_label }}">Denominaciones anteriores:</label>
-                {{ inmueble.Denominaciones_anteriores }}
-              </div>
-              <div class="form-group form-check-inline ">
-                <label for="{{ inmueble.UR.id_for_label }}">UR:</label>
-                {{ inmueble.UR }}
-            </div>
-            <div class="form-group form-check-inline ">
-                <label for="{{ inmueble.causa_alta.id_for_label }}">Causa alta:</label>
-                {{ inmueble.causa_alta }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.prioridad.id_for_label }}">Prioridad:</label>
-                {{ inmueble.prioridad }}
-              </div><br>
-
-              {% if request.user.is_superuser %}
-                <div class="form-group form-check-inline">
-                    <label for="{{ inmueble.assigned_to.id_for_label }}">Asignar a:</label>
-                        {{ inmueble.assigned_to }}
-                </div>
-                <div class="form-group form-check-inline">
-                    <label for="{{ inmueble.deadline.id_for_label }}">Fecha y hora límite:</label>
-                    <input type="text" id="deadline-picker-{{ task.id }}" name="deadline" value="{{ inmueble.deadline|date:'Y-m-d H:i' }}">
-                </div>
-
-
-                    {% else %}
-                        <p style="color: brown;">No tienes permisos para asignar tareas a otros usuarios.</p>
-                    {% endif %}
-            
+<div class="tab-content animated fadeIn" id="tab-descripcion">
+    <div class="section">
+        <div class="form-group">
+            <label for="{{ inmueble.NombreInmueble.id_for_label }}">Nombre del Inmueble:</label>
+            {{ inmueble.NombreInmueble }}
         </div>
-    </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.seccion_del_inventario.id_for_label }}">Sección del Inventario:</label>
+            <select id="{{ inmueble.seccion_del_inventario.auto_id }}"
+                name="{{ inmueble.seccion_del_inventario.html_name }}"></select>
+        </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.Dependencia_Administradora.id_for_label }}">Dependencia Administradora:</label>
+            <select id="{{ inmueble.Dependencia_Administradora.auto_id }}"
+                name="{{ inmueble.Dependencia_Administradora.html_name }}"></select>
+        </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.Sector.id_for_label }}">Sector:</label>
+            {{ inmueble.Sector }}
+        </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.Nombre_de_la_institucion_que_administra_el_inmueble.id_for_label }}">Nombre de la
+                Institución que administra el inmueble:</label>
+            {{ inmueble.Nombre_de_la_institucion_que_administra_el_inmueble }}
+        </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.Naturaleza_Juridica_de_la_Institucion.id_for_label }}">Naturaleza Jurídica de la
+                Institución:</label>
+            {{ inmueble.Naturaleza_Juridica_de_la_Institucion }}
+        </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.subSeccion.id_for_label }}">SubSección:</label>
+            <select id="{{ inmueble.subSeccion.auto_id }}" name="{{ form.subSeccion.html_name }}"></select>
+        </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const taskId = "{{ task.id }}";
-            const deadlinePicker = document.getElementById(`deadline-picker-${taskId}`);
-    
-            const storedDeadline = localStorage.getItem(`deadline_${taskId}`);
-            const dateStr = storedDeadline || "{{ inmueble.deadline|date:'Y-m-d H:i' }}";
-    
-            const picker = flatpickr(deadlinePicker, {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i",
-                defaultDate: dateStr,
-                onChange: function (selectedDates, dateStr) {
-                    localStorage.setItem(`deadline_${taskId}`, dateStr);
-                },
-            });
-        });
-    </script>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.Denominaciones_anteriores.id_for_label }}">Denominaciones anteriores:</label>
+            {{ inmueble.Denominaciones_anteriores }}
+        </div>
+        <div class="form-group form-check-inline ">
+            <label for="{{ inmueble.UR.id_for_label }}">UR:</label>
+            {{ inmueble.UR }}
+        </div>
+        <div class="form-group form-check-inline ">
+            <label for="{{ inmueble.causa_alta.id_for_label }}">Causa alta:</label>
+            {{ inmueble.causa_alta }}
+        </div>
+        <div class="form-group form-check-inline width-label">
+            <label for="{{ inmueble.prioridad.id_for_label }}">Prioridad:</label>
+            {{ inmueble.prioridad }}
+        </div><br>
+
+        {% if request.user.is_superuser %}
+        <div class="form-group form-check-inline">
+            <label for="{{ inmueble.assigned_to.id_for_label }}">Asignar a:</label>
+            {{ inmueble.assigned_to }}
+        </div>
+        <div class="form-group form-check-inline">
+            <label for="{{ inmueble.deadline.id_for_label }}">Fecha y hora límite:</label>
+            <input type="text" id="deadline-picker-{{ task.id }}" name="deadline"
+                value="{{ inmueble.deadline|date:'Y-m-d H:i' }}">
+        </div>
+
+
+        {% else %}
+        <p style="color: brown;">No tienes permisos para asignar tareas a otros usuarios.</p>
+        {% endif %}
+
+    </div>
+</div>

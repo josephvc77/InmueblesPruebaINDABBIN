@@ -165,9 +165,13 @@
   }
 
 
-
   /* Estilos responsivos */
   @media screen and (max-width: 768px) {
+  
+    .mobilemodal {
+      background-color: #ffff;
+    }
+
     .task-form {
       padding: 10px;
     }

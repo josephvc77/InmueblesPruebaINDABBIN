@@ -30,9 +30,9 @@ def signupCondia(request):
                 login(request, user)
                 return redirect('tasks')
             except IntegrityError:
-                return render(request, 'signup.html', {"form": UserCreationForm, "error": "Username already exists."})
+                return render(request, 'signupCondia.html', {"form": UserCreationForm, "error": "Username already exists."})
 
-        return render(request, 'signup.html', {"form": UserCreationForm, "error": "Passwords did not match."})
+        return render(request, 'signupCondia.html', {"form": UserCreationForm, "error": "Passwords did not match."})
     
 def signinCondia(request):
     if request.method == 'POST':
@@ -44,7 +44,7 @@ def signinCondia(request):
     else:
         form = AuthenticationForm()
     
-    return render(request, 'signin.html', {"form": form})
+    return render(request, 'signinCondia.html', {"form": form})
 
 @login_required
 def signout_condia(request):

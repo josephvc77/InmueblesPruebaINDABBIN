@@ -1006,6 +1006,14 @@ def eliminar_ocupacionIMP(request, ocupacion_id):
     return redirect('task_detail_importados', task_id=task_id)
 
 
+@login_required
+def eliminar_tramite(request, tramite_id):
+    tramite = get_object_or_404(TramitesDisposicionIMP, pk=tramite_id)
+    task_id = tramite.task_id
+    tramite.delete()
+    return redirect('task_detail_importados', task_id=task_id)
+
+
 from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
