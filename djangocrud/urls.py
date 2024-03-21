@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import include, path
 from djangocrud import settings
 from tasks import views
@@ -26,7 +27,7 @@ urlpatterns = [
     # path('tasks_importados/', views.tasks_importados, name='tasks_importados'),
     path('tasks/<int:task_id>', views.task_detail_importados, name='task_detail_importados'),
     path('admin/', admin.site.urls),
-    path('signup/', views.signup, name='signup'),
+    # path('signup/', views.signup, name='signup'),
     path('tasks_completed_importados/', views.tasks_completed_importados, name='tasks_completed_importados'),
     path('inmuebles_baja_importados/', views.inmuebles_baja_importados, name='inmuebles_baja_importados'),
     path('logout/', views.signout, name='logout'),
@@ -103,7 +104,7 @@ urlpatterns = [
     path('calendar/', views.calendar, name='calendar'),
     
     # CONDIA ------------------------------------------------------------------
-    path('keep_session_alive/', views.keep_session_alive, name='keep_session_alive'),
+    # path('keep_session_alive/', views.keep_session_alive, name='keep_session_alive'),
 
     
     path('signupCondia/', views_condia.signupCondia, name='signupCondia'),
@@ -119,10 +120,22 @@ urlpatterns = [
     path('all_events/', views.all_events, name='all_events'), 
     path('add_event/', views.add_event, name='add_event'), 
     path('update/', views.update, name='update'),
-    path('remove/', views.remove, name='remove')
-    
-
+    path('remove/', views.remove, name='remove'),
+    path('<path:url>', lambda request, url: custom_redirect(request, url)),
 ]
+
+
+from django.contrib.auth import logout  # Importa la función de logout
+
+def custom_redirect(request, url):
+    # Verifica si la URL no se encuentra en la lista permitida
+    if url not in ['signupCondia/']:
+        # Limpia la sesión antes de redirigir
+        logout(request)
+        # Redirige al inicio de sesión
+        return redirect('signin')
+    else:
+        return None
 
 if settings.DEBUG:
     from django.conf.urls.static import static

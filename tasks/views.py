@@ -43,21 +43,12 @@ def signup(request):
         return render(request, 'signup.html', {"form": UserCreationForm, "error": "Passwords did not match."})
     
 
-    from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+
 from django.contrib.auth.decorators import login_required
 
-@csrf_exempt
-@login_required
-def keep_session_alive(request):
-    # Esta vista simplemente devuelve una respuesta JSON para mantener viva la sesión.
-    return JsonResponse({'message': 'Session alive'})
 
 
-@login_required
-def signout(request):
-    logout(request)
-    return redirect('signin')
+
 
 
 def signin(request):
@@ -90,6 +81,13 @@ def signin(request):
     #     form = AuthenticationForm()
     
     # return render(request, 'signin.html', {"form": form})
+        
+
+
+@login_required
+def signout(request):
+    logout(request)
+    return redirect('signin')
     
 from django.http import JsonResponse
 from datetime import datetime

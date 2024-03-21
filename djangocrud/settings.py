@@ -165,11 +165,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Admin INDABIIN",
+    "site_title": "Admin SIIFSEP",
     "site_header": "Library",
-    "welcome_sign": "Bienvenido al Sistema de Administrador INDABIIN",
+    "welcome_sign": "Bienvenido al Sistema de Administrador SIIFSEP",
     "copyright": "Joseph Valencia Cisneros",
-    
+    "site_logo": "../static/inicio/img/logo-sgis.png",
+    "navigation_expanded": False,
 }
 
 JAZZMIN_UI_TWEAKS = {
