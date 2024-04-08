@@ -204,62 +204,93 @@ def tasks_importados(request):
         'eventos' : eventos,
         'orden': orden,
     })
-    
-@login_required
 def calendar(request):  
     mensajes = MensajeIMP.objects.all()
     eventos = Events.objects.all()
     all_events = Events.objects.all()
 
     return render(request,'calendar.html', {
-        'mensajes' : mensajes,
-        "events":all_events,
-        "eventos" : eventos,
+        'mensajes': mensajes,
+        "events": all_events,
+        "eventos": eventos,
     })
 
 @login_required
 def all_events(request):                                                                                                 
     all_events = Events.objects.all()                                                                                    
     out = []                                                                                                             
-    for event in all_events:                                                                                             
+    for event in all_events:  
+        dia_formatted = event.dia.strftime("%Y-%m-%d") if event.dia else None                                                                                         
         out.append({                                                                                                     
-            'title': event.name,                                                                                         
-            'id': event.id,                                                                                              
-            'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),                                                         
-            'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"),                                                             
+            'title': event.title,
+            'id': event.id,
+            'start': dia_formatted + 'T' + event.hora_inicio.strftime("%H:%M") if event.hora_inicio else None,
+            'end': dia_formatted + 'T' + event.hora_finalizacion.strftime("%H:%M") if event.hora_finalizacion else None,
+            'sala': event.sala,
+            'prioridad': event.prioridad,
+            'coordina': event.coordina,
+            'cargo': event.cargo,
+            'no_personas': event.no_personas,
+            'contacto': event.contacto,
+            'servicios': event.servicios,
+            'observaciones': event.observaciones,
         })                                                                                                               
                                                                                                                       
     return JsonResponse(out, safe=False) 
 
 @login_required 
 def add_event(request):
-    start = request.GET.get("start", None)
-    end = request.GET.get("end", None)
+    dia = request.GET.get("dia", None)
+    hora_inicio = request.GET.get("hora_inicio", None)
+    hora_finalizacion = request.GET.get("hora_finalizacion", None)
     title = request.GET.get("title", None)
-    event = Events(name=str(title), start=start, end=end)
+    prioridad = request.GET.get("prioridad", None)
+    sala = request.GET.get("sala", None)
+    coordina = request.GET.get("coordina", None)
+    cargo = request.GET.get("cargo", None)
+    no_personas = request.GET.get("no_personas", None)
+    contacto = request.GET.get("contacto", None)
+    servicios = request.GET.get("servicios", None)
+    observaciones = request.GET.get("observaciones", None)
+    
+    event = Events(title=title, dia=dia, hora_inicio=hora_inicio, hora_finalizacion=hora_finalizacion, prioridad=prioridad, sala=sala, coordina=coordina, cargo=cargo, no_personas=no_personas,
+                   contacto=contacto, servicios=servicios, observaciones=observaciones)
     event.save()
     data = {}
+    return JsonResponse(data)
+
+@login_required 
+def update(request):
+    if request.method == 'GET':
+        dia = request.GET.get("dia", None)
+        title = request.GET.get("title", None)
+        event_id = request.GET.get("id", None)
+        try:
+            event = Events.objects.get(id=event_id)
+            event.dia = dia
+            event.title = title
+            event.save()
+            data = {'success': True}
+        except Events.DoesNotExist:
+            data = {'success': False, 'error_message': 'Evento no encontrado'}
+    else:
+        data = {'success': False, 'error_message': 'Solicitud no válida'}
+
     return JsonResponse(data)
  
 @login_required 
-def update(request):
-    start = request.GET.get("start", None)
-    end = request.GET.get("end", None)
-    title = request.GET.get("title", None)
-    id = request.GET.get("id", None)
-    event = Events.objects.get(id=id)
-    event.start = start
-    event.end = end
-    event.name = title
-    event.save()
-    data = {}
-    return JsonResponse(data)
- 
 def remove(request):
-    id = request.GET.get("id", None)
-    event = Events.objects.get(id=id)
-    event.delete()
-    data = {}
+    if request.method == 'GET':
+        event_id = request.GET.get("id", None)
+        try:
+            event = Events.objects.get(id=event_id)
+            event.delete()
+            data = {'success': True}
+        except Events.DoesNotExist:
+            data = {'success': False, 'error_message': 'Evento no encontrado'}
+    else:
+        data = {'success': False, 'error_message': 'Solicitud no válida'}
+
     return JsonResponse(data)
 
 
@@ -267,7 +298,6 @@ def remove(request):
 @login_required
 def principal(request):
     return render(request, 'tasks.html')
-
 
 
 @login_required
@@ -1480,3 +1510,48 @@ def importar(request):
     return render(request, 'importar.html')
 
 
+# Email 
+
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.contrib import messages
+from django.conf import settings
+
+def contacto(request):
+    if request.method == "POST":
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+
+        # Renderizar el template del correo con los datos del formulario
+        template = render_to_string('extends_importados/email_template.html', {
+            'name': name,
+            'email': email,
+            'subject': subject,
+            'message': message
+        })
+
+        # Crear el objeto EmailMessage
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,  # Remitente
+            ['soporte.sii.sep@nube.sep.gob.mx']  # Destinatario(s)
+        )
+
+        # Configurar para que falle explícitamente si hay errores
+        email.fail_silently = False
+
+        # Enviar el correo
+        email.send()
+
+        # Mostrar un mensaje de éxito
+        messages.success(request, 'Se ha enviado tu correo.')
+
+        # Redirigir a alguna página después de enviar el correo
+        return redirect('tasks_importados')  # Puedes cambiar 'tasks_importados' por la vista a la que quieres redirigir
+
+    # Si el método de solicitud no es POST, renderizar la página de contacto
+    return render(request, 'extends_importados/email.html')

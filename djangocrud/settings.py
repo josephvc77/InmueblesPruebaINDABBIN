@@ -215,3 +215,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'  # Configuración predeterminada para permitir mostrar en iframes del mismo origen
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'soporte.sii.sep@nube.sep.gob.mx'
+EMAIL_HOST_PASSWORD = 'S11S0p0rt3'
+EMAIL_USE_TLS = True
