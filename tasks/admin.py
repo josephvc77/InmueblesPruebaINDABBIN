@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
 
 
 class DictamenEstructuralInlineIMP(admin.TabularInline):
@@ -91,3 +91,7 @@ class InmuebleAdmin(VersionAdmin, AllModelsAdminIMP):
 # Registra los otros modelos
 admin.site.register(TareasCondia)
 # Registra otros modelos aquí...
+
+class EventsAdmin(admin.ModelAdmin):
+    list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')  # Define los campos que se mostrarán en la lista
+admin.site.register(Events, EventsAdmin)

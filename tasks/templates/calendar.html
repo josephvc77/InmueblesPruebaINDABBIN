@@ -14,55 +14,230 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
 
-<script>
-    $(document).ready(function () {
-        var calendar = $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-            events: '/all_events',
-            selectable: true,
-            selectHelper: true,
-            editable: true,
-            eventLimit: true,
-            select: function (start, end, allDay) {
-                var title = prompt("Ingresa el Titulo del Evento");
-                if (title) {
-                    var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
-                    var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
-                    $.ajax({
-                        type: "GET",
-                        url: '/add_event',
-                        data: {'title': title, 'start': start, 'end': end},
-                        dataType: "json",
-                        success: function (data) {
-                            calendar.fullCalendar('refetchEvents');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Evento añadido con éxito',
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(function() {
-            location.reload(); // Recarga la página después de cerrar la alerta
-        });
-                        },
-                        error: function (data) {
-                            alert('Tenemos un Problema, favor de recargar el sitio de nuevo ;)!!!');
-                        }
+<div id="calendar"></div>
+
+    <!-- Modal para agregar eventos -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <input type="hidden" id="dia" name="dia"> <!-- Campo oculto para la fecha de inicio -->
+                        <div class="form-group ">
+                            <label for="title">Título:</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="form-group form-check-inline">
+                            <label for="hora_inicio">Hora de inicio:</label>
+                            <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" required>
+                        </div>
+                        <div class="form-group form-check-inline">
+                            <label for="hora_finalizacion">Hora de finalización:</label>
+                            <input type="time" class="form-control" id="hora_finalizacion" name="hora_finalizacion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_sala">Sala:</label>
+                            <select id="sala" name="sala" class="form-control">
+                                <option value="AUDITORIO CENTRO SEP (capacidad: 220, Nivel-0)">AUDITORIO CENTRO SEP (capacidad: 220, Nivel-0)</option>
+                                <option value="ESTUDIO DE GRABACIÓN (capacidad: 10, Nivel-0)">ESTUDIO DE GRABACIÓN (capacidad: 10, Nivel-0)</option>
+                                <option value="BODEGA DGTIC-DGRMyS (capacidad: 20, Nivel-0)">BODEGA DGTIC-DGRMyS (capacidad: 20, Nivel-0)</option>
+                                <option value="ÁREA ACTIVIDAD FISICA (capacidad: 50, Nivel-1)">ÁREA ACTIVIDAD FISICA (capacidad: 50, Nivel-1)</option>
+                                <option value="CAPACITACIÓN (capacidad: 25, Nivel: 1, Sala: 1)">CAPACITACIÓN (capacidad: 25, Nivel: 1, Sala: 1)</option>
+                                <option value="CAPACITACIÓN (capacidad: 25, Nivel: 1-H, Sala: 2)">CAPACITACIÓN (capacidad: 25, Nivel: 1-H, Sala: 2)</option>
+                                <option value="CAPACITACIÓN (ESPEJOS) (capacidad: 25, Nivel: 1-H, Sala: 1)">CAPACITACIÓN (ESPEJOS) (capacidad: 25, Nivel: 1-H, Sala: 1)</option>
+                                <option value="COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 1)">COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 1)</option>
+                                <option value="COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 2)">COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 2)</option>
+                                <option value="COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 3)">COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 3)</option>
+                                <option value="SALA MEXICO (capacidad: 60, Nivel: 1-H)">SALA MEXICO (capacidad: 60, Nivel: 1-H)</option>
+                                <option value="ANEXO SALA MEXICO (capacidad: 30, Nivel: 1-H)">ANEXO SALA MEXICO (capacidad: 30, Nivel: 1-H)</option>
+                                <option value="ACCESO MAYORASGO (capacidad: 100, Nivel: 1)">ACCESO MAYORASGO (capacidad: 100, Nivel: 1)</option>
+                                <option value="ACCESO UNIVERSIDAD 1200 LADO NORTE (capacidad: 100, Nivel: 1)">ACCESO UNIVERSIDAD 1200 LADO NORTE (capacidad: 100, Nivel: 1)</option>
+                                <option value="ALA SUR (capacidad: 50, Nivel: 1)">ALA SUR (capacidad: 50, Nivel: 1)</option>
+                                <option value="JAIME TORRES BODET (capacidad: 50, Nivel: 2,  Sala: 1)">JAIME TORRES BODET (capacidad: 50, Nivel: 2,  Sala: 1)</option>
+                                <option value="NARCISO BASSOLS (capacidad: 35, Nivel: 2,  Sala: 2)">NARCISO BASSOLS (capacidad: 35, Nivel: 2,  Sala: 2)</option>
+                                <option value="GREGORIO TORRES QUINTERO (capacidad: 20, Nivel: 2,  Sala: 3)">GREGORIO TORRES QUINTERO (capacidad: 20, Nivel: 2,  Sala: 3)</option>
+                                <option value="ROSARIO CASTELLANOS (capacidad: 18, Nivel: 2,  Sala: 4)">ROSARIO CASTELLANOS (capacidad: 18, Nivel: 2,  Sala: 4)</option>
+                                <option value="ANTONIO CASO (capacidad: 25, Nivel: 2,  Sala: 5)">ANTONIO CASO (capacidad: 25, Nivel: 2,  Sala: 5)</option>
+                                <option value="JÓSE VASCONCELOS (capacidad: 60, Nivel: 2,  Sala: 6)">JÓSE VASCONCELOS (capacidad: 60, Nivel: 2,  Sala: 6)</option>
+                                <option value="SOR JUANA INES DE LA CRUZ (capacidad: 30, Nivel: 2,  Sala: 7)">SOR JUANA INES DE LA CRUZ (capacidad: 30, Nivel: 2,  Sala: 7)</option>
+                                <option value="JUAN JOSE ARREOLA (capacidad: 9, Nivel: 2,  Sala: 9)">JUAN JOSE ARREOLA (capacidad: 9, Nivel: 2,  Sala: 9)</option>
+                                <option value="FRIDA KHALO (capacidad: 15, Nivel: 2,  Sala: 10)">FRIDA KHALO (capacidad: 15, Nivel: 2,  Sala: 10)</option>
+                                <option value="JUSTO SIERRA (capacidad: 15, Nivel: 2, Sala: 11)">JUSTO SIERRA (capacidad: 15, Nivel: 2, Sala: 11)</option>
+                                <option value="SALA SIN NOMBRE (capacidad: 20, Nivel: 2, Sala: 12)">SALA SIN NOMBRE (capacidad: 20, Nivel: 2, Sala: 12)</option>
+                                <option value="SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 13)">SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 13)</option>
+                                <option value="AUDITIRES (capacidad: 10, Nivel: 2, Sala: 15)">AUDITIRES (capacidad: 10, Nivel: 2, Sala: 15)</option>
+                                <option value="AUDITORES (capacidad: 6, Nivel: 2, Sala: 16)">AUDITORES (capacidad: 6, Nivel: 2, Sala: 16)</option>
+                                <option value="SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 17)">SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 17)</option>
+                                <option value="SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 18)">SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 18)</option>
+                                <option value="SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 19)">SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 19)</option>
+                                <option value="SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 20)">SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 20)</option>
+                                <option value="EJECUTIVA (capacidad: 10, Nivel: 2, Sala: A)">EJECUTIVA (capacidad: 10, Nivel: 2, Sala: A)</option>
+                                <option value="EJECUTIVA (capacidad: 10, Nivel: 2, Sala: B)">EJECUTIVA (capacidad: 10, Nivel: 2, Sala: B)</option>
+                                <option value="EJECUTIVA (capacidad: 10, Nivel: 2, Sala: C)">EJECUTIVA (capacidad: 10, Nivel: 2, Sala: C)</option>
+                                <option value="EJECUTIVA (capacidad: 10, Nivel: 2, Sala: D)">EJECUTIVA (capacidad: 10, Nivel: 2, Sala: D)</option>
+                                <option value="INTERNA (capacidad: 12, Nivel: 5, Sala: 5.18)">INTERNA (capacidad: 12, Nivel: 5, Sala: 5.18)</option>
+                                <option value="(capacidad: 25, Nivel: 5, Sala: 5-G)">(capacidad: 25, Nivel: 5, Sala: 5-G)</option>
+                                <option value="AUDITORIO REVOLUCIÓN 1425 (capacidad: 220)">AUDITORIO REVOLUCIÓN 1425 (capacidad: 220)</option>
+                                <option value="SALA DGP REVOLUCIÓN 1425 (capacidad: 100)">SALA DGP REVOLUCIÓN 1425 (capacidad: 100)</option>
+                                <option value="MEZZANNINE REVOLUCIÓN 1425 (capacidad: 100)">MEZZANNINE REVOLUCIÓN 1425 (capacidad: 100)</option>
+                                <option value="SALA VIADUCTO 551 (capacidad: 50)">SALA VIADUCTO 551 (capacidad: 50)</option>
+                                <option value="RABOSO (PUEBLA) (capacidad: 15, Sala: 1)">RABOSO (PUEBLA) (capacidad: 15, Sala: 1)</option>
+                                <option value="RABOSO (PUEBLA) (capacidad: 15, Sala: 2)">RABOSO (PUEBLA) (capacidad: 15, Sala: 2)</option>
+                                <option value="RABOSO (PUEBLA) (capacidad: 15, Sala: 3)">RABOSO (PUEBLA) (capacidad: 15, Sala: 3)</option>
+                                <option value="RABOSO (PUEBLA) (capacidad: 15, Sala: 4)">RABOSO (PUEBLA) (capacidad: 15, Sala: 4)</option>
+                                <option value="RABOSO (PUEBLA) (capacidad: 15, Sala: 5)">RABOSO (PUEBLA) (capacidad: 15, Sala: 5)</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-check-inline">
+                            <label for="coordina">Coordina:</label>
+                            <input type="text" class="form-control" id="coordina" name="coordina">
+                        </div>
+                    
+                        <div class="form-group form-check-inline">
+                            <label for="cargo">Cargo:</label>
+                            <input type="text" class="form-control" id="cargo" name="cargo">
+                        </div>
+                    
+                        <div class="form-group form-check-inline">
+                            <label for="no_personas">Número de Personas:</label>
+                            <input type="number" class="form-control" id="no_personas" name="no_personas">
+                        </div>
+                    
+                        <div class="form-group form-check-inline">
+                            <label for="contacto">Contacto:</label>
+                            <input type="text" class="form-control" id="contacto" name="contacto">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="servicios">Servicios:</label>
+                            <input type="text" class="form-control" id="servicios" name="servicios">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="observaciones">Observaciones:</label>
+                            <input type="text" class="form-control" id="observaciones" name="observaciones">
+                        </div>
+                        <div class="form-group form-check-inline">
+                            <label for="prioridad">Prioridad:</label>
+                            <select class="form-control" id="prioridad" name="prioridad" required>
+                                <option value="Alta">Alta</option>
+                                <option value="Media">Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Agregar Evento</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar los detalles del evento -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">Detalles del Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="eventDetails">
+                    <p><strong>Título:</strong> <span id="eventTitle"></span></p>
+                    <p><strong>Inicio:</strong> <span id="eventInicio"></span></p>
+                    <p><strong>Fin:</strong> <span id="eventFin"></span></p>
+                    <p><strong>Sala:</strong> <span id="eventSala"></span></p>
+                    <p><strong>Prioridad:</strong> <span id="eventPriority"></span></p>
+                    <p><strong>Coordina:</strong> <span id="eventCoordina"></span></p>
+                    <p><strong>Cargo:</strong> <span id="eventCargo"></span></p>
+                    <p><strong>No. de Personas:</strong> <span id="eventNoPersonas"></span></p>
+                    <p><strong>Contacto:</strong> <span id="eventContacto"></span></p>
+                    <p><strong>Servicios:</strong> <span id="eventServicios"></span></p>
+                    <p><strong>Observaciones:</strong> <span id="eventObservaciones"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar Evento</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        $(document).ready(function () {
+            var calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month',
+                    length: 'es'
+                },
+                events: '/all_events',
+                selectable: true,
+                selectHelper: true,
+                editable: true,
+                eventLimit: true,
+                dayClick: function (date, jsEvent, view) {
+
+                // Verificar si la fecha seleccionada es antes del día actual
+                var currentDate = moment().startOf('day');
+                var selectedDate = moment(date);
+                if (selectedDate.isBefore(currentDate, 'day')) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No puedes crear eventos en días pasados.'
                     });
-                }
+                    return; // Detener la creación del evento si hay un error
+                
+            }
+                    // Abre el modal cuando se hace clic en un día
+                    $('#eventForm').find('#dia').val(date.format()); // Preselecciona la fecha en el formulario
+                    $('#myModal').modal('show');
+                },
+                
+                 
+                eventRender: function(event, element) {
+                    
+                    var cssClass = getPrioridadClass(event.prioridad);
+                    element.addClass(cssClass);
+                    element.find('.fc-title').append("<br/> " + event.sala);
+                    element.find('.fc-title').append("<br/><b>Coordina: </b> " + event.coordina);
+                },
+                
+                eventClick: function (event) {
+                // Mostrar información del evento en el modal
+                $('#eventModal #eventTitle').text(event.title);
+                $('#eventModal #eventInicio').text(event.start.format('h:mm A'));
+                $('#eventModal #eventFin').text(event.end.format('h:mm A'));
+                $('#eventModal #eventSala').text(event.sala);
+                $('#eventModal #eventPriority').text(event.prioridad);
+                $('#eventModal #eventCoordina').text(event.coordina);
+                $('#eventModal #eventCargo').text(event.cargo);
+                $('#eventModal #eventNoPersonas').text(event.no_personas);
+                $('#eventModal #eventContacto').text(event.contacto);
+                $('#eventModal #eventServicios').text(event.servicios);
+                $('#eventModal #eventObservaciones').text(event.observaciones);
+
+           
+                $('#eventModal #deleteEventBtn').data('event-id', event.id);
+
+                // Mostrar el modal
+                $('#eventModal').modal('show');
             },
-            eventResize: function (event) {
-                var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
-                var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+              eventDrop: function (event) {
+                var dia = event.start.format("YYYY-MM-DD");
                 var title = event.title;
                 var id = event.id;
                 $.ajax({
                     type: "GET",
                     url: '/update',
-                    data: {'title': title, 'start': start, 'end': end, 'id': id},
+                    data: {'title': title, 'dia': dia, 'id': id},
                     dataType: "json",
                     success: function (data) {
                         calendar.fullCalendar('refetchEvents');
@@ -78,22 +253,23 @@
                     }
                 });
             },
-  
-            eventDrop: function (event) {
-                var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
-                var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-                var title = event.title;
-                var id = event.id;
+        });
+
+        // Manejar el clic en el botón de eliminar evento dentro del modal
+        $('#eventModal #deleteEventBtn').click(function () {
+            var eventId = $(this).data('event-id');
+            if (confirm("¿Estás seguro de eliminar este evento?")) {
                 $.ajax({
                     type: "GET",
-                    url: '/update',
-                    data: {'title': title, 'start': start, 'end': end, 'id': id},
+                    url: '/remove',
+                    data: { 'id': eventId },
                     dataType: "json",
                     success: function (data) {
                         calendar.fullCalendar('refetchEvents');
+                        $('#eventModal').modal('hide');
                         Swal.fire({
                             icon: 'success',
-                            title: 'Evento Actualizado con éxito',
+                            title: 'Evento eliminado con éxito',
                             showConfirmButton: false,
                             timer: 1500
                         });
@@ -102,35 +278,92 @@
                         alert('Tenemos un Problema, favor de recargar el sitio de nuevo ;)!!!');
                     }
                 });
-            },
-  
-            eventClick: function (event) {
-                if (confirm("Estas Seguro de eliminar este evento?")) {
-                    var id = event.id;
-                    $.ajax({
-                        type: "GET",
-                        url: '/remove',
-                        data: {'id': id},
-                        dataType: "json",
-                        success: function (data) {
-                            calendar.fullCalendar('refetchEvents');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Evento Eliminado con éxito',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        },
-                        error: function (data) {
-                            alert('Tenemos un Problema, favor de recargar el sitio de nuevo ;)!!!');
-                        }
-                    });
-                }
-            },
-  
+            }
         });
-    });
-</script>
+       
+            $('#eventForm').submit(function (event) {
+                event.preventDefault(); // Evita que se envíe el formulario de forma tradicional
+
+                // Obtener los datos del formulario
+                var formData = {
+                    'title': $('#title').val(),
+                    'dia': $('#dia').val(),
+                    'hora_inicio': $('#hora_inicio').val(),
+                    'hora_finalizacion': $('#hora_finalizacion').val(),
+                    'sala': $('#sala').val(),
+                    'prioridad': $('#prioridad').val(),
+                    'coordina': $('#coordina').val(),
+                    'cargo': $('#cargo').val(),
+                    'no_personas': $('#no_personas').val(),
+                    'contacto': $('#contacto').val(),
+                    'servicios': $('#servicios').val(),
+                    'observaciones': $('#observaciones').val()
+             
+                };
+                
+                            // Convertir la hora de inicio y fin a objetos moment para comparar
+                var startMoment = moment(formData.hora_inicio, 'HH:mm');
+                var endMoment = moment(formData.hora_finalizacion, 'HH:mm');
+
+                // Verificar si la hora de finalización es menor que la hora de inicio
+                if (endMoment.isBefore(startMoment)) {
+                    Swal.fire({
+                        text: 'La hora de finalización debe ser mayor que la hora de inicio.'
+                    });
+                    return; // Detener el envío del formulario si hay un error
+                }
+
+                // Verificar si la diferencia entre la hora de inicio y fin es menor que 15 minutos
+                if (endMoment.diff(startMoment, 'minutes') < 15) {
+                    Swal.fire({
+                        text: 'La diferencia entre la hora de inicio y la hora de finalización debe ser de al menos 15 minutos.'
+                    });
+                    return; // Detener el envío del formulario si hay un error
+                }
+
+  
+          
+                
+
+                // Realizar la llamada AJAX...
+                $.ajax({
+                    type: "GET",
+                    url: '/add_event',
+                    data: formData,
+                    dataType: "json",
+                    success: function (data) {
+                        calendar.fullCalendar('refetchEvents');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Evento añadido con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
+                             location.reload(); // Recarga la página después de cerrar la alerta
+                        });
+                    },
+                    error: function (data) {
+                        alert('Tenemos un Problema, favor de recargar el sitio de nuevo ;)!!!');
+                    }
+                });
+            });
+        });
+
+        function getPrioridadClass(prioridad) {
+    switch (prioridad) {
+        case 'Alta':
+            return 'event-alta';
+        case 'Media':
+            return 'event-media';
+        case 'Baja':
+            return 'event-baja';
+        default:
+            return 'event-alta'; // Por defecto, si la prioridad no está definida
+    }
+}
+        
+    </script>
+
 <style>
 
 
@@ -175,7 +408,12 @@
     }
   /* Agrega algunos estilos para mejorar la legibilidad de las horas */
   .fc-time {
-        font-size: 14px;
+        font-size: 12px;
+        display: none;
+    }
+
+    .fc-title{
+        font-weight: bold;
     }
 
     .fc-axis {
@@ -191,10 +429,58 @@
     }
 
     /* Personaliza el color del fondo del evento */
-    .fc-event {
-        background-color: #3788d8;
-        border-color: #3788d8;
+    .event-alta {
+    text-align: center;
+    background-color: #691c32; /* Rojo */
+    border-color: #691c32;
+    color: #fff;
+    transition: ease-in-out .3s ;
+    font-size: 12px;
+    }
+
+
+    .event-alta:hover{
+        position: relative;
+        padding: 2px;
+        z-index: 10;
+        font-size: 14px;
+        border-radius: 10px;
+        transition: ease-in-out .3s ;
+        margin: 0;
+        z-index: 10000;
+    }
+
+    .event-media {
+        text-align: center;
+        background-color: #13322B; /* Verde */
+        border-color: #13322B;
         color: #fff;
+        transition: ease-in-out .3s ;
+        font-size: 12px;
+    }
+
+    .event-media:hover{
+        position: relative;
+        padding: 2px;
+        z-index: 10;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    .event-baja {
+        text-align: center;
+        background-color: #3855ac; /* Azul */
+        border-color: #4169E1;
+        color: #fff;
+        transition: ease-in-out .3s ;
+        font-size: 12px;
+    }
+    .event-baja:hover{
+        position: relative;
+        padding: 2px;
+        z-index: 10;
+        font-size: 14px;
+        border-radius: 10px;
     }
 
     /* Personaliza el color del fondo del evento seleccionado */
@@ -211,6 +497,7 @@
     .fc-now-indicator {
         background-color: red;
     }
+    
 
  
 
@@ -226,11 +513,15 @@
         border-color: #151e27;
     }
 
+    
     /* Personaliza los estilos del enlace "más" */
     .fc-more {
         background-color: #d0d0d0;
         color: inherit;
         font-size: 14px;
+    }
+    .modal-content{
+        top: 10em;
     }
 
 

@@ -89,6 +89,7 @@ urlpatterns = [
 
     
     path('importar/', views.importar, name='importar'),
+    path('contacto/', views.contacto, name='contacto'),
 
 
     path('task/<int:task_id>/delete_expediente_cedocIMP/<int:expediente_cedoc_id>/', views.delete_expediente_cedocIMP, name='delete_expediente_cedocIMP'),
@@ -121,7 +122,6 @@ urlpatterns = [
     path('add_event/', views.add_event, name='add_event'), 
     path('update/', views.update, name='update'),
     path('remove/', views.remove, name='remove'),
-    path('<path:url>', lambda request, url: custom_redirect(request, url)),
 ]
 
 
