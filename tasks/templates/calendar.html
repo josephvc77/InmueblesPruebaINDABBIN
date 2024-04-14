@@ -6,13 +6,16 @@
 <div class="col-md-12 animated fadeIn">    
     <div style="padding: 80px;" id='calendar'></div> 
 </div> 
-<!-- Incluye SweetAlert CSS y JS antes de tu script -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+<!-- Incluye el archivo de idioma español -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/es.js"></script>
+
+
 
 <div id="calendar"></div>
 
@@ -28,7 +31,7 @@
                 <div class="modal-body">
                     <form id="eventForm">
                         <input type="hidden" id="dia" name="dia"> <!-- Campo oculto para la fecha de inicio -->
-                        <div class="form-group ">
+                        <div class="form-group form-check-inline ">
                             <label for="title">Título:</label>
                             <input type="text" class="form-control" id="title" name="title" required>
                         </div>
@@ -114,12 +117,12 @@
                         </div>
                     
                         <div class="form-group">
-                            <label for="servicios">Servicios:</label>
+                            <label for="servicios form-check-inline">Servicios:</label>
                             <input type="text" class="form-control" id="servicios" name="servicios">
                         </div>
                     
                         <div class="form-group">
-                            <label for="observaciones">Observaciones:</label>
+                            <label for="observaciones form-check-inline">Observaciones:</label>
                             <input type="text" class="form-control" id="observaciones" name="observaciones">
                         </div>
                         <div class="form-group form-check-inline">
@@ -175,8 +178,8 @@
                     left: 'prev,next today',
                     center: 'title',
                     right: 'month',
-                    length: 'es'
                 },
+                locale: 'es',
                 events: '/all_events',
                 selectable: true,
                 selectHelper: true,
@@ -203,12 +206,14 @@
                 
                  
                 eventRender: function(event, element) {
-                    
-                    var cssClass = getPrioridadClass(event.prioridad);
-                    element.addClass(cssClass);
-                    element.find('.fc-title').append("<br/> " + event.sala);
-                    element.find('.fc-title').append("<br/><b>Coordina: </b> " + event.coordina);
-                },
+                var cssClass = getPrioridadClass(event.prioridad);
+                element.addClass('event-container'); // Clase para el contenedor de evento
+                element.find('.fc-title').append("<br/>" + (event.sala.length > 18 ? event.sala.substring(0, 16) + '...' : event.sala));
+                element.find('.fc-title').append("<br/>" + event.coordina);
+                // Crear y agregar el elemento span con la clase correspondiente
+                var circle = $('<span>').addClass('event-circle ' + cssClass);
+                element.find('.fc-content').prepend(circle); // Agregar el círculo antes del contenido
+            },
                 
                 eventClick: function (event) {
                 // Mostrar información del evento en el modal
@@ -412,6 +417,19 @@
         display: none;
     }
 
+    .fc-ltr .fc-popover .fc-header .fc-title, .fc-rtl .fc-popover .fc-header .fc-close {
+    float: none !important;
+    font-size: 12px;
+
+    }
+
+    .fc-title {
+    white-space: nowrap !important; /* Evita que el texto se ajuste automáticamente */
+    overflow: hidden !important; /* Oculta el contenido que se desborda del contenedor */
+    text-overflow: ellipsis !important; /* Agrega puntos suspensivos al final del texto recortado */
+    width: 10px !important; /* Define el ancho máximo del contenedor para ajustar la cantidad de texto mostrado */
+    font-weight: 700 !important;
+}
     .fc-title{
         font-weight: bold;
     }
@@ -427,61 +445,37 @@
     .fc-day-number {
         font-size: 16px;
     }
-
-    /* Personaliza el color del fondo del evento */
-    .event-alta {
-    text-align: center;
-    background-color: #691c32; /* Rojo */
-    border-color: #691c32;
-    color: #fff;
-    transition: ease-in-out .3s ;
-    font-size: 12px;
-    }
+    .event-container {
+    position: relative; /* Necesario para posicionar correctamente el círculo */
+}
 
 
-    .event-alta:hover{
-        position: relative;
-        padding: 2px;
-        z-index: 10;
-        font-size: 14px;
-        border-radius: 10px;
-        transition: ease-in-out .3s ;
-        margin: 0;
-        z-index: 10000;
-    }
+/* Estilos para el círculo de prioridad */
+.event-circle {
+    position: absolute; 
+    top: 5px; 
+    right: 5px; 
+    width: 10px; 
+    height: 10px;
+    border-radius: 50%; 
+    
+}
 
-    .event-media {
-        text-align: center;
-        background-color: #13322B; /* Verde */
-        border-color: #13322B;
-        color: #fff;
-        transition: ease-in-out .3s ;
-        font-size: 12px;
-    }
 
-    .event-media:hover{
-        position: relative;
-        padding: 2px;
-        z-index: 10;
-        font-size: 14px;
-        border-radius: 10px;
-    }
+.event-alta {
+    background-color: red; 
+    box-shadow: 0px 1px 20px 3px rgba(184, 33, 33, 0.651);
+}
 
-    .event-baja {
-        text-align: center;
-        background-color: #3855ac; /* Azul */
-        border-color: #4169E1;
-        color: #fff;
-        transition: ease-in-out .3s ;
-        font-size: 12px;
-    }
-    .event-baja:hover{
-        position: relative;
-        padding: 2px;
-        z-index: 10;
-        font-size: 14px;
-        border-radius: 10px;
-    }
+.event-media {
+    background-color: rgb(233, 233, 49);
+    box-shadow: 0px 1px 20px 3px rgba(236, 217, 45, 0.651);
+}
+
+.event-baja {
+    background-color: rgb(42, 175, 42);
+    box-shadow: 0px 1px 20px 3px rgba(68, 173, 35, 0.651);
+}
 
     /* Personaliza el color del fondo del evento seleccionado */
     .fc-highlight {
@@ -499,6 +493,9 @@
     }
     
 
+    .fc-event{
+        background-color: #151e27 !important;
+    }
  
 
     /* Personaliza los estilos del botón del calendario al pasar el ratón sobre él */
@@ -520,12 +517,41 @@
         color: inherit;
         font-size: 14px;
     }
+    .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ancho completo */
+    max-width: 500px; /* Ancho máximo */
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: var(--bs-modal-bg);
+    background-clip: padding-box;
+    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+    border-radius: var(--bs-modal-border-radius);
+    outline: 0;
+}
+
     .modal-content{
         top: 10em;
     }
 
+    @media screen and (max-width: 768px) {
+        .modal-content{
+        top: 11em;
+    }
+    }
 
+    @media screen and (max-width: 468px) {
+        .modal-content{
+        top: 10em;
+    }
+    }
 
-
+    @media screen and (max-width: 388px) {
+        .modal-content{
+        top: 19em;
+    }
+    }
 </style>
     {% endblock %}
