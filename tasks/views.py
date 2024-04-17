@@ -24,6 +24,17 @@ from .forms import TaskCreateForm
 from django.contrib.auth import logout
 
 
+from django.shortcuts import render
+
+def permission_denied(request):
+    return render(request, '403.html')
+
+
+def error_404(request, exception):
+    template_404 = '404.html'
+    return render(request, template_404, status=404)
+
+
 
 def signup(request):
     if request.method == 'GET':
@@ -47,10 +58,6 @@ def signup(request):
 from django.contrib.auth.decorators import login_required
 
 
-
-
-
-
 def signin(request):
     if request.method == 'GET':
         return render(request, 'signin.html', {
@@ -66,9 +73,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('/')
-
-
+            return redirect('tasks_importados')
 
 
 
@@ -87,7 +92,7 @@ def signin(request):
 @login_required
 def signout(request):
     logout(request)
-    return redirect('signin')
+    return redirect('/')
     
 from django.http import JsonResponse
 from datetime import datetime
@@ -103,8 +108,12 @@ from .models import Inmueble
 from urllib.parse import urlencode
 from django.http import HttpResponse
 
+from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.timezone import datetime, timezone
 
 @login_required
+@permission_required('tasks.add_evento', raise_exception=True)
 def tasks_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
@@ -204,6 +213,8 @@ def tasks_importados(request):
         'eventos' : eventos,
         'orden': orden,
     })
+
+@login_required
 def calendar(request):  
     mensajes = MensajeIMP.objects.all()
     eventos = Events.objects.all()
@@ -464,6 +475,7 @@ from .models import Inmueble
 from .forms import InmuebleForm
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def task_detail_importados(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     

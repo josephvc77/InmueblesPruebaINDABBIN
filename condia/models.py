@@ -89,7 +89,15 @@ class TareasCondia(models.Model):
     documentos_tecnicos_ultimo_pago_agua = models.FileField(upload_to='Carpeta2Condia/', null=True, blank=True, verbose_name="Última boleta por concepto de suministro de agua potable")
     documentos_tecnicos_ultimo_pago_energia = models.FileField(upload_to='Carpeta2Condia/', null=True, blank=True, verbose_name="Último recibo por concepto de pago de servicio de energía eléctrica")
     fundamento_legal = models.FileField(upload_to='Carpeta3Condia/', null=True, blank=True, verbose_name="Fundamento Legal")
-    
+    class Meta:
+        verbose_name = "Condia"
+        verbose_name_plural = "Eventos"
+        permissions = [
+            ('add_CONDIA', 'Can add CONDIA in tasks app'),
+            ('change_CONDIA', 'Can change CONDIA in tasks app'),
+            ('delete_CONDIA', 'Can delete CONDIA in tasks app'),
+            ('view_CONDIA', 'Can view CONDIA in tasks app'),
+        ]
 
     def __str__(self):
         return f"Tarea: {self.titulo}"

@@ -19,12 +19,14 @@ from django.urls import include, path
 from djangocrud import settings
 from tasks import views
 from condia import views as views_condia
+from MDSJSEP import views as views_MDSJ
 
 app_name = 'tasks'
 
 urlpatterns = [
-    path('', views.tasks_importados, name='tasks_importados'),
-    # path('tasks_importados/', views.tasks_importados, name='tasks_importados'),
+    path('', views.signin, name='signin'),
+    path('403/', views.permission_denied, name='permission_denied'),
+    path('tasks_importados/', views.tasks_importados, name='tasks_importados'),
     path('tasks/<int:task_id>', views.task_detail_importados, name='task_detail_importados'),
     path('admin/', admin.site.urls),
     # path('signup/', views.signup, name='signup'),
@@ -110,26 +112,45 @@ urlpatterns = [
     
     path('signupCondia/', views_condia.signupCondia, name='signupCondia'),
     path('signinCondia/', views_condia.signinCondia, name='signinCondia'),
-    
     path('logout_condia/', views_condia.signout_condia, name='logout_condia'),
-    
     path('task_condia/', views_condia.task_condia, name='task_condia'),
-    
     path('create_task_CONDIA/', views_condia.create_task_CONDIA, name='create_task_CONDIA'),
-    
     path('tasks/<int:task_id>/', views_condia.task_detail_condia, name='task_detail_condia'),
+
+
+
+
     path('all_events/', views.all_events, name='all_events'), 
     path('add_event/', views.add_event, name='add_event'), 
     path('update/', views.update, name='update'),
     path('remove/', views.remove, name='remove'),
+    # MDSJ SEP
+
+    path('signout_MDSJ/', views_MDSJ.signout_MDSJ, name='signout_MDSJ'),
+    path('signinMDSJ/', views_MDSJ.signinMDSJ, name='signinMDSJ'),
+    path('signupMDSJ/', views_MDSJ.signupMDSJ, name='signupMDSJ'),
+    path('task_salas/', views_MDSJ.task_salas, name='task_salas'),
+    path('create_event/', views_MDSJ.create_event, name='create_event'),
+    path('sala/<int:task_id>/', views_MDSJ.detail_event, name='detail_event'),
+
+    path('calendar_MDSJ/', views_MDSJ.calendar_MDSJ, name='calendar_MDSJ'),
+    path('all_events_MDSJ/', views_MDSJ.all_events_MDSJ, name='all_events_MDSJ'), 
+    path('add_event_MDSJ/', views_MDSJ.add_event_MDSJ, name='add_event_MDSJ'), 
+    path('update_MDSJ/', views_MDSJ.update_MDSJ, name='update_MDSJ'),
+    path('remove_MDSJ/', views_MDSJ.remove_MDSJ, name='remove_MDSJ'),
+
 ]
 
+handler404 = 'tasks.views.error_404'
 
 from django.contrib.auth import logout  # Importa la función de logout
 
 def custom_redirect(request, url):
+    # Lista de URLs permitidas
+    allowed_urls = ['signinMDSJ/', 'signupMDSJ/']
+
     # Verifica si la URL no se encuentra en la lista permitida
-    if url not in ['signupCondia/']:
+    if url not in allowed_urls:
         # Limpia la sesión antes de redirigir
         logout(request)
         # Redirige al inicio de sesión
@@ -139,6 +160,4 @@ def custom_redirect(request, url):
 
 if settings.DEBUG:
     from django.conf.urls.static import static
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

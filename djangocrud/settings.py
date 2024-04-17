@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.101.214']
+# ALLOWED_HOSTS = ['192.168.101.214']
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'fontawesomefree',
     'condia',
+    'MDSJSEP',
     'reversion',
 ]
 
@@ -85,6 +86,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'djangocrud.wsgi.application'
 
 
@@ -99,16 +101,16 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangodb',
-        'USER': 'djangouser',
-        'PASSWORD': 'p455w0rd',
-        'HOST': 'localhost',
-        'PORT': '5432',   
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'djangodb',
+#         'USER': 'djangouser',
+#         'PASSWORD': 'p455w0rd',
+#         'HOST': 'localhost',
+#         'PORT': '5432',   
+#     }
+# }
 
 
 # DATABASES = {
@@ -137,7 +139,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Siisep',
+        'NAME': 'Siisep2',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': 'localhost',
@@ -168,9 +170,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Admin SIIFSEP",
+    "site_title": "Admin SIISEP",
     "site_header": "Library",
-    "welcome_sign": "Bienvenido al Sistema de Administrador SIIFSEP",
+    "welcome_sign": "Bienvenido al Sistema de Administrador SIISEP",
     "copyright": "Joseph Valencia Cisneros",
     "site_logo": "../static/inicio/img/logo-sgis.png",
     "navigation_expanded": False,

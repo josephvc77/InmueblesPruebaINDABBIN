@@ -604,6 +604,12 @@ class Inmueble(models.Model):
     class Meta:
         verbose_name = "Inmueble Importado"
         verbose_name_plural = "Inmuebles Importados"
+        permissions = [
+            ('add_tasks_inmueble', 'Can add inmueble in tasks app'),
+            ('change_tasks_inmueble', 'Can change inmueble in tasks app'),
+            ('delete_tasks_inmueble', 'Can delete inmueble in tasks app'),
+            ('view_tasks_inmueble', 'Can view inmueble in tasks app'),
+        ]
         
 class DictamenEstructuralIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='dictamen_estructural')

@@ -1,0 +1,205 @@
+<div class="tab-content active" id="tab-encabezado">
+        <div class="section">
+           
+            <div class="container">
+              <div class="row">
+                  <div class="col-md-4">
+                      <div class="panel panel-primary">
+                          <div class="panel-heading">Panel 1</div>
+                          <div class="panel-body">
+                            <div class="form-group encabezado">
+                              {{ form.renta_mensual_civa_segun_contrato }}
+                              <label class="text-center" style="font-size: 16px;" for="{{ form.renta_mensual_civa_segun_contrato.id_for_label }}">Renta mensual CIVA según contrato:</label>
+                          </div>
+                          <br><br>
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.uso_inmueble.id_for_label }}">Uso del inmueble:</label>
+                              {{ form.uso_inmueble }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.riuf.id_for_label }}">RIUF:</label>
+                              {{ form.riuf }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.superficie_rentable.id_for_label }}">Superficie rentable:</label>
+                              {{ form.superficie_rentable }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.superficie_terreno.id_for_label }}">Superficie del terreno:</label>
+                              {{ form.superficie_terreno }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.superficie_construida.id_for_label }}">Superficie construida:</label>
+                              {{ form.superficie_construida }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.personal_ocupante.id_for_label }}">Personal ocupante:</label>
+                              {{ form.personal_ocupante }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.uso_suelo.id_for_label }}">Uso del suelo:</label>
+                              {{ form.uso_suelo }}
+                          </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="panel panel-primary">
+                          <div class="panel-heading">Panel 2</div>
+                          <div class="panel-body">
+                            <div class="form-group encabezado">
+                              {{ form.monto_por_m2_civa }}
+                              <label class="text-center" style="font-size: 16px;" for="{{ form.monto_por_m2_civa.id_for_label }}">Monto por m2 CIVA:</label>
+                          </div>
+                          <br><br>
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.no_contrato.id_for_label }}">No contrato:</label>
+                              {{ form.no_contrato }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.fecha_firma_contrato.id_for_label }}">Fecha firma contrato:</label>
+                              {{ form.fecha_firma_contrato }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.monto_mensual_dictamen_estructural.id_for_label }}">Monto mensual dictamen estructural:</label>
+                              {{ form.monto_mensual_dictamen_estructural }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.correo1.id_for_label }}">Correo 1:</label>
+                              {{ form.correo1 }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.correo2.id_for_label }}">Correo 2:</label>
+                              {{ form.correo2 }}
+                          </div>
+                          <div class="form-group">
+                            <label class="bg-text" for="{{ form.razon_social.id_for_label }}">Razón Social:</label>
+                            {{ form.razon_social }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="bg-text" for="{{ form.propietario_representante.id_for_label }}">Propietario o Representante Legal:</label>
+                            {{ form.propietario_representante }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="bg-text" for="{{ form.identificacion_oficial.id_for_label }}">Identificación Oficial:</label>
+                            {{ form.identificacion_oficial }}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="bg-text" for="{{ form.email.id_for_label }}">Correo Electrónico:</label>
+                            {{ form.email }}
+                        </div>
+                          
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="panel panel-primary">
+                          <div class="panel-heading">Panel 3</div>
+                          <div class="panel-body">
+                            <div class="form-group encabezado">
+                              {{ form.ubicacion }}
+                              <label class="text-center" style="font-size: 16px;" for="{{ form.ubicacion.id_for_label }}"></label>
+                            
+                          </div>
+                          <br><br>
+                          <div class="form-group">
+                            <label class="bg-text" for="{{ form.nombre_asentamiento.id_for_label }}">Nombre asentamiento:</label>
+                            {{ form.nombre_asentamiento }}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="bg-text" for="{{ form.codigo_postal.id_for_label }}">Codigó Postal:</label>
+                            {{ form.codigo_postal }}
+                        </div>
+                        <div class="form-group">
+                            <label class="bg-text" for="{{ form.descripcion_ubicacion.id_for_label }}">Descripción de la ubicación:</label>
+                            {{ form.descripcion_ubicacion }}
+                        </div>
+                                   
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.domicilio_fiscal.id_for_label }}">Domicilio Fiscal:</label>
+                              {{ form.domicilio_fiscal }}
+                          </div>
+                          
+                          <div class="form-group">
+                              <label class="bg-text" for="{{ form.justificacion_de_renta.id_for_label }}">Justificación de Renta:</label>
+                              {{ form.justificacion_de_renta }}
+                          </div>                          
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+</div>
+  
+
+<style>
+  .panel{
+    margin-right: 10px;padding: 20px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3); /* Agrega sombra */
+    height: 1000px;
+    
+  }
+  .encabezado{
+    color: aliceblue;
+    background-color: #8b213f;
+    padding: 30px;
+    padding-left: 10px;
+    margin: -20px;
+  }
+  .bg-text{
+    position: relative;
+    margin: 0 auto;
+    background-color: #a38650;
+    color: aliceblue;
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+    width: 250px;
+  }
+
+  #fotoPresentacion-clear_id{
+    display: flex;
+    margin-left: -7em;
+    margin-bottom: -1.4em;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+  }
+
+  .bg{
+    background-color: #8b213f;
+    color: aliceblue;
+    font-size: 26px;
+    font-weight: bold;
+    border: none;
+  }
+
+  input{
+    text-align: center;
+
+  }
+
+ .form-group textarea {
+    height: 100px;
+ }
+
+  .form-group .encabezado input{
+    border: none
+  }
+</style>

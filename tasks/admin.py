@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from MDSJSEP.models import EventosCreados
 from condia.models import TareasCondia
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
 
@@ -93,5 +94,13 @@ admin.site.register(TareasCondia)
 # Registra otros modelos aquí...
 
 class EventsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')  # Define los campos que se mostrarán en la lista
+    list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
 admin.site.register(Events, EventsAdmin)
+
+
+
+class EventosCreadosAdmin(admin.ModelAdmin):
+    list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
+admin.site.register(EventosCreados, EventosCreadosAdmin)
+
+

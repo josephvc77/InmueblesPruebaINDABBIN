@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ClearableFileInput, ModelForm
 
+
+from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
 
@@ -269,3 +271,20 @@ class CreateTaskCondiaForm(forms.ModelForm):
         fields = [
             'titulo', 'descripcion'
         ]
+
+
+# SALAS DE JUNTAS
+class CreateTaskSalasForm(forms.ModelForm):
+    class Meta:
+        model = Task_eventos
+        fields = [
+            'titulo', 'descripcion'
+        ]
+
+class SalasForm(forms.ModelForm):
+    class Meta:
+        model = Task_eventos
+        fields = [
+            'titulo', 'descripcion'
+        ]
+

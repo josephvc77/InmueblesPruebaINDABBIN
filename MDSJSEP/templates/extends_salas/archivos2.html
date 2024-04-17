@@ -1,0 +1,302 @@
+<div class="tab-content" id="tab-archivos2">
+    <div class="section">
+      <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-24" style="cursor: pointer;">Escritura del inmueble a arrendar (título de propiedad) <i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-24" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_legales_escritura_inmueble">Escritura del inmueble a arrendar (título de propiedad):</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_legales_escritura_inmueble" id="documentos_legales_escritura_inmueble">
+                    <div class="input-group-btn">
+                      {% if task.documentos_legales_escritura_inmueble %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_legales_escritura_inmueble.url }}', '24')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-24" class="hidden">
+              <iframe id="pdf-viewer-24" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-25" style="cursor: pointer;">Testimonio de la escritura pública que contenga el acta constitutiva de la empresa que tenga carácter de arrendador, tratándose de personas morales y Registro Público de la Propiedad y el Comercio <i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-25" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_legales_acta_constitutiva"></label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_legales_acta_constitutiva" id="documentos_legales_acta_constitutiva">
+                    <div class="input-group-btn">
+                      {% if task.documentos_legales_acta_constitutiva %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_legales_acta_constitutiva.url }}', '25')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-25" class="hidden">
+              <iframe id="pdf-viewer-25" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-26" style="cursor: pointer;">Escritura de cambio de régimen (si es el caso) <i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-26" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_legales_escritura_cambio_regimen">Escritura de cambio de régimen (si es el caso):</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_legales_escritura_cambio_regimen" id="documentos_legales_escritura_cambio_regimen">
+                    <div class="input-group-btn">
+                      {% if task.documentos_legales_escritura_cambio_regimen %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_legales_escritura_cambio_regimen.url }}', '26')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-26" class="hidden">
+              <iframe id="pdf-viewer-26" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-27" style="cursor: pointer;">Escritura pública que contenga el poder notarial de la persona que pretenda suscribir el contrato en representación del arrendado <i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-27" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_legales_poder_notarial">Escritura pública que contenga el poder notarial de la persona que pretenda suscribir el contrato en representación del arrendado:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_legales_poder_notarial" id="documentos_legales_poder_notarial">
+                    <div class="input-group-btn">
+                      {% if task.documentos_legales_poder_notarial %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_legales_poder_notarial.url }}', '27')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-27" class="hidden">
+              <iframe id="pdf-viewer-27" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-28" style="cursor: pointer;">Cedula de identificación fiscal del arrendador, Registro Federal de Contribuyentes (RFC)<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-28" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_legales_cedula_fiscal">Cedula de identificación fiscal del arrendador, Registro Federal de Contribuyentes (RFC):</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_legales_cedula_fiscal" id="documentos_legales_cedula_fiscal">
+                    <div class="input-group-btn">
+                      {% if task.documentos_legales_cedula_fiscal %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_legales_cedula_fiscal.url }}', '28')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-28" class="hidden">
+              <iframe id="pdf-viewer-28" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-29" style="cursor: pointer;">Comprobante de domicilio fiscal del arrendador<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-29" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_legales_comprobante_domicilio_fiscal">Comprobante de domicilio fiscal del arrendador:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_legales_comprobante_domicilio_fiscal" id="documentos_legales_comprobante_domicilio_fiscal">
+                    <div class="input-group-btn">
+                      {% if task.documentos_legales_comprobante_domicilio_fiscal %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_legales_comprobante_domicilio_fiscal.url }}', '29')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-29" class="hidden">
+              <iframe id="pdf-viewer-29" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-30" style="cursor: pointer;">Planos Arquitectónicos<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-30" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_tecnicos_planos_arquitectonicos">Planos Arquitectónicos:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_tecnicos_planos_arquitectonicos" id="documentos_tecnicos_planos_arquitectonicos">
+                    <div class="input-group-btn">
+                      {% if task.documentos_tecnicos_planos_arquitectonicos %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_tecnicos_planos_arquitectonicos.url }}', '30')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-30" class="hidden">
+              <iframe id="pdf-viewer-30" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-31" style="cursor: pointer;">Registro de la constancia de seguridad estructural expedida por el GCDMX<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-31" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_tecnicos_constancia_seguridad_estructural">Registro de la constancia de seguridad estructural expedida por el GCDMX:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_tecnicos_constancia_seguridad_estructural" id="documentos_tecnicos_constancia_seguridad_estructural">
+                    <div class="input-group-btn">
+                      {% if task.documentos_tecnicos_constancia_seguridad_estructural %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_tecnicos_constancia_seguridad_estructural.url }}', '31')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-31" class="hidden">
+              <iframe id="pdf-viewer-31" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-32" style="cursor: pointer;">Visto bueno de seguridad y operción expedida por el GCDMX<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-32" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_tecnicos_visto_bueno_seguridad_operacion">Visto bueno de seguridad y operción expedida por el GCDMX:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_tecnicos_visto_bueno_seguridad_operacion" id="documentos_tecnicos_visto_bueno_seguridad_operacion">
+                    <div class="input-group-btn">
+                      {% if task.documentos_tecnicos_visto_bueno_seguridad_operacion %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_tecnicos_visto_bueno_seguridad_operacion.url }}', '32')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-32" class="hidden">
+              <iframe id="pdf-viewer-32" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-33" style="cursor: pointer;">Última boleta por concepto de pago del impuesto predial<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-33" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_tecnicos_ultimo_pago_predial">Última boleta por concepto de pago del impuesto predial:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_tecnicos_ultimo_pago_predial" id="documentos_tecnicos_ultimo_pago_predial">
+                    <div class="input-group-btn">
+                      {% if task.documentos_tecnicos_ultimo_pago_predial %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_tecnicos_ultimo_pago_predial.url }}', '33')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-33" class="hidden">
+              <iframe id="pdf-viewer-33" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-34" style="cursor: pointer;">Última boleta por concepto de suministro de agua potable<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-34" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_tecnicos_ultimo_pago_agua">Última boleta por concepto de suministro de agua potable:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_tecnicos_ultimo_pago_agua" id="documentos_tecnicos_ultimo_pago_agua">
+                    <div class="input-group-btn">
+                      {% if task.documentos_tecnicos_ultimo_pago_agua %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_tecnicos_ultimo_pago_agua.url }}', '34')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-34" class="hidden">
+              <iframe id="pdf-viewer-34" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-35" style="cursor: pointer;">Último recibo por concepto de pago de servicio de energía eléctrica<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-35" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="documentos_tecnicos_ultimo_pago_energia">Último recibo por concepto de pago de servicio de energía eléctrica:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="documentos_tecnicos_ultimo_pago_energia" id="documentos_tecnicos_ultimo_pago_energia">
+                    <div class="input-group-btn">
+                      {% if task.documentos_tecnicos_ultimo_pago_energia %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.documentos_tecnicos_ultimo_pago_energia.url }}', '35')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-35" class="hidden">
+              <iframe id="pdf-viewer-35" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="contenedor-archivos" id="toggle-archivos-36" style="cursor: pointer;">Fundamento Legal<i class="fas fa-chevron-down"></i></h5>
+        <div class="row" id="tasks-container-36" style="display: none;">
+            <div class="form-group form-check-inline archivo-style">
+                <label for="fundamento_legal">Fundamento Legal:</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" name="fundamento_legal" id="fundamento_legal">
+                    <div class="input-group-btn">
+                      {% if task.fundamento_legal %}
+                      <button type="button" class="btn btn-outline-primary " onclick="mostrarPDF('{{ task.fundamento_legal.url }}', '36')">
+                            <i class="fas fa-file-upload"></i> Ver PDF
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+           
+            </div>
+            <div id="pdf-container-36" class="hidden">
+              <iframe id="pdf-viewer-36" src="" width="100%" height="600"></iframe>
+          </div>
+        </div>
+    </div>
+    </div>
+</div>

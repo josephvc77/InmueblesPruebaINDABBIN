@@ -55,12 +55,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 @login_required
+@permission_required('condia.add_CONDIA', raise_exception=True)
 def task_condia(request):
-    
     tareas = TareasCondia.objects.all()
-        
     return render(request, 'home.html', {
         'tareas' : tareas
     })
