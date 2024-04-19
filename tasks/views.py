@@ -113,7 +113,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.timezone import datetime, timezone
 
 @login_required
-@permission_required('tasks.add_evento', raise_exception=True)
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def tasks_importados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')

@@ -101,7 +101,7 @@
                             <input type="time" class="form-control" id="hora_finalizacion" name="hora_finalizacion" required>
                         </div>
                         <div class="form-group">
-                            <label for="id_sala">Sala:</label>
+                            <label for="sala">Sala:</label>
                             <select id="sala" name="sala" class="form-control">
                                 <option value="AUDITORIO CENTRO SEP (capacidad: 220, Nivel-0)">AUDITORIO CENTRO SEP (capacidad: 220, Nivel-0)</option>
                                 <option value="ESTUDIO DE GRABACIÓN (capacidad: 10, Nivel-0)">ESTUDIO DE GRABACIÓN (capacidad: 10, Nivel-0)</option>
@@ -176,13 +176,13 @@
                             <input type="text" class="form-control" id="contacto" name="contacto">
                         </div>
                     
-                        <div class="form-group">
-                            <label for="servicios form-check-inline">Servicios:</label>
+                        <div class="form-group form-check-inline">
+                            <label for="servicios">Servicios:</label>
                             <input type="text" class="form-control" id="servicios" name="servicios">
                         </div>
                     
-                        <div class="form-group">
-                            <label for="observaciones form-check-inline">Observaciones:</label>
+                        <div class="form-group form-check-inline">
+                            <label for="observaciones">Observaciones:</label>
                             <input type="text" class="form-control" id="observaciones" name="observaciones">
                         </div>
                         <div class="form-group form-check-inline">
@@ -224,9 +224,6 @@
                     <p><strong>Servicios:</strong> <span id="eventServicios"></span></p>
                     <p><strong>Observaciones:</strong> <span id="eventObservaciones"></span></p>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="deleteEventBtn">Eliminar Evento</button>
             </div>
         </div>
     </div>
@@ -411,6 +408,46 @@
 
 <style>
 
+.fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover, .fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td .dark-mode{
+    background-color: #0000;
+  }
+
+  .dark-mode select,.dark-mode textarea,.dark-mode table, .dark-mode .modal-body {
+    background-color: #212529;
+    border: none;
+    color: #fff; /* Color de texto claro */
+  }
+
+    .dark-mode input{
+    background-color: #0000;
+  }
+
+  .dark-mode .modal-header{
+    background-color: #212529;
+  }
+
+  .modal-content{
+    top: 10em;
+    background-color: #fff;
+  }
+
+  .modal-content.dark-mode{
+        top: 10em;
+        background-color: #0000 !important;
+    }
+
+    .modal-content {
+        background-color: #fff;
+    }
+
+    .modal-body{
+        background-color: #fff;
+    }
+
+    div .modal-body .dark-mode{
+        background-color: #0000 !important;
+    }
+
 .options{
     width: 90%;
     margin-left: 1em;
@@ -590,9 +627,9 @@
     outline: 0;
 }
 
-    .modal-content{
-        top: 10em;
-    }
+    
+
+   
 
     @media screen and (max-width: 768px) {
         .modal-content{

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sitio SIISEP">
     <title>{% block titulo %} {% endblock %}</title>
     {% load static%}
     <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
@@ -43,10 +44,10 @@
       <div dark class="contenedor-menu">
        
 
-          <button id="modoOscuroBtn"><i class="fas fa-moon"></i></i></button>
+          <button id="modoOscuroBtn" aria-label="modoOscuro"><i class="fas fa-moon"></i></i></button>
 
-           <button id="menu-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
-           <a href="{%url 'tasks_importados' %}" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
+           <button id="menu-btn" aria-label="menu" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+           <a href="{%url 'tasks_importados' %}" aria-label="home" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
 
            {% if task %}
            <div class="tab mensajes actives" data-tab="tab-mensajes">
@@ -117,7 +118,7 @@
   
           <a class="btn-alta" href="{% url 'create_task' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>
           
-          <div class="log"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/SEP_Logo_2019.svg/768px-SEP_Logo_2019.svg.png" class="img-logo"></div>
+          <div class="log"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/SEP_Logo_2019.svg/768px-SEP_Logo_2019.svg.png" alt="logo-sep" class="img-logo"></div>
           {% else %}
           <a class="btn-alta" href="'/signin"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Login</li></a>
           {% endif %}
