@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% block titulo %} Detalles {{ task.NombreInmueble }} {% endblock %}
+
+{% block content %}
+  <div class="task-detail-container ">
+    <h2 class="text-center">{{ task.NombreInmueble }}</h2>
+    {{ error }}
+    <form method="post" action="{% url 'task_detail_llamadas' task.id%}" enctype="multipart/form-data" class="task-form" id="form_detail">
+      {% csrf_token %}
+      
+      <!-- Campos del formulario -->
+
+
+
+      
+      <div class="task-form-container">
+        <div id="mobile-menu-button" class="mobile-menu-button"> &#9776; </div>
+        <div class="tabs">
+          <div class="tab active" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab" data-tab="tab-descripcion">Datos Generales</div>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-content-item" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab-content-item" data-tab="tab-descripcion">Datos Generales</div>
+        </div>
+        <div class="form-group form-check-inline">
+          {% if inmueble.rfi %}
+          <label for="{{inmueble.rfi.id_for_label}}">RFI:</label>       
+          <input class="form-control form-control-sm text-center" type="text" id="{{inmueble.rfi.id}}" name="{{inmueble.rfi.name}}" value='{{inmueble.rfi.value}}' readonly >
+          {% endif %}
+        </div>
+        
+      <div class="form-group form-check-inline">
+          <label for="{{ inmueble.rfiProv.id_for_label }}">RFI Provicional:</label>
+          {{ inmueble.rfiProv }}
+      </div>
+        
+      
+        {% include 'extends_importados/encabezado.html' %}
+        {% include 'extends_importados/info_inmueble_llamadas.html' %}
+
+        <button type="button" class="btn btn-outline-primary actualizar" onclick="mostrarAlerta()">Guardar Cambios</button>
+
+      </div>
+    </form>
+
+
+
+    {% load static%}
+    
+
+    <script>
+      function mostrarAlerta() {
+          swal({
+              title: "¿Estás seguro de guardar?",
+              text: "",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+             
+          })
+          .then((confirmar) => {
+              if (confirmar) {
+                swal("¡Se han guardado los cambios!", {
+                      icon: "success",
+                      buttons: false,
+                  });
+
+                     setTimeout(function() {
+                    document.getElementById('form_detail').submit();
+                    swal("¡Se han guardado los cambios!", {
+                        icon: "success",
+                    });
+                }, 2000);
+                 
+              } else {
+                  swal("No se han realizado cambios.");
+              }
+          });
+      }
+  </script>
+    
+
+  <div class="buttons">
+    <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
+      <i class="fas fa-file-pdf"></i> Generar PDF
+    </a>
+<!-- 
+      <form id="complete-form" action="{% url 'complete_task_importados' task.id %}" method="POST">
+        {% csrf_token %}
+        <button type="button" class="btn btn-success" onclick="showCompleteConfirmation()">Terminar</button>
+      </form>
+      <form id="delete-form" action="{% url 'bajas_importados' task.id %}" method="POST">
+        {% csrf_token %}
+        <button type="button" class="btn btn-warning" id="darDeBajaButton">Dar de baja</button>
+      </form> -->
+
+  </div>
+</div>
+
+  
+
+<style>
+
+.tab.actives {
+    background-color: #0e0d21;
+}
+  /* Estilos para centrar horizontalmente elementos con la clase "centered" */
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+}
+.buttons{
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;
+  margin-bottom: 40px;
+}
+
+.archivo-style {
+  width: 90%;
+  height: 100%;
+  margin-left: 3em;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.archivo-style input[type="file"] {
+  width: 100%;
+}
+.fa-chevron-up {
+  font-size: 25px;
+  margin-bottom: 6px;
+}
+
+.archivo-style label {
+  font-size: 16px;
+  color: #333;
+}
+
+.archivo-style label::after {
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+}
+
+.archivo-style label::after:hover {
+  color: #777;
+}
+
+.archivo-style .input-group-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.archivo-style .input-group-btn .btn {
+  border: 0;
+  background-color: transparent;
+  color: #4a5cff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.archivo-style .input-group-btn .btn i {
+  font-size: 20px;
+}
+
+.archivo-style .input-group-btn .btn:hover {
+  color: #999;
+}
+
+.contenedor-archivos{
+  padding: 10px;
+  border-radius: 20px;
+  border: .1px solid #333;
+  border-bottom-color: #c03c3c
+
+}
+
+@media (max-width: 436px) {
+
+  .tab-content {
+    padding: 0px;
+    border: none;
+    border-radius: 10px;
+}
+
+  .task-form {
+    padding: 0px;
+    margin-bottom: 10em;
+}
+
+  body{
+    font-size: 12px;
+  }
+
+  h2, h3 , h4, h5{
+    font-size: 13px;
+  }
+
+  .width-label {
+    width: 100%;
+}
+
+.actualizar{
+  position: relative;
+  top: 5em;
+  left: 5em;
+}
+
+  .task-detail-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 6px;
+    border: 0px solid #ccc;
+    border-radius: 7px;
+    margin: 0px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.buttons{
+  display: none;
+  width: 24em;
+  flex-direction: row;
+  align-content: center;
+}
+
+}
+.mobile-menu-button {
+    display: none; /* Ocultar por defecto en pantallas más grandes */
+    cursor: pointer;
+}
+
+@media (max-width: 436px) {
+
+    .tabs {
+        display: none; /* Ocultar las pestañas en pantallas más pequeñas */
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 70%; /* Ajusta según sea necesario */
+        max-width: 300px; /* Establece el ancho máximo del menú */
+        overflow-y: auto; /* Permite desplazamiento si el contenido es demasiado largo */
+        z-index: 1000; /* Ajusta según sea necesario para que esté por encima del contenido */
+    }
+
+    .mobile-menu-button {
+        display: block; /* Mostrar el botón de menú en pantallas más pequeñas */
+        position: fixed;
+        top: 5em;
+        right: 0;
+        font-size: 16px;
+        background-color: #c03c3c;
+        color: aliceblue;
+        padding-left: 15px;
+        padding-right: 10px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        cursor: pointer;
+        z-index: 1001; /* Ajusta según sea necesario para que esté por encima del menú */
+    }
+
+    .tabs.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        top: 11em;
+    }
+
+    .tab {
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+        background-color: #691c32;
+        color: white;
+        border-radius: 5px;
+        text-align: center;
+        width: 80%;
+        max-width: 200px; /* Ajusta según sea necesario */
+    }
+
+    .tab-content-item {
+        display: none; /* Ocultar el contenido de las pestañas en pantallas más pequeñas */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 10px;
+        background-color: #fff;
+    }
+
+    /* Estilo para mostrar el contenido de la pestaña activa */
+    .tab-content-item.active {
+        display: block;
+    }
+}
+
+</style>
+<!-- SweetAlert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    // Función para mostrar una confirmación antes de completar
+    function showCompleteConfirmation() {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Una vez completada, la tarea ya no podrá ser modificada.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sí, Completar',
+        cancelButtonText: 'Cancelar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Si el usuario confirma, enviar el formulario de completar la tarea
+          document.getElementById('complete-form').submit();
+        }
+      });
+    }
+
+    document.getElementById('darDeBajaButton').addEventListener('click', function() {
+    showBajaConfirmation();
+});
+
+  
+    function showBajaConfirmation() {
+      Swal.fire({
+          title: '¿Dar de baja esta tarea?',
+          text: 'Una vez que una tarea se da de baja, no se puede modificar.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Sí, Dar de baja',
+          cancelButtonText: 'Cancelar',
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Si el usuario confirma, enviar el formulario de dar de baja
+              document.getElementById('delete-form').submit();
+          }
+      });
+  }
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const localStorageKey = 'activeTab';
+
+    // Función para activar una pestaña
+    function activateTab(tab) {
+      const targetTab = tab.dataset.tab;
+      tabs.forEach((tab) => tab.classList.remove('active'));
+      tabContents.forEach((content) => content.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(targetTab).classList.add('active');
+
+      // Guarda la pestaña activa en localStorage
+      localStorage.setItem(localStorageKey, targetTab);
+    }
+
+    // Asigna eventos a las pestañas
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        activateTab(tab);
+      });
+    });
+
+    // Recupera la pestaña activa de localStorage al cargar la página
+    const savedActiveTab = localStorage.getItem(localStorageKey);
+    if (savedActiveTab) {
+      const tabToActivate = document.querySelector(`[data-tab="${savedActiveTab}"]`);
+      if (tabToActivate) {
+        activateTab(tabToActivate);
+      }
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+{% if message %}
+  <script>
+    Swal.fire({
+      title: "{{ message.title }}",
+      text: "{{ message.text }}",
+      icon: "{{ message.icon }}",
+      timer: 3000,  // Duración de la alerta en milisegundos (opcional)
+      showConfirmButton: false, // Oculta el botón de confirmación
+    });
+  </script>
+{% endif %}
+
+
+
+{% endblock %}

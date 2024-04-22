@@ -73,8 +73,8 @@ class EventosCreados(models.Model):
     coordina = models.CharField(max_length=100, null=True, blank=True)
     preside = models.CharField(max_length=100, null=True, blank=True)
     cargo = models.CharField(max_length=120, null=True, blank=True)
-    no_personas = models.CharField(max_length=10, null=True, blank=True)
-    contacto = models.CharField(max_length=20, null=True, blank=True)
+    no_personas = models.CharField(max_length=100, null=True, blank=True)
+    contacto = models.CharField(max_length=120, null=True, blank=True)
     servicios = models.CharField(max_length=150, null=True, blank=True)
     observaciones = models.CharField(max_length=150, null=True, blank=True)
     class Meta:

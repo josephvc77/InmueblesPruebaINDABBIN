@@ -961,3 +961,35 @@ class MensajeIMP(models.Model):
     # Email
 
     # class contactoEmail(models.Model):
+
+
+# llamadas Model
+
+class Llamadas(models.Model):
+    id = models.AutoField(primary_key=True)
+    NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
+    rfi = models.CharField(max_length=15, null=True, blank=True)  
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Baja', 'Baja'),
+        ('Completado', 'Completado'),
+    ]
+    estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
+    UR_CHOICES = [
+        ('CGEE', 'CGEE'),
+        ('DGB', 'DGB'),
+        ('DGBTEPD', 'DGBTEPD'),
+        ('DGCFT', 'DGCFT'),
+        ('DGETAyCM', 'DGETAyCM'),
+        ('DGETI', 'DGETI'),
+        ('DGRMyS', 'DGRMyS'),
+        ('RESEMS', 'RESEMS'),
+    ]
+    UR = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
+    creado = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    datecompleted = models.DateTimeField(null=True, blank=True)
+    PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'),('Baja', 'Baja') ]
+    prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
+    assigned_task = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')

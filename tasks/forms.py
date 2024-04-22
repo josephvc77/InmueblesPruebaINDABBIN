@@ -4,7 +4,7 @@ from django.forms import ClearableFileInput, ModelForm
 
 from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -288,3 +288,27 @@ class SalasForm(forms.ModelForm):
             'titulo', 'descripcion'
         ]
 
+
+class TaskCreateLlamadaForm(ModelForm):
+    class Meta:
+        model = Llamadas
+        fields = ['NombreInmueble', 'prioridad', 'deadline', 'prioridad', 'assigned_task' ]
+        widgets = {
+                'deadline': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa', 'type': 'date'}),
+            }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(TaskCreateLlamadaForm, self).__init__(*args, **kwargs)
+        
+        if not user.is_superuser:
+            # Oculta el campo 'assigned_task' si el usuario no es superusuario
+            self.fields['assigned_task'].widget = forms.HiddenInput()
+
+# Llamadas inmuebles
+class LlamadasForm(forms.ModelForm):
+    class Meta:
+        model = Llamadas
+        fields = [
+            'rfi', 'NombreInmueble', 'UR', 'deadline', 'datecompleted', 'prioridad', 'assigned_task'
+        ]
