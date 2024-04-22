@@ -9,7 +9,7 @@ class Task_eventos(models.Model):
 
 class EventosCreados(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=150, null=True, blank=True)
     dia = models.DateTimeField(null=True, blank=True)
     hora_inicio = models.TimeField(null=True, blank=True)
     hora_finalizacion = models.TimeField(null=True, blank=True)
@@ -70,13 +70,13 @@ class EventosCreados(models.Model):
     ('Baja', 'Baja'),
     )
     prioridad = models.CharField(max_length=10, null=True, blank=True, choices=PRIORIDAD_CHOICES)
-    coordina = models.CharField(max_length=50, null=True, blank=True)
-    preside = models.CharField(max_length=50, null=True, blank=True)
-    cargo = models.CharField(max_length=50, null=True, blank=True)
+    coordina = models.CharField(max_length=100, null=True, blank=True)
+    preside = models.CharField(max_length=100, null=True, blank=True)
+    cargo = models.CharField(max_length=120, null=True, blank=True)
     no_personas = models.CharField(max_length=10, null=True, blank=True)
     contacto = models.CharField(max_length=20, null=True, blank=True)
-    servicios = models.CharField(max_length=100, null=True, blank=True)
-    observaciones = models.CharField(max_length=100, null=True, blank=True)
+    servicios = models.CharField(max_length=150, null=True, blank=True)
+    observaciones = models.CharField(max_length=150, null=True, blank=True)
     class Meta:
         verbose_name = "Evento"
         verbose_name_plural = "Eventos"
