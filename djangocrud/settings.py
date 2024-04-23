@@ -208,7 +208,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 
-
+CSRF_COOKIE_AGE = None  # Establece la vida útil de la cookie en None (por defecto es 31449600 segundos, es decir, 1 año)
+CSRF_COOKIE_SECURE = True  # Asegúrate de que la cookie solo se envíe a través de conexiones HTTPS
+CSRF_COOKIE_HTTPONLY = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 LOGIN_URL = '/signin'

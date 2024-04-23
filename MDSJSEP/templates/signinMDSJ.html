@@ -1,4 +1,4 @@
-{% extends 'baseSalas.html' %} {% block content %}
+
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
@@ -177,6 +177,15 @@
     {% csrf_token %}
 
     <div class="form-group">
+      <select id="sitio-select" name="sitio" class="form-control">
+        <option value="">Seleccione un sitio</option>
+        <option value="{% url 'signinMDSJ' %}">Modulo de Sala de Juntas</option>
+        <option value="{% url 'signin' %}">SIISEP</option>
+        <option value="{% url 'signinCondia' %}">Condia</option>
+      </select>
+    </div>
+
+    <div class="form-group">
         <input type="text" name="{{ form.username.name }}" placeholder="Usuario" class="form-control form-control-sm">
     </div>
     <div class="form-group">
@@ -228,4 +237,37 @@
   }
 </script>
 
-{% endblock %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Envía una solicitud POST al endpoint de cierre de sesión de Django
+      fetch("{% url 'logout' %}", {
+          method: 'POST',
+          headers: {
+              'X-CSRFToken': "{{ csrf_token }}",  // Agrega el token CSRF a la solicitud
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
+          },
+          credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
+      })
+      .then(response => {
+          if (response.ok) {
+       
+          } else {
+              console.error('Error al cerrar sesión');
+          }
+      })
+      .catch(error => {
+          console.error('Error al cerrar sesión:', error);
+      });
+  });
+</script>
+  
+<script>
+  document.getElementById('sitio-select').addEventListener('change', function() {
+    var selectedOption = this.value;
+    if (selectedOption) {
+      window.location.href = selectedOption;
+    }
+  });
+</script>
+
