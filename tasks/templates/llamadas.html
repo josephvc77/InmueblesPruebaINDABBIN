@@ -73,7 +73,9 @@
 
         <p><strong>RFI:</strong> {{ task.rfi }}</p>
         <p class="text-center">{{ task.Sector }}</p>
-        <p class="text-center"><strong>UR :</strong> {{ task.UR }}</p>
+        <p class="text-center"><strong>EDO :</strong> {{ task.edo }}</p>
+        <p class="text-center"><strong>UR :</strong> {{ task.ur }}</p>
+        <p class="text-center"><strong>Estatus de la llamada :</strong> {{ task.estatus_llamada }}</p>
         <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
           Prioridad: {{ task.prioridad }}
         </p>
@@ -140,25 +142,25 @@
 <div class="text-center paginador">
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-      {% if inmuebles.has_previous %}
+      {% if llamadas.has_previous %}
       <li class="page-item">
         <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ llamadas.previous_page_number }}">{{ llamadas.previous_page_number }}</a>
       </li>
       {% endif %}
 
-      <li class="page-item active"><span class="page-link">{{ inmuebles.number }}</span></li>
+      <li class="page-item active"><span class="page-link">{{ llamadas.number }}</span></li>
 
-      {% if inmuebles.has_next %}
+      {% if llamadas.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ llamadas.next_page_number }}">{{ llamadas.next_page_number }}</a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
+        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ llamadas.paginator.num_pages }}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>

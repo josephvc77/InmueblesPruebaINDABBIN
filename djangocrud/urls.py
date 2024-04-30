@@ -72,6 +72,10 @@ urlpatterns = [
     path('guardar_documento_ocupacionIMP/<int:task_id>/', views.guardar_documento_ocupacionIMP, name='guardar_documento_ocupacionIMP'),
     path('eliminar_docOcupacionIMP/<int:docOcupacion_id>/', views.eliminar_docOcupacionIMP, name='eliminar_docOcupacionIMP'),
     
+    path('guardar_registros_llamadas/<int:task_id>/', views.guardar_registros_llamadas, name='guardar_registros_llamadas'),
+  
+    
+
     path('guardar_instituciones_ocupantesIMP/<int:task_id>/', views.guardar_instituciones_ocupantesIMP, name='guardar_instituciones_ocupantesIMP'),
     path('eliminar_DatoInstitucionOcupanteIMP/<int:datoInstitucionOcupante_id>/', views.eliminar_DatoInstitucionOcupanteIMP, name='eliminar_DatoInstitucionOcupanteIMP'),
     
@@ -94,6 +98,7 @@ urlpatterns = [
 
     
     path('importar/', views.importar, name='importar'),
+    path('importar_Llamadas/', views.importar_Llamadas, name='importar_Llamadas'),
     path('contacto/', views.contacto, name='contacto'),
 
 

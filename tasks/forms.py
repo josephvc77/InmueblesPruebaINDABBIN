@@ -4,7 +4,7 @@ from django.forms import ClearableFileInput, ModelForm
 
 from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -310,5 +310,12 @@ class LlamadasForm(forms.ModelForm):
     class Meta:
         model = Llamadas
         fields = [
-            'rfi', 'NombreInmueble', 'UR', 'deadline', 'datecompleted', 'prioridad', 'assigned_task'
+            'rfi', 'NombreInmueble', 'ur', 'deadline', 'datecompleted', 'prioridad', 'assigned_task', 'edo',
+            'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'ext', 'celular', 'email', 'estatus_llamada'
         ]
+
+
+class registrosForm(forms.ModelForm):
+    class Meta:
+        model = RegistroLlamadas
+        fields = ['NLlamada', 'fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada']

@@ -1,0 +1,106 @@
+<div class="tab-content animated fadeIn" id="tab-registros">
+    <div class="section">
+  
+        <div class="separador" id="RegistroLlamadas">
+        <h4>Registro de llamadas</h4>
+            <br><br>
+        <form method="post" class="task-form">
+            {% csrf_token %}
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.NumLlamada.id_for_label }}">Llamada: </label>
+                <input type="number" name="NumLlamada" id="id_NumLlamada" placeholder="# 1" required>
+            </div>
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.fecha_llamada.id_for_label }}">Fecha de Llamada:</label>
+                <input type="date" name="fecha_llamada" id="id_fecha_llamada" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.hora_llamada.id_for_label }}">Hora de Llamada:</label>
+                <input type="time" name="hora_llamada" id="id_hora_llamada" required>
+            </div>
+                            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.acuerdos_compromisos.id_for_label }}">Acuerdos de Compromiso:</label>
+                <input type="text" name="acuerdos_compromisos" id="id_acuerdos_compromisos" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.fecha_comprometida.id_for_label }}">Fecha Comprometida:</label>
+                <input type="date" name="fecha_comprometida" id="id_fecha_comprometida" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.fecha_respuesta_email.id_for_label }}">Fecha respuesta de email:</label>
+                <input type="date" name="fecha_respuesta_email" id="id_fecha_respuesta_email" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.fecha_revision_correcciones.id_for_label }}">Fecha de revision de correcciones:</label>
+                <input type="date" name="fecha_revision_correcciones" id="id_fecha_revision_correcciones" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.fecha_envio_correccion.id_for_label }}">Fecha de envio de correcciones:</label>
+                <input type="date" name="fecha_envio_correccion" id="id_fecha_envio_correccion" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.fecha_aprobacion_fichas_corregidas.id_for_label }}">Fecha de aprobacion de fichas corregidas:</label>
+                <input type="date" name="fecha_aprobacion_fichas_corregidas" id="id_fecha_aprobacion_fichas_corregidas" required>
+            </div>
+            
+            <div class="form-group form-check-inline">
+                <label for="{{ registro_Llamadas_Form.observaciones_generales.id_for_label }}">Observaciones generales:</label>
+                <input type="text" name="observaciones_generales" id="id_observaciones_generales" required>
+            </div>
+            
+            <button type="submit" class="btn btn-outline-success">Guardar</button>
+         </form>
+
+
+        <div class="table-responsive m-3"> 
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th>LLamada</th>
+                        <th>Fecha de Llamada</th>
+                        <th>Hora de Llamada</th>
+                        <th>Acuerdos de Compromiso</th>
+                        <th>Fecha Comprometida</th>
+                        <th>Fecha respuesta de email</th>
+                        <th>Fecha de revision de correcciones</th>
+                        <th>Fecha de envio de correcciones</th>
+                        <th>Fecha de aprobacion de fichas corregidas</th>
+                        <th>Observaciones generales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro_llamadas in task.registro_llamadas.all %}
+                    <tr>
+                        <td>{{ registro_llamadas.NumLlamada }}</td>
+                        <td>{{ registro_llamadas.fecha_llamada }}</td>
+                        <td>{{ registro_llamadas.hora_llamada }}</td>
+                        <td>{{ registro_llamadas.acuerdos_compromisos }}</td>
+                        <td>{{ registro_llamadas.fecha_comprometida }}</td>
+                        <td>{{ registro_llamadas.fecha_respuesta_email }}</td>
+                        <td>{{ registro_llamadas.fecha_revision_correcciones }}</td>
+                        <td>{{ registro_llamadas.fecha_envio_correccion }}</td>
+                        <td>{{ registro_llamadas.fecha_aprobacion_fichas_corregidas }}</td>
+                        <td>{{ registro_llamadas.observaciones_generales }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10">No hay registros de llamadas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+
+    </div>
+</div>

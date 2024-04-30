@@ -13,7 +13,7 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import BajaForm, ColindanciasFormIMP, DatosAvaluosFormIMP, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, LlamadasForm, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TaskCreateLlamadaForm, TramitesDisposicionFormIMP
+from .forms import BajaForm, ColindanciasFormIMP, DatosAvaluosFormIMP, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, LlamadasForm, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TaskCreateLlamadaForm, TramitesDisposicionFormIMP, registrosForm
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
 
 from .forms import TaskCreateForm
@@ -755,6 +755,7 @@ def guardar_documento_ocupacionIMP(request, task_id):
             return JsonResponse({"success": False})
     else:
         return JsonResponse({"success": False})
+    
 
 
 def guardar_instituciones_ocupantesIMP(request, task_id):
@@ -1484,10 +1485,8 @@ df.to_csv(csv_file, index=False)
 
 
 
-from tasks.resource import InmuebleResource
-
+from tasks.resource import InmuebleResource, LlamadaResource
 from tablib import Dataset 
- 
 from django.http import HttpResponse
 from django.shortcuts import render
 from tablib import Dataset
@@ -1521,6 +1520,36 @@ def importar(request):
             messages.error(request, 'Se encontraron errores en la importación.')
 
     return render(request, 'importar.html')
+
+from tablib import Dataset
+from django.contrib import messages
+@login_required
+def importar_Llamadas(request):
+    if request.method == 'POST':
+        inmueble_resource = LlamadaResource()
+        dataset = Dataset()
+        
+        archivo = request.FILES['archivo']
+
+        if archivo.name.endswith('.csv'):
+            imported_data = dataset.load(archivo.read().decode('utf-8'), format='csv')
+        elif archivo.name.endswith(('xls', 'xlsx')):
+            imported_data = dataset.load(archivo.read(), format='xlsx')
+        else:
+            messages.error(request, 'El archivo no es ni un archivo CSV ni un archivo Excel válido.')
+            return render(request, 'importarLlamadas.html')
+
+        result = inmueble_resource.import_data(dataset, dry_run=True)
+        
+        if not result.has_errors():
+            # Realiza la importación real
+            result = inmueble_resource.import_data(dataset, dry_run=False)
+            messages.success(request, 'Los datos se importaron con éxito.')
+        else:
+            messages.error(request, 'Se encontraron errores en la importación.')
+
+    return render(request, 'importarLlamadas.html')
+
 
 
 # Email 
@@ -1592,105 +1621,74 @@ def create_registros_llamadas(request):
     context = {'form_llamada': form_llamada}
     return render(request, 'create_llamada.html', context)
 
-# @login_required
-# @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-# def llamadas_inmuebles(request):
-#     search_query = request.GET.get('q', '')
-#     prioridad = request.GET.get('prioridad', '')
-#     ur = request.GET.get('ur', '')
-#     orden = request.GET.get('ordenar', '')
-    
-#     request.session['search_query'] = search_query
-#     request.session['prioridad'] = prioridad
-#     request.session['ur'] = ur
-#     request.session['ordenar'] = orden
-
-#     # Obtener los valores de búsqueda y filtros de la sesión
-#     search_query = request.session.get('search_query', '')
-#     prioridad = request.session.get('prioridad', '')
-#     ur = request.session.get('ur', '')
-
-#     inmuebles_list = Llamadas.objects.filter(
-#         Q(NombreInmueble__icontains=search_query) |
-#         Q(rfi__icontains=search_query),
-#         datecompleted__isnull=True,
-#         estado='Activo'  # Filtra las tareas en estado 'Activo'
-#     ).order_by('-updated')
-
-#     if prioridad:
-#         inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
-        
-#     if ur:
-#         inmuebles_list = inmuebles_list.filter(UR=ur)
-        
-#     # Aplicar filtros de orden
-#     if orden == 'az':
-#         inmuebles_list = inmuebles_list.order_by('NombreInmueble')
-#     elif orden == 'za':
-#         inmuebles_list = inmuebles_list.order_by('-NombreInmueble')
-#     elif orden == 'nuevo':
-#         inmuebles_list = inmuebles_list.order_by('-updated')
-#     elif orden == 'viejo':
-#         inmuebles_list = inmuebles_list.order_by('creado')
-        
-#     paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
-
-#     page = request.GET.get('page')
-#     llamadas = paginator.get_page(page)
-        
-        
-#     for task in llamadas:
-#         if task.deadline:
-#             now = datetime.now(timezone.utc)  # Usa la zona horaria UTC para now
-#             time_remaining = task.deadline - now
-#             days_remaining = time_remaining.days
-#             seconds_remaining = time_remaining.seconds
-#             hours_remaining, seconds_remaining = divmod(seconds_remaining, 3600)  # Convertir segundos en horas y segundos sobrantes
-#             # Calcular los días y las horas de retraso
-#             if days_remaining < 0:
-#                 days_delayed = abs(days_remaining)
-#                 hours_delayed = hours_remaining
-#             else:
-#                 days_delayed = 0
-#                 hours_delayed = 0
-
-#             # Agregar los valores calculados al objeto de tarea
-#             task.days_remaining = days_remaining
-#             task.hours_remaining = hours_remaining
-#             task.days_delayed = days_delayed
-#             task.hours_delayed = hours_delayed
-
-#     total_pending_inmuebles = Llamadas.objects.filter(
-#         Q(NombreInmueble__icontains=search_query) |
-#         Q(rfi__icontains=search_query),
-#         datecompleted__isnull=True
-#     ).count()  # Total de llamadas pendientes por completar
-
-#     total_completed_inmuebles = Llamadas.objects.filter(
-#         Q(NombreInmueble__icontains=search_query) |
-#         Q(rfi__icontains=search_query),
-#         datecompleted__isnull=False
-#     ).count()  # Total de llamadas completados
-
-#     return render(request, 'llamadas.html', {
-#         'llamadas': llamadas, 
-#         'search_query': search_query,
-#         'total_pending_inmuebles': total_pending_inmuebles,
-#         'total_completed_inmuebles': total_completed_inmuebles,
-#         'prioridad': prioridad,
-#         'ur': ur,
-#         'orden': orden,
-#     })
 
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def llamadas_inmuebles(request):
-        llamadas = Llamadas.objects.all()
-     
-        return render(request, 'llamadas.html', {
-            'llamadas': llamadas
+    search_query = request.GET.get('q', '')
+    prioridad = request.GET.get('prioridad', '')
+    ur = request.GET.get('ur', '')
+    orden = request.GET.get('ordenar', '')
+    
+    llamadas_list = Llamadas.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query),
+        estado='Activo'  # Filtra las tareas en estado 'Activo'
+    )
+
+    if prioridad:
+        llamadas_list = llamadas_list.filter(prioridad=prioridad)
+        
+    if ur:
+        llamadas_list = llamadas_list.filter(ur=ur)
+
+    paginator = Paginator(llamadas_list, 20)  # Muestra 20 inmuebles por página
+    page = request.GET.get('page')
+    try:
+        llamadas = paginator.page(page)
+    except PageNotAnInteger:
+        llamadas = paginator.page(1)
+    except EmptyPage:
+        llamadas = paginator.page(paginator.num_pages)
+
+    page = request.GET.get('page')
+        
+    # Aplicar filtros de orden
+    if orden == 'az':
+        llamadas_list = llamadas_list.order_by('NombreInmueble')
+    elif orden == 'za':
+        llamadas_list = llamadas_list.order_by('-NombreInmueble')
+    elif orden == 'nuevo':
+        llamadas_list = llamadas_list.order_by('-updated')
+    elif orden == 'viejo':
+        llamadas_list = llamadas_list.order_by('creado')
+        
+
+
+        
+    total_pending_inmuebles = Llamadas.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query),
+        estado='Activo'  # Filtra las tareas en estado 'Activo'
+    ).count()  # Total de llamadas pendientes por completar
+
+    total_completed_inmuebles = Llamadas.objects.filter(
+        Q(NombreInmueble__icontains=search_query) |
+        Q(rfi__icontains=search_query),
+        estado='Completado'  # Filtra las tareas en estado 'Completado'
+    ).count()  # Total de llamadas completados
+
+    return render(request, 'llamadas.html', {
+        'llamadas': llamadas, 
+        'search_query': search_query,
+        'total_pending_inmuebles': total_pending_inmuebles,
+        'total_completed_inmuebles': total_completed_inmuebles,
+        'prioridad': prioridad,
+        'ur': ur,
+        'orden': orden,
     })
+
 
 
 @login_required
@@ -1700,21 +1698,45 @@ def task_detail_llamadas(request, task_id):
     
     if request.method == 'POST':
         llamada = LlamadasForm(request.POST, request.FILES, instance=task)
+        registro_Llamadas_Form = registrosForm(request.POST)
 
-        
+        if registro_Llamadas_Form.is_valid():
+                if any(registro_Llamadas_Form.cleaned_data.values()):
+                    registroLlamadas = registro_Llamadas_Form.save(commit=False)
+                    registroLlamadas.task = task
+                    registroLlamadas.save()
+                    return redirect('task_detail_llamadas', task_id=task_id)
+
         if llamada.is_valid():
             task = llamada.save(commit=False)
             llamada.save()  # Guardar los cambios en la tarea
-            task.user = request.user
             return redirect('llamadas_inmuebles')  # Redireccionar a 'tasks_importados' después de guardar
         
     else:
         llamada = LlamadasForm(instance=task)
+        registro_Llamadas_Form = registrosForm()
    
         
     return render(request, 'detail_llamadas.html', {
         'task': task,
         'llamada': llamada,
+        'registro_Llamadas_Form': registro_Llamadas_Form
 
     })
+    
+
+def guardar_registros_llamadas(request, task_id):
+    task = get_object_or_404(Llamadas, pk=task_id)
+    if request.method == 'POST':
+        registro_Llamadas_Form = registrosForm(request.POST)
+
+        if registro_Llamadas_Form.is_valid():
+            registroLlamadas = registro_Llamadas_Form.save(commit=False)
+            registroLlamadas.task = task
+            registroLlamadas.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
     

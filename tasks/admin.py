@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from MDSJSEP.models import EventosCreados
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 
 class DictamenEstructuralInlineIMP(admin.TabularInline):
@@ -95,13 +95,16 @@ class EventsAdmin(admin.ModelAdmin):
     list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
 admin.site.register(Events, EventsAdmin)
 
-
-
 class EventosCreadosAdmin(admin.ModelAdmin):
     list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
 admin.site.register(EventosCreados, EventosCreadosAdmin)
 
 
 class LlamadasAdmin(admin.ModelAdmin):
-    list_display = ('NombreInmueble', 'rfi', 'UR', 'prioridad')
+    list_display = ('NombreInmueble', 'rfi', 'ur', 'prioridad')
+    search_fields = ('NombreInmueble', 'rfi')
 admin.site.register(Llamadas, LlamadasAdmin)
+
+class RegistrosLlamadasAdmin(admin.ModelAdmin):
+    list_display = ('NumLlamada', 'fecha_llamada', 'hora_llamada', 'acuerdos_compromisos')
+admin.site.register(RegistroLlamadas, RegistrosLlamadasAdmin)

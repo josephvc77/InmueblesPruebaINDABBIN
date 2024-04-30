@@ -10,34 +10,28 @@
       
       <!-- Campos del formulario -->
 
-
-
-      
       <div class="task-form-container">
         <div id="mobile-menu-button" class="mobile-menu-button"> &#9776; </div>
         <div class="tabs">
-          <div class="tab active" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab active" data-tab="tab-registros">Registros de llamadas</div>
           <div class="tab" data-tab="tab-descripcion">Datos Generales</div>
         </div>
 
         <div class="tab-content">
-          <div class="tab-content-item" data-tab="tab-encabezado">Encabezado</div>
+          <div class="tab-content-item" data-tab="tab-registros">Registros de llamadas</div>
           <div class="tab-content-item" data-tab="tab-descripcion">Datos Generales</div>
         </div>
         <div class="form-group form-check-inline">
           {% if inmueble.rfi %}
           <label for="{{inmueble.rfi.id_for_label}}">RFI:</label>       
-          <input class="form-control form-control-sm text-center" type="text" id="{{inmueble.rfi.id}}" name="{{inmueble.rfi.name}}" value='{{inmueble.rfi.value}}' readonly >
+          <input class="form-control form-control-sm text-center" type="text" id="{{llamadas.rfi.id}}" name="{{llamadas.rfi.name}}" value='{{llamadas.rfi.value}}' readonly >
           {% endif %}
         </div>
         
-      <div class="form-group form-check-inline">
-          <label for="{{ inmueble.rfiProv.id_for_label }}">RFI Provicional:</label>
-          {{ inmueble.rfiProv }}
-      </div>
+ 
         
       
-        {% include 'extends_importados/encabezado.html' %}
+        {% include 'extends_importados/registrollamadas.html' %}
         {% include 'extends_importados/info_inmueble_llamadas.html' %}
 
         <button type="button" class="btn btn-outline-primary actualizar" onclick="mostrarAlerta()">Guardar Cambios</button>
@@ -83,9 +77,9 @@
     
 
   <div class="buttons">
-    <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
+    <!-- <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
       <i class="fas fa-file-pdf"></i> Generar PDF
-    </a>
+    </a> -->
 <!-- 
       <form id="complete-form" action="{% url 'complete_task_importados' task.id %}" method="POST">
         {% csrf_token %}
@@ -337,28 +331,28 @@
       });
     }
 
-    document.getElementById('darDeBajaButton').addEventListener('click', function() {
-    showBajaConfirmation();
-});
+    // document.getElementById('darDeBajaButton').addEventListener('click', function() {
+    // showBajaConfirmation();
+// });
 
   
-    function showBajaConfirmation() {
-      Swal.fire({
-          title: '¿Dar de baja esta tarea?',
-          text: 'Una vez que una tarea se da de baja, no se puede modificar.',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#dc3545',
-          cancelButtonColor: '#6c757d',
-          confirmButtonText: 'Sí, Dar de baja',
-          cancelButtonText: 'Cancelar',
-      }).then((result) => {
-          if (result.isConfirmed) {
-              // Si el usuario confirma, enviar el formulario de dar de baja
-              document.getElementById('delete-form').submit();
-          }
-      });
-  }
+  //   function showBajaConfirmation() {
+  //     Swal.fire({
+  //         title: '¿Dar de baja esta tarea?',
+  //         text: 'Una vez que una tarea se da de baja, no se puede modificar.',
+  //         icon: 'warning',
+  //         showCancelButton: true,
+  //         confirmButtonColor: '#dc3545',
+  //         cancelButtonColor: '#6c757d',
+  //         confirmButtonText: 'Sí, Dar de baja',
+  //         cancelButtonText: 'Cancelar',
+  //     }).then((result) => {
+  //         if (result.isConfirmed) {
+  //             // Si el usuario confirma, enviar el formulario de dar de baja
+  //             document.getElementById('delete-form').submit();
+  //         }
+  //     });
+  // }
   </script>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -395,6 +389,11 @@
     }
   });
 </script>
+
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 

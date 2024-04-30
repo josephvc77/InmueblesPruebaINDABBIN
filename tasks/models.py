@@ -966,7 +966,6 @@ class MensajeIMP(models.Model):
 # llamadas Model
 
 class Llamadas(models.Model):
-    id = models.AutoField(primary_key=True)
     NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
     rfi = models.CharField(max_length=15, null=True, blank=True)  
     ESTADO_CHOICES = [
@@ -975,6 +974,32 @@ class Llamadas(models.Model):
         ('Completado', 'Completado'),
     ]
     estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
+    creado = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    datecompleted = models.DateTimeField(null=True, blank=True)
+    PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'),('Baja', 'Baja') ]
+    prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
+    assigned_task = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')
+    edo = models.CharField(max_length=100, null=True, blank=True)
+    nd = models.CharField(max_length=100, null=True, blank=True)
+    nombre_del_contacto = models.CharField(max_length=100, null=True, blank=True)
+    puesto_o_cargo = models.CharField(max_length=100, null=True, blank=True)
+    tel_plantel = models.CharField(max_length=100, null=True, blank=True)
+    ext = models.CharField(max_length=100, null=True, blank=True)
+    celular = models.CharField(max_length=100, null=True, blank=True)
+    email = models.CharField(max_length=100, null=True, blank=True)
+    ESTATUS_LLAMADA_CHOICES = [
+        ('Pendiente', 'Pendiente'),
+        ('Faltante', 'Faltante'),
+        ('Por llamar', 'Por llamar'),
+        ('Datos de contacto erróneos', 'Datos de contacto erróneos'),
+        ('En seguimiento', 'En seguimiento'),
+        ('Documentación completa', 'Documentación completa'),
+        ('Sin respuesta', 'Sin respuesta'),
+        ('Finalizado', 'Finalizado'),
+    ]
+    estatus_llamada = models.CharField(max_length=50, choices=ESTATUS_LLAMADA_CHOICES, null=True, blank=True)
     UR_CHOICES = [
         ('CGEE', 'CGEE'),
         ('DGB', 'DGB'),
@@ -985,11 +1010,18 @@ class Llamadas(models.Model):
         ('DGRMyS', 'DGRMyS'),
         ('RESEMS', 'RESEMS'),
     ]
-    UR = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
-    deadline = models.DateTimeField(null=True, blank=True)
-    creado = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    datecompleted = models.DateTimeField(null=True, blank=True)
-    PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'),('Baja', 'Baja') ]
-    prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
-    assigned_task = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')
+    ur = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
+
+class RegistroLlamadas(models.Model):
+    task = models.ForeignKey(Llamadas, on_delete=models.CASCADE, related_name='registro_llamadas')
+    NLlamada = models.AutoField(primary_key=True)
+    NumLlamada = models.IntegerField(max_length=20, null=True, blank=True)
+    fecha_llamada = models.DateField(null=True, blank=True)
+    hora_llamada = models.TimeField(null=True, blank=True)
+    acuerdos_compromisos = models.CharField(max_length=200, null=True, blank=True)
+    fecha_comprometida = models.DateField(null=True, blank=True)
+    fecha_respuesta_email = models.DateField(null=True, blank=True)
+    fecha_revision_correcciones = models.DateField(null=True, blank=True)
+    fecha_envio_correccion = models.DateField(null=True, blank=True)
+    fecha_aprobacion_fichas_corregidas = models.DateField(null=True, blank=True)
+    observaciones_generales = models.CharField(max_length=250, null=True, blank=True)
