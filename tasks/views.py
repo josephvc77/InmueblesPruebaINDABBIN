@@ -1664,8 +1664,6 @@ def llamadas_inmuebles(request):
     elif orden == 'viejo':
         llamadas_list = llamadas_list.order_by('creado')
         
-
-
         
     total_pending_inmuebles = Llamadas.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
