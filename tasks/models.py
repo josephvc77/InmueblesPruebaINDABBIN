@@ -1014,7 +1014,6 @@ class Llamadas(models.Model):
 
 class RegistroLlamadas(models.Model):
     task = models.ForeignKey(Llamadas, on_delete=models.CASCADE, related_name='registro_llamadas')
-    NLlamada = models.AutoField(primary_key=True)
     NumLlamada = models.IntegerField(null=True, blank=True)
     fecha_llamada = models.DateField(null=True, blank=True)
     hora_llamada = models.TimeField(null=True, blank=True)

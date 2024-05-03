@@ -318,4 +318,4 @@ class LlamadasForm(forms.ModelForm):
 class registrosForm(forms.ModelForm):
     class Meta:
         model = RegistroLlamadas
-        fields = ['NLlamada', 'fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada']
+        fields = ['fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada']
