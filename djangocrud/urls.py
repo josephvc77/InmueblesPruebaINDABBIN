@@ -28,9 +28,13 @@ urlpatterns = [
     path('403/', views.permission_denied, name='permission_denied'),
     path('tasks_importados/', views.tasks_importados, name='tasks_importados'),
     path('tasks/<int:task_id>', views.task_detail_importados, name='task_detail_importados'),
+
+
     path('llamadas_inmuebles/', views.llamadas_inmuebles, name='llamadas_inmuebles'),
     path('tasks/<int:task_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
-    path('create_registros_llamadas/', views.create_registros_llamadas, name='create_registros_llamadas'),
+    path('create_DatosLlamadasInmueble/', views.create_DatosLlamadasInmueble, name='create_DatosLlamadasInmueble'),
+
+    
     path('admin/', admin.site.urls),
     # path('signup/', views.signup, name='signup'),
     path('tasks_completed_importados/', views.tasks_completed_importados, name='tasks_completed_importados'),
@@ -72,7 +76,7 @@ urlpatterns = [
     path('guardar_documento_ocupacionIMP/<int:task_id>/', views.guardar_documento_ocupacionIMP, name='guardar_documento_ocupacionIMP'),
     path('eliminar_docOcupacionIMP/<int:docOcupacion_id>/', views.eliminar_docOcupacionIMP, name='eliminar_docOcupacionIMP'),
     
-    path('guardar_registros_llamadas/<int:task_id>/', views.guardar_registros_llamadas, name='guardar_registros_llamadas'),
+    # path('guardar_registros_llamadas/<int:task_id>/', views.guardar_registros_llamadas, name='guardar_registros_llamadas'),
   
     
 

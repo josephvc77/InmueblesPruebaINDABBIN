@@ -1,5 +1,5 @@
 from import_export import resources
-from .models import Inmueble, Llamadas
+from .models import DatosLlamadasInmuebles, Inmueble
 
 class InmuebleResource(resources.ModelResource):
     class Meta:
@@ -9,5 +9,5 @@ class InmuebleResource(resources.ModelResource):
 
 class LlamadaResource(resources.ModelResource):
     class Meta:
-        model = Llamadas
+        model = DatosLlamadasInmuebles
         # Puedes especificar campos adicionales o personalizar la importación aquí

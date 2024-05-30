@@ -13,8 +13,8 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import BajaForm, ColindanciasFormIMP, DatosAvaluosFormIMP, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, LlamadasForm, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TaskCreateLlamadaForm, TramitesDisposicionFormIMP, registrosForm
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, TramitesDisposicionIMP
+from .forms import BajaForm, ColindanciasFormIMP, CreateDatosLlamadasForm, DatosAvaluosFormIMP, DatosLlamadaForm, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionFormIMP, registroLlamadaForm
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 from .forms import TaskCreateForm
 
@@ -1599,29 +1599,24 @@ def contacto(request):
     return render(request, 'extends_importados/email.html')
 
 
-
-
 @login_required
-def create_registros_llamadas(request):
+def create_DatosLlamadasInmueble(request):
     if request.method == 'POST':
-        form_llamada = TaskCreateLlamadaForm(request.POST, user=request.user)
-        if form_llamada.is_valid():
-            task = form_llamada.save(commit=False)
-            # Asignar la tarea al usuario seleccionado (si se ha seleccionado)
-            assigned_task = form_llamada.cleaned_data['assigned_task']
-            if assigned_task:
-                task.assigned_task = assigned_task
-                task.user = assigned_task  # Asignar la tarea al usuario seleccionado
+        form = CreateDatosLlamadasForm(request.POST, user=request.user)
+        if form.is_valid():
+            task = form.save(commit=False)
+            assigned_to = form.cleaned_data.get('assigned_to')
+            if assigned_to:
+                task.assigned_to = assigned_to
+                task.user = assigned_to
             else:
-                task.user = request.user  # El usuario actual crea la tarea
+                task.user = request.user
             task.save()
             return redirect('llamadas_inmuebles')
     else:
-        form_llamada = TaskCreateLlamadaForm(user=request.user)
-    context = {'form_llamada': form_llamada}
+        form = CreateDatosLlamadasForm(user=request.user)
+    context = {'form': form}
     return render(request, 'create_llamada.html', context)
-
-
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
@@ -1631,10 +1626,10 @@ def llamadas_inmuebles(request):
     ur = request.GET.get('ur', '')
     orden = request.GET.get('ordenar', '')
     
-    llamadas_list = Llamadas.objects.filter(
+    llamadas_list = DatosLlamadasInmuebles.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
         Q(rfi__icontains=search_query),
-        estado='Activo'  # Filtra las tareas en estado 'Activo'
+        estado='Activo'
     )
 
     if prioridad:
@@ -1643,7 +1638,7 @@ def llamadas_inmuebles(request):
     if ur:
         llamadas_list = llamadas_list.filter(ur=ur)
 
-    paginator = Paginator(llamadas_list, 20)  # Muestra 20 inmuebles por página
+    paginator = Paginator(llamadas_list, 20)
     page = request.GET.get('page')
     try:
         llamadas = paginator.page(page)
@@ -1652,9 +1647,6 @@ def llamadas_inmuebles(request):
     except EmptyPage:
         llamadas = paginator.page(paginator.num_pages)
 
-    page = request.GET.get('page')
-        
-    # Aplicar filtros de orden
     if orden == 'az':
         llamadas_list = llamadas_list.order_by('NombreInmueble')
     elif orden == 'za':
@@ -1664,18 +1656,17 @@ def llamadas_inmuebles(request):
     elif orden == 'viejo':
         llamadas_list = llamadas_list.order_by('creado')
         
-        
-    total_pending_inmuebles = Llamadas.objects.filter(
+    total_pending_inmuebles = DatosLlamadasInmuebles.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
         Q(rfi__icontains=search_query),
-        estado='Activo'  # Filtra las tareas en estado 'Activo'
-    ).count()  # Total de llamadas pendientes por completar
+        estado='Activo'
+    ).count()
 
-    total_completed_inmuebles = Llamadas.objects.filter(
+    total_completed_inmuebles = DatosLlamadasInmuebles.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
         Q(rfi__icontains=search_query),
-        estado='Completado'  # Filtra las tareas en estado 'Completado'
-    ).count()  # Total de llamadas completados
+        estado='Completado'
+    ).count()
 
     return render(request, 'llamadas.html', {
         'llamadas': llamadas, 
@@ -1687,54 +1678,34 @@ def llamadas_inmuebles(request):
         'orden': orden,
     })
 
-
-
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def task_detail_llamadas(request, task_id):
-    task = get_object_or_404(Llamadas, pk=task_id)
+    task = get_object_or_404(DatosLlamadasInmuebles, pk=task_id)
     
     if request.method == 'POST':
-        llamada = LlamadasForm(request.POST, request.FILES, instance=task)
-        registro_Llamadas_Form = registrosForm(request.POST)
+        llamada = DatosLlamadaForm(request.POST, request.FILES, instance=task)
+        registro_Llamadas_Form = registroLlamadaForm(request.POST)
 
         if registro_Llamadas_Form.is_valid():
-                if any(registro_Llamadas_Form.cleaned_data.values()):
-                    registroLlamadas = registro_Llamadas_Form.save(commit=False)
-                    registroLlamadas.task = task
-                    registroLlamadas.save()
-                    return redirect('task_detail_llamadas', task_id=task_id)
+            if any(registro_Llamadas_Form.cleaned_data.values()):
+                registroLlamadas = registro_Llamadas_Form.save(commit=False)
+                registroLlamadas.task = task
+                registroLlamadas.save()
+                return redirect('task_detail_llamadas', task_id=task_id)
 
         if llamada.is_valid():
-            task = llamada.save(commit=False)
-            llamada.save()  # Guardar los cambios en la tarea
-            return redirect('llamadas_inmuebles')  # Redireccionar a 'tasks_importados' después de guardar
+            llamada.save()
+            return redirect('llamadas_inmuebles')
         
     else:
-        llamada = LlamadasForm(instance=task)
-        registro_Llamadas_Form = registrosForm()
+        llamada = DatosLlamadaForm(instance=task)
+        registro_Llamadas_Form = registroLlamadaForm()
    
-        
     return render(request, 'detail_llamadas.html', {
         'task': task,
         'llamada': llamada,
         'registro_Llamadas_Form': registro_Llamadas_Form
-
     })
-    
 
-def guardar_registros_llamadas(request, task_id):
-    task = get_object_or_404(Llamadas, pk=task_id)
-    if request.method == 'POST':
-        registro_Llamadas_Form = registrosForm(request.POST)
 
-        if registro_Llamadas_Form.is_valid():
-            registroLlamadas = registro_Llamadas_Form.save(commit=False)
-            registroLlamadas.task = task
-            registroLlamadas.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-    

@@ -17,6 +17,8 @@ class InmueblesFiles(object):
 
 
 
+
+
 class Events(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, null=True, blank=True)
@@ -88,7 +90,6 @@ class Events(models.Model):
     observaciones = models.CharField(max_length=100, null=True, blank=True)
     
 
- 
 
 class Inmueble(models.Model):
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_inmueble')
@@ -620,7 +621,6 @@ class DictamenEstructuralIMP(models.Model):
     descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=False)
     fecha_documento = models.DateField(null=True, blank=False)
     
-
     
 class FoliosRealesIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales')
@@ -963,11 +963,10 @@ class MensajeIMP(models.Model):
     # class contactoEmail(models.Model):
 
 
-# llamadas Model
 
-class Llamadas(models.Model):
+class DatosLlamadasInmuebles(models.Model):
     NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
-    rfi = models.CharField(max_length=15, null=True, blank=True)  
+    rfi = models.CharField(max_length=15, null=True, blank=True)
     ESTADO_CHOICES = [
         ('Activo', 'Activo'),
         ('Baja', 'Baja'),
@@ -976,9 +975,9 @@ class Llamadas(models.Model):
     estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
     deadline = models.DateTimeField(null=True, blank=True)
     creado = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, null=True, blank=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
-    PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'),('Baja', 'Baja') ]
+    PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'), ('Baja', 'Baja')]
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
     assigned_task = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')
     edo = models.CharField(max_length=100, null=True, blank=True)
@@ -1011,10 +1010,11 @@ class Llamadas(models.Model):
         ('RESEMS', 'RESEMS'),
     ]
     ur = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
+    
 
 class RegistroLlamadas(models.Model):
-    task = models.ForeignKey(Llamadas, on_delete=models.CASCADE, related_name='registro_llamadas')
-    NumLlamada = models.IntegerField(null=True, blank=True)
+    task = models.ForeignKey(DatosLlamadasInmuebles, on_delete=models.CASCADE, related_name='registro_llamadas')
+    NumLlamada = models.CharField(max_length=200, null=True, blank=True)
     fecha_llamada = models.DateField(null=True, blank=True)
     hora_llamada = models.TimeField(null=True, blank=True)
     acuerdos_compromisos = models.CharField(max_length=200, null=True, blank=True)

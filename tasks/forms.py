@@ -4,7 +4,7 @@ from django.forms import ClearableFileInput, ModelForm
 
 from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, Llamadas, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -289,33 +289,28 @@ class SalasForm(forms.ModelForm):
         ]
 
 
-class TaskCreateLlamadaForm(ModelForm):
+
+class CreateDatosLlamadasForm(forms.ModelForm):
+    assigned_to = forms.ModelChoiceField(queryset=User.objects.all(), required=False, label='Assigned to')
+
     class Meta:
-        model = Llamadas
-        fields = ['NombreInmueble', 'prioridad', 'deadline', 'prioridad', 'assigned_task' ]
-        widgets = {
-                'deadline': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa', 'type': 'date'}),
-            }
+        model = DatosLlamadasInmuebles
+        fields = ['NombreInmueble', 'deadline', 'prioridad', 'assigned_task', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'estatus_llamada', 'ur']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(TaskCreateLlamadaForm, self).__init__(*args, **kwargs)
-        
-        if not user.is_superuser:
-            # Oculta el campo 'assigned_task' si el usuario no es superusuario
-            self.fields['assigned_task'].widget = forms.HiddenInput()
+        super(CreateDatosLlamadasForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['assigned_task'].queryset = User.objects.filter(username=user.username)
 
-# Llamadas inmuebles
-class LlamadasForm(forms.ModelForm):
-    class Meta:
-        model = Llamadas
+
+class DatosLlamadaForm(forms.ModelForm):
+    class Meta: 
+        model = DatosLlamadasInmuebles
         fields = [
-            'rfi', 'NombreInmueble', 'ur', 'deadline', 'datecompleted', 'prioridad', 'assigned_task', 'edo',
-            'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'ext', 'celular', 'email', 'estatus_llamada'
+            'NombreInmueble', 'rfi', 'estado', 'deadline', 'prioridad', 'assigned_task', 'edo', 'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'ext', 'celular', 'email', 'estatus_llamada', 'ur', 
         ]
-
-
-class registrosForm(forms.ModelForm):
+class registroLlamadaForm(forms.ModelForm):
     class Meta:
         model = RegistroLlamadas
         fields = ['fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada']

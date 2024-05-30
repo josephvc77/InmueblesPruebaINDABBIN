@@ -6,44 +6,44 @@
 
 
 {{ error }}
-<form action="{% url 'create_registros_llamadas' %}" enctype="multipart/form-data" method="POST">
+<form action="{% url 'create_DatosLlamadasInmueble' %}" enctype="multipart/form-data" method="POST">
   {% csrf_token %}
   <div class="form-group">
-    <label for="{{ form_llamada.NombreInmueble.id_for_label }}">Nombre del Inmueble::</label>
-    {{ form_llamada.NombreInmueble }}
+    <label for="{{ form.NombreInmueble.id_for_label }}">Nombre del Inmueble::</label>
+    {{ form.NombreInmueble }}
   </div>
   <div class="form-group">
-    <label for="{{ form_llamada.Sector.id_for_label }}">Sector:</label>
-    {{ form_llamada.Sector }}
+    <label for="{{ form.nombre_del_contacto.id_for_label }}">nombre_del_contacto:</label>
+    {{ form.nombre_del_contacto }}
   </div>
   <div class="form-group">
-    <label for="{{ form_llamada.Nombre_de_la_institucion_que_administra_el_inmueble.id_for_label }}">Nombre de la institucion que administra el inmueble:</label>
-    {{ form_llamada.Nombre_de_la_institucion_que_administra_el_inmueble }}
+    <label for="{{ form.puesto_o_cargo.id_for_label }}">puesto_o_cargo:</label>
+    {{ form.puesto_o_cargo }}
   </div>
   <div class="form-group">
-    <label for="{{ form_llamada.causa_alta.id_for_label }}">Causa Alta:</label>
-    {{ form_llamada.causa_alta }}
+    <label for="{{ form.tel_plantel.id_for_label }}">tel_plantel:</label>
+    {{ form.tel_plantel }}
   </div>
   <div class="form-group">
-    <label for="{{ form_llamada.prioridad.id_for_label }}">Prioridad:</label>
-    {{ form_llamada.prioridad }}
+    <label for="{{ form.prioridad.id_for_label }}">Prioridad:</label>
+    {{ form.prioridad }}
   </div>
   <div class="form-group">
-    <label for="{{ form_llamada.deadline.id_for_label }}">Fecha y hora límite:</label>
-    <input type="datetime-local" id="{{ form_llamada.deadline.id_for_label }}" name="{{ form_llamada.deadline.name }}">
+    <label for="{{ form.deadline.id_for_label }}">Fecha y hora límite:</label>
+    <input type="datetime-local" id="{{ form.deadline.id_for_label }}" name="{{ form.deadline.name }}">
 </div>
 
   <div class="form-group">
-    <label for="{{ form_llamada.assigned_task.id_for_label }}">Asignar a:</label>
-    {{ form_llamada.assigned_task }}
+    <label for="{{ form.assigned_task.id_for_label }}">Asignar a:</label>
+    {{ form.assigned_task }}
     {% if not request.user.is_superuser %}
     <p>No tienes permisos para asignar tareas a otros usuarios.</p>
   {% endif %}
 </div>
 
 <div class="form-group form-check-inline" id="fecha_documento_group">
-  <label for="{{ form_llamada.creado.id_for_label }}">Fecha de Creación:</label>
-  <input type="date" id="{{ form_llamada.creado.id_for_label }}" name="{{ form_llamada.creado.name }}" class="form-control" value="{{ form_llamada.creado.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'creado')">
+  <label for="{{ form.creado.id_for_label }}">Fecha de Creación:</label>
+  <input type="date" id="{{ form.creado.id_for_label }}" name="{{ form.creado.name }}" class="form-control" value="{{ form_llamada.creado.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'creado')">
 </div>
 <div id="dateAlertDocumento" class="alert alert-danger" style="display: none;"></div>
 
