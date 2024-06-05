@@ -319,28 +319,47 @@
  
     </form>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          // Envía una solicitud POST al endpoint de cierre de sesión de Django
-          fetch("{% url 'logout' %}", {
-              method: 'POST',
-              headers: {
-                  'X-CSRFToken': "{{ csrf_token }}",  // Agrega el token CSRF a la solicitud
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
-              },
-              credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
-          })
-          .then(response => {
-              if (response.ok) {
-           
-              } else {
-                  console.error('Error al cerrar sesión');
-              }
-          })
-          .catch(error => {
-              console.error('Error al cerrar sesión:', error);
-          });
-      });
+     document.addEventListener('DOMContentLoaded', function() {
+    // Función para obtener el valor de la cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Obtener el token CSRF de las cookies
+    const csrftoken = getCookie('csrftoken');
+
+    // Envía una solicitud POST al endpoint de cierre de sesión de Django
+    fetch("/logout/", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,  // Agrega el token CSRF a la solicitud
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
+        },
+        credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Sesión cerrada con éxito');
+        } else {
+            console.error('Error al cerrar sesión');
+        }
+    })
+    .catch(error => {
+        console.error('Error al cerrar sesión:', error);
+    });
+});
   </script>
   
 <script>

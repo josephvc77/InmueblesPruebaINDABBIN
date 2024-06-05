@@ -92,7 +92,7 @@ class Events(models.Model):
 
 
 class Inmueble(models.Model):
-    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_inmueble')
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='assigned_inmueble')
     NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
     rfi = models.CharField(max_length=15, null=True, blank=True)
     CHOICES = (
