@@ -47,7 +47,7 @@
           <button id="modoOscuroBtn" aria-label="modoOscuro"><i class="fi fi-rs-moon-stars"></i></i></button>
 
            <button id="menu-btn" aria-label="menu" onclick="toggleSidebar()"><i class="fi fi-rr-align-justify"></i></button>
-           <a href="{%url 'tasks_importados' %}" aria-label="home" class="btn-home"><i class="fi fi-rr-home"></i></a><br><br>
+           <a href="{%url 'principal' %}" aria-label="home" class="btn-home"><i class="fi fi-rr-home"></i></a><br><br>
 
            {% if task %}
            <div class="tab mensajes actives" data-tab="tab-mensajes">
@@ -133,10 +133,70 @@
 
 
     {% endblock %}
+    <footer class="footer">
+      <div class="container">
+        <div class="logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/SEP_Logo_2019.svg/768px-SEP_Logo_2019.svg.png" alt="logo-sep">
+      </div>
+          <div class="column">
+              <a href="{% url 'tasks_importados' %}">Completados</a>
+              <a href="{% url 'tasks_completed_importados' %}">Terminados</a>
+              <a href="{% url 'inmuebles_baja_importados' %}">Bajas</a>
+              <a href="{% url 'llamadas_inmuebles' %}">Registro de llamadas</a>
+              <a href="{% url 'create_task' %}">Agregar Alta</a>
+          </div>
+      </div>
+  </footer>
+
+</body>
 
     <style>
-
-
+      .content {
+            flex: 1;
+        }
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer .column {
+            display: flex;
+            flex: 1;
+            min-width: 200px;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+        }
+        .footer .column a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin: 5px 10px;
+        }
+        .footer .column a:hover {
+            text-decoration: underline;
+        }
+        .footer .logo img {
+            width: 100px;
+            margin: 10px;
+        }
+        @media (max-width: 768px) {
+            .footer .container {
+                flex-direction: column;
+            }
+            .footer .column {
+                justify-content: center;
+                text-align: center;
+            }
+        }
 /* Animaciones */
 
 .animated {

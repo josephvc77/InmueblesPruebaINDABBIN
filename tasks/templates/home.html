@@ -1,0 +1,126 @@
+{% extends 'base.html' %} {% block titulo %} Tareas Pendientes {% endblock %}
+ {% block content %}
+
+ <div class="animated fadeIn">
+<h1 class="text-center mb-5">Bienvenido al sistema de Inmuebles SIISEP</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 mb-3 m-1">
+      <div class="card manual-stl text-center shadow">
+        <div class="card-body manual">
+          <h5 class="card-title">Descargar Manual</h5>
+          <p class="card-text">Aprende a como utilziar el sitio</p>
+          <a href="#" class="btn btn-primary">Descargar Manual</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row justify-content-center">
+  <div class="col-md-4 mb-3 m-1">
+    <div class="card text-center shadow">
+      <div class="card-body inmuebles">
+        <h5 class="card-title">Inmuebles</h5>
+        <p class="card-text">
+          Explora la lista de inmuebles registrados en el sistema.
+        </p>
+        <a href="{% url 'tasks_importados' %}" class="btn btn-primary">Ir a Inmuebles</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-3 m-1">
+    <div class="card text-center shadow">
+      <div class="card-body Alta">
+        <h5 class="card-title">Crear un nuevo inmueble</h5>
+        <p class="card-text">Registra un nuevo inmueble en el sistema.</p>
+        <a href="{% url 'create_task' %}" class="btn btn-primary">Crear Inmueble</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md-4 mb-3 m-1">
+    <div class="card text-center shadow">
+      <div class="card-body Bajas">
+        <h5 class="card-title">Ver bajas</h5>
+        <p class="card-text">
+          Consulta los inmuebles dados de baja en el sistema.
+        </p>
+        <a href="{% url 'inmuebles_baja_importados' %}" class="btn btn-primary">Ver Bajas</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-3 m-1">
+    <div class="card text-center shadow">
+      <div class="card-body llamadas">
+        <h5 class="card-title">Módulo de Llamadas</h5>
+        <p class="card-text">Accede al módulo de gestión de llamadas.</p>
+        <a href="{% url 'llamadas_inmuebles' %}" class="btn btn-primary">Ir a Llamadas</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-8 mb-3 m-1">
+    <div class="card manual-stl text-center shadow">
+      <div class="card-body eventos">
+        <h5 class="card-title">Eventos - Reuniones</h5>
+        <p class="card-text">Mira todas las reuniones o eventos que se presentaran pronto</p>
+        <a href="{% url 'calendar' %}" class="btn btn-primary">Ver eventos</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<style>
+
+/* .dark-mode .card-title, .dark-mode .card-text{
+  color: black;
+} */
+
+  .footer{
+    margin-top: 10em;
+  }
+  .card {
+    border-radius: 5px;
+    height: 155px !important;
+    transition: ease-out 0.3s;
+  }
+
+
+  .card:hover {
+    padding: 10px;
+    margin: 20px;
+    transition: ease 0.3s;
+  }
+
+  .inmuebles {
+   background-size: cover;
+  }
+
+  .llamadas {
+   background-size: cover;
+  }
+
+  .Alta {
+    background-size: cover;
+  }
+
+  .Bajas {
+    background-size: cover;
+  }
+
+  .manual{
+   background-size: cover;
+  }
+
+  .eventos{
+  background-size: cover;
+  }
+</style>
+
+{% endblock %}

@@ -308,9 +308,9 @@ class DatosLlamadaForm(forms.ModelForm):
     class Meta: 
         model = DatosLlamadasInmuebles
         fields = [
-            'NombreInmueble', 'rfi', 'estado', 'deadline', 'prioridad', 'assigned_task', 'edo', 'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'ext', 'celular', 'email', 'estatus_llamada', 'ur', 
+            'NombreInmueble', 'rfi', 'estado', 'deadline', 'prioridad', 'assigned_task', 'edo', 'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'ext', 'celular', 'email', 'estatus_llamada', 'ur', 'observaciones', 
         ]
 class registroLlamadaForm(forms.ModelForm):
     class Meta:
         model = RegistroLlamadas
-        fields = ['fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada']
+        fields = ['fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada', 'fecha_compromiso_de_envio_de_informacion', 'fecha_compromiso_de_observaciones_subsanadas', 'fecha_autorizacion_de_documento', 'finalizacion']

@@ -97,6 +97,9 @@ urlpatterns = [
     path('generate_pdfIMP/<int:task_id>/', views.generate_pdfIMP, name='generate_pdfIMP'),
 
     path('export_tasks_to_excelIMP/', views.export_tasks_to_excelIMP, name='export_tasks_to_excelIMP'),
+    path('export_Llamadas_to_excelIMP/', views.export_Llamadas_to_excelIMP, name='export_Llamadas_to_excelIMP'),
+    path('verificar-num-llamada/', views.verificar_num_llamada, name='verificar_num_llamada'),
+   
     
     
 

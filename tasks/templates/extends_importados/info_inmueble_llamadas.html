@@ -50,29 +50,19 @@
             {{ llamada.estatus_llamada }}
         </div>
 
-        <div class="form-group form-check-inline width-label">
+        <div class="form-group form-check-inline">
             <label for="{{ llamada.prioridad.id_for_label }}">Prioridad:</label>
             {{ llamada.prioridad }}
-        </div><br>
+        </div>
 
-        {% if request.user.is_superuser %}
         <div class="form-group form-check-inline">
             <label for="{{ llamada.assigned_task.id_for_label }}">Asignar a:</label>
             {{ llamada.assigned_task }}
         </div>
-        <div class="form-group form-check-inline">
-            <label for="{{ llamada.deadline.id_for_label }}">Fecha y hora límite:</label>
-            <input type="text" id="deadline-picker-{{ task.id }}" name="deadline"
-                value="{{ llamada.deadline|date:'Y-m-d H:i' }}">
+
+        <div class="form-group">
+            <label for="{{ llamada.observaciones.id_for_label }}">observaciones:</label>
+            {{ llamada.observaciones }}
         </div>
-
-
-
-        {% else %}
-        <p style="color: brown;">No tienes permisos para asignar tareas a otros usuarios.</p>
-        {% endif %}
-
-
-
     </div>
 </div>

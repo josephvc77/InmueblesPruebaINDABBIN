@@ -1010,6 +1010,7 @@ class DatosLlamadasInmuebles(models.Model):
         ('RESEMS', 'RESEMS'),
     ]
     ur = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
+    observaciones = models.TextField(null=True, blank=True)
     
 
 class RegistroLlamadas(models.Model):
@@ -1024,3 +1025,7 @@ class RegistroLlamadas(models.Model):
     fecha_envio_correccion = models.DateField(null=True, blank=True)
     fecha_aprobacion_fichas_corregidas = models.DateField(null=True, blank=True)
     observaciones_generales = models.CharField(max_length=250, null=True, blank=True)
+    fecha_compromiso_de_envio_de_informacion = models.DateField(null=True, blank=True)
+    fecha_compromiso_de_observaciones_subsanadas =  models.DateField(null=True, blank=True)
+    fecha_autorizacion_de_documento = models.DateField(null=True, blank=True)
+    finalizacion = models.DateField(null=True, blank=True)

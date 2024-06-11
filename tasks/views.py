@@ -73,7 +73,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('tasks_importados')
+            return redirect('principal')
 
 
 
@@ -95,7 +95,7 @@ def signout(request):
     return redirect('/')
     
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import date, datetime, time
 from django.shortcuts import render
 from django.db.models import Q
 from django.shortcuts import render
@@ -309,7 +309,7 @@ def remove(request):
 
 @login_required
 def principal(request):
-    return render(request, 'tasks.html')
+    return render(request, 'home.html')
 
 
 @login_required
@@ -1625,7 +1625,8 @@ def llamadas_inmuebles(request):
     prioridad = request.GET.get('prioridad', '')
     ur = request.GET.get('ur', '')
     orden = request.GET.get('ordenar', '')
-    
+
+    # Filtrado inicial
     llamadas_list = DatosLlamadasInmuebles.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
         Q(rfi__icontains=search_query),
@@ -1638,6 +1639,20 @@ def llamadas_inmuebles(request):
     if ur:
         llamadas_list = llamadas_list.filter(ur=ur)
 
+    # Ordenación
+    if orden == 'az':
+        llamadas_list = llamadas_list.order_by('NombreInmueble')
+    elif orden == 'za':
+        llamadas_list = llamadas_list.order_by('-NombreInmueble')
+    elif orden == 'nuevo':
+        llamadas_list = llamadas_list.order_by('-updated')
+    elif orden == 'viejo':
+        llamadas_list = llamadas_list.order_by('creado')
+    else:
+        # Orden por defecto: más recientes primero
+        llamadas_list = llamadas_list.order_by('-updated')
+
+    # Paginación
     paginator = Paginator(llamadas_list, 20)
     page = request.GET.get('page')
     try:
@@ -1647,15 +1662,6 @@ def llamadas_inmuebles(request):
     except EmptyPage:
         llamadas = paginator.page(paginator.num_pages)
 
-    if orden == 'az':
-        llamadas_list = llamadas_list.order_by('NombreInmueble')
-    elif orden == 'za':
-        llamadas_list = llamadas_list.order_by('-NombreInmueble')
-    elif orden == 'nuevo':
-        llamadas_list = llamadas_list.order_by('-updated')
-    elif orden == 'viejo':
-        llamadas_list = llamadas_list.order_by('creado')
-        
     total_pending_inmuebles = DatosLlamadasInmuebles.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
         Q(rfi__icontains=search_query),
@@ -1688,7 +1694,10 @@ def task_detail_llamadas(request, task_id):
         registro_Llamadas_Form = registroLlamadaForm(request.POST)
 
         if registro_Llamadas_Form.is_valid():
-            if any(registro_Llamadas_Form.cleaned_data.values()):
+            num_llamada = registro_Llamadas_Form.cleaned_data.get('NumLlamada')
+            if RegistroLlamadas.objects.filter(NumLlamada=num_llamada, task=task).exists():
+                registro_Llamadas_Form.add_error('NumLlamada', 'El número de llamada ya existe.')
+            else:
                 registroLlamadas = registro_Llamadas_Form.save(commit=False)
                 registroLlamadas.task = task
                 registroLlamadas.save()
@@ -1709,3 +1718,98 @@ def task_detail_llamadas(request, task_id):
     })
 
 
+def verificar_num_llamada(request):
+    num_llamada = request.GET.get('num_llamada')
+    task_id = request.GET.get('task_id')
+    exists = RegistroLlamadas.objects.filter(NumLlamada=num_llamada, task_id=task_id).exists()
+    return JsonResponse({'exists': exists})
+
+
+import pandas as pd
+from django.http import HttpResponse
+from openpyxl import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.styles import NamedStyle
+from datetime import datetime
+
+def export_Llamadas_to_excelIMP(request):
+    # Obtener todas las tareas del usuario logueado
+    RLlamadas = DatosLlamadasInmuebles.objects.all()
+
+    # Crear una lista vacía para almacenar los datos de tareas y modelos relacionados
+    data = []
+
+    # Recorrer todas las tareas y obtener los datos necesarios
+    for llamadasPendientes in RLlamadas:
+        task_data = {
+            'rfi': llamadasPendientes.rfi,
+            'Nombre del Inmueble': llamadasPendientes.NombreInmueble,
+            'Estado': llamadasPendientes.estado,
+            'Prioridad': llamadasPendientes.prioridad,
+            'Tarea asignada': str(llamadasPendientes.assigned_task),  # Convertir a cadena
+            'Edo': llamadasPendientes.edo,
+            'nd': llamadasPendientes.nd,
+            'Nombre del contacto': llamadasPendientes.nombre_del_contacto,
+            'Puesto o Cargo': llamadasPendientes.puesto_o_cargo,
+            'Tel. del Plantel': llamadasPendientes.tel_plantel,
+            'Celular': llamadasPendientes.celular,
+            'Email': llamadasPendientes.email,
+            'Estatus de la llamada': llamadasPendientes.estatus_llamada,
+            'UR': llamadasPendientes.ur,
+            'Observaciones': llamadasPendientes.observaciones,
+        }
+
+        # Consulta para obtener la Edificacion relacionada con la tarea actual (si existe)
+        registros = RegistroLlamadas.objects.filter(task=llamadasPendientes)
+
+        # Expandir task_data con los registros de llamadas
+        for i, registro in enumerate(registros):
+            task_data[f'NumLlamada_{i+1}'] = registro.NumLlamada
+            task_data[f'Fecha de Llamada_{i+1}'] = registro.fecha_llamada
+            task_data[f'Hora de llamada_{i+1}'] = registro.hora_llamada
+            task_data[f'Acuerdos o compromisos_{i+1}'] = registro.acuerdos_compromisos
+            task_data[f'Fecha comprometida_{i+1}'] = registro.fecha_comprometida
+            task_data[f'Fecha de respuesta del email_{i+1}'] = registro.fecha_respuesta_email
+            task_data[f'Fecha de revision de correcciones_{i+1}'] = registro.fecha_revision_correcciones
+            task_data[f'Fecha de envio de correcciones_{i+1}'] = registro.fecha_envio_correccion
+            task_data[f'Fecha de aprobacion de fichas corregidas_{i+1}'] = registro.fecha_aprobacion_fichas_corregidas
+            task_data[f'Observaciones Generales_{i+1}'] = registro.observaciones_generales
+
+        data.append(task_data)
+
+    # Comprobar la cantidad de datos recopilados
+    print(f"Total de registros recopilados: {len(data)}")
+
+    # Convertir la lista de datos a un DataFrame de Pandas
+    df = pd.DataFrame(data)
+
+    # Crear un nuevo libro de trabajo de openpyxl
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'Registros de Llamadas'
+
+    # Estilo de fecha y hora
+    date_style = NamedStyle(name='date_style', number_format='DD/MM/YYYY')
+    time_style = NamedStyle(name='time_style', number_format='HH:MM:SS')
+    datetime_style = NamedStyle(name='datetime_style', number_format='DD/MM/YYYY HH:MM:SS')
+
+    # Añadir los datos del DataFrame a la hoja
+    for r_idx, row in enumerate(dataframe_to_rows(df, index=False, header=True), 1):
+        ws.append(row)
+        for c_idx, cell in enumerate(row, 1):
+            cell = ws.cell(row=r_idx, column=c_idx)
+            if isinstance(cell.value, datetime):
+                cell.style = datetime_style
+            elif isinstance(cell.value, date):
+                cell.style = date_style
+            elif isinstance(cell.value, time):
+                cell.style = time_style
+
+    # Crear la respuesta del archivo Excel
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="RegistrodeLlamadas.xlsx"'
+
+    # Guardar el libro en el response
+    wb.save(response)
+
+    return response
