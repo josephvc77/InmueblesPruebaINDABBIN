@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block titulo %} Detalles {{ task.NombreInmueble }} {% endblock %}
+{% block titulo %} Detalles {{ ficha.NombreInmueble }} {% endblock %}
 
 {% block content %}
   <div class="task-detail-container ">
-    <h2 class="text-center">{{ task.NombreInmueble }}</h2>
+    <h2 class="text-center">{{ ficha.NombreInmueble }}</h2>
     {{ error }}
-    <form method="post" action="{% url 'task_detail_llamadas' task.id%}" enctype="multipart/form-data" class="task-form" id="form_detail">
+    <form method="post" action="{% url 'task_detail_llamadas' ficha.id%}" enctype="multipart/form-data" class="task-form" id="form_detail">
       {% csrf_token %}
       
       <!-- Campos del formulario -->
@@ -77,18 +77,10 @@
     
 
   <div class="buttons">
-    <!-- <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
+    <!-- <a href="{% url 'generate_pdfIMP' ficha.id %}" class="btn btn-primary" target="_blank">
       <i class="fas fa-file-pdf"></i> Generar PDF
     </a> -->
-<!-- 
-      <form id="complete-form" action="{% url 'complete_task_importados' task.id %}" method="POST">
-        {% csrf_token %}
-        <button type="button" class="btn btn-success" onclick="showCompleteConfirmation()">Terminar</button>
-      </form>
-      <form id="delete-form" action="{% url 'bajas_importados' task.id %}" method="POST">
-        {% csrf_token %}
-        <button type="button" class="btn btn-warning" id="darDeBajaButton">Dar de baja</button>
-      </form> -->
+
 
   </div>
 </div>

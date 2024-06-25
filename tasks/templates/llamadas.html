@@ -64,54 +64,53 @@
 
 {% if llamadas %}
 <div class="card-container animated fadeIn">
-  {% for task in llamadas %}
+  {% for ficha in llamadas %}
   <div class="card">
     <div class="card-header">
-      <h5 class="text-center">{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" aria-label="PDF" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
+      <h5 class="text-center">{{ ficha.NombreInmueble }}<a href="{% url 'generate_pdfIMP' ficha.id %}" aria-label="PDF" target="_blank" class="btn pdf"><i class="fas fa-file-pdf"></i></a></h5>
     </div>
     <div class="card-body">
       <div class="scroll-content">
-        <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
-
-        <p><strong>RFI:</strong> {{ task.rfi }}</p>
-        <p class="text-center">{{ task.Sector }}</p>
-        <p class="text-center"><strong>EDO :</strong> {{ task.edo }}</p>
-        <p class="text-center"><strong>UR :</strong> {{ task.ur }}</p>
-        <p class="text-center"><strong>Estatus de la llamada :</strong> {{ task.estatus_llamada }}</p>
-        <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
-          Prioridad: {{ task.prioridad }}
+        <p class="estado"><strong>Estado:</strong> {% if ficha.estado == 'Activo' %} Activo{% else %}Baja{% endif %} </p>
+        <p><strong>RFI:</strong> {{ ficha.rfi }}</p>
+        <p class="text-center">{{ ficha.Sector }}</p>
+        <p class="text-center"><strong>EDO :</strong> {{ ficha.edo }}</p>
+        <p class="text-center"><strong>UR :</strong> {{ ficha.ur }}</p>
+        <p class="text-center"><strong>Estatus de la llamada :</strong> {{ ficha.estatus_llamada }}</p>
+        <p class="priority-paragraph text-center {% if ficha.prioridad == 'Alta' %} alta-priority {% elif ficha.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
+          Prioridad: {{ ficha.prioridad }}
         </p>
-        {% if task.assigned_task %}
+        {% if ficha.assigned_task %}
         <p class="text-center" for="assigned_task">Tarea asignada a:</p>
         <div class="asigned">
-          <p class="text-center">{{ task.assigned_task.first_name }} {{ task.assigned_task.last_name }}<br> {{ task.assigned_task }}</p>
+          <p class="text-center">{{ ficha.assigned_task.first_name }} {{ ficha.assigned_task.last_name }}<br> {{ ficha.assigned_task }}</p>
         </div>
         
       {% endif %}
       
-            {% if task.deadline %}
-              <p>Entrega para: {{task.deadline}}</p>
+            {% if ficha.deadline %}
+              <p>Entrega para: {{ficha.deadline}}</p>
               {% endif %}
-              {% if task.completed %}
+              {% if ficha.completed %}
               <p>Completada</p>
-            {% elif task.days_delayed > 0 %}
+            {% elif ficha.days_delayed > 0 %}
               <p style="color: rgb(179, 73, 73);">
                 Retrasada por:
-                {{ task.days_delayed }} días
-                {% if task.hours_delayed > 0 %}
-                  {{ task.hours_delayed }} horas
+                {{ ficha.days_delayed }} días
+                {% if ficha.hours_delayed > 0 %}
+                  {{ ficha.hours_delayed }} horas
                 {% endif %}
               </p>
-            {% elif task.hours_delayed > 0 %}
+            {% elif ficha.hours_delayed > 0 %}
               <p style="color: red;">
                 Retrasada por:
-                {{ task.hours_delayed }} horas
+                {{ ficha.hours_delayed }} horas
               </p>
-            {% elif task.days_remaining > 0 or task.hours_remaining > 0 %}
+            {% elif ficha.days_remaining > 0 or ficha.hours_remaining > 0 %}
               <p>
                 Tiempo restante:
-                {{ task.days_remaining }} días
-                {{ task.hours_remaining }} horas
+                {{ ficha.days_remaining }} días
+                {{ ficha.hours_remaining }} horas
               </p>
               
             {% else %}
@@ -121,18 +120,18 @@
       
       </div>
     </div>
-    {% if task.creado %}
-    <p class="completado">Creado el: {{ task.creado}}</p>
+    {% if ficha.creado %}
+    <p class="completado">Creado el: {{ ficha.creado}}</p>
     {% endif %}
 
 
     
-    {% if task.datecompleted %}
-    <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
+    {% if ficha.datecompleted %}
+    <p class="completado">Completado el: {{ ficha.datecompleted|date:'j M Y' }}</p>
   {% endif %}
   
     <div class="card-footer">
-      <a style="background-color: #691c32; border-radius: 20px; color: #fff; width: 150px; margin: 0 auto;" href="{% url 'task_detail_llamadas' task.id %}" class="btn btn-outline">Ver detalles</a>
+      <a style="background-color: #691c32; border-radius: 20px; color: #fff; width: 150px; margin: 0 auto;" href="{% url 'task_detail_llamadas' ficha.id %}" class="btn btn-outline">Ver detalles</a>
     
     </div>
   </div>
@@ -263,6 +262,11 @@
     max-height: 700px;
     margin: 15px;
     margin-bottom: 0em;
+  }
+
+  .card-body{
+    display: flex !important;
+    flex-direction: column;
   }
 
   .completado{

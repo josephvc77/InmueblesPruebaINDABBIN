@@ -1686,42 +1686,45 @@ def llamadas_inmuebles(request):
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def task_detail_llamadas(request, task_id):
-    task = get_object_or_404(DatosLlamadasInmuebles, pk=task_id)
+def task_detail_llamadas(request, ficha_id):
+    ficha = get_object_or_404(DatosLlamadasInmuebles, pk=ficha_id)
     
     if request.method == 'POST':
-        llamada = DatosLlamadaForm(request.POST, request.FILES, instance=task)
+        llamada = DatosLlamadaForm(request.POST, request.FILES, instance=ficha)
         registro_Llamadas_Form = registroLlamadaForm(request.POST)
 
         if registro_Llamadas_Form.is_valid():
             num_llamada = registro_Llamadas_Form.cleaned_data.get('NumLlamada')
-            if RegistroLlamadas.objects.filter(NumLlamada=num_llamada, task=task).exists():
+            if RegistroLlamadas.objects.filter(NumLlamada=num_llamada, ficha=ficha).exists():
                 registro_Llamadas_Form.add_error('NumLlamada', 'El número de llamada ya existe.')
             else:
                 registroLlamadas = registro_Llamadas_Form.save(commit=False)
-                registroLlamadas.task = task
+                registroLlamadas.ficha = ficha
                 registroLlamadas.save()
-                return redirect('task_detail_llamadas', task_id=task_id)
+                return redirect('task_detail_llamadas', ficha_id=ficha_id)
 
         if llamada.is_valid():
             llamada.save()
             return redirect('llamadas_inmuebles')
         
     else:
-        llamada = DatosLlamadaForm(instance=task)
+        llamada = DatosLlamadaForm(instance=ficha)
         registro_Llamadas_Form = registroLlamadaForm()
+
+    mensajes = MensajeIMP.objects.all()
    
     return render(request, 'detail_llamadas.html', {
-        'task': task,
+        'ficha': ficha,
         'llamada': llamada,
-        'registro_Llamadas_Form': registro_Llamadas_Form
+        'registro_Llamadas_Form': registro_Llamadas_Form,
+        'mensajes': mensajes,
     })
 
 
 def verificar_num_llamada(request):
     num_llamada = request.GET.get('num_llamada')
-    task_id = request.GET.get('task_id')
-    exists = RegistroLlamadas.objects.filter(NumLlamada=num_llamada, task_id=task_id).exists()
+    ficha_id = request.GET.get('ficha_id')
+    exists = RegistroLlamadas.objects.filter(NumLlamada=num_llamada, ficha_id=ficha_id).exists()
     return JsonResponse({'exists': exists})
 
 

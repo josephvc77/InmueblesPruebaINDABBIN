@@ -88,8 +88,9 @@ class Events(models.Model):
     contacto = models.CharField(max_length=20, null=True, blank=True)
     servicios = models.CharField(max_length=100, null=True, blank=True)
     observaciones = models.CharField(max_length=100, null=True, blank=True)
-    
-
+    class Meta:
+        verbose_name = "Evento"
+        verbose_name_plural = "Eventos"
 
 class Inmueble(models.Model):
     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='assigned_inmueble')
@@ -603,8 +604,8 @@ class Inmueble(models.Model):
     documentacion_soporte = models.CharField(max_length=100, null=True, blank=True)
     
     class Meta:
-        verbose_name = "Inmueble Importado"
-        verbose_name_plural = "Inmuebles Importados"
+        verbose_name = "Inmueble"
+        verbose_name_plural = "Inmuebles"
         permissions = [
             ('add_tasks_inmueble', 'Can add inmueble in tasks app'),
             ('change_tasks_inmueble', 'Can change inmueble in tasks app'),
@@ -1011,10 +1012,14 @@ class DatosLlamadasInmuebles(models.Model):
     ]
     ur = models.CharField(max_length=30, choices=UR_CHOICES, null=True, blank=True)
     observaciones = models.TextField(null=True, blank=True)
+    class Meta:
+        verbose_name = "Llamada"
+        verbose_name_plural = "Llamadas"
+
     
 
 class RegistroLlamadas(models.Model):
-    task = models.ForeignKey(DatosLlamadasInmuebles, on_delete=models.CASCADE, related_name='registro_llamadas')
+    ficha = models.ForeignKey(DatosLlamadasInmuebles, on_delete=models.CASCADE, related_name='registro_llamadas')
     NumLlamada = models.CharField(max_length=200, null=True, blank=True)
     fecha_llamada = models.DateField(null=True, blank=True)
     hora_llamada = models.TimeField(null=True, blank=True)

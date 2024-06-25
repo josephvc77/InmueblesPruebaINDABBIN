@@ -4,7 +4,28 @@ from MDSJSEP.models import EventosCreados
 from condia.models import TareasCondia
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
+class RegistroLlamadas(admin.TabularInline):
+    model = RegistroLlamadas
 
+
+# Define una clase personalizada para mostrar todos los modelos en una sola página
+class AllModelsLlamadas(admin.ModelAdmin):
+    inlines = [
+        RegistroLlamadas,
+    ]
+
+    list_display = ('NombreInmueble','rfi','edo', 'ur')
+    search_fields = ('rfi', 'NombreInmueble')
+
+from reversion.admin import VersionAdmin
+
+# Registra la clase personalizada que contiene todos los modelos y hereda de VersionAdmin
+@admin.register(DatosLlamadasInmuebles)
+class LlamadasAdmin(VersionAdmin, AllModelsLlamadas):
+    pass
+
+
+# Inmuebles
 class DictamenEstructuralInlineIMP(admin.TabularInline):
     model = DictamenEstructuralIMP
 
@@ -87,6 +108,9 @@ from reversion.admin import VersionAdmin
 class InmuebleAdmin(VersionAdmin, AllModelsAdminIMP):
     pass
 
+
+
+
 # Registra los otros modelos
 admin.site.register(TareasCondia)
 # Registra otros modelos aquí...
@@ -99,12 +123,3 @@ class EventosCreadosAdmin(admin.ModelAdmin):
     list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
 admin.site.register(EventosCreados, EventosCreadosAdmin)
 
-
-class LlamadasAdmin(admin.ModelAdmin):
-    list_display = ('NombreInmueble', 'rfi', 'ur', 'prioridad')
-    search_fields = ('NombreInmueble', 'rfi')
-admin.site.register(DatosLlamadasInmuebles, LlamadasAdmin)
-
-class RegistrosLlamadasAdmin(admin.ModelAdmin):
-    list_display = ('NumLlamada', 'fecha_llamada', 'hora_llamada', 'acuerdos_compromisos')
-admin.site.register(RegistroLlamadas, RegistrosLlamadasAdmin)

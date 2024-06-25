@@ -98,7 +98,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for registro_llamadas in task.registro_llamadas.all %}
+                    {% for registro_llamadas in ficha.registro_llamadas.all %}
                     <tr>
                         <td>{{ registro_llamadas.NumLlamada|default_if_none:"" }}</td>
                         <td>{{ registro_llamadas.fecha_llamada|default_if_none:"" }}</td>
@@ -135,12 +135,12 @@
     $(document).ready(function() {
         $('#id_NumLlamada').on('blur', function() {
             var numLlamada = $(this).val();
-            var taskId = '{{ task.id }}';
+            var fichaID = '{{ ficha.id }}';
             $.ajax({
                 url: '{% url "verificar_num_llamada" %}',
                 data: {
                     'num_llamada': numLlamada,
-                    'task_id': taskId
+                    'ficha_id': fichaID
                 },
                 success: function(data) {
                     if (data.exists) {

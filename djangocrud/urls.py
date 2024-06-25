@@ -31,7 +31,7 @@ urlpatterns = [
 
 
     path('llamadas_inmuebles/', views.llamadas_inmuebles, name='llamadas_inmuebles'),
-    path('tasks/<int:task_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
+    path('tasks/<int:ficha_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
     path('create_DatosLlamadasInmueble/', views.create_DatosLlamadasInmueble, name='create_DatosLlamadasInmueble'),
 
     
