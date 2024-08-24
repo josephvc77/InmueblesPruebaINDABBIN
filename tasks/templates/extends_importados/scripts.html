@@ -155,24 +155,6 @@
         });
     });
 </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const taskId = "{{ task.id }}";
-        const deadlinePicker = document.getElementById(`deadline-picker-${taskId}`);
-
-        const storedDeadline = localStorage.getItem(`deadline_${taskId}`);
-        const dateStr = storedDeadline || "{{ inmueble.deadline|date:'Y-m-d H:i' }}";
-
-        const picker = flatpickr(deadlinePicker, {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            defaultDate: dateStr,
-            onChange: function (selectedDates, dateStr) {
-                localStorage.setItem(`deadline_${taskId}`, dateStr);
-            },
-        });
-    });
-</script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

@@ -101,35 +101,22 @@
         
       {% endif %}
       
-            {% if task.deadline %}
-              <p>Entrega para: {{task.deadline}}</p>
-              {% endif %}
-              {% if task.completed %}
-              <p>Completada</p>
-            {% elif task.days_delayed > 0 %}
-              <p style="color: rgb(179, 73, 73);">
-                Retrasada por:
-                {{ task.days_delayed }} días
-                {% if task.hours_delayed > 0 %}
-                  {{ task.hours_delayed }} horas
-                {% endif %}
-              </p>
-            {% elif task.hours_delayed > 0 %}
-              <p style="color: red;">
-                Retrasada por:
-                {{ task.hours_delayed }} horas
-              </p>
-            {% elif task.days_remaining > 0 or task.hours_remaining > 0 %}
-              <p>
-                Tiempo restante:
-                {{ task.days_remaining }} días
-                {{ task.hours_remaining }} horas
-              </p>
-              
-            {% else %}
-            
-            {% endif %}
-        
+      {% if task.deadline %}
+      <p>Entrega para: {{ task.deadline }}</p>
+      {% endif %}
+
+      {% if task.completed %}
+          <p>Completada</p>
+      {% elif task.days_delayed > 0 %}
+          <p style="color: rgb(179, 73, 73);">
+              Retrasada por: {{ task.days_delayed }} días
+          </p>
+      {% else %}
+          <p>
+              Tiempo restante: {{ task.days_remaining }} días
+          </p>
+      {% endif %}
+
       
       </div>
     </div>

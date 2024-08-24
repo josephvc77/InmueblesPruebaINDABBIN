@@ -1,14 +1,21 @@
 <div class="tab-content animated fadeIn" id="tab-valor">
     <div class="section">
         <div class="separador">
+
             <h4>Datos Contables</h4>
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.valor_contable.id_for_label }}">Valor Contable (S):</label>
                 {{ inmueble.valor_contable }}
             </div>
             <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.fecha_valor_contable.id_for_label }}">Fecha Valor Contable:</label>
-                {{ inmueble.fecha_valor_contable }}
+                <label for="fecha_valor_contable">Fecha Valor Contable:</label>
+                <div class="datepicker-container">
+                    <input type="text" id="fecha_valor_contable" value="{{inmueble.fecha_valor_contable.value}}"
+                        name="fecha_valor_contable" class="form-control datepicker" placeholder="dd/mm/aaaa">
+                    <div class="input-group-append">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -20,10 +27,16 @@
             </div>
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.fecha_valor_asegurable.id_for_label }}">Fecha Valor Asegurable:</label>
-                {{ inmueble.fecha_valor_asegurable }}
+                <div class="datepicker-container">
+                    <input type="text" id="fecha_valor_asegurable" value="{{ inmueble.fecha_valor_asegurable.value }}"
+                        name="fecha_valor_asegurable" class="form-control datepicker" placeholder="dd/mm/aaaa">
+                    <div class="input-group-append">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
             </div>
         </div>
-
+    
         <div class="separador">
             <h4>Datos de Adquisición</h4>
             <div class="form-group form-check-inline width-label">
@@ -31,9 +44,14 @@
                 {{ inmueble.valor_adquisicion }}
             </div>
             <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.fecha_valor_adquisicion.id_for_label }}">Fecha de Valor de Adquisición
-                    (es):</label>
-                {{ inmueble.fecha_valor_adquisicion }}
+                <label for="{{ inmueble.fecha_valor_adquisicion.id_for_label }}">Fecha de Valor de Adquisición (es):</label>
+                <div class="datepicker-container">
+                    <input type="text" id="fecha_valor_adquisicion" value="{{ inmueble.fecha_valor_adquisicion.value }}"
+                        name="fecha_valor_adquisicion" class="form-control datepicker" placeholder="dd/mm/aaaa">
+                    <div class="input-group-append">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
             </div>
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.valor_terreno.id_for_label }}">Valor de Terreno (S):</label>
@@ -44,7 +62,7 @@
                 {{ inmueble.valor_construccion }}
             </div>
         </div>
-
+    
         <div class="separador">
             <h4>Datos Catastrales</h4>
             <div class="form-group form-check-inline width-label">
@@ -52,8 +70,7 @@
                 {{ inmueble.valor_catastral_terreno }}
             </div>
             <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_catastral_construccion.id_for_label }}">Valor Catastral de la Construcción
-                    (es):</label>
+                <label for="{{ inmueble.valor_catastral_construccion.id_for_label }}">Valor Catastral de la Construcción (es):</label>
                 {{ inmueble.valor_catastral_construccion }}
             </div>
             <div class="form-group form-check-inline width-label">
@@ -62,7 +79,13 @@
             </div>
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.fecha_valor_catastral.id_for_label }}">Fecha Valor Catastral:</label>
-                {{ inmueble.fecha_valor_catastral }}
+                <div class="datepicker-container">
+                    <input type="text" id="fecha_valor_catastral" value="{{ inmueble.fecha_valor_catastral.value }}"
+                        name="fecha_valor_catastral" class="form-control datepicker" placeholder="dd/mm/aaaa">
+                    <div class="input-group-append">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
             </div>
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.documentacion_soporte.id_for_label }}">Documentación Soporte:</label>
@@ -142,3 +165,4 @@
         </div>
     </div>
 </div>
+

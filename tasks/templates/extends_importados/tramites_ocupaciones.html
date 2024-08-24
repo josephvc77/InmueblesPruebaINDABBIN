@@ -1,42 +1,6 @@
 <div class="tab-content animated fadeIn" id="tab-tramites-ocupaciones">
   <div class="section">
-    <h3>Ocupaciones Registradas:</h3>
-    <div class="table-responsive" id="tablaOcupaciones">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Tipo de Procedimiento</th>
-            <th>Nombre Ocupante</th>
-            <th>Superficie Invadida</th>
-            <th>No. Expediente</th>
-            <th>Juzgado</th>
-            <th>Estatus del Procedimiento</th>
-            <th>Suspensión del Acto</th>
-            <th>Recuperado</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for ocupacion in task.ocupaciones.all %}
-          <tr>
-            <td>{{ ocupacion.get_tipo_procedimiento_display }}</td>
-            <td>{{ ocupacion.nombre_ocupante }}</td>
-            <td>{{ ocupacion.superficie_invadida }}</td>
-            <td>{{ ocupacion.no_expediente }}</td>
-            <td>{{ ocupacion.juzgado }}</td>
-            <td>{{ ocupacion.get_estatus_procedimiento_display }}</td>
-            <td>{{ ocupacion.suspension_acto }}</td>
-            <td>{{ ocupacion.recuperado }}</td>
-            <td>
-              <a href="{% url 'editar_ocupacionIMP' ocupacion.id %}" class="btn btn-warning btn-sm">Editar</a>
-              <a href="{% url 'eliminar_ocupacionIMP' ocupacion_id=ocupacion.id %}" class="btn btn-danger btn-sm"
-                onclick="return confirm('¿Estás seguro de que deseas eliminar esta ocupación?')">Eliminar</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+   
 
     <div class="separador">
       <h4>Agregar nueva Ocupación:</h4>
@@ -92,12 +56,71 @@
 
         <button type="submit" id="guardarOcupacion" class="btn btn-outline-success">Guardar Ocupación</button>
       </form>
+      <br><br>
+      <h3>Ocupaciones Registradas:</h3>
+      <div class="table-responsive" id="tablaOcupaciones">
+        <table class="table" style="width: 100% !important;">
+          <thead>
+            <tr>
+              <th>Tipo de Procedimiento</th>
+              <th>Nombre Ocupante</th>
+              <th>Superficie Invadida</th>
+              <th>No. Expediente</th>
+              <th>Juzgado</th>
+              <th>Estatus del Procedimiento</th>
+              <th>Suspensión del Acto</th>
+              <th>Recuperado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ocupacion in task.ocupaciones.all %}
+            <tr>
+              <td>{{ ocupacion.get_tipo_procedimiento_display }}</td>
+              <td>{{ ocupacion.nombre_ocupante }}</td>
+              <td>{{ ocupacion.superficie_invadida }}</td>
+              <td>{{ ocupacion.no_expediente }}</td>
+              <td>{{ ocupacion.juzgado }}</td>
+              <td>{{ ocupacion.get_estatus_procedimiento_display }}</td>
+              <td>{{ ocupacion.suspension_acto }}</td>
+              <td>{{ ocupacion.recuperado }}</td>
+              <td>
+                <a href="{% url 'editar_ocupacionIMP' ocupacion.id %}" class="btn btn-outline-warning btn-sm">Editar</a>
+                <a href="{% url 'eliminar_ocupacionIMP' ocupacion_id=ocupacion.id %}" class="btn btn-outline-danger btn-sm"
+                  onclick="return confirm('¿Estás seguro de que deseas eliminar esta ocupación?')">Eliminar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="separador">
 
+    
+
+      <h4>Agregar nuevo Trámite de Disposición:</h4>
+      <form method="post" id="tramiteDisposicionForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="{{ tramite_disposicion_form.tramite_disposicion.id_for_label }}">Trámite de Disposición:</label>
+          {{ tramite_disposicion_form.tramite_disposicion }}
+        </div>
+        <div class="form-group">
+          <label for="{{ tramite_disposicion_form.estatus.id_for_label }}">Estatus:</label>
+          {{ tramite_disposicion_form.estatus }}
+        </div>
+        <div class="form-group">
+          <label for="{{ tramite_disposicion_form.numero_de_expediente.id_for_label }}">Número de Expediente:</label>
+          {{ tramite_disposicion_form.numero_de_expediente }}
+        </div>
+        <button type="submit" id="guardarTramiteDisposicion" class="btn btn-outline-success">Guardar Trámite de
+          Disposición</button>
+      </form>
+      <br><br>
       <h4>Trámites de Disposición Guardados:</h4>
-      <table class="table">
+      <table class="table" style="width: 100% !important;">
         <thead>
           <tr>
             <th>Trámite de Disposición</th>
@@ -120,25 +143,6 @@
           {% endfor %}
         </tbody>
       </table>
-
-      <h4>Agregar nuevo Trámite de Disposición:</h4>
-      <form method="post" id="tramiteDisposicionForm" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="{{ tramite_disposicion_form.tramite_disposicion.id_for_label }}">Trámite de Disposición:</label>
-          {{ tramite_disposicion_form.tramite_disposicion }}
-        </div>
-        <div class="form-group">
-          <label for="{{ tramite_disposicion_form.estatus.id_for_label }}">Estatus:</label>
-          {{ tramite_disposicion_form.estatus }}
-        </div>
-        <div class="form-group">
-          <label for="{{ tramite_disposicion_form.numero_de_expediente.id_for_label }}">Número de Expediente:</label>
-          {{ tramite_disposicion_form.numero_de_expediente }}
-        </div>
-        <button type="submit" id="guardarTramiteDisposicion" class="btn btn-outline-success">Guardar Trámite de
-          Disposición</button>
-      </form>
     </div>
   </div>
 </div>

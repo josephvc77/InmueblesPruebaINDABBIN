@@ -55,10 +55,15 @@
             <label for="{{ inmueble.assigned_to.id_for_label }}">Asignar a:</label>
             {{ inmueble.assigned_to }}
         </div>
-        <div class="form-group form-check-inline">
+        <div class="form-group form-check-inline width-label">
             <label for="{{ inmueble.deadline.id_for_label }}">Fecha y hora límite:</label>
-            <input type="text" id="deadline-picker-{{ task.id }}" name="deadline"
-                value="{{ inmueble.deadline|date:'Y-m-d H:i' }}">
+            <div class="datepicker-container">
+                <input type="text" id="deadline" value="{{ inmueble.deadline.value }}"
+                    name="deadline" class="form-control datepicker" placeholder="dd/mm/aaaa">
+                <div class="input-group-append">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
         </div>
 
 

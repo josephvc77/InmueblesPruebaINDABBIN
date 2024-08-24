@@ -18,10 +18,7 @@ class TaskCreateForm(ModelForm):
     class Meta:
         model = Inmueble
         fields = ['NombreInmueble', 'assigned_to', 'causa_alta', 'prioridad', 'deadline', 'creado', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble']
-        widgets = {
-                'deadline': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa', 'type': 'date'}),
-            }
-
+       
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(TaskCreateForm, self).__init__(*args, **kwargs)
@@ -96,16 +93,14 @@ class InmuebleForm(forms.ModelForm):
                 # Valor
                   'valor_contable', 'fecha_valor_contable', 'valor_asegurable', 'fecha_valor_asegurable', 'valor_adquisicion', 'fecha_valor_adquisicion', 'valor_terreno', 
                   'valor_construccion', 'valor_catastral_terreno', 'valor_catastral_construccion', 'valor_total_catastral', 'fecha_valor_catastral', 'documentacion_soporte' ]
+        
         widgets = {
             'subir_archivo': CustomClearableFileInput,
             'fecha_documento': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
             'entidad_federativa': forms.Select(attrs={'onchange': "loadMunicipios(this.value);"}),  # Añadir el widget para el campo entidad_federativa
             'municipio_alcaldia': forms.Select,  # Añadir el widget para el campo municipio_alcaldia
-            'fecha_valor_contable': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'fecha_valor_asegurable': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'fecha_valor_adquisicion': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'fecha_valor_catastral': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
     }
+        
     
 from django import forms
 from .models import DictamenEstructuralIMP

@@ -25,19 +25,21 @@
     </div>
     <div class="form-group">
       <label for="{{ inmueble.fotografia_de_la_ubicacion.id_for_label }}">Fotografía de Ubicación:</label>
-      <div class="m-2">{{ inmueble.fotografia_de_la_ubicacion }}</div>
-      <a class="btn btn-outline-success m-2" href="https://www.google.com.mx/maps/" target="_blank">
-        Ir a Google Maps</a>
+      
+      <!-- Mostrar la imagen actual si existe -->
+      {% if task.fotografia_de_la_ubicacion %}
+        <div class="mb-3">
+          <img width="150" src="{{ task.fotografia_de_la_ubicacion.url }}" alt="Fotografía de ubicación"
+            onclick="openModal('{{ task.fotografia_de_la_ubicacion.url }}')" style="cursor: pointer;" />
+        </div>
+      {% else %}
+        <p>No hay fotografía de ubicación disponible.</p>
+      {% endif %}
+      
+      <!-- Campo para cargar una nueva imagen -->
+      <input type="file" class="form-control" name="fotografia_de_la_ubicacion" id="id_fotografia_de_la_ubicacion">
     </div>
-
-    {% if task.fotografia_de_la_ubicacion %}
-    <img width="150" src="{{ inmueble.fotografia_de_la_ubicacion.url }}" alt="Fotografía de ubicación"
-      onclick="openModal('{{ inmueble.fotografia_de_la_ubicacion.url }}')" />
-    {% else %}
-    <p>No hay fotografía de ubicación disponible.</p>
-    {% endif %}
-
-    <br><br>
+    <br>
     <div class="form-group form-check-inline">
       <label for="{{ inmueble.componente_espacial.id_for_label }}">Componente Espacial:</label>
       {{ inmueble.componente_espacial }}
@@ -173,3 +175,30 @@
     </div>
   </div>
 </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img id="modalImage" src="" class="img-fluid" alt="Imagen en Modal">
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function openModal(imageUrl) {
+      var modalImage = document.getElementById('modalImage');
+      modalImage.src = imageUrl;
+      
+      var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+      myModal.show();
+    }
+    </script>
+  
+  

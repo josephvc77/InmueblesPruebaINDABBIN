@@ -32,7 +32,7 @@
   </div>
   <div class="form-group form-check-inline" id="fecha_documento">
     <label for="{{ dictamen_estructural_form.fecha_documento.id_for_label }}">Fecha de Documento:</label>
-    <input required type="date" id="id_fecha_documento" name="fecha_documento" class="form-control" value="{{ dictamen_estructural_form.fecha_documento.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertInscripcionLocal')">
+    <input required="true" type="date" id="id_fecha_documento" name="fecha_documento" class="form-control" value="{{ dictamen_estructural_form.fecha_documento.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}" onchange="validateDate(this, 'dateAlertInscripcionLocal')">
 </div>
   <div class="form-group form-check-inline">
     <input type="file" class="form-control" required name="subir_archivo_dictamen" id="id_subir_archivo_dictamen">

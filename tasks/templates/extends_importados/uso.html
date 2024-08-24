@@ -3,18 +3,18 @@
         <div class="form-group">
             <label for="{{ inmueble.usuario_principal_del_inmueble.id_for_label }}">Usuario Principal del
                 Inmueble:</label>
-            <select id="{{ inmueble.usuario_principal_del_inmueble.auto_id }}"
+            <select class="form-select" id="{{ inmueble.usuario_principal_del_inmueble.auto_id }}"
                 name="{{ inmueble.usuario_principal_del_inmueble.html_name }}"></select>
         </div>
 
         <div class="form-group form-check-inline">
             <label for="{{ inmueble.usoGenerico.id_for_label }}">Uso Genérico:</label>
-            <select id="{{ inmueble.usoGenerico.auto_id }}" name="{{ inmueble.usoGenerico.html_name }}"></select>
+            <select class="form-select" id="{{ inmueble.usoGenerico.auto_id }}" name="{{ inmueble.usoGenerico.html_name }}"></select>
         </div>
 
         <div class="form-group form-check-inline">
             <label for="{{ inmueble.usoEspecifico.id_for_label }}">Uso Específico:</label>
-            <select id="{{ inmueble.usoEspecifico.auto_id }}" name="{{ inmueble.usoEspecifico.html_name }}"></select>
+            <select class="form-select" id="{{ inmueble.usoEspecifico.auto_id }}" name="{{ inmueble.usoEspecifico.html_name }}"></select>
         </div>
 
         <div class="form-group">
@@ -85,8 +85,9 @@
                 <button type="button" class="btn btn-primary" id="guardarDocumentoOcupacion">Guardar</button>
 
             </form>
+            <br><br>
             <div id="tablaDocumentoOcupacionContainer">
-                <table class="table table-bordered">
+                <table class="table ">
                     <thead>
                         <tr>
                             <th>Tipo de Documento</th>
@@ -117,7 +118,7 @@
 
                             <td>
                                 <a href="{% url 'eliminar_docOcupacionIMP' docOcupacion_id=documento_ocupacion.id %}"
-                                    class="btn btn-danger btn-sm eliminar-btn" data-tipo="documento_ocupacion"
+                                    class="btn btn-outline-danger btn-sm eliminar-btn" data-tipo="documento_ocupacion"
                                     data-id="{{ documento_ocupacion.id }}">Eliminar</a>
                             </td>
                             <!-- Agrega aquí las celdas correspondientes a las columnas adicionales -->
@@ -149,21 +150,21 @@
                     <label
                         for="{{ instituciones_ocupantes_form.institucion_publica_ocupante.id_for_label }}">Institución
                         Pública Ocupante:</label>
-                    <select required id="{{ instituciones_ocupantes_form.institucion_publica_ocupante.auto_id }}"
+                    <select class="form-select form-check-inline" required id="{{ instituciones_ocupantes_form.institucion_publica_ocupante.auto_id }}"
                         name="{{ instituciones_ocupantes_form.institucion_publica_ocupante.html_name }}"></select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group form-check-inline">
                     <label for="{{ instituciones_ocupantes_form.superficie_asignada.id_for_label }}">Superficie Asignada
                         a la Institución Ocupante:</label>
                     <input type="number" name="superficie_asignada" id="id_superficie_asignada" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group form-check-inline">
                     <label for="{{ instituciones_ocupantes_form.uso_institucion_ocupante.id_for_label }}">Uso de la
                         Institución Ocupante:</label>
                     {{ instituciones_ocupantes_form.uso_institucion_ocupante }}
                 </div>
-                <div class="form-group">
+                <div class="form-group form-check-inline">
                     <label for="{{ instituciones_ocupantes_form.superficie_disponible.id_for_label }}">Superficie
                         Disponible:</label>
                     {{ instituciones_ocupantes_form.superficie_disponible }}
@@ -171,9 +172,9 @@
 
                 <button type="submit" class="btn btn-primary" id="guardarInstitucionesOcupantes">Guardar</button>
             </form>
-
+            <br><br>
             <div id="tablaInstitucionesOcupantesContainer">
-                <table class="table table-bordered">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Institución Pública Ocupante</th>
@@ -193,7 +194,7 @@
                             <td>{{ institucion_ocupante.superficie_disponible }}</td>
                             <td>
                                 <a href="{% url 'eliminar_DatoInstitucionOcupanteIMP' datoInstitucionOcupante_id=institucion_ocupante.id %}"
-                                    class="btn btn-danger btn-sm eliminar-btn" data-tipo="institucion_ocupante"
+                                    class="btn btn-outline-danger btn-sm eliminar-btn" data-tipo="institucion_ocupante"
                                     data-id="{{ institucion_ocupante.id }}">Eliminar</a>
                             </td>
                         </tr>
@@ -287,15 +288,16 @@
                     {{ datos_terceros_form.superficie_objeto_ocupacion_metros }}
                 </div>
 
-                <div class="form-group form-check-inline" id="">
-                    <label for="{{ datos_terceros_form.uso.id_for_label }}">Uso:</label>
-                    {{ datos_terceros_form.uso }}
+                <div data-mdb-input-init class="form-group form-check-inline" id="">
+                    <label class="form-label" for="id_uso">Uso:</label>
+                    <input class="form-control"  type="text" name="uso" maxlength="255" id="id_uso">
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="guardarDatosTerceros">Guardar</button>
             </form>
+            <br><br>
             <div class="table-responsive" id="tablaDatosTercerosContainer">
-                <table class="table">
+                <table class="table" style="width: 140% !important;">
                     <thead>
                         <tr>
                             <th>Tipo de Terceros Usuarios</th>
@@ -326,7 +328,7 @@
                             <td>{{ datos_terceros.uso }}</td>
                             <td>
                                 <a href="{% url 'deleteDatosTercerosIMP' datos_terceros_id=datos_terceros.id %}"
-                                    class="btn btn-danger btn-sm eliminar-btn" data-tipo="datos_terceros"
+                                    class="btn btn-outline-danger btn-sm eliminar-btn" data-tipo="datos_terceros"
                                     data-id="{{ datos_terceros.id }}">Eliminar</a>
                             </td>
                         </tr>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sitio Sala de Juntas">
+    <title>{% block titulo %} {% endblock %}</title>
+    {% load static%}
+    <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
+    <link href="{% static 'inicio/css/styles.css'%}" rel='stylesheet' type='text/css'>
+    <link href="{% static 'inicio/css/menu.css'%}" rel='stylesheet' type='text/css'>
+
+  <!-- ...otros elementos de encabezado... -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://kit.fontawesome.com/91cca0bc27.js" crossorigin="anonymous">
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    
+
+
+</head>
+<body>
+  
+  {% if user.is_authenticated %}
+    <div class="containerT ">
+      
+      <h1 class="title">MODULO DE SALA DE JUNTAS SEP</h1>
+        <h2 class="title2">
+          
+          <p class="user">Bienvenido: {{ user.first_name }} {{ user.last_name }}</p><br><br>
+          
+          <a href="" style="position: absolute; margin-top: 25px; right: 0;" class="salir">Salir <i class="fa-solid fa-right-to-bracket"></i></a>
+          <p class="email">{{user.email}}</p><br><br>
+         
+        </h2>
+      </div>
+      <div dark class="contenedor-menu">
+       
+
+          <button id="modoOscuroBtn" aria-label="modoOscuro"><i class="fas fa-moon"></i></i></button>
+
+           <button id="menu-btn" aria-label="menu" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+           <a href="" aria-label="home" class="btn-home"><i class="fa-solid fa-house"></i></a><br><br>
+
+           {% if task %}
+           <div class="tab mensajes actives" data-tab="tab-mensajes">
+            <span class="events">Pendientes</span>
+            <i class="far fa-envelope"></i>
+               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                   {{ task.mensajes.all|length }}
+               </span>
+           </div>
+       {% endif %}
+       
+       {% if not task %}
+    <a href="" class="btn-calendar">
+        <span class="events">Eventos</span>
+        <i class="far fa-calendar m-1"></i>
+        {% if eventos.exist %}
+        <span id="notifications-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ eventos|length }}
+        </span>
+        {% endif %}
+    </a>
+{% endif %}
+
+        
+
+        <!-- <div class="dropdown notifications">
+          <button style="background-color: #1a252f; width: 100%; height: 80%; margin-left: -16px" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-bell"></i>
+                <span id="notifications-count" class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
+                  {{ mensajes|length }}</span>
+
+                
+          </button> -->
+          <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li></li>
+              {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
+                  {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
+                      <li>
+                          <a class="dropdown-item" href="{% url 'task_detail_importados' mensaje.task.id %}">
+                              <h5>Inmueble: {{ mensaje.task.NombreInmueble }}</h5>
+                              <p><strong>{{ mensaje.asunto }}</strong></p>
+                              <p style="color: #2a2a2a;">{{ mensaje.mensaje|truncatechars:50 }}</p>
+                              {% if mensaje.estado == 'No Completado' %}
+                                  <span class="badge bg-danger">Pendiente</span>
+                              {% else %}
+                                  <span class="badge bg-success">Completada</span>
+                              {% endif %}
+                          </a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+          </ul> -->
+      <!-- </div> -->
+      
+        
+
+           <!-- <a href="/signin/" class="btn-signin">Login</a> -->
+           {% endif %}
+      </div>
+      <!-- <div class="sidebar" id="sidebar">
+        <ul class="cont-menu">
+          {% if user.is_authenticated %}
+          <a class="btn-pendientes" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Completados</li></a>
+          <a class="btn-completados" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">Terminados</a>
+          <br>
+          <a class="btn-baja" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
+
+  
+          <a class="btn-alta" href="{% url 'create_task' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>
+          
+          <div class="log"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/SEP_Logo_2019.svg/768px-SEP_Logo_2019.svg.png" class="img-logo"></div>
+          {% else %}
+          <a class="btn-alta" href="'/signin"><li><i class="logo fa-regular fa-square-check"></i><hr class="hr">Login</li></a>
+          {% endif %}
+      </div> -->
+
+      <div class="custom-scrollbar">
+        <!-- Contenido aquí -->
+    </div>
+    
+    {% block content %}
+
+
+    {% endblock %}
+
+    <style>
+
+
+/* Animaciones */
+
+.animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both}.fast{-webkit-animation-duration:.4s;animation-duration:.4s;-webkit-animation-fill-mode:both;animation-fill-mode:both}.low{-webkit-animation-duration:1.5s;animation-duration:1.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.fadeIn{animation-name:fadeIn}.dropdown.notifications .btn{font-size:14px;padding:4px 12px}.dropdown{position:absolute;right:0}.dropdown.notifications .dropdown-menu{max-height:500px;overflow-y:auto}.dropdown.notifications .fas{font-size:15px}.dropdown.notifications .dropdown-menu{border:1px solid #ccc}.btn-calendar{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:6em;color:#fff;text-decoration:none;padding:2px 8px;border:.1px solid #ccc;border-radius:5px}.mensajes{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:15em;margin-left:10px;color:#fff;text-decoration:none;padding:5px 10px;border:.1px solid #ccc;border-radius:5px}.fa-envelope{margin-left:5px}.containerT{position:relative;width:100%;display:flex;overflow:hidden}.btn-pendientes{padding:8px;border-radius:5px;background:#a55da5;border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:0;color:#fff;width:210.72px;height:115px;flex-shrink:0}.btn-completados{filter:brightness(1.4);border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:105.36px;height:115px;flex-shrink:0;left:.01em;top:.2em;border-radius:5px;background:#0c9273}.btn-alta{filter:brightness(1.4);border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:210.36px;height:95px;flex-shrink:0;left:1px;top:8px;border-radius:5px;background:#8a8257}.btn-alta:hover{filter:brightness(1.1);transition:.3s}.btn-importados{filter:brightness(1.4);border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:105.36px;height:115px;flex-shrink:0;left:.01em;top:10px;border-radius:5px;background:#1741c8}.btn-importados:hover{filter:brightness(1.1);transition:.3s}.btn-importados_completed{filter:brightness(1.4);border-radius:5px;margin:2px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:99px;height:115px;flex-shrink:0;top:13px;border-radius:5px;background:#5a55b3}.btn-importados:hover{filter:brightness(1.1);transition:.3s}.btn-baja{padding:10px;background-color:#690e0e;filter:brightness(1.2);border-radius:5px;margin-left:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;color:#fff;width:99px;height:115px;flex-shrink:0;position:relative;left:-.2em;top:.5em}.btn-baja:hover{filter:brightness(1.1);transition:.3s}.btn-baja-importados{padding:10px;background-color:#9e2727;filter:brightness(1.2);border-radius:5px;margin-left:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:25px;color:#fff;width:210.72px;height:115px;flex-shrink:0;position:relative;left:1px;top:20px}.btn-modificacion{padding:2px;border-radius:5px;background:#fcbc58;border-radius:5px;margin:10px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;left:-15px;color:#fff;width:210.72px;height:115px;flex-shrink:0;top:.2em;left:-.3em}.custom-scrollbar::-webkit-scrollbar{width:10px;background-color:#f0f0f0}.custom-scrollbar::-webkit-scrollbar-thumb{background-color:#0077b6}.custom-scrollbar{scrollbar-width:thin;scrollbar-color:#0077b6 #f0f0f0}@media (max-width:768px){.email{display:none}}.events{display:flex}@media (max-width:560px){a.salir{position:absolute;margin-top:40px;right:0}.title{font-size:13px}.events{display:none}.mensajes{left:16em;width:4em;top:7em}}
+ 
+    </style>
+    <script>
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+      }
+      
+      // Función para activar el modo oscuro
+      function activarModoOscuro() {
+        // Agrega una clase al elemento body para aplicar estilos de modo oscuro
+        document.body.classList.add('dark-mode');
+        
+        // Almacena la preferencia en el almacenamiento local del navegador
+        localStorage.setItem('modoOscuro', 'activado');
+      }
+    
+      // Función para desactivar el modo oscuro
+      function desactivarModoOscuro() {
+        // Remueve la clase dark-mode del elemento body
+        document.body.classList.remove('dark-mode');
+        
+        // Almacena la preferencia en el almacenamiento local del navegador
+        localStorage.setItem('modoOscuro', 'desactivado');
+      }
+    
+      // Verifica la preferencia almacenada en el almacenamiento local al cargar la página
+      window.addEventListener('load', function() {
+        const modoOscuro = localStorage.getItem('modoOscuro');
+        if (modoOscuro === 'activado') {
+          activarModoOscuro();
+        }
+      });
+    
+      // Maneja el clic en el botón para cambiar entre modo oscuro y modo claro
+      const botonModoOscuro = document.getElementById('modoOscuroBtn');
+      botonModoOscuro.addEventListener('click', function() {
+        if (document.body.classList.contains('dark-mode')) {
+          desactivarModoOscuro();
+        } else {
+          activarModoOscuro();
+        }
+      });
+    </script>
+    
+    <script src="{% static 'inicio/js/app.js' %}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://kit.fontawesome.com/91cca0bc27.js" crossorigin="anonymous"></script>
+    
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> -->
+</body>
+</html>
+

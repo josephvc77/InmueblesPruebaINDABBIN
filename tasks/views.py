@@ -112,7 +112,6 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.timezone import datetime, timezone
 
-
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def tasks_importados(request):
@@ -165,27 +164,22 @@ def tasks_importados(request):
     page = request.GET.get('page')
     inmuebles = paginator.get_page(page)
         
-        
+    today = date.today()  # Obtener la fecha actual
+
     for task in inmuebles:
         if task.deadline:
-            now = datetime.now(timezone.utc)  # Usa la zona horaria UTC para now
-            time_remaining = task.deadline - now
-            days_remaining = time_remaining.days
-            seconds_remaining = time_remaining.seconds
-            hours_remaining, seconds_remaining = divmod(seconds_remaining, 3600)  # Convertir segundos en horas y segundos sobrantes
-            # Calcular los días y las horas de retraso
+            days_remaining = (task.deadline - today).days
+            
+            # Calcular los días de retraso
             if days_remaining < 0:
                 days_delayed = abs(days_remaining)
-                hours_delayed = hours_remaining
+                days_remaining = 0
             else:
                 days_delayed = 0
-                hours_delayed = 0
 
             # Agregar los valores calculados al objeto de tarea
             task.days_remaining = days_remaining
-            task.hours_remaining = hours_remaining
             task.days_delayed = days_delayed
-            task.hours_delayed = hours_delayed
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |

@@ -202,7 +202,7 @@
                         Inmueble:</label>
                     {{ inmueble.fecha_ultima_remodelacion }}
                 </div>
-                <div class="separador">
+             
                     <div class="form-group">
                         <h4>Características Especiales del Inmueble:</h4><br>
                         <div class="form-check form-check-inline">
@@ -304,9 +304,6 @@
                     </div>
 
 
-
-                </div>
-
                 <div class="form-group form-check-inline">
                     <label for="{{ inmueble.estado_conservacion.id_for_label }}">Estado de Conservación del
                         Inmueble:</label>
@@ -316,11 +313,11 @@
         </div>
     </div>
 
-    <div class="separador">
+    <!-- <div class="separador">
         <div class="form-section">
             <h3>Información de Terreno:</h3>
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Superficie en m²</th>
@@ -366,12 +363,12 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="separador">
+    </div> -->
+    
         <div class="form-section">
             <h3>Información de Edificación:</h3>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table" style="width: 150% !important;">
                     <thead>
                         <tr>
                             <th>Nombre de la Edificación</th>
@@ -422,11 +419,13 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="separador">
+
+        <br><br><br>
+    
         <fieldset>
             <h2>Proporcione los datos de las Edificio Verde:</h2>
             {% if task.edificio_verde_set.exists %}
+            <div class="table-responsive">
             <table class="table expedientes-cedoc-table">
                 <thead>
                     <tr>
@@ -446,6 +445,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
             {% endif %}
             <form method="post">
                 {% csrf_token %}
@@ -460,4 +460,3 @@
 
         </fieldset>
     </div>
-</div>

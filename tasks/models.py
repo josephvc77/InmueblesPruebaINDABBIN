@@ -127,7 +127,7 @@ class Inmueble(models.Model):
     estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
     seccion_del_inventario = models.CharField(max_length=100, null=True, blank=True)
     
-    deadline = models.DateTimeField(null=True, blank=True)
+    deadline = models.DateField(null=True, blank=True)
    
     Dependencia_Administradora = models.CharField(max_length=100, null=True, blank=True)
     

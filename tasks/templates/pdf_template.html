@@ -1,577 +1,566 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8" />
     {% load static %}
     <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
     <title>Reporte Inmueble {{ task.NombreInmueble }}</title>
     <style>
-      /* Agrega tus estilos personalizados aquí */
-      .encabezado {
-        text-align: right;
-        padding: 20px;
-      }
+        /* Agrega tus estilos personalizados aquí */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
 
-      .logos img {
-        max-width: 100px;
-        margin-bottom: 10px;
-      }
+        .encabezado {
+            text-align: right;
+            padding: 20px;
+            border-bottom: 2px solid #9d2449;
+        }
 
-      .logos p {
-        font-size: 14px;
-        color: #333;
-      }
+        .encabezado img {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
 
-      h1 {
-        color: #333;
-        margin-top: 30px;
-        text-align: center;
-      }
+        .encabezado p {
+            font-size: 14px;
+            margin: 0;
+        }
 
-      h2 {
-        color: #666;
-        margin-top: 20px;
-      }
+        .encabezado h4 {
+            margin: 10px 0;
+            font-size: 16px;
+        }
 
-      strong {
-        font-weight: bold;
-      }
+        h1, h2 {
+            color: #333;
+            margin-top: 30px;
+            text-align: center;
+        }
 
-      .disposiciones-legales {
-        width: 100%;
-        border-collapse: collapse;
-        border: 1px solid #ddd;
-        margin-top: 20px;
-        background-color: #9d2449;
-        color: #ffffff;
-      }
+        h1 {
+            font-size: 24px;
+        }
 
-      .disposiciones-legales th,
-      .disposiciones-legales td {
-        border: 1px solid #000000;
-        padding: 5px;
-        text-align: center;
-        background-color: #9d2449;
-      }
+        h2 {
+            font-size: 20px;
+            color: #666;
+        }
 
-      .disposiciones-legales th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-      }
+        strong {
+            font-weight: bold;
+        }
 
-      /* Estilo para el contenido del encabezado */
-      .disposiciones-legales td,
-      .legales {
-        background-color: #ffffff !important;
-        font-style: italic;
-        font-size: 12px;
-        line-height: 1.5;
-        color: #000000;
-        text-align: center;
-      }
+        .disposiciones-legales {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            background-color: #9d2449;
+            color: #ffffff;
+        }
 
-      .sub {
-        position: relative;
-        text-align: center;
-      }
+        .disposiciones-legales th,
+        .disposiciones-legales td {
+            border: 1px solid #000000;
+            padding: 10px;
+            text-align: center;
+            
+        }
 
+        .disposiciones-legales th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
 
-      .report-table {
-        width: 100%;
-        border-collapse: collapse;
-        border: 1px solid #000000;
-        margin-top: 20px;
-        padding: 2px;
-      }
+        .disposiciones-legales td {
+            background-color: #ffffff;
+            font-style: italic;
+            font-size: 12px;
+            color: #000000;
+        }
 
-      .report-table th,
-      .report-table td {
-        border: 1px solid #000000;
-      }
+        .rfi {
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
 
-      .report-table td{
-        text-align: justify;
-        margin-left: 5em;
-      }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
 
-      .report-table td .data-field{
-        margin-right: 5em; 
-           }
+        .report-table th,
+        .report-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
 
-      .report-table th {
-        background-color: #9d2449;
-        color: white; /* Color del texto en el encabezado */
-        font-weight: bold;
-        font-size: 12px;
+        .report-table th {
+            background-color: #9d2449;
+            color: white;
+            font-weight: bold;
+            font-size: 10px;
+        }
 
-        text-align: center;
-      }
+        .section-header {
+            background-color: #9d2449;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+        }
 
-      /* Estilo para los encabezados de sección */
-      th .section-header {
-        background-color: #9d2449;
-        color: white; /* Color del texto en el encabezado */
-        font-weight: bold;
-        font-size: 18px;
-        text-align: center;
-      }
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
 
-      .data-row {
-        display: flex;
-        text-align: center;
-      }
+        .data-field {
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
 
-      .data-field {
-        font-weight: bold;
-        font-size: 12px;
-        margin-right: 5px;
-        top: 1em;
-      }
+        .data-value {
+            font-size: 12px;
+        }
 
-      .data-value {
-        position: relative;
-        margin-top: 1em;
-        font-size: 12px;
-        margin-left: 2em !important;
-        text-decoration: underline;
-      }
+        .thead-light th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
 
-      .rfi{
-        position: relative;
-        margin-top: 1em;
-      }
+        .thead-light {
+            margin-top: 20px;
+        }
 
-      td.formulario{
-        text-align: left !important;
-        margin-left: -1em;
-      }
-      tr.titlesup{
-        text-align: center;
-        background-color: #9d2449;
-      }
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <section class="encabezado">
-      <img src="{{ logo_url }}" alt="Logo">
-      <p>
-        DIRECCIÓN GENERAL DE POLÍTICA Y GESTIÓN INMOBILIARIA<br />
-        SUBDIRECCIÓN DE REGISTRO E INVENTARIO<br />
-        DIRECCIÓN DE REGISTRO PÚBLICO Y CONTROL INMOBILIARIO
-      </p>
-      <br />
-      <h4 class="sub">
-        INVENTARIO DEL PATRIMONIO INMOBILIARIO FEDERAL Y PARAESTATAL<br />
-        CÉDULA DE INVENTARIO
-      </h4>
-      <span class="fecha">FECHA DE EMISIÓN: </span>
+        <img src="{{ logo_url }}" alt="Logo">
+        <p>
+            DIRECCIÓN GENERAL DE POLÍTICA Y GESTIÓN INMOBILIARIA<br>
+            SUBDIRECCIÓN DE REGISTRO E INVENTARIO<br>
+            DIRECCIÓN DE REGISTRO PÚBLICO Y CONTROL INMOBILIARIO
+        </p>
+        <h4>
+            INVENTARIO DEL PATRIMONIO INMOBILIARIO FEDERAL Y PARAESTATAL<br>
+            CÉDULA DE INVENTARIO
+        </h4>
+        <p><strong>FECHA DE EMISIÓN:</strong> {% now "d-M-Y" %}</p>
     </section>
-    <hr />
+
+    <hr>
 
     <table class="disposiciones-legales">
+        <thead>
+            <tr>
+                <th>DISPOSICIONES LEGALES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    De conformidad con el artículo 37, fracción I de la Ley General de Bienes Nacionales, la Secretaría de Hacienda y Crédito Público tiene a su cargo el Inventario del Patrimonio Inmobiliario Federal y Paraestatal, el cual opera de acuerdo a lo establecido en el Acuerdo por el que se emiten las Normas y Procedimientos para la Integración del Sistema de Información Inmobiliaria Federal y Paraestatal.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="rfi">
+        REGISTRO FEDERAL INMOBILIARIO (RFI): {{ task.rfi }}
+    </div>
+
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th class="section-header">Datos Generales</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="data-row">
+                        <span class="data-field">Título de la Tarea:</span>
+                        <span class="data-value">{{ task.NombreInmueble }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Sección del Inventario:</span>
+                        <span class="data-value">{{ task.seccion_del_inventario }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Dependencia Administradora:</span>
+                        <span class="data-value">{{ task.Dependencia_Administradora }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Sector:</span>
+                        <span class="data-value">{{ task.Sector }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Naturaleza Jurídica de la Institución:</span>
+                        <span class="data-value">{{ task.Naturaleza_Juridica_de_la_Institucion }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">SubSección:</span>
+                        <span class="data-value">{{ task.subSeccion }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Denominaciones anteriores:</span>
+                        <span class="data-value">{{ task.Denominaciones_anteriores }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Causa alta:</span>
+                        <span class="data-value">{{ task.causa_alta }}</span>
+                    </div><br>
+                    <div class="data-row">
+                        <span class="data-field">Prioridad:</span>
+                        <span class="data-value">{{ task.prioridad }}</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="report-table thead-light">
+        <thead>
+            <tr>
+                <th class="section-header">Folios Reales</th>
+                <th class="section-header">Números de Planos</th>
+                <th class="section-header">Expedientes CEDOC</th>
+                <th class="section-header">NO. IDENTIFICADOR DEL EXPEDIENTE INSTITUCIÓN</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {% if task.foliosreales_set.exists %}
+                        {% for folio_real in task.foliosreales.all %}
+                            <div class="data-row">
+                                <span class="data-field">⭕ {{ folio_real.folios_reales_data }}</span>
+                            </div><br>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if task.numeros_planos.exists %}
+                        {% for numero_plano in task.numeros_planos.all %}
+                            <div class="data-row">
+                                <span class="data-field">⭕ {{ numero_plano.numero_plano_data }}</span>
+                            </div><br>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if task.expedientes_cedoc_set.exists %}
+                        {% for expediente_cedoc in task.expedientes_cedoc.all %}
+                            <div class="data-row">
+                                <span class="data-field">⭕ {{ expediente_cedoc.expediente_cedoc_data }}</span>
+                            </div><br>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                  {% if task.no_de_identificador_del_expediente_institucion.exists %}
+                  {% for expediente_cedoc in task.no_de_identificador_del_expediente_institucion.all %}
+                      <div class="data-row">
+                          <span class="data-field">⭕ {{ expediente_cedoc.no_de_identificador_del_expediente_institucion }}</span>
+                      </div><br>
+                  {% endfor %}
+              {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+  
+    <table class="report-table">
       <thead>
         <tr>
-          <th>DISPOSICIONES LEGALES</th>
+          <th class="section-header">Ubicación</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="legales">
+        <tr>
           <td>
-            De conformidad con el artículo 37, fracción I de la Ley General de
-            Bienes Nacionales, la Secretaría de Hacienda y Crédito Público tiene
-            a su cargo el Inventario del Patrimonio Inmobiliario Federal y
-            Paraestatal, el cual opera de acuerdo a lo establecido en el Acuerdo
-            por el que se emiten las Normas y Procedimientos para la Integración
-            del Sistema de Información Inmobiliaria Federal y Paraestatal.
+            <div class="data-row">
+              <span class="data-field">País:</span>
+              <span class="data-value">{{ task.pais }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Entidad Federativa:</span>
+              <span class="data-value">{{ task.entidad_federativa }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Municipio/Alcaldía:</span>
+              <span class="data-value">{{ task.municipio_alcaldia }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Localidad:</span>
+              <span class="data-value">{{ task.localidad }}</span>
+            </div>&nbsp &nbsp<br><br>
+            <div class="data-row">
+              <span class="data-field">Componente Espacial:</span>
+              <span class="data-value">{{ task.componente_espacial }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Tipo de Vialidad:</span>
+              <span class="data-value">{{ task.tipo_vialidad }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Nombre de Vialidad:</span>
+              <span class="data-value">{{ task.nombre_vialidad }}</span>
+            </div>&nbsp &nbsp<br><br>
+            <div class="data-row">
+              <span class="data-field">Número Exterior:</span>
+              <span class="data-value">{{ task.numero_exterior }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Número Exterior 2:</span>
+              <span class="data-value">{{ task.numero_exterior_2 }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Número Interior:</span>
+              <span class="data-value">{{ task.numero_interior }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Código Postal:</span>
+              <span class="data-value">{{ task.codigo_postal }}</span>
+            </div>&nbsp &nbsp <br><br>
+            <div class="data-row">
+              <span class="data-field">Tipo Asentamiento:</span>
+              <span class="data-value">{{ task.tipo_asentamiento }}</span>
+            </div>&nbsp &nbsp 
+            <div class="data-row">
+              <span class="data-field">Nombre de Asentamiento:</span>
+              <span class="data-value">{{ task.nombre_asentamiento }}</span>
+            </div>&nbsp &nbsp<br><br>
+            <div class="data-row">
+              <span class="data-field">Entre Vialidades:</span>
+              <span class="data-value">{{ task.entre_vialidades_referencia1 }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Entre Vialidades:</span>
+              <span class="data-value">{{ task.entre_vialidades_referencia2 }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Vialidad Posterior:</span>
+              <span class="data-value">{{ task.vialidad_posterior }}</span>
+            </div><br><br>
+            <div class="data-row">
+              <span class="data-field">Descripción de Ubicación:</span>
+              <span class="data-value">{{ task.descripcion_ubicacion }}</span>
+            </div>&nbsp &nbsp
+            <div class="data-row">
+              <span class="data-field">Colindancias:</span>
+              <span class="data-value">{{ task.colindancias }}</span>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-
-    
-    <div class="rfi"> <span class="data-field">REGISTRO FEDERAL INMOBILIARIO (RFI) : </span><p>{{task.rfi}}</p></div>
-
+  
     <table class="report-table">
-      <tr>
-        <th class="section-header">Datos Generales</th>
-      </tr>
-      <td>
-        <br>
-        <div class="data-row">
-          <span class="data-field"> Título de la Tarea: </span>
-          <span class="data-value">  {{ task.NombreInmueble }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Sección del Inventario: </span>
-          <span class="data-value">  {{ task.seccion_del_inventario }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Dependencia Administradora: </span>
-          <span class="data-value">  {{ task.Dependencia_Administradora }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Causa de Alta: </span>
-          <span class="data-value">  {{ task.causa_alta }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Sector: </span>
-          <span class="data-value">  {{ task.Sector }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Institución que Administra el Inmueble: </span>
-          <span class="data-value">  {{ task.Nombre_de_la_institucion_que_administra_el_inmueble }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Naturaleza Jurídica de la Institución: </span>
-          <span class="data-value">  {{ task.Naturaleza_Juridica_de_la_Institucion }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Denominación del Inmueble: </span>
-          <span class="data-value"> {{ task.Denominaciones_anteriores }}</span>
-        </div>
-        <br /><br />
-       
-      </td>
-    </table>
-    <table class="report-table">
-      <tr>
-        <th class="section-header">Folios Reales</th>
-        <th class="section-header">Números de Planos</th>
-        <th class="section-header">Expedientes CEDOC</th>
-        <th style="font-size: 12px;" class="section-header">NO. IDENTIFICADOR DEL EXPEDIENTE INSTITUCIÓN</th>
-      </tr>
-      <td>
-        {% if task.foliosreales_set.exists %}
-          {% for folio_real in task.foliosreales_set.all %}
-            <div class="data-row">
-              <span class="data-field">⭕ {{ folio_real.folios_reales_data }}</span><br>
-            </div>
-          {% endfor %}
-        {% endif %}
-      </td>
-      <td>
-        {% if task.numeros_planos.exists %}
-          {% for numero_plano in task.numeros_planos.all %}
-            <div class="data-row">
-              <span class="data-field">⭕ {{ numero_plano.numero_plano_data }}</span><br>
-            </div>
-          {% endfor %}
-        {% endif %}
-      </td>
-      <td>
-        {% if task.expedientes_cedoc_set.exists %}
-          {% for expediente_cedoc in task.expedientes_cedoc_set.all %}
-            <div class="data-row"> <br /><br />
-              <span class="data-field">⭕ {{ expediente_cedoc.expediente_cedoc_data }}</span><br>
-            </div>
-          {% endfor %}
-        {% endif %}
-      </td>
-      <td>
-        <div class="data-row">
-          <span class="data-field">⭕ {{ task.no_de_identificador_del_expediente_institucion}}</span><br>
-        </div>
-      </td>
-    </table>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <table class="report-table">
-      <tr>
-        <th class="section-header">Ubicación</th>
-      </tr>
-      <td>
-        <br>
-        <div class="data-row">
-          <span class="data-field">Pais: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.pais }} &nbsp  &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field">&nbsp &nbsp &nbsp  Entidad Federativa: &nbsp </span>
-          <span class="data-value"> &nbsp &nbsp &nbsp {{ task.entidad_federativa }} &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field">Municipio/Alcaldía: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.municipio_alcaldia }}&nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp Localidad: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.localidad }}&nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field">Componente Espacial: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.componente_espacial }}&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field">Tipo de Vialidad: &nbsp</span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.tipo_vialidad }}&nbsp &nbsp &nbsp </span>
-        </div>
-        <br><br>
-        <div class="data-row">
-          <span class="data-field">Nombre de Vialidad: &nbsp</span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.nombre_vialidad }}&nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field">&nbsp &nbsp  Número Exterior: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp{{ task.numero_exterior }}&nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp Número Exterior 2: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.numero_exterior_2 }}&nbsp &nbsp &nbsp </span>
-        </div>
-        <br><br>
-        <div class="data-row">
-          <span class="data-field">Número Interior: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp {{ task.numero_interior }}&nbsp &nbsp &nbsp &nbsp &nbsp</span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp &nbspCódigo Postal: &nbsp </span>
-          <span class="data-value"> &nbsp &nbsp &nbsp &nbsp{{ task.codigo_postal }} &nbsp &nbsp &nbsp &nbsp</span>
-        </div><br /><br />
-        <div class="data-row">
-          <span class="data-field">Tipo Asentamiento: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp{{ task.tipo_asentamiento }}&nbsp &nbsp &nbsp &nbsp</span>
-        </div><br /><br />
-        <div class="data-row">
-          <span class="data-field">Nombre de Asentamiento: &nbsp </span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ task.nombre_asentamiento }}&nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field">Entre Vialidades: &nbsp  </span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.entre_vialidades_referencia1 }}&nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field">&nbsp &nbsp &nbsp Entre Vialidades:&nbsp  </span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.entre_vialidades_referencia2 }}&nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field">Vialidad Posterior:&nbsp  </span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.vialidad_posterior }}&nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field">Descripción de Ubicación:&nbsp  </span>
-          <span class="data-value">&nbsp &nbsp &nbsp &nbsp {{ task.descripcion_ubicacion }}&nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> Colindancias:</span>
-        </div>
-        
-      </td>
-      <table class="report-table">
-        <thead class="thead-light">
-          <tr>
-            <th class="section-header">Orientación</th>
-            <th class="section-header">Colindancia</th>
-            <th class="section-header">Medida en Metros</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for colindancia in task.colindancias_set.all %}
+      <thead class="thead-light">
+        <tr>
+          <th class="section-header">Orientación</th>
+          <th class="section-header">Colindancia</th>
+          <th class="section-header">Medida en Metros</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for colindancia in task.colindancias_set.all %}
           <tr>
             <td class="formulario">{{ colindancia.orientacion }}</td>
             <td class="formulario">{{ colindancia.colindancia }}</td>
             <td class="formulario">{{ colindancia.medida_en_metros }}</td>
           </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        {% endfor %}
+      </tbody>
     </table>
- 
-    <table class="report-table">
+  </body>
+  
+  
+  <table class="report-table">
+    <thead>
       <tr>
-        <th class="section-header">Datos Generales</th>
+        <th class="section-header">CARACTERÍSTICAS</th>
       </tr>
-      <td>
-        <br>
-        <div class="data-row">
-          <span class="data-field"> Título de la Tarea:</span>
-          <span class="data-value">  {{ task.NombreInmueble }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Sección del Inventario:</span>
-          <span class="data-value">  {{ task.seccion_del_inventario }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Dependencia Administradora:</span>
-          <span class="data-value">  {{ task.Dependencia_Administradora }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Sector:</span>
-          <span class="data-value">  {{ task.Sector }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Naturaleza Jurídica de la Institución:</span>
-          <span class="data-value">  {{ task.Naturaleza_Juridica_de_la_Institucion }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> SubSección:</span>
-          <span class="data-value">  {{ task.subSeccion }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Denominaciones anteriores:</span>
-          <span class="data-value">  {{ task.Denominaciones_anteriores }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Causa alta:</span>
-          <span class="data-value">  {{ task.causa_alta }}</span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Prioridad:</span>
-          <span class="data-value">  {{ task.prioridad }}</span>
-        </div>
-        <br /><br />
-      </td>
-    </table>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <table class="report-table">
+    </thead>
+    <tbody>
       <tr>
-        <th class="section-header">CARACTERÍSTICAS
-        </th>
+        <td>
+          <div class="data-row">
+            <span class="data-field">Superficie del Terreno en m²:</span>
+            <span class="data-value">{{ task.superficie_del_terreno_en_M2 }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Superficie del Terreno en HA:</span>
+            <span class="data-value">{{ task.superficie_del_terreno_HA }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Superficie de Desplante en m²:</span>
+            <span class="data-value">{{ task.superficie_de_desplante_en_M2 }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Superficie Útil o Rentable en m²:</span>
+            <span class="data-value">{{ task.superficie_util_m2 }}</span>
+          </div><br><br>
+          <div class="data-row">
+            <span class="data-field">Superficie Construida en m²:</span>
+            <span class="data-value">{{ task.superficie_construida_en_M2 }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Número de Cuenta Catastral:</span>
+            <span class="data-value">{{ task.numero_cuenta_catastral }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Zona en la que se ubica:</span>
+            <span class="data-value">{{ task.zona_ubicacion }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Uso Dominante de la Zona:</span>
+            <span class="data-value">{{ task.uso_dominante_zona }}</span>
+          </div><br><br>
+          <div class="data-row">
+            <span class="data-field">Categoría:</span>
+            <span class="data-value">{{ task.categoria }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Clasificación por Edad:</span>
+            <span class="data-value">{{ task.clasificacion_edad }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Grado de Consolidación:</span>
+            <span class="data-value">{{ task.grado_consolidacion }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Tipo de Inmueble:</span>
+            <span class="data-value">{{ task.tipo_inmueble_rural }}</span>
+          </div><br><br>
+          <div class="data-row">
+            <span class="data-field">Fecha de Construcción del Inmueble:</span>
+            <span class="data-value">{{ task.fecha_inicio_construccion }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Fecha de Última Remodelación:</span>
+            <span class="data-value">{{ task.fecha_ultima_remodelacion }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Siglo de Construcción:</span>
+            <span class="data-value">{{ task.siglo_construccion }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Calidad de Construcción:</span>
+            <span class="data-value">{{ task.calidad_construccion }}</span>
+          </div><br><br>
+          <div class="data-row">
+            <span class="data-field">Servicio:</span>
+            <span class="data-value">{{ task.servicios }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Número Telefónico:</span>
+            <span class="data-value">{{ task.telefono_inmueble }}</span>
+          </div>&nbsp &nbsp
+          <div class="data-row">
+            <span class="data-field">Estado de Conservación:</span>
+            <span class="data-value">{{ task.estado_conservacion }}</span>
+          </div>
+        </td>
       </tr>
-      <td>
-        <br>
-        <div class="data-row">
-          <span class="data-field"> Superficie del Terreno en m² : </span>
-          <span class="data-value">  {{ task.superficie_del_terreno_en_M2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Superficie del Terreno en HA : </span>
-          <span class="data-value">  {{ task.superficie_del_terreno_HA }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Superficie de Desplante en m² : </span>
-          <span class="data-value">  {{ task.superficie_de_desplante_en_M2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Superficie Útil o Rentable en m² : </span>
-          <span class="data-value">  {{ task.superficie_util_m2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Superficie Construida en m² : </span>
-          <span class="data-value">  {{ task.superficie_construida_en_M2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Número de Cuenta Catastral : </span>
-          <span class="data-value"> </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Zona en la que se ubica : </span>
-          <span class="data-value">  {{ task.zona_ubicacion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Uso Dominante de la Zona : </span>
-          <span class="data-value">  {{ task.uso_dominante_zona }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp &nbsp Categoría :</span>
-          <span class="data-value">  {{ task.categoria }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Clasificación por Edad :</span>
-          <span class="data-value">  {{ task.clasificacion_edad }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp Grado de Consolidación :</span>
-          <span class="data-value">  {{ task.grado_consolidacion }} &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Tipo de Inmueble : </span>
-          <span class="data-value">  {{ task.tipo_inmueble_rural }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Fecha de Construcción del Inmueble : </span>
-          <span class="data-value">  {{ task.fecha_inicio_construccion }}</span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp Fecha de Última Remodelación :</span>
-          <span class="data-value">  {{ task.fecha_ultima_remodelacion }} &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Siglo de Construcción : </span>
-          <span class="data-value">  {{ task.siglo_construccion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp  </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp Calidad de Construcción :</span>
-          <span class="data-value">  {{ task.calidad_construccion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Servicio : </span>
-          <span class="data-value">  {{ task.servicios }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp  </span>
-        </div>
-        <div class="data-row">
-          <span class="data-field"> &nbsp &nbsp &nbsp Número Telefónico : </span>
-          <span class="data-value">  {{ task.telefono_inmueble }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
-        </div>
-        <br /><br />
-        <div class="data-row">
-          <span class="data-field"> Estado de Conservación : </span>
-          <span class="data-value">  {{ task.estado_conservacion }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp  </span>
-        </div>
-      </td>
-    </table>
+    </tbody>
+  </table>
+  
 
-    <table class="report-table">
+  <table class="report-table">
+    <thead>
       <tr>
-        <th class="section-header">TITULO DE PROPIEDAD
-        </th>
+        <th class="section-header">TITULO DE PROPIEDAD</th>
       </tr>
-      <td>
-        <br>
-              {% for documento in task.documentopropiedad_set.all %}
-              <span class="data-field"> Propietario del inmueble según documento de propiedad: </span> <span class="data-value">&nbsp &nbsp  {{ documento.propietario_inmueble }} &nbsp &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Institución Propietario:  </span> <span class="data-value">&nbsp &nbsp  {{ documento.institucion_propietario }}&nbsp &nbsp &nbsp &nbsp &nbsp</span><br><br>
-              <span class="data-field"> Superficie en m² amparada por el título de propiedad: </span> <span class="data-value">&nbsp &nbsp &nbsp &nbsp  {{ documento.superficie_amparada_m2 }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Tipo Documento: </span> <span class="data-value">&nbsp &nbsp  {{ documento.tipo_documento }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp   Número de Documento: </span> <span class="data-value">&nbsp &nbsp  {{ documento.numero_de_documento }} &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Fecha del Documento: </span> <span class="data-value"> &nbsp &nbsp {{ documento.fecha_creacion_DOC }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp  Expedido por: </span> <span class="data-value"> &nbsp &nbsp {{ documento.expedido_por }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Inscripción en RPPF: </span> <span class="data-value"> {{ documento.inscripcion_rppf }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp  Folio Real Federal: </span> <span class="data-value"> &nbsp &nbsp  {{ documento.folio_real_federal }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Fecha Inscripción Federal: </span> <span class="data-value"> &nbsp &nbsp {{ documento.fecha_inscripcion_federal }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp   Inscripción en Registro Local: </span> <span class="data-value">&nbsp &nbsp   {{ documento.inscripcion_registro_local }}  &nbsp &nbsp&nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Folio Real Local: </span> <span class="data-value"> {{ documento.folio_real_local }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp   Folio Real Auxiliar: </span> <span class="data-value">&nbsp &nbsp  {{ documento.folio_real_auxiliar }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Nombre del Libro: </span> <span class="data-value"> {{ documento.nombre_libro }}</span>
-              <span class="data-field"> Tomo o Volumen: </span> <span class="data-value"> {{ documento.tomo_o_volumen }} &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp   Número: </span>  <span class="data-value"> &nbsp &nbsp {{ documento.numero }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span><br><br>
-              <span class="data-field"> Foja o Folio:  </span>  <span class="data-value"> {{ documento.foja_o_folio }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp   Sección: </span>   <span class="data-value">&nbsp &nbsp  {{ documento.seccion }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <span class="data-field"> &nbsp &nbsp &nbsp    Fecha Inscripcion local: </span>  <span class="data-value">  {{ documento.fecha_inscripcion_local }}  &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp </span>
-              <br>
-              <hr>
-              
-              {% endfor %}
-            </td>
-          </table>
+    </thead>
+    <tbody>
+      {% for documento in task.documentopropiedad_set.all %}
+      <tr>
+        <td>
+          <div class="data-row">
+            <span class="data-field">Propietario del inmueble según documento de propiedad:</span>
+            <span class="data-value">{{ documento.propietario_inmueble }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Institución Propietario:</span>
+            <span class="data-value">{{ documento.institucion_propietario }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Superficie en m² amparada por el título de propiedad:</span>
+            <span class="data-value">{{ documento.superficie_amparada_m2 }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Tipo Documento:</span>
+            <span class="data-value">{{ documento.tipo_documento }}</span>
+            <span class="data-field">Número de Documento:</span>
+            <span class="data-value">{{ documento.numero_de_documento }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Fecha del Documento:</span>
+            <span class="data-value">{{ documento.fecha_creacion_DOC }}</span>
+            <span class="data-field">Expedido por:</span>
+            <span class="data-value">{{ documento.expedido_por }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Inscripción en RPPF:</span>
+            <span class="data-value">{{ documento.inscripcion_rppf }}</span>
+            <span class="data-field">Folio Real Federal:</span>
+            <span class="data-value">{{ documento.folio_real_federal }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Fecha Inscripción Federal:</span>
+            <span class="data-value">{{ documento.fecha_inscripcion_federal }}</span>
+            <span class="data-field">Inscripción en Registro Local:</span>
+            <span class="data-value">{{ documento.inscripcion_registro_local }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Folio Real Local:</span>
+            <span class="data-value">{{ documento.folio_real_local }}</span>
+            <span class="data-field">Folio Real Auxiliar:</span>
+            <span class="data-value">{{ documento.folio_real_auxiliar }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Nombre del Libro:</span>
+            <span class="data-value">{{ documento.nombre_libro }}</span>
+            <span class="data-field">Tomo o Volumen:</span>
+            <span class="data-value">{{ documento.tomo_o_volumen }}</span>
+            <span class="data-field">Número:</span>
+            <span class="data-value">{{ documento.numero }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-field">Foja o Folio:</span>
+            <span class="data-value">{{ documento.foja_o_folio }}</span>
+            <span class="data-field">Sección:</span>
+            <span class="data-value">{{ documento.seccion }}</span>
+            <span class="data-field">Fecha Inscripción local:</span>
+            <span class="data-value">{{ documento.fecha_inscripcion_local }}</span>
+          </div>
+          <hr>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
 
           <table class="report-table">
             <tr>
