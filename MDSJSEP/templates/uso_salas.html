@@ -1,0 +1,207 @@
+
+{% extends 'baseSalas.html' %}
+
+{% block titulo %} Graficas {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Uso de las Salas de Juntas</h1>
+
+    <!-- Filtros para seleccionar Sala, Mes, y Tipo de Gráfico -->
+    <form id="filtrosForm" class="mb-4">
+        <div class="row">
+            <!-- Filtro por Sala -->
+            <div class="col-md-3">
+                <label for="salaSelect" class="form-label">Selecciona Sala:</label>
+                <select class="form-select" id="salaSelect" onchange="actualizarGrafico()">
+                    <option value="">Todas</option>
+                    <!-- Las opciones se agregarán aquí dinámicamente -->
+                </select>
+            </div>
+            
+
+            <!-- Filtro por Mes -->
+            <div class="col-md-3">
+                <label for="mesSelect" class="form-label">Selecciona Mes:</label>
+                <select class="form-select" id="mesSelect" onchange="actualizarGrafico()">
+                    <option value="">Todos los Meses</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            
+
+            <div class="col-md-3">
+                <label for="usosInput" class="form-label">Usos en el Mes:</label>
+                <input type="number" class="form-control" id="usosInput" disabled>
+            </div>
+            
+            <div class="col-md-3">
+                <label for="capacidadInput" class="form-label">Capacidad de Sala:</label>
+                <input type="number" class="form-control" id="capacidadInput" disabled>
+            </div>
+            
+            <div class="col-md-3">
+                <label for="asistentesInput" class="form-label">Asistentes totales en mes/año:</label>
+                <input type="number" class="form-control" id="asistentesInput" disabled>
+            </div>
+
+        <!-- Selector de Tipo de Gráfico -->
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label for="tipoGrafico" class="form-label">Selecciona Tipo de Gráfico:</label>
+                <select class="form-select" id="tipoGrafico" onchange="actualizarGrafico()">
+                    <option value="bar">Barras</option>
+                    <option value="line">Líneas</option>
+                    <option value="pie">Pastel</option>
+                </select>
+            </div>
+        </div>
+        
+
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-primary" onclick="actualizarGrafico()">Aplicar Filtros</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Lienzo donde se mostrará la gráfica -->
+    <canvas id="graficaSalas"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    // Datos de ejemplo (Esto será reemplazado por datos reales desde Django)
+    var datos = JSON.parse('{{ datos_salas|escapejs }}');
+
+    // Inicialización del gráfico
+    var ctx = document.getElementById('graficaSalas').getContext('2d');
+    var tipoGrafico = 'bar'; // Tipo de gráfico por defecto
+    var grafica;
+
+   // Función para actualizar el gráfico según los filtros
+   function actualizarGrafico() {
+    // Recoger los valores de los filtros
+    var salaSeleccionada = document.getElementById('salaSelect').value;
+    var mesSeleccionado = document.getElementById('mesSelect').value;
+    var tipoSeleccionado = document.getElementById('tipoGrafico').value;
+
+    // Filtrar los datos según los valores de los filtros
+    var datosFiltrados = datos.filter(function(sala) {
+        var cumpleSala = salaSeleccionada === '' || sala.Nom_sala === salaSeleccionada;
+        var cumpleMes = mesSeleccionado === '' || new Date(sala.dia).getMonth() + 1 == mesSeleccionado;
+        return cumpleSala && cumpleMes;
+    });
+
+    // Si se ha seleccionado una sala, actualiza el campo de asistentes y capacidad
+    if (salaSeleccionada) {
+        var totalUsos = datosFiltrados.reduce((acc, sala) => acc + sala.total_usos, 0);
+        var asistentes = datosFiltrados.reduce((acc, sala) => acc + (parseInt(sala.no_personas) || 0), 0);
+        
+        // Actualiza la capacidad de la sala seleccionada
+        var capacidad = capacidadesSalas[salaSeleccionada] || 0; // Obtiene la capacidad de la sala seleccionada
+
+        // Actualiza el campo de asistentes y capacidad
+        document.getElementById('asistentesInput').value = asistentes; // Total de asistentes
+        document.getElementById('capacidadInput').value = capacidad; // Capacidad de la sala
+    } else {
+        document.getElementById('asistentesInput').value = ''; // Limpia si no hay sala seleccionada
+        document.getElementById('capacidadInput').value = ''; // Limpia si no hay sala seleccionada
+    }
+
+    // Mapeamos los datos para Chart.js
+    var nombres_salas = datosFiltrados.map(function(sala) {
+        return sala.Nom_sala ? sala.Nom_sala : 'Sala Desconocida';
+    });
+
+    var usos_salas = datosFiltrados.map(function(sala) {
+        return sala.total_usos;
+    });
+
+    // Destruimos el gráfico anterior si existe
+    if (grafica) {
+        grafica.destroy();
+    }
+
+    // Creamos un nuevo gráfico con los datos filtrados
+    grafica = new Chart(ctx, {
+        type: tipoSeleccionado, // Tipo de gráfico seleccionado
+        data: {
+            labels: nombres_salas, // Nombres de las salas
+            datasets: [{
+                label: 'Número de usos',
+                data: usos_salas, // Usos de las salas
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Cargar el gráfico inicial
+actualizarGrafico();
+
+
+// Objeto para almacenar las capacidades de las salas
+var capacidadesSalas = {};
+
+function cargarSalas() {
+    fetch('https://historia-4c332-default-rtdb.firebaseio.com/5/Salas_de_Juntas.json')
+        .then(response => response.json())
+        .then(data => {
+            // Asegúrate de que 'data' sea un objeto o array
+            var salasSelect = document.getElementById('salaSelect');
+
+            // Limpia las opciones anteriores (si las hay)
+            salasSelect.innerHTML = '<option value="">Todas</option>';
+
+            // Itera sobre los datos para agregar las opciones al select
+            for (var sala in data) {
+                if (data.hasOwnProperty(sala)) {
+                    var option = document.createElement('option');
+                    var nombreSala = data[sala].Nom_sala; // Ajusta el nombre de la propiedad según tu estructura JSON
+                    option.value = nombreSala;
+                    option.textContent = nombreSala;
+
+                    // Guarda la capacidad de la sala en el objeto
+                    capacidadesSalas[nombreSala] = data[sala].capacidad; // Ajusta según la propiedad correcta
+
+                    salasSelect.appendChild(option);
+                }
+            }
+        })
+        .catch(error => console.error('Error al cargar las salas:', error));
+}
+
+// Llama a la función para cargar las salas al cargar la página
+window.onload = cargarSalas;
+
+</script>
+
+
+<!-- Bootstrap JS para funcionalidad de componentes -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% endblock %}

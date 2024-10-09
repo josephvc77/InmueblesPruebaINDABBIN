@@ -1,27 +1,32 @@
-from django.contrib.auth import logout
-from django.urls import reverse
-from django.http import HttpResponseRedirect
+# middleware.py
 from django.utils import timezone
+from datetime import datetime, timedelta
 from django.conf import settings
+from django.contrib.auth import logout
+from django.contrib import messages
 
 class AutoLogoutMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        response = self.get_response(request)
+        if not request.user.is_authenticated:
+            return self.get_response(request)
 
-        if request.user.is_authenticated:
-            current_time = timezone.now()
-            if (current_time - request.user.last_login).seconds > settings.AUTO_LOGOUT_DELAY:
-                # Cerrar la sesión
+        # Tiempo límite de inactividad
+        max_idle_time = getattr(settings, 'AUTO_LOGOUT_TIME', 3000)
+
+        last_activity_str = request.session.get('last_activity')
+
+        if last_activity_str:
+            last_activity = datetime.fromisoformat(last_activity_str)
+            elapsed_time = (timezone.now() - last_activity).total_seconds()
+
+            if elapsed_time > max_idle_time:
+                # Cerrar la sesión y enviar mensaje de "Sesión expirada"
                 logout(request)
-                if request.resolver_match:
-                    # Determinar a cuál sistema redirigir
-                    if 'condia' in request.resolver_match.url_name:
-                        login_url = reverse('signinCondia')
-                    else:
-                        login_url = reverse('signin')
-                    return HttpResponseRedirect(login_url)
-        
-        return response
+                messages.warning(request, "Sesión expirada. Por favor, inicia sesión nuevamente.")
+                return self.get_response(request)
+
+        request.session['last_activity'] = timezone.now().isoformat()
+        return self.get_response(request)

@@ -8,7 +8,7 @@
     <div class="col-md-8 mb-3 m-1">
       <div class="card manual-stl text-center shadow">
         <div class="card-body manual">
-          <h5 class="card-title">Descargar Manual</h5>
+          <h2 class="card-title">Descargar Manual</h2>
           <p class="card-text">Aprende a como utilziar el sitio</p>
           <a href="#" class="btn btn-primary">Descargar Manual</a>
         </div>
@@ -20,7 +20,7 @@
   <div class="col-md-4 mb-3 m-1">
     <div class="card text-center shadow">
       <div class="card-body inmuebles">
-        <h5 class="card-title">Inmuebles</h5>
+        <h2 class="card-title">Inmuebles</h2>
         <p class="card-text">
           Explora la lista de inmuebles registrados en el sistema.
         </p>
@@ -32,7 +32,7 @@
   <div class="col-md-4 mb-3 m-1">
     <div class="card text-center shadow">
       <div class="card-body Alta">
-        <h5 class="card-title">Crear un nuevo inmueble</h5>
+        <h2 class="card-title">Crear un nuevo inmueble</h2>
         <p class="card-text">Registra un nuevo inmueble en el sistema.</p>
         <a href="{% url 'create_task' %}" class="btn btn-primary">Crear Inmueble</a>
       </div>
@@ -44,7 +44,7 @@
   <div class="col-md-4 mb-3 m-1">
     <div class="card text-center shadow">
       <div class="card-body Bajas">
-        <h5 class="card-title">Ver bajas</h5>
+        <h2 class="card-title">Ver bajas</h2>
         <p class="card-text">
           Consulta los inmuebles dados de baja en el sistema.
         </p>
@@ -56,7 +56,7 @@
   <div class="col-md-4 mb-3 m-1">
     <div class="card text-center shadow">
       <div class="card-body llamadas">
-        <h5 class="card-title">Módulo de Llamadas</h5>
+        <h2 class="card-title">Módulo de Llamadas</h2>
         <p class="card-text">Accede al módulo de gestión de llamadas.</p>
         <a href="{% url 'llamadas_inmuebles' %}" class="btn btn-primary">Ir a Llamadas</a>
       </div>
@@ -67,7 +67,7 @@
   <div class="col-md-8 mb-3 m-1">
     <div class="card manual-stl text-center shadow">
       <div class="card-body eventos">
-        <h5 class="card-title">Eventos - Reuniones</h5>
+        <h2 class="card-title">Eventos - Reuniones</h2>
         <p class="card-text">Mira todas las reuniones o eventos que se presentaran pronto</p>
         <a href="{% url 'calendar' %}" class="btn btn-primary">Ver eventos</a>
       </div>
@@ -77,68 +77,7 @@
 </div>
 
 <style>
-
-/* .dark-mode .card-title, .dark-mode .card-text{
-  color: black;
-} */
-
-  .footer{
-    margin-top: 10em;
-  }
-  .card {
-    border-radius: 5px;
-    height: 155px !important;
-    transition: ease-out 0.3s;
-  }
-
-
-  .card:hover {
-    padding: 10px;
-    margin: 20px;
-    transition: ease 0.3s;
-  }
-
-  .inmuebles {
-    background-image: url('/static/inicio/img/house.svg');
-    background-position:22em;
-    background-position-y: 90%;
-    background-repeat: no-repeat;
-  }
-
-  .llamadas {
-    background-image: url('/static/inicio/img/llamadas.svg');
-    background-position:25em;
-    background-position-y: 0%;
-    background-repeat: no-repeat;
-  }
-
-  .Alta {
-    background-image: url('/static/inicio/img/create.svg');
-    background-position:25em;
-    background-position-y: 100%;
-    background-repeat: no-repeat;
-  }
-
-  .Bajas {
-    background-image: url('/static/inicio/img/bajas.svg');
-    background-position:25em;
-    background-position-y: 100%;
-    background-repeat: no-repeat;
-  }
-
-  .manual{
-    background-image: url(/static/inicio/img/MANUAL.svg);
-    background-position:2em;
-    background-repeat: no-repeat;
-   
-  }
-
-  .eventos{
-    background-image: url('/static/inicio/img/meet.svg');
-    background-position:2em;
-    background-position-y: 100%;
-    background-repeat: no-repeat;
-  }
+.dark-mode .offcanvas-body{color: #242424;} .card-title{font-size: 28px !important;}.footer{margin-top:10em;}.card{border-radius:5px;height:155px !important;transition:ease-out 0.3s;}.card:hover{padding:5px;margin:5px;transition:ease 0.3s;}.inmuebles{background-image:url('/static/inicio/img/house.svg?v=1.0');background-position:22em;background-position-y:90%;background-repeat:no-repeat;}.llamadas{background-image:url('/static/inicio/img/llamadas.svg?v=1.0');background-position:25em;background-position-y:0%;background-repeat:no-repeat;}.Alta{background-image:url('/static/inicio/img/create.svg?v=1.0');background-position:25em;background-position-y:100%;background-repeat:no-repeat;}.Bajas{background-image:url('/static/inicio/img/bajas.svg?v=1.0');background-position:25em;background-position-y:100%;background-repeat:no-repeat;}.manual{background-image:url('/static/inicio/img/MANUAL.svg?v=1.0');background-position:2em;background-repeat:no-repeat;}.eventos{background-image:url('/static/inicio/img/meet.svg?v=1.0');background-position:2em;background-position-y:100%;background-repeat:no-repeat;}
 </style>
 
 {% endblock %}

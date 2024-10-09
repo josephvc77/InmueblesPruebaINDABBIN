@@ -227,7 +227,6 @@
    
        function loadUsoPorEdificacion(selectUsoPorEdificacion, selectCalidadDeLaEdificacion) {
            $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/0/uso/.json', function(data) {
-               console.log('Datos obtenidos de Firebase para Uso por Edificación:', data);
                var uso_por_edificacion = [...new Set(data.map(item => item.uso_por_edificacion))];
    
                selectUsoPorEdificacion.empty(); // Limpiar opciones anteriores

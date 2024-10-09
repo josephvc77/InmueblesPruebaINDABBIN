@@ -69,10 +69,14 @@ rel="stylesheet"
         </div>
         <div class="form-group form-check-inline">
           {% if inmueble.rfi %}
-          <label for="{{inmueble.rfi.id_for_label}}">RFI:</label>       
-          <input class="form-control form-control-sm text-center" type="text" id="{{inmueble.rfi.id}}" name="{{inmueble.rfi.name}}" value='{{inmueble.rfi.value}}' readonly >
+              <label for="{{ inmueble.rfi.id_for_label }}">RFI:</label>
+              <input class="form-control form-control-sm text-center" type="text" id="{{ inmueble.rfi.id }}" name="{{ inmueble.rfi.name }}" value="{{ inmueble.rfi.value }}" readonly>
+          {% else %}
+              <label for="sin-rfi">RFI:</label>
+              <input class="form-control form-control-sm text-center" type="text" id="sin-rfi" value="SIN RFI ASIGNADO" readonly>
           {% endif %}
-        </div>
+      </div>
+      
         
       <div class="form-group form-check-inline">
           <label for="{{ inmueble.rfiProv.id_for_label }}">RFI Provicional:</label>
@@ -175,283 +179,27 @@ En lugar de guardar todos los datos en una sola instancia, estos formularios per
 
   
 
-<style>
-
-.dark-mode .modal-content{
-  background-color: #333;
-}
-
-.tab.actives {
-    background-color: #0e0d21;
-}
-  /* Estilos para centrar horizontalmente elementos con la clase "centered" */
-.centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin: 0 auto;
-}
-.buttons{
-  display: flex;
-  align-content: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-end;
-  flex-direction: row;
-  margin-bottom: 40px;
-}
-
-.archivo-style {
-  width: 90%;
-  height: 100%;
-  margin-left: 3em;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.archivo-style input[type="file"] {
-  width: 100%;
-}
-.fa-chevron-up {
-  font-size: 25px;
-  margin-bottom: 6px;
-}
-
-.archivo-style label {
-  font-size: 16px;
-  color: #333;
-}
-
-.archivo-style label::after {
-  font-size: 14px;
-  color: #999;
-  cursor: pointer;
-}
-
-.archivo-style label::after:hover {
-  color: #777;
-}
-
-.archivo-style .input-group-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.archivo-style .input-group-btn .btn {
-  border: 0;
-  background-color: transparent;
-  color: #4a5cff;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.archivo-style .input-group-btn .btn i {
-  font-size: 20px;
-}
-
-.archivo-style .input-group-btn .btn:hover {
-  color: #999;
-}
-
-.contenedor-archivos{
-  padding: 10px;
-  border-radius: 20px;
-  border: .1px solid #333;
-  border-bottom-color: #c03c3c
-
-}
-
-@media (max-width: 436px) {
-
-  .tab-content {
-    padding: 0px;
-    border: none;
-    border-radius: 10px;
-}
-
-  .task-form {
-    padding: 0px;
-    margin-bottom: 10em;
-}
-
-  body{
-    font-size: 12px;
-  }
-
-  h2, h3 , h4, h5{
-    font-size: 13px;
-  }
-
-  .width-label {
-    width: 100%;
-}
-
-.actualizar{
-  position: relative;
-  top: 5em;
-  left: 5em;
-}
-
-  .task-detail-container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 6px;
-    border: 0px solid #ccc;
-    border-radius: 7px;
-    margin: 0px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.buttons{
-  display: none;
-  width: 24em;
-  flex-direction: row;
-  align-content: center;
-}
-
-}
-.mobile-menu-button {
-    display: none; /* Ocultar por defecto en pantallas más grandes */
-    cursor: pointer;
-}
-
-@media (max-width: 436px) {
-
-    .tabs {
-        display: none; /* Ocultar las pestañas en pantallas más pequeñas */
-        background-color: #f2f2f2;
-        padding: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 70%; /* Ajusta según sea necesario */
-        max-width: 300px; /* Establece el ancho máximo del menú */
-        overflow-y: auto; /* Permite desplazamiento si el contenido es demasiado largo */
-        z-index: 1000; /* Ajusta según sea necesario para que esté por encima del contenido */
-    }
-
-    .mobile-menu-button {
-        display: block; /* Mostrar el botón de menú en pantallas más pequeñas */
-        position: fixed;
-        top: 5em;
-        right: 0;
-        font-size: 16px;
-        background-color: #c03c3c;
-        color: aliceblue;
-        padding-left: 15px;
-        padding-right: 10px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        cursor: pointer;
-        z-index: 1001; /* Ajusta según sea necesario para que esté por encima del menú */
-    }
-
-    .tabs.active {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        top: 11em;
-    }
-
-    .tab {
-        padding: 10px;
-        margin: 5px;
-        cursor: pointer;
-        background-color: #691c32;
-        color: white;
-        border-radius: 5px;
-        text-align: center;
-        width: 80%;
-        max-width: 200px; /* Ajusta según sea necesario */
-    }
-
-    .tab-content-item {
-        display: none; /* Ocultar el contenido de las pestañas en pantallas más pequeñas */
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-top: 10px;
-        background-color: #fff;
-    }
-
-    /* Estilo para mostrar el contenido de la pestaña activa */
-    .tab-content-item.active {
-        display: block;
-    }
-}
-
-
-  .datepicker-container {
-      position: relative;
-      display: inline-block;
-  }
-
-  .datepicker-container input {
-      padding-right: 30px;
-      /* Añade espacio para el ícono */
-  }
-
-  .datepicker-container .input-group-append {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 100%;
-      pointer-events: none;
-  }
-
-  .datepicker-container .input-group-append .fa-calendar {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      font-size: 1.2em;
-      color: #495057;
-  }
-
-
-</style>
-<!-- SweetAlert -->
+<style>.dark-mode .modal-content{background-color:#333;}.tab.actives{background-color:#0e0d21;}.centered{display:flex;justify-content:center;align-items:center;text-align:center;margin:0 auto;}.buttons{display:flex;align-content:center;flex-wrap:wrap;justify-content:center;align-items:flex-end;flex-direction:row;margin-bottom:40px;}.archivo-style{width:90%;height:100%;margin-left:3em;border:1px solid #ccc;padding:10px;margin-bottom:10px;}.archivo-style input[type="file"]{width:100%;}.fa-chevron-up{font-size:25px;margin-bottom:6px;}.archivo-style label{font-size:16px;color:#333;}.archivo-style label::after{font-size:14px;color:#999;cursor:pointer;}.archivo-style label::after:hover{color:#777;}.archivo-style .input-group-btn{position:absolute;top:0;right:0;}.archivo-style .input-group-btn .btn{border:0;background-color:transparent;color:#4a5cff;font-size:16px;cursor:pointer;}.archivo-style .input-group-btn .btn i{font-size:20px;}.archivo-style .input-group-btn .btn:hover{color:#999;}.contenedor-archivos{padding:10px;border-radius:20px;border:.1px solid #333;border-bottom-color:#c03c3c}@media (max-width:436px){.tab-content{padding:0px;border:none;border-radius:10px;}.task-form{padding:0px;margin-bottom:10em;}body{font-size:12px;}h2,h3,h4,h5{font-size:13px;}.width-label{width:100%;}.actualizar{position:relative;top:5em;left:5em;}.task-detail-container{max-width:100%;margin:0 auto;padding:6px;border:0px solid #ccc;border-radius:7px;margin:0px;box-shadow:0 2px 4px rgba(0,0,0,0.1);}.buttons{display:none;width:24em;flex-direction:row;align-content:center;}}.mobile-menu-button{display:none;cursor:pointer;}@media (max-width:436px){.tabs{display:none;background-color:#f2f2f2;padding:10px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);position:fixed;top:0;right:0;bottom:0;width:70%;max-width:300px;overflow-y:auto;z-index:1000;}.mobile-menu-button{display:block;position:fixed;top:5em;right:0;font-size:16px;background-color:#c03c3c;color:aliceblue;padding-left:15px;padding-right:10px;border-top-left-radius:5px;border-bottom-left-radius:5px;cursor:pointer;z-index:1001;}.tabs.active{display:flex;flex-direction:column;align-items:center;top:11em;}.tab{padding:10px;margin:5px;cursor:pointer;background-color:#691c32;color:white;border-radius:5px;text-align:center;width:80%;max-width:200px;}.tab-content-item{display:none;padding:10px;border:1px solid #ccc;border-radius:5px;margin-top:10px;background-color:#fff;}.tab-content-item.active{display:block;}}.datepicker-container{position:relative;display:inline-block;}.datepicker-container input{padding-right:30px;}.datepicker-container .input-group-append{position:absolute;top:0;right:0;height:100%;pointer-events:none;}.datepicker-container .input-group-append .fa-calendar{position:absolute;top:50%;right:10px;transform:translateY(-50%);font-size:1.2em;color:#495057;}</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-
-
 <script>
-// Agrega un evento al botón de menú hamburguesa
 document.getElementById('mobile-menu-button').addEventListener('click', function () {
-    // Muestra u oculta las pestañas y el contenido de las pestañas
     document.querySelector('.tabs').classList.toggle('active');
-
 });
 
-// Agrega eventos a las pestañas para cambiar el contenido al hacer clic
 document.querySelectorAll('.tabs .tab').forEach(function (tab) {
     tab.addEventListener('click', function () {
-        // Oculta todas las pestañas
         document.querySelectorAll('.tab-content-item').forEach(function (contentItem) {
             contentItem.classList.remove('active');
         });
-
-        // Muestra el contenido de la pestaña correspondiente
         var tabId = tab.getAttribute('data-tab');
         document.querySelector('.tab-content-item[data-tab="' + tabId + '"]').classList.add('active');
     });
 });
 
 
-
-  // Obtener el número de notificaciones no leídas del usuario
 const notificationsCount = `{{ user.mensajes.unread.count }}`;
-
-// Actualizar el badge en el botón de notificaciones
 const notificationsBadge = document.getElementById('notifications-count');
 notificationsBadge.textContent = notificationsCount;
-
-// Si el número de notificaciones no leídas es mayor que 0, mostrar el botón de notificaciones
 if (notificationsCount > 0) {
   const notificationsButton = document.querySelector('.notifications');
   notificationsButton.classList.remove('d-none');
@@ -459,14 +207,11 @@ if (notificationsCount > 0) {
   const notificationsButton = document.querySelector('.notifications');
   notificationsButton.classList.add('d-none');
 }
-
   document.addEventListener('DOMContentLoaded', function () {
     function confirmAndDelete(button, message) {
       button.addEventListener('click', function (event) {
         event.preventDefault();
-
         const url = this.dataset.url;
-
         Swal.fire({
         title: '¿Estás seguro?',
         text: message,
@@ -489,17 +234,14 @@ if (notificationsCount > 0) {
             if (data.success) {
               const row = button.closest('tr');
               row.remove();
-              // Muestra una alerta de éxito con SweetAlert
               Swal.fire('Eliminado', 'El elemento ha sido eliminado correctamente', 'success');
             } else {
               console.error('Error:', data.message);
-              // Muestra una alerta de error con SweetAlert
               Swal.fire('Error', 'Hubo un problema al intentar eliminar el elemento', 'error');
             }
           })
           .catch(error => {
             console.error('Error:', error);
-            // Muestra una alerta de error con SweetAlert
             Swal.fire('Error', 'Hubo un problema al intentar eliminar el elemento', 'error');
           });
         }
@@ -542,7 +284,6 @@ if (notificationsCount > 0) {
 
 
 <script>
-    // Función para mostrar una confirmación antes de completar
     function showCompleteConfirmation() {
       Swal.fire({
         title: '¿Estás seguro?',
@@ -564,8 +305,6 @@ if (notificationsCount > 0) {
     document.getElementById('darDeBajaButton').addEventListener('click', function() {
     showBajaConfirmation();
 });
-
-  
     function showBajaConfirmation() {
       Swal.fire({
           title: '¿Dar de baja esta tarea?',
@@ -597,19 +336,13 @@ if (notificationsCount > 0) {
       tabContents.forEach((content) => content.classList.remove('active'));
       tab.classList.add('active');
       document.getElementById(targetTab).classList.add('active');
-
-      // Guarda la pestaña activa en localStorage
       localStorage.setItem(localStorageKey, targetTab);
     }
-
-    // Asigna eventos a las pestañas
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         activateTab(tab);
       });
     });
-
-    // Recupera la pestaña activa de localStorage al cargar la página
     const savedActiveTab = localStorage.getItem(localStorageKey);
     if (savedActiveTab) {
       const tabToActivate = document.querySelector(`[data-tab="${savedActiveTab}"]`);
@@ -621,15 +354,10 @@ if (notificationsCount > 0) {
 </script>
 
 <script>
-  // ... Código de scripts existente ...
-
-  // Función para mostrar el formulario de Edificación
   function showEdificacionForm() {
     document.getElementById('edificacion-form').style.display = 'block';
     document.getElementById('terreno-form').style.display = 'none';
   }
-
-  // Función para mostrar el formulario de Terreno
   function showTerrenoForm() {
     document.getElementById('edificacion-form').style.display = 'none';
     document.getElementById('terreno-form').style.display = 'block';

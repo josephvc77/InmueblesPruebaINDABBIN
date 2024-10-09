@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link
   rel="stylesheet"
@@ -5,262 +6,99 @@
 />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
+body{font-family:Arial,sans-serif;background-color:#ffffff;margin:0;padding:0;display:flex;align-items:center;justify-content:center;height:100vh;}h1.h1{text-align:center;margin-top:30px;}p{text-align:center;color:red;}form{position:absolute;max-width:408px;margin:5px auto;top:42%;width:33%;right:11em;height:4%;}.form-group{margin-bottom:20px;}.form-group label{display:block;font-weight:bold;margin-bottom:5px;}.form-group input{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;}button{width:75%;min-height:35px;background:#ddcaad 0 0 no-repeat padding-box;box-shadow:0 3px 6px rgba(0,0,0,.5019607843137255);border-radius:12px;font-weight:700;border:none!important;transition:all .3s ease-out;margin-left:2.5em;}button:hover{color:#691c32;background-color:#d3bb9a;outline:0;}.container{display:flex;justify-content:space-between;align-items:flex-end;max-width:1140px;width:100%;margin:0 auto;padding:20px;}.logo-MDSJ{top:15em ;width:65%;position:relative;margin:5em auto;left:6em;}.logo-GM{width:30%;z-index:128;position:relative;bottom:3em;left:-45em;}.bg img{background-size:cover;width:50%;height:100vh;position:fixed;right:0;z-index:-1;top:0;box-shadow:inset 0 0 38px rgba(0,0,1.0);}.contenedor-logo{margin-left:-14.7em;width:71.4%;height:100vh;}.alert{display:block;position:absolute;top:-23em;left:39em;transform:translateX(-50%);width:18em;padding:10px 22px;background-color:#f89406;border:none;z-index:1;color:#ffffff;overflow:hidden;font-size:12px;flex-direction:row;flex-wrap:nowrap;}.icon{width:20px}@media (max-width:436px){.container{display:flex;justify-content:space-between;align-items:flex-end;max-width:1140px;width:100%;margin:0 auto;padding:20px;}.labels{left:0em;display:flex;flex-direction:column;width:19em;margin:0 auto;position:relative;top:6em;}.ingresar{display:flex;flex-direction:column;width:100%;align-items:center;justify-content:center;position:relative;top:6em;margin:0 auto;left:6em;}.contenedor-logo{display:flex;width:100%;align-items:center;justify-content:center;flex-direction:column;margin:0 auto;margin-bottom:17em;}.bg{display:none;}.logo-MDSJ{position:static;margin-top:-15em;width:100%;}form{display:flex;flex-wrap:nowrap;margin:0;flex-direction:column;justify-content:center;right:14em;}.logo-GM{width:60%;z-index:128;position:relative;bottom:2em;left:0em;}.password-input{position:relative;}.toggle-password{position:absolute;top:50%;right:10px;transform:translateY(-50%);cursor:pointer;}.icon{color:#ffffff;width:5%;}.toggle-password i{font-size:18px;}button{position:relative;cursor:pointer;margin:auto;left:70%;width:100%;top:10em;}@media (max-width:768px){.select-site{display: flex;position: relative;top: 18em;width: 300px;} .container{flex-direction:column;align-items:center;}.form{position:relative;top:0;margin-top:2em;max-width:100%;}.logo-MDSJ,.logo-GM{margin-top:0;}}}
+</style> 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-  h1.h1 {
-    text-align: center;
-    margin-top: 30px;
-  }
-
-  p {
-    text-align: center;
-    color: red;
-  }
-
-  form {
-    position: absolute;
-    max-width: 408px;
-    margin: 5px auto;
-    top: 42%;
-    width: 33%;
-    right: 11em;
-    height: 4%;
-} 
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  button {
-    width: 75%;
-    min-height: 35px;
-    background: #ddcaad 0 0 no-repeat padding-box;
-    box-shadow: 0 3px 6px rgba(0,0,0,.5019607843137255);
-    border-radius: 12px;
-    font-weight: 700;
-    border: none!important;
-    transition: all .3s ease-out;
-    margin-left: 2.5em;
-  }
-
-  button:hover{
-    color: #691c32;
-    background-color: #d3bb9a;
-    outline: 0;
-  }
-
-  /* Estilos personalizados */
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    max-width: 1140px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  .logo-sgis {
-    width: 65%;
-    position: relative;
-    margin: 5em auto;
-    left: 6em;
-  }
-
-  .logo-GM {
-    width: 48%;
-    z-index: 128;
-    position: relative;
-    bottom: 10px;
-    left: 10em;
-  }
-
-  .bg img {
-    background-size: cover;
-    width: 50%;
-    height: 100vh;
-    position: fixed;
-    right: 0;
-    top: 0;
-    box-shadow: inset 0 0 38px rgba(0, 0, 1.0);
-  }
-
-  .contenedor-logo{
-    margin-left: -14.7em;
-    width: 71.4%;
-    height: 100vh;
-  }
-
-  @media (max-width: 768px) {
-   
-
-    .contenedor-logo{
-      position: relative;
-      left: 48%;
-      width: 100%;
-    }
-    .bg{
-      display: none;
-    }
-  }
-  .alert {
-    display: none;
-    position: absolute;
-    top: -20em;
-    left: 13.3em;
-    width: 100%;
-    padding: 1.5em;
-    background-color: #f89406;
-    border: none;
-    color: #ffffff;
-    overflow: hidden;
-  }
-
-  .password-input {
-    position: relative;
-  }
-  
-  .toggle-password {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
-  .icon{
-    color: #ffffff;
-    width: 5%;
-  }
-  
-  .toggle-password i {
-    font-size: 18px;
-  }
-</style>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<p>{{ error }}</p>
 {% load static%}
 
 <div class="container">
   <div class="contenedor-logo">
-    <img class="logo-sgis" src="{% static 'inicio/img/MDSJSEP.png' %}" alt="Logo-MDSJ">
-    <img class="logo-GM" src="{% static 'inicio/img/logo.png' %}" alt="lOGO-GM">
+    <img class="logo-MDSJ" src="{% static 'inicio/img/MDSJSEP.png' %}">
   </div>
-  {% static 'inicio/css/styles.css'%}"
+
+  <img class="logo-GM" src="{% static 'inicio/img/logo.png' %}" alt="">
   <div class="bg">
-    <img src="{% static 'inicio/img/bg.png' %}" alt="bg">
-  </div>
-  <form method="POST" onsubmit="return validateForm();">
-    {% csrf_token %}
+    <img src="{% static 'inicio/img/bg.png' %}">
+  </div> 
 
-    <div class="form-group">
-      <select id="sitio-select" name="sitio" class="form-control">
-        <option value="">Seleccione un sitio</option>
-        <option value="{% url 'signinMDSJ' %}">Modulo de Sala de Juntas</option>
-        <option value="{% url 'signin' %}">SIISEP</option>
-        <option value="{% url 'signinCondia' %}">Condia</option>
-      </select>
-    </div>
+  {% block content %}
 
-    <div class="form-group">
-        <input type="text" name="{{ form.username.name }}" placeholder="Usuario" class="form-control form-control-sm">
-    </div>
-    <div class="form-group">
-        <div class="password-input">
-            <input type="password" name="{{ form.password.name }}" placeholder="Contraseña" class="form-control form-control-sm" id="password">
-            <span class="toggle-password" id="toggle-password">
-                <i class="fas fa-eye"></i>
-            </span>
+    <form action="/signinMDSJ/" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <select id="sitio-select" name="sitio" class="form-control select-site">
+          <option value="">Seleccione un sitio</option>
+          <option value="{% url 'signinMDSJ' %}">Modulo de Sala de Juntas</option>
+          <option value="{% url 'signin' %}">SIISEP</option>
+          <option value="{% url 'signinCondia' %}">Condia</option>
+        </select>
+      </div>
+
+      <div class="labels">
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Usuario" required class="form-control form-control-sm">
+        </div>
+        <div class="form-group">
+            <div class="password-input">
+                <input type="password" name="password" placeholder="Contraseña" required class="form-control form-control-sm" id="password">
+                <span class="toggle-password" id="toggle-password">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
         </div>
     </div>
-    <button type="submit">Ingresar</button>
-    <div class="alert alert-danger" id="alert" role="alert">
-        <img class="icon" src="{% static 'inicio/icons/triangle-exclamation-solid.svg' %}" alt="icon"> Ingresa tus credenciales
-    </div>
-</form>
-
-</div>
-
-<script>
-  const togglePassword = document.getElementById('toggle-password');
-  const passwordInput = document.getElementById('password');
-  const alertElement = document.getElementById('alert');
-  
-  togglePassword.addEventListener('click', () => {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-    } else {
-      passwordInput.type = 'password';
+      <button>Sigin</button>
+      {% if error %}
+      <script>
+        swal("Usuario o Contraseñas Incorrecta", "Ingresa tus credenciales de nuevo", "error");
+      </script>
+      {% endif %}
+ 
+    </form>
+    <script>
+     document.addEventListener('DOMContentLoaded', function() {
+    // Función para obtener el valor de la cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
-    
-    // Alternar la clase "active" para cambiar el estilo de la línea
-    togglePassword.classList.toggle('active');
-  });
 
-  function validateForm() {
-    const usernameInput = document.querySelector('input[name="{{ form.username.name }}"]');
-    const passwordInput = document.querySelector('input[name="{{ form.password.name }}"]');
-    
-    if (usernameInput.value.trim() === '' || passwordInput.value.trim() === '') {
-      alertElement.style.display = 'block';
-      setTimeout(() => {
-        alertElement.style.display = 'none';
-      }, 5000); // Ocultar la alerta después de 5 segundos
-      return false; // Evita enviar el formulario
-    } else {
-      alertElement.style.display = 'none';
-      return true; // Permite enviar el formulario
-    }
-  }
-</script>
+    // Obtener el token CSRF de las cookies
+    const csrftoken = getCookie('csrftoken');
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-      // Envía una solicitud POST al endpoint de cierre de sesión de Django
-      fetch("{% url 'logout' %}", {
-          method: 'POST',
-          headers: {
-              'X-CSRFToken': "{{ csrf_token }}",  // Agrega el token CSRF a la solicitud
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
-          },
-          credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
-      })
-      .then(response => {
-          if (response.ok) {
-       
-          } else {
-              console.error('Error al cerrar sesión');
-          }
-      })
-      .catch(error => {
-          console.error('Error al cerrar sesión:', error);
-      });
-  });
-</script>
+    // Envía una solicitud POST al endpoint de cierre de sesión de Django
+    fetch("/logout/", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,  // Agrega el token CSRF a la solicitud
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
+        },
+        credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Sesión cerrada con éxito');
+        } else {
+            console.error('Error al cerrar sesión');
+        }
+    })
+    .catch(error => {
+        console.error('Error al cerrar sesión:', error);
+    });
+});
+  </script>
   
 <script>
   document.getElementById('sitio-select').addEventListener('change', function() {
@@ -271,3 +109,4 @@
   });
 </script>
 
+    {% endblock %}

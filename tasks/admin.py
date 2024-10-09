@@ -116,10 +116,10 @@ admin.site.register(TareasCondia)
 # Registra otros modelos aquí...
 
 class EventsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
+    list_display = ('title',  'hora_inicio', 'hora_finalizacion', 'coordina')
 admin.site.register(Events, EventsAdmin)
 
 class EventosCreadosAdmin(admin.ModelAdmin):
-    list_display = ('title', 'hora_inicio', 'hora_finalizacion', 'coordina')
+    list_display = ('title', 'Nom_sala', 'hora_inicio', 'hora_finalizacion', 'coordina')
 admin.site.register(EventosCreados, EventosCreadosAdmin)
 

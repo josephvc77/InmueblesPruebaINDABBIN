@@ -18,10 +18,10 @@ from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, Da
 
 from .forms import TaskCreateForm
 
-# Create your views here.
 
 # Vista para cerrar sesión automáticamente
 from django.contrib.auth import logout
+
 
 
 from django.shortcuts import render
@@ -67,14 +67,13 @@ def signin(request):
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
+            messages.error(request, 'Usuario o contraseña incorrectos.')
             return render(request, 'signin.html', {
                 'form': AuthenticationForm,
-                'error': 'Usuario o contraseña son incorrectos'
             })
         else:
             login(request, user)
             return redirect('principal')
-
 
 
     #     form = AuthenticationForm(request, data=request.POST)
@@ -303,7 +302,10 @@ def remove(request):
 
 @login_required
 def principal(request):
-    return render(request, 'home.html')
+    mensajes = MensajeIMP.objects.all()
+    return render(request, 'home.html', {
+        'mensajes': mensajes,
+    } )
 
 
 @login_required
@@ -944,8 +946,28 @@ def get_municipios_by_entidad_federativa(request, entidad_federativa):
         municipios = [row['municipio_alcaldia'] for row in reader if row['entidad_federativa'] == entidad_federativa]
 
     return JsonResponse({'municipios': municipios})
-
     
+import csv
+import os
+from django.http import JsonResponse
+
+# Función para obtener la información de las salas desde un archivo CSV
+def get_salas(request):
+    csv_path = os.path.join(os.path.dirname(__file__), 'data/salas.csv')  # Ruta al archivo CSV
+    salas_data = []
+
+    with open(csv_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            salas_data.append({
+                'Nom_sala': row['Nom_sala'],
+                'capacidad': row['capacidad'],
+                'nivel': row['nivel'],
+                'sala': row['sala']
+            })
+
+    return JsonResponse({'salas': salas_data})
+
 @login_required
 def editar_edificacionIMP(request, edificacion_id):
     edificacion = get_object_or_404(EdificacionIMP, pk=edificacion_id)
@@ -1757,7 +1779,7 @@ def export_Llamadas_to_excelIMP(request):
         }
 
         # Consulta para obtener la Edificacion relacionada con la tarea actual (si existe)
-        registros = RegistroLlamadas.objects.filter(task=llamadasPendientes)
+        registros = RegistroLlamadas.objects.filter(ficha=llamadasPendientes)
 
         # Expandir task_data con los registros de llamadas
         for i, registro in enumerate(registros):

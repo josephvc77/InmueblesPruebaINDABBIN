@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.101.214']
+# ALLOWED_HOSTS = ['192.168.101.214']
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 
@@ -45,11 +45,11 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'import_export',
     'crispy_forms',
-    'fontawesomefree',
     'condia',
     'MDSJSEP',
     'reversion',
 ]
+
 
 
 MIDDLEWARE = [
@@ -62,10 +62,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tasks.middleware.AutoLogoutMiddleware',
     'reversion.middleware.RevisionMiddleware',
+    'tasks.middleware.AutoLogoutMiddleware',
     
 ]
 
-AUTO_LOGOUT_DELAY = 10800
+AUTO_LOGOUT_DELAY = 3000
 
 
 ROOT_URLCONF = 'djangocrud.urls'
@@ -86,6 +87,8 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 
 WSGI_APPLICATION = 'djangocrud.wsgi.application'
 
@@ -101,28 +104,28 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangodb',
-        'USER': 'djangouser',
-        'PASSWORD': 'p455w0rd',
-        'HOST': 'localhost',
-        'PORT': '5432',   
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'bdinmuebles',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'djangodb',
+#         'USER': 'djangouser',
+#         'PASSWORD': 'p455w0rd',
 #         'HOST': 'localhost',
-#         'PORT': '3306',
+#         'PORT': '5432',   
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'inmuebles',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
 
 
 # DATABASES = {
@@ -194,6 +197,7 @@ TIME_ZONE = 'America/Mexico_City'
 USE_I18N = True
 
 USE_TZ = True
+TIME_ZONE = 'UTC'
 
 
 # Static files (CSS, JavaScript, Images)

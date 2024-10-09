@@ -148,11 +148,12 @@ urlpatterns = [
     path('create_event/', views_MDSJ.create_event, name='create_event'),
     path('sala/<int:task_id>/', views_MDSJ.detail_event, name='detail_event'),
 
-    path('calendar_MDSJ/', views_MDSJ.calendar_MDSJ, name='calendar_MDSJ'),
+    path('salaJuntas/calendario/', views_MDSJ.calendar_MDSJ, name='calendar_MDSJ'),
     path('all_events_MDSJ/', views_MDSJ.all_events_MDSJ, name='all_events_MDSJ'), 
     path('add_event_MDSJ/', views_MDSJ.add_event_MDSJ, name='add_event_MDSJ'), 
     path('update_MDSJ/', views_MDSJ.update_MDSJ, name='update_MDSJ'),
     path('remove_MDSJ/', views_MDSJ.remove_MDSJ, name='remove_MDSJ'),
+    path('salaJuntas/analicis/', views_MDSJ.uso_salas_view, name='uso_salas_view'),
 
 ]
 

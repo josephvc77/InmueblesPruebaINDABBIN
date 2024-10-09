@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 
 import os
@@ -35,17 +36,23 @@ def signupMDSJ(request):
 
         return render(request, 'signupMDSJ.html', {"form": UserCreationForm, "error": "Passwords did not match."})
     
+
 def signinMDSJ(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+    if request.method == 'GET':
+        return render(request, 'signinMDSJ.html', {
+            'form': AuthenticationForm
+        })
+    else:
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'signinMDSJ.html', {
+                'form': AuthenticationForm,
+                'error': 'Usuario o contraseña son incorrectos'
+            })
+        else:
             login(request, user)
             return redirect('calendar_MDSJ')
-    else:
-        form = AuthenticationForm()
-    
-    return render(request, 'signinMDSJ.html', {"form": form})
 
 
 @login_required
@@ -86,7 +93,7 @@ def all_events_MDSJ(request):
     
     # Filtra los eventos por sala si se proporciona una sala seleccionada
     if selected_sala:
-        all_events = EventosCreados.objects.filter(sala=selected_sala)
+        all_events = EventosCreados.objects.filter(Nom_sala=selected_sala)
     else:
         all_events = EventosCreados.objects.all()
     
@@ -98,6 +105,9 @@ def all_events_MDSJ(request):
             'id': event.id,
             'start': dia_formatted + 'T' + event.hora_inicio.strftime("%H:%M") if event.hora_inicio else None,
             'end': dia_formatted + 'T' + event.hora_finalizacion.strftime("%H:%M") if event.hora_finalizacion else None,
+            'Nom_sala': event.Nom_sala,
+            'capacidad': event.capacidad,
+            'nivel': event.nivel,
             'sala': event.sala,
             'prioridad': event.prioridad,
             'coordina': event.coordina,
@@ -118,6 +128,9 @@ def add_event_MDSJ(request):
     hora_finalizacion = request.GET.get("hora_finalizacion", None)
     title = request.GET.get("title", None)
     prioridad = request.GET.get("prioridad", None)
+    Nom_sala = request.GET.get("Nom_sala", None)
+    nivel = request.GET.get("nivel", None)
+    capacidad = request.GET.get("capacidad", None)
     sala = request.GET.get("sala", None)
     coordina = request.GET.get("coordina", None)
     preside = request.GET.get("preside", None)
@@ -127,7 +140,7 @@ def add_event_MDSJ(request):
     servicios = request.GET.get("servicios", None)
     observaciones = request.GET.get("observaciones", None)
     
-    event = EventosCreados(title=title, dia=dia, hora_inicio=hora_inicio, hora_finalizacion=hora_finalizacion, prioridad=prioridad, sala=sala, coordina=coordina, preside=preside, cargo=cargo, no_personas=no_personas,
+    event = EventosCreados(title=title, dia=dia, hora_inicio=hora_inicio, hora_finalizacion=hora_finalizacion, prioridad=prioridad, sala=sala, Nom_sala=Nom_sala, capacidad=capacidad, nivel=nivel, coordina=coordina, preside=preside, cargo=cargo, no_personas=no_personas,
                    contacto=contacto, servicios=servicios, observaciones=observaciones)
     event.save()
     data = {}
@@ -203,3 +216,26 @@ def detail_event(request, task_id):
         'task': task,
         'form': form,
     })
+
+from django.shortcuts import render
+from .models import EventosCreados
+from django.db.models import Count, Sum  # Importa Sum
+import json
+from django.utils.dateformat import format
+
+def uso_salas_view(request):
+    eventos = EventosCreados.objects.all()
+    
+    # Filtramos los eventos para obtener solo las salas y el número total de asistentes
+    datos_salas = eventos.values('Nom_sala', 'dia').annotate(
+        total_usos=Count('Nom_sala'),
+        no_personas=Sum('no_personas')  # Cambiado a Sum para obtener la suma de no_personas
+    )
+
+    # Convertir la fecha a un formato de cadena (por ejemplo, 'YYYY-MM-DD')
+    for sala in datos_salas:
+        sala['dia'] = format(sala['dia'], 'Y-m-d')  # Cambia el formato si es necesario
+
+    # Pasamos los datos a JSON
+    datos_json = json.dumps(list(datos_salas))
+    return render(request, 'uso_salas.html', {'datos_salas': datos_json})
