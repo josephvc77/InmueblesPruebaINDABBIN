@@ -66,7 +66,7 @@ MIDDLEWARE = [
     
 ]
 
-AUTO_LOGOUT_DELAY = 3000
+AUTO_LOGOUT_DELAY = 3600000
 
 
 ROOT_URLCONF = 'djangocrud.urls'

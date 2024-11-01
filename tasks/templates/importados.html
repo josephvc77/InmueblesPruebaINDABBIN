@@ -11,16 +11,19 @@
       <button class="btn btn-outline-primary" type="submit">Buscar</button>
     </div>
   </div>
-  <div class="form-group animated fadeIn">
-    <select id="prioridad-select" name="prioridad" class="form-control m-3">
-      <option value="">Prioridad <i class="fas fa-chevron-down"></i></option>
-      <option value="Alta">Alta</option>
-      <option value="Media">Media</option>
-      <option value="Baja">Baja</option>
+  <div class="m-3 form-group animated fadeIn">
+    <label for="prioridad"></label>
+    <select id="prioridad" name="prioridad" class="form-control m-3">
+        <option value="">Prioridad</option>
+        <option value="Alta">Alta</option>
+        <option value="Media">Media</option>
+        <option value="Baja">Baja</option>
     </select>
-  </div>
-  <div class="form-group animated fadeIn">
-    <select style="cursor:pointer" id="ur-select" name="ur"  class="form-control m-2">
+</div>
+
+<div class="m-3 form-group animated fadeIn">
+    <label for="ur-select"></label>
+    <select style="cursor:pointer" id="ur-select" name="ur" class="form-control m-2">
         <option value="">UR <i class="fas fa-chevron-down"></i></option>
         <option value="CGEE">CGEE</option>
         <option value="DGB">DGB</option>
@@ -32,17 +35,17 @@
         <option value="RESEMS">RESEMS</option>
     </select>
 </div>
-<div class="form-group animated fadeIn">
-  <select style="cursor:pointer" id="ordenar-por" name="ordenar" class="form-control m-2">
-      <option value="">Ordenar <i class="fas fa-chevron-down"></i></option>
-      <option value="az">A a Z</option>
-      <option value="za">Z a A</option>
-      <option value="nuevo">Más nuevo</option>
-      <option value="viejo">Más viejo</option>
-      
-  </select>
-</div>
 
+<div class="m-3 form-group animated fadeIn">
+    <label for="ordenar-por"></label>
+    <select style="cursor:pointer" id="ordenar-por" name="ordenar" class="form-control m-2">
+        <option value="">Ordenar <i class="fas fa-chevron-down"></i></option>
+        <option value="az">A a Z</option>
+        <option value="za">Z a A</option>
+        <option value="nuevo">Más nuevo</option>
+        <option value="viejo">Más viejo</option>
+    </select>
+</div>
   <a href="{% url 'export_tasks_to_excelIMP' %}" aria-label="Export" class="btn btn-outline-success btn-sm m-2 excell">Exportar Excel <i class="fas fa-file-excel"></i></a>
 
 {% if mensaje %}
@@ -64,7 +67,7 @@
       <p class="total-label">Completados:</p>
       <p class="total-value">{{ total_pending_inmuebles }}</p>
     </div>
-    <h3 class="text-center" style="color: #4b4b4b;">Inmuebles Importados Registrados </h3>
+    <h3 class="text-center" style="color: #4b4b4b;">INMUEBLES REGISTRADOS</h3>
     <div class="totals-container">
       <p class="total-label">Terminados:</p>
       <p class="total-value">{{ total_completed_inmuebles }}</p>
@@ -72,70 +75,67 @@
   </div>
 
 
-{% if inmuebles %}
-<div class="card-container animated fadeIn">
-  {% for task in inmuebles %}
-  <div class="card">
-    <div class="card-header">
-      <h5 class="text-center">{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" aria-label="PDF" target="_blank" class="btn pdf"><i class="logo fi fi-rr-file-pdf"></i></a></h5>
-    </div>
-    <div class="card-body">
-      <div class="scroll-content">
-        <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
-
-        <p><strong>RFI:</strong> {{ task.rfi }}</p>
-        <p class="text-center">{{ task.Sector }}</p>
-        <p style="color: #83710f;" class="text-center">{{ task.seccion_del_inventario }}</p>
-        <p class="text-center"><strong>Causa de Alta:</strong> <br>{{ task.causa_alta }}</p>
-        <p class="text-center"><strong>Entidad Federativa:</strong> {{ task.entidad_federativa }}</p>
-        <p class="text-center"><strong>Municipio :</strong> {{ task.municipio_alcaldia }}</p>
-        <p class="text-center"><strong>UR :</strong> {{ task.UR }}</p>
-        <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
-          Prioridad: {{ task.prioridad }}
-        </p>
-        {% if task.assigned_to %}
-        <p class="text-center" for="assigned_to">Tarea asignada a:</p>
-        <div class="asigned">
-          <p class="text-center">{{ task.assigned_to.first_name }} {{ task.assigned_to.last_name }}<br> {{ task.assigned_to }}</p>
-        </div>
+  {% if inmuebles %}
+  <div class="card-container animated fadeIn">
+    {% for task in inmuebles %}
+    <div class="card">
+      <div class="card-header">
+        <h5 class="text-center">{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" aria-label="PDF" target="_blank" class="btn pdf"><i class="logo fi fi-rr-file-pdf"></i></a></h5>
+      </div>
+      <div class="card-body">
+        <div class="scroll-content">
+          <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
+  
+          <p><strong>RFI:</strong> {{ task.rfi|default:"SIN ASIGNAR" }}</p>
+          <p class="text-center">{{ task.Sector|default:"SIN ASIGNAR" }}</p>
+          <p style="color: #83710f;" class="text-center">{{ task.seccion_del_inventario|default:"SIN ASIGNAR" }}</p>
+          <p class="text-center"><strong>Causa de Alta:</strong> <br>{{ task.causa_alta|default:"SIN ASIGNAR" }}</p>
+          <p class="text-center"><strong>Entidad Federativa:</strong> {{ task.entidad_federativa|default:"SIN ASIGNAR" }}</p>
+          <p class="text-center"><strong>Municipio :</strong> {{ task.municipio_alcaldia|default:"SIN ASIGNAR" }}</p>
+          <p class="text-center"><strong>UR :</strong> {{ task.UR|default:"SIN ASIGNAR" }}</p>
+          <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
+            Prioridad: {{ task.prioridad|default:"SIN ASIGNAR" }}
+          </p>
+          {% if task.assigned_to %}
+          <p class="text-center" for="assigned_to">Tarea asignada a:</p>
+          <div class="asigned">
+            <p class="text-center">{{ task.assigned_to.first_name|default:"SIN ASIGNAR" }} {{ task.assigned_to.last_name|default:"SIN ASIGNAR" }}<br> {{ task.assigned_to|default:"SIN ASIGNAR" }}</p>
+          </div>
+          {% endif %}
         
-      {% endif %}
-      
-      {% if task.deadline %}
-      <p>Entrega para: {{ task.deadline }}</p>
-      {% endif %}
-
-      {% if task.completed %}
+          {% if task.deadline %}
+          <p>Entrega para: {{ task.deadline }}</p>
+          {% endif %}
+  
+          {% if task.completed %}
           <p>Completada</p>
       {% elif task.days_delayed > 0 %}
           <p style="color: rgb(179, 73, 73);">
               Retrasada por: {{ task.days_delayed }} días
           </p>
-      {% else %}
+      {% elif task.days_remaining is not none %}
           <p>
               Tiempo restante: {{ task.days_remaining }} días
           </p>
       {% endif %}
-
+        </div>
+      </div>
+      {% if task.creado %}
+      <p class="completado">Creado el: {{ task.creado}}</p>
+      {% endif %}
+  
+  
       
+      {% if task.datecompleted %}
+      <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
+    {% endif %}
+  
+    
+      <div class="card-footer">
+        <a style="background-color: #691c32; border-radius: 20px; color: #fff; width: 150px; margin: 0 auto;" href="{% url 'task_detail_importados' task.id %}" class="btn btn-outline">Ver detalles</a>
       </div>
     </div>
-    {% if task.creado %}
-    <p class="completado">Creado el: {{ task.creado}}</p>
-    {% endif %}
-
-
-    
-    {% if task.datecompleted %}
-    <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
-  {% endif %}
-  
-    <div class="card-footer">
-      <a style="background-color: #691c32; border-radius: 20px; color: #fff; width: 150px; margin: 0 auto;" href="{% url 'task_detail_importados' task.id %}" class="btn btn-outline">Ver detalles</a>
-    
-    </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
 </div>
 <div class="text-center paginador">
   <nav aria-label="Page navigation example">

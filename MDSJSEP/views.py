@@ -223,13 +223,16 @@ from django.db.models import Count, Sum  # Importa Sum
 import json
 from django.utils.dateformat import format
 
+from django.db.models import Sum, Count, FloatField
+from django.db.models.functions import Cast
+
 def uso_salas_view(request):
     eventos = EventosCreados.objects.all()
     
     # Filtramos los eventos para obtener solo las salas y el número total de asistentes
     datos_salas = eventos.values('Nom_sala', 'dia').annotate(
         total_usos=Count('Nom_sala'),
-        no_personas=Sum('no_personas')  # Cambiado a Sum para obtener la suma de no_personas
+        no_personas=Sum(Cast('no_personas', FloatField()))  # Cast a FloatField
     )
 
     # Convertir la fecha a un formato de cadena (por ejemplo, 'YYYY-MM-DD')

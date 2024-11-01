@@ -118,16 +118,15 @@ def tasks_importados(request):
     prioridad = request.GET.get('prioridad', '')
     ur = request.GET.get('ur', '')
     orden = request.GET.get('ordenar', '')
-    
+
     request.session['search_query'] = search_query
     request.session['prioridad'] = prioridad
     request.session['ur'] = ur
     request.session['ordenar'] = orden
 
     mensajes = MensajeIMP.objects.all()
-    
     eventos = Events.objects.all()
-    
+
     # Obtener los valores de búsqueda y filtros de la sesión
     search_query = request.session.get('search_query', '')
     prioridad = request.session.get('prioridad', '')
@@ -140,35 +139,38 @@ def tasks_importados(request):
         Q(entidad_federativa__icontains=search_query),
         datecompleted__isnull=True,
         estado='Activo'  # Filtra las tareas en estado 'Activo'
-    ).order_by('-updated')
+    )
 
     if prioridad:
         inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
-        
+
     if ur:
         inmuebles_list = inmuebles_list.filter(UR=ur)
-        
+
     # Aplicar filtros de orden
     if orden == 'az':
         inmuebles_list = inmuebles_list.order_by('NombreInmueble')
     elif orden == 'za':
         inmuebles_list = inmuebles_list.order_by('-NombreInmueble')
     elif orden == 'nuevo':
-        inmuebles_list = inmuebles_list.order_by('-updated')
+        inmuebles_list = inmuebles_list.order_by('-updated')  # Más nuevo por fecha de actualización
     elif orden == 'viejo':
-        inmuebles_list = inmuebles_list.order_by('creado')
-        
+        inmuebles_list = inmuebles_list.order_by('creado')  # Más viejo por fecha de creación
+    elif orden == 'utilizados':  # Suponiendo que 'utilizados' es un campo que indica la cantidad de usos
+        inmuebles_list = inmuebles_list.order_by('-usos')  # Ordenar por el campo que cuenta usos (ajusta el campo según tu modelo)
+
     paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
 
     page = request.GET.get('page')
     inmuebles = paginator.get_page(page)
-        
-    today = date.today()  # Obtener la fecha actual
+
+    today = date.today()
 
     for task in inmuebles:
         if task.deadline:
-            days_remaining = (task.deadline - today).days
-            
+            deadline_date = task.deadline.date()
+            days_remaining = (deadline_date - today).days
+
             # Calcular los días de retraso
             if days_remaining < 0:
                 days_delayed = abs(days_remaining)
@@ -201,12 +203,13 @@ def tasks_importados(request):
         'search_query': search_query,
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
-        'mensajes' : mensajes, 
+        'mensajes': mensajes, 
         'prioridad': prioridad,
         'ur': ur,
-        'eventos' : eventos,
+        'eventos': eventos,
         'orden': orden,
     })
+
 
 @login_required
 def calendar(request):  
