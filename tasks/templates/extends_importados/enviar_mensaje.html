@@ -8,7 +8,7 @@
             <button
                 style="display: grid; margin: 0 auto; position: relative; top: -5em; left: 38%;width: 23%; font-size: 12px;"
                 type="button" class="btn btn-primary msjbtn" data-toggle="modal" data-target="#nuevoMensajeModal">
-                Mensaje nuevo
+                Crear tarea
             </button>
             <div class="row" id="tasks-container" style="display: none;">
                 {% for mensaje in task.mensajes.all|dictsort:"estado" %}

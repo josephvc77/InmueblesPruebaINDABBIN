@@ -12,12 +12,12 @@
             <option value="ESTUDIO DE GRABACIÓN">ESTUDIO DE GRABACIÓN</option>
             <option value="BODEGA DGTIC-DGRMyS">BODEGA DGTIC-DGRMyS</option>
             <option value="ÁREA ACTIVIDAD FISICA">ÁREA ACTIVIDAD FISICA</option>
-            <option value="CAPACITACIÓN">CAPACITACIÓN</option>
-            <option value="CAPACITACIÓN">CAPACITACIÓN</option>
+            <option value="CAPACITACIÓN 1">CAPACITACIÓN 1</option>
+            <option value="CAPACITACIÓN 2">CAPACITACIÓN 2</option>
             <option value="CAPACITACIÓN (ESPEJOS)">CAPACITACIÓN (ESPEJOS)</option>
-            <option value="COMPUTO">COMPUTO</option>
-            <option value="COMPUTO">COMPUTO</option>
-            <option value="COMPUTO">COMPUTO</option>
+            <option value="COMPUTO 1">COMPUTO 1</option>
+            <option value="COMPUTO 2">COMPUTO 2</option>
+            <option value="COMPUTO 3">COMPUTO 3</option>
             <option value="SALA MEXICO">SALA MEXICO</option>
             <option value="ANEXO SALA MEXICO">ANEXO SALA MEXICO</option>
             <option value="ACCESO MAYORASGO">ACCESO MAYORASGO</option>
@@ -33,30 +33,30 @@
             <option value="JUAN JOSE ARREOLA">JUAN JOSE ARREOLA</option>
             <option value="FRIDA KHALO">FRIDA KHALO</option>
             <option value="JUSTO SIERRA">JUSTO SIERRA</option>
-            <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
-            <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
-            <option value="AUDITORES">AUDITORES</option>
-            <option value="AUDITORES">AUDITORES</option>
-            <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
-            <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
-            <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
-            <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
-            <option value="EJCUTIVA A">"EJCUTIVA A"</option>
-            <option value="EJCUTIVA B">"EJCUTIVA B"</option>
-            <option value="EJCUTIVA C">"EJCUTIVA C"</option>
-            <option value="EJCUTIVA D">"EJCUTIVA D"</option>
+            <option value="SALA SIN NOMBRE 12">SALA SIN NOMBRE 12</option>
+            <option value="SALA SIN NOMBRE 13">SALA SIN NOMBRE 13</option>
+            <option value="AUDITORES S15">AUDITORES S15</option>
+            <option value="AUDITORES S16">AUDITORES S16</option>
+            <option value="SALA SIN NOMBRE 17">SALA SIN NOMBRE 17</option>
+            <option value="SALA SIN NOMBRE 18">SALA SIN NOMBRE 18</option>
+            <option value="SALA SIN NOMBRE 19">SALA SIN NOMBRE 19</option>
+            <option value="SALA SIN NOMBRE 20">SALA SIN NOMBRE 20</option>
+            <option value="EJCUTIVA A">EJCUTIVA A</option>
+            <option value="EJCUTIVA B">EJCUTIVA B</option>
+            <option value="EJCUTIVA C">EJCUTIVA C</option>
+            <option value="EJCUTIVA D">EJCUTIVA D</option>
             <option value="INTERNA">INTERNA</option>
             <option value="SALA SIN NOMBRE">SALA SIN NOMBRE</option>
             <option value="AUDITORIO REVOLUCIÓN 1425">AUDITORIO REVOLUCIÓN 1425</option>
             <option value="SALA DGP REVOLUCIÓN 1425">SALA DGP REVOLUCIÓN 1425</option>
             <option value="MEZZANNINE REVOLUCIÓN 1425">MEZZANNINE REVOLUCIÓN 1425</option>
             <option value="SALA VIADUCTO 551">SALA VIADUCTO 551</option>
-            <option value="RABOSO (PUEBLA)">RABOSO (PUEBLA)</option>
-            <option value="RABOSO (PUEBLA)">RABOSO (PUEBLA)</option>
-            <option value="RABOSO (PUEBLA)">RABOSO (PUEBLA)</option>
-            <option value="RABOSO (PUEBLA)">RABOSO (PUEBLA)</option>
-            <option value="RABOSO (PUEBLA)">RABOSO (PUEBLA)</option>
-    </select>
+            <option value="RABOSO (PUEBLA) 1">RABOSO (PUEBLA) 1</option>
+            <option value="RABOSO (PUEBLA) 2">RABOSO (PUEBLA) 2</option>
+            <option value="RABOSO (PUEBLA) 3">RABOSO (PUEBLA) 3</option>
+            <option value="RABOSO (PUEBLA) 4">RABOSO (PUEBLA) 4</option>
+            <option value="RABOSO (PUEBLA) 5">RABOSO (PUEBLA) 5</option>
+        </select>
 </div>
 
 <div class="col-md-12 animated fadeIn">
@@ -364,9 +364,9 @@
         });
 
         $('#selectSala').change(function () {
-        // Al cambiar el select, forzamos al calendario a recargar los eventos
-        calendar.fullCalendar('refetchEvents');
-    });
+            // Al cambiar el select, forzamos al calendario a recargar los eventos
+            calendar.fullCalendar('refetchEvents');
+        });
 
         $('#eventForm').submit(function (event) {
             event.preventDefault();
