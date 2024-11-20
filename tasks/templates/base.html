@@ -49,6 +49,9 @@
     {% if registro_Llamadas_Form %}
     <a href="{% url 'llamadas_inmuebles' %}" aria-label="regresar" style="margin-left: 3.5em; text-decoration: none;" ><i class="fi fi-rr-undo"></i> Volver</a>
     {% endif %}
+    {% if inmueble %}
+    <a href="{% url 'Inmuebles' %}" aria-label="regresar" style="margin-left: 3.5em; text-decoration: none;" ><i class="fi fi-rr-undo"></i> Volver</a>
+    {% endif %}
 
     {% if task %}
     <div class="tab mensajes actives" data-tab="tab-mensajes">
@@ -79,9 +82,9 @@
               </div>
               <div class="offcanvas-body">
                   <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                      <li class="nav-item"><a class="nav-link" href="{% url 'tasks_importados' %}"><i class="icon fi fi-rr-bookmark"></i> Completados</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'tasks_completed_importados' %}"><i class="icon fi fi-rr-check"></i> Terminados</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'inmuebles_baja_importados' %}"><i class="icon fi fi-rr-cross"></i> Bajas</a></li>
+                      <li class="nav-item"><a class="nav-link" href="{% url 'Inmuebles' %}"><i class="icon fi fi-rr-bookmark"></i> Completados</a></li>
+                      <li class="nav-item"><a class="nav-link" href="{% url 'Inmuebles_Terminados' %}"><i class="icon fi fi-rr-check"></i> Terminados</a></li>
+                      <li class="nav-item"><a class="nav-link" href="{% url 'Inmuebles_en_Baja' %}"><i class="icon fi fi-rr-cross"></i> Bajas</a></li>
                       <li class="nav-item"><a class="nav-link" href="{% url 'create_task' %}"><i class="icon fi fi-rr-upload"></i> Agregar Alta</a></li>
                       <li class="nav-item"><a class="nav-link" href="{% url 'llamadas_inmuebles' %}"><i class="icon fi fi-rr-call-duration"></i> Fichas (llamadas)</a></li>
                       <li class="nav-item"><a class="nav-link" href="{% url 'create_DatosLlamadasInmueble' %}"><i class="icon fi fi-rr-call-outgoing"></i> Registrasr nueva Ficha</a></li>
@@ -111,7 +114,7 @@
         {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
         <li>
           
-          <a class="dropdown-item" style="margin-bottom: 1em;" href="{% url 'task_detail_importados' mensaje.task.id %}">
+          <a class="dropdown-item" style="margin-bottom: 1em;" href="{% url 'Detalle_inmueble' mensaje.task.id %}">
             <h5>Inmueble: {{ mensaje.task.NombreInmueble }}</h5>
             <p><strong>{{ mensaje.asunto }}</strong></p>
             <p style="color: #2a2a2a;">{{ mensaje.mensaje|truncatechars:50 }}</p>
@@ -149,9 +152,9 @@
             loading="lazy">
     </div>
       <div class="column">
-        <a href="{% url 'tasks_importados' %}">Completados</a>
-        <a href="{% url 'tasks_completed_importados' %}">Terminados</a>
-        <a href="{% url 'inmuebles_baja_importados' %}">Bajas</a>
+        <a href="{% url 'Inmuebles' %}">Completados</a>
+        <a href="{% url 'Inmuebles_Terminados' %}">Terminados</a>
+        <a href="{% url 'Inmuebles_en_Baja' %}">Bajas</a>
         <a href="{% url 'llamadas_inmuebles' %}">Registro de llamadas</a>
         <a href="{% url 'create_task' %}">Agregar Alta</a>
       </div>

@@ -86,7 +86,7 @@
               {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
                   {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
                       <li>
-                          <a class="dropdown-item" href="{% url 'task_detail_importados' mensaje.task.id %}">
+                          <a class="dropdown-item" href="{% url 'Detalle_inmueble' mensaje.task.id %}">
                               <h5>Inmueble: {{ mensaje.task.NombreInmueble }}</h5>
                               <p><strong>{{ mensaje.asunto }}</strong></p>
                               <p style="color: #2a2a2a;">{{ mensaje.mensaje|truncatechars:50 }}</p>
@@ -110,10 +110,10 @@
       <!-- <div class="sidebar" id="sidebar">
         <ul class="cont-menu">
           {% if user.is_authenticated %}
-          <a class="btn-pendientes" href="{% url 'tasks_importados' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Completados</li></a>
-          <a class="btn-completados" href="{% url 'tasks_completed_importados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">Terminados</a>
+          <a class="btn-pendientes" href="{% url 'Inmuebles' %}"><i class="logo fas fa-folder-open"></i><hr class="hr">Completados</li></a>
+          <a class="btn-completados" href="{% url 'Inmuebles_Terminados' %}"><i class="logo fas fa-check-circle"></i><hr class="hr">Terminados</a>
           <br>
-          <a class="btn-baja" href="{% url 'inmuebles_baja_importados' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
+          <a class="btn-baja" href="{% url 'Inmuebles_en_Baja' %}"><i class="logo fas fa-arrow-down"></i><hr class="hr">Bajas</a>
 
   
           <a class="btn-alta" href="{% url 'create_task' %}"><i class="fa-solid fa-chevron-up"></i><hr class="hr">Agregar Alta</li></a>

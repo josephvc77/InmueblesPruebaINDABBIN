@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .content {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .header {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .message-body {
+            margin-top: 15px;
+        }
+        .task-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="header">{{ asunto }}</div>
+        <p>Estimado usuario,</p>
+        <div class="message-body">
+            <p>{{ mensaje_texto }}</p>
+        </div>
+        <div class="footer">
+            <p>Saludos cordiales,</p>
+            <p>Tu equipo de soporte SIISEP</p>
+            <img src="https://attachments.office.net/owa/joseph.valencia%40nube.sep.gob.mx/service.svc/s/GetAttachmentThumbnail?id=AQMkAGI0OTdjM2M4LTliMjctNDAxNi04ZmUyLWFmNzE5ZDJmMDU5ZABGAAADeR136OoN0E2sWaSBNjq%2BLwcAa5TSk%2FXCq0iCCCuWXJKy%2BQAAAgEJAAAAa5TSk%2FXCq0iCCCuWXJKy%2BQABOkLELQAAAAESABAAfCsdBzF1fUelzKFZhuI64Q%3D%3D&thumbnailType=2&token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhTT0hUUkg3YTZaeVN3a0xmdHl4NEJiNHpiRT0iLCJ4NXQiOiJYU09IVFJIN2E2WnlTd2tMZnR5eDRCYjR6YkU9Iiwibm9uY2UiOiJhWWhROTJyMGJ5MHQzc0o1V0gyTl9UVDNxcDdEOUU0Mk5EXzRwYll5ekdFU1JYcXQ3elhiV3h5MXYwY0R2VnNhUzJvQV9MSVR2MHU3aVNjc1FiSXVrVkxOTlpEalVrMjUxLWt0QmVfdGJHMWRKOFV2c19GSExZOEFXYTVRUXd4MkdDUGlFVmEtamJWc2lPM2JuVktwd05wc0RZMzlPWUlUUVhxdHMzUlc1U1kiLCJpc3Nsb2MiOiJTTjRQMjIxTUIwNzE2Iiwic3JzbiI6NjM4NjYyNzU3NTQ5NDEyMTI0fQ.eyJzYXAtdmVyc2lvbiI6IjMxIiwiYXBwaWQiOiJhZjNlYmJiYS1jMjNmLTQ5MmEtYWE5My04MzQyMTY5NmVjNGIiLCJpc3NyaW5nIjoiV1ciLCJhcHBpZGFjciI6IjIiLCJhcHBfZGlzcGxheW5hbWUiOiIiLCJ1dGkiOiJiOTM2NWEwNi03YTg4LTRkY2YtYTYyZS1hNDdkYmE4Mzg4ZGYiLCJpYXQiOjE3MzA3NDk5NTUsInZlciI6IlNUSS5Vc2VyLkNhbGxiYWNrVG9rZW4uVjEiLCJ0aWQiOiI2Yjg3NGZmZWU4NTY0MjYyYmM3ZjlmN2I5NDVlZjNiMyIsInRydXN0ZWRmb3JkZWxlZ2F0aW9uIjoiZmFsc2UiLCJ0b3BvbG9neSI6IntcIlR5cGVcIjpcIk1hY2hpbmVcIixcIlZhbHVlXCI6XCJTTjRQMjIxTUIwNzE2Lk5BTVAyMjEuUFJPRC5PVVRMT09LLkNPTVwifSIsInJlcXVlc3Rvcl9hcHBpZCI6IjE1N2NkZmJmLTczOTgtNGE1Ni05NmMzLWU5M2U5YWIzMDliNSIsInJlcXVlc3Rvcl9hcHBfZGlzcGxheW5hbWUiOiJPZmZpY2UgMzY1IEV4Y2hhbmdlIE1pY3Jvc2VydmljZSIsInNjcCI6Ik93YUF0dGFjaG1lbnRzLlJlYWQiLCJvaWQiOiJjM2Y4YjAxZi04YTNkLTRjOGQtYTIzYi1iOGZiOGRmZmIyM2MiLCJwdWlkIjoiMTAwMzIwMDJDMTNERDcxQyIsInNtdHAiOiJqb3NlcGgudmFsZW5jaWFAbnViZS5zZXAuZ29iLm14IiwidXNlcmNhbGxiYWNrdXNlcmNvbnRleHRpZCI6IjU2MWUyZWI2ODVhZjRkZTU4NDgyZTU1MjgzOGU4ODA0IiwiZXBrIjoie1wia3R5XCI6XCJSU0FcIixcIm5cIjpcIjEzZzVmMTJrRk9BOUdCRWQ0XzM5QjNaREJGZW9rdDdDOHlnUmFnTDltS24wYnRYcG5ha2VfalFqOXFSOVFoRjhxVTRMY3pnSEFKZGhLcVZNWll2X18wcDMyb29LdmJXTXRXa1g2VUFKd0tfYTJZTHoxNWFXdUF2QnYxcFZ0N000cDlCZ3lVRWdkQTRLNEd1d3VVaHVkM2d1dlN5djQ0ZWxGbDFqOEEwUnJVTk9NYklqSzA3dUdrQ0YxOXphRWFCWHUtNWVyZEJPWDBzMzJmQUxZYmViWGVBRThfX0lsYU5jRjFIb0M1MkREYkRlU0tTbHkxSTVEOVEyQkZkVjlGQ0Z5N19LcUIycjlyZ0xUR0s2U0t5QWhzSUxPcjRGdTE1UGRvWWx5X3c3S3AwMm9MNXJhYXVRQzBkVnF2QXlxYm43NnMyUVRHZE9QSkl5ZFBuU1Ezc3JuUVwiLFwiZVwiOlwiQVFBQlwiLFwiYWxnXCI6XCJSUzI1NlwiLFwiZXhwXCI6XCIxNzMwODM5MTc5XCIsXCJleHBfZGlmZlwiOlwiODY0MDBcIixcImtpZFwiOlwicHN3NmlUTUNJM0VfUWFMYlFkZmItdDd5ems0XCJ9LlBOeXpKZ1RWdXVpamdqcXZJQnZqVUwzdFRJSUdSUyt1VTh3alpQWERaQk0yOGxiSGFWSFhhSUV2Tkc5VXNXbDBVa0VZVS9SSk1aS2Z1NkM1Ry9lbGY3aW1RM29RQVBFaUdMZXFXR2hEeWNkNkk0U2pvRHU1RnhRQ1FKVnV4NGtTWWJYWlNqK2p2OEtPcU83alJnL3V2YWxKRjNKbUJjRG5MaDRoNkVHNFJYMWNHZjBXSjVGNGxwWncyZ3FES3BJOGEvdzhjMTAvZjdVa1BNTkNZSndzeWxacFlKL1JkdUx6UTJPQTN0NGNGZkRPQ20rRXJCcnVKNTI1SjJURUgvR3dwY0FseVFqQXNLS3IxcmdESEFIZTYwS084VUhtalE2R2wveEVtMlhoVVI5Kzl0UTZoVHpWS0dRakRPUk5hUWdDblJZWjNla0JEWFVESEZaTXVLaVJjQT09IiwibmJmIjoxNzMwNzQ5OTU1LCJleHAiOjE3MzA3NTM1NTUsImlzcyI6Imh0dHBzOi8vc3Vic3RyYXRlLm9mZmljZS5jb20vc3RzLyIsImF1ZCI6Imh0dHBzOi8vb3V0bG9vay5vZmZpY2UuY29tIiwic3NlYyI6IkM1T0U0ckswSmhnYkoxcXMifQ.HRZTl2Dd0nw9SR8yolp3cTeIQ1D5hNdCW-Zqh4TqEv5vblhbhTLsFqC56EGt0UkwaH6ICbnFYb5nyVuHhAoj2ZgtcM246pEnQQini21WjeQTWtwDNXmQpR4RL9bn3HbW6O22AvSwGCYmMq74WOZhY44YMHlYJIfdQ1jkTv2mD5VGBq4MgoJnktfL2-4uSVym_PNndsjKVKnadApZ5iHp8JWywosom8hBgbJ1YbdoDUpFcRdvN3XkpAClWDb0gc6AnFAYyJXM4vwjaxk60qN--ri0Q6iW0Mng2qWAs-GPF4cJFuFixtmFN1jfvkRlDCqDLYXQXzjMqVoQKVHwzi1IKQ&X-OWA-CANARY=wTQ4TYrzYI0AAAAAAAAAAABo2DML_dwYzTBPexo6j-CWNcFfwvNEfRksr_aZvBPtl610BXicugQ.&owa=outlook.office.com&scriptVer=20241025003.29&clientId=725E4FC622B946F090AADC1296ABE1EC&animation=true" alt="Logo" style="width:550px;"/>
+        </div>
+    </div>
+</body>
+</html>

@@ -618,7 +618,7 @@
                             // Elimina la fila correspondiente en la tabla
                             $("#" + tipo + "-" + id).remove();
                             // Actualiza la tabla después de eliminar
-                            $(tablaContainerId).load("{% url 'task_detail_importados' task_id=task.id %} " + tablaContainerId);
+                            $(tablaContainerId).load("{% url 'Detalle_inmueble' task_id=task.id %} " + tablaContainerId);
                             // Muestra un mensaje de éxito con SweetAlert
                             Swal.fire({
                                 icon: 'success',
@@ -659,7 +659,7 @@
                 success: function(response) {
                     if (response.success) {
                         // Actualiza la tabla después de guardar
-                        $("#tablaDocumentoOcupacionContainer").load("{% url 'task_detail_importados' task_id=task.id %} #tablaDocumentoOcupacionContainer");
+                        $("#tablaDocumentoOcupacionContainer").load("{% url 'Detalle_inmueble' task_id=task.id %} #tablaDocumentoOcupacionContainer");
                         
                         // Restablece el formulario de Documento de Ocupación
                         $("#documentoOcupacionForm")[0].reset();
@@ -714,7 +714,7 @@
                 success: function(response) {
                     if (response.success) {
                         // Actualiza la tabla después de guardar
-                        $("#tablaInstitucionesOcupantesContainer").load("{% url 'task_detail_importados' task_id=task.id %} #tablaInstitucionesOcupantesContainer");
+                        $("#tablaInstitucionesOcupantesContainer").load("{% url 'Detalle_inmueble' task_id=task.id %} #tablaInstitucionesOcupantesContainer");
 
                         // Restablece el formulario de Instituciones Ocupantes
                         $("#institucionesOcupantesForm")[0].reset();
@@ -768,7 +768,7 @@
                 success: function(response) {
                     if (response.success) {
                         // Actualiza la tabla después de guardar
-                        $("#tablaDatosTercerosContainer").load("{% url 'task_detail_importados' task_id=task.id %} #tablaDatosTercerosContainer");
+                        $("#tablaDatosTercerosContainer").load("{% url 'Detalle_inmueble' task_id=task.id %} #tablaDatosTercerosContainer");
 
                         // Restablece el formulario de Datos de Terceros
                         $("#datosTercerosForm")[0].reset();
@@ -909,7 +909,7 @@
                 success: function(response) {
                     if (response.success) {
                         // Actualiza la tabla después de guardar
-                        $("#tablaAvaluos").load("{% url 'task_detail_importados' task_id=task.id %} #tablaAvaluos");
+                        $("#tablaAvaluos").load("{% url 'Detalle_inmueble' task_id=task.id %} #tablaAvaluos");
                         
                         // Restablece el formulario de Documento de Ocupación
                         $("#avaluoForm")[0].reset();
@@ -983,7 +983,7 @@
               success: function(response) {
                   if (response.success) {
                       // Actualiza la tabla después de guardar
-                      $("#tablaOcupaciones").load("{% url 'task_detail_importados' task_id=task.id %} #tablaOcupaciones");
+                      $("#tablaOcupaciones").load("{% url 'Detalle_inmueble' task_id=task.id %} #tablaOcupaciones");
                       
                       // Restablece el formulario de Documento de Ocupación
                       $("#ocupacionForm")[0].reset();

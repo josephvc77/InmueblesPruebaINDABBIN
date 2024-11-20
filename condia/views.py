@@ -28,7 +28,7 @@ def signupCondia(request):
                     request.POST["username"], password=request.POST["password1"])
                 user.save()
                 login(request, user)
-                return redirect('tasks')
+                return redirect('Inmueble')
             except IntegrityError:
                 return render(request, 'signupCondia.html', {"form": UserCreationForm, "error": "Username already exists."})
 

@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
-{% block titulo %} Detalles {{ task.NombreInmueble }} {% endblock %}
+{% block titulo %}Detalles {{ task.NombreInmueble }}{% endblock %}
+<title>{{ task.NombreInmueble }} - Detalles</title> 
 
 {% block content %}
   <div class="task-detail-container ">
     <h2 class="text-center">{{ task.NombreInmueble }}</h2>
     {{ error }}
-    <form method="post" action="{% url 'task_detail_importados' task.id%}" enctype="multipart/form-data" class="task-form" id="form_detail">
+    <form method="post" action="{% url 'Detalle_inmueble' task.id%}" enctype="multipart/form-data" class="task-form" id="form_detail">
       {% csrf_token %}
       
       <!-- Campos del formulario -->

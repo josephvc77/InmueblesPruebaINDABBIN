@@ -80,7 +80,7 @@ def signin(request):
     #     if form.is_valid():
     #         user = form.get_user()
     #         login(request, user)
-    #         return redirect('tasks_importados')
+    #         return redirect('Inmuebles')
     # else:
     #     form = AuthenticationForm()
     
@@ -113,7 +113,7 @@ from django.utils.timezone import datetime, timezone
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def tasks_importados(request):
+def Inmuebles(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     ur = request.GET.get('ur', '')
@@ -312,7 +312,7 @@ def principal(request):
 
 
 @login_required
-def inmuebles_baja_importados(request):
+def Inmuebles_en_Baja(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     mensajes = MensajeIMP.objects.all()
@@ -365,7 +365,7 @@ def inmuebles_baja_importados(request):
     })
 
 @login_required
-def tasks_completed_importados(request):
+def Inmuebles_Terminados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     ur = request.GET.get('ur', '')
@@ -434,7 +434,7 @@ def bajas_importados(request, task_id):
             if form.is_valid():
                 task.estado = 'Baja'
                 task.save()
-                return redirect('inmuebles_baja_importados')
+                return redirect('Inmuebles_en_Baja')
         else:
             form = BajaForm()
 
@@ -444,7 +444,7 @@ def complete_task_importados(request, task_id):
     if request.method == 'POST':
         task.datecompleted = timezone.now()
         task.save()
-        return redirect('tasks_importados')
+        return redirect('Inmuebles')
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -464,7 +464,7 @@ def create_task(request):
             else:
                 task.user = request.user  # El usuario actual crea la tarea
             task.save()
-            return redirect('tasks_importados')
+            return redirect('Inmuebles')
     else:
         form = TaskCreateForm(user=request.user)
     context = {'form': form}
@@ -473,10 +473,14 @@ def create_task(request):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Inmueble
 from .forms import InmuebleForm
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages 
+
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def task_detail_importados(request, task_id):
+def Detalle_inmueble(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     
     if request.method == 'POST':
@@ -499,14 +503,14 @@ def task_detail_importados(request, task_id):
                 documento_propiedad = documento_propiedad_form.save(commit=False)
                 documento_propiedad.task = task
                 documento_propiedad.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
         
         if datos_avaluos_form.is_valid():
             if any(datos_avaluos_form.cleaned_data.values()):
                 datos_avaluo = datos_avaluos_form.save(commit=False)
                 datos_avaluo.task = task
                 datos_avaluo.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if mensaje_form.is_valid():
             mensaje_form.instance.enviado_por_imp = request.user
@@ -514,68 +518,92 @@ def task_detail_importados(request, task_id):
                 mensaje = mensaje_form.save(commit=False)
                 mensaje.task = task
                 mensaje.save()
-                return redirect('tasks_importados')
+
+                # Envío de correo con HTML
+                asunto = f"Nueva Tarea: {mensaje_form.cleaned_data['asunto']}"
+                mensaje_texto = mensaje_form.cleaned_data['mensaje']
+                enviar_a_email = mensaje_form.cleaned_data['enviar_a_imp']
+
+                # Definir el contenido HTML del correo
+                html_message = render_to_string('extends_importados/correo_template.html', {
+                    'asunto': asunto,
+                    'mensaje_texto': mensaje_texto,
+                })
+
+                try:
+                    send_mail(
+                        subject=asunto,
+                        message=mensaje_texto,  # Mensaje de respaldo en texto sin formato
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[enviar_a_email],
+                        html_message=html_message,  # Mensaje en formato HTML
+                        fail_silently=False,
+                    )
+                    messages.success(request, "El mensaje se envió correctamente por correo electrónico.")
+                except Exception as e:
+                    messages.error(request, f"Error al enviar el correo: {e}")
+                return redirect('Detalle_inmueble', task_id=task_id)
         
         if ocupaciones_form.is_valid():
             if any(ocupaciones_form.cleaned_data.values()):
                 ocupaciones = ocupaciones_form.save(commit=False)
                 ocupaciones.task = task
                 ocupaciones.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if documento_ocupacion_form.is_valid():
             if any(documento_ocupacion_form.cleaned_data.values()):
                 documento_ocupacion = documento_ocupacion_form.save(commit=False)
                 documento_ocupacion.task = task
                 documento_ocupacion.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if instituciones_ocupantes_form.is_valid():
             if any(instituciones_ocupantes_form.cleaned_data.values()):
                 instituciones_ocupantes = instituciones_ocupantes_form.save(commit=False)
                 instituciones_ocupantes.task = task
                 instituciones_ocupantes.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
         
         if datos_terceros_form.is_valid():
             if any(datos_terceros_form.cleaned_data.values()):
                 datos_terceros = datos_terceros_form.save(commit=False)
                 datos_terceros.task = task
                 datos_terceros.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if edificio_verde_form.is_valid():
             if any(edificio_verde_form.cleaned_data.values()):
                 edificio_verde = edificio_verde_form.save(commit=False)
                 edificio_verde.task = task
                 edificio_verde.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if colindancia_form.is_valid():
              if any(colindancia_form.cleaned_data.values()):
                 colindancia = colindancia_form.save(commit=False)
                 colindancia.task = task
                 colindancia.save()      
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if tramite_disposicion_form.is_valid():
              if any(tramite_disposicion_form.cleaned_data.values()):
                 tramite_disposicion = tramite_disposicion_form.save(commit=False)
                 tramite_disposicion.task = task
                 tramite_disposicion.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         if edificacion_form.is_valid():
              if any(edificacion_form.cleaned_data.values()):
                 edificacion = edificacion_form.save(commit=False)
                 edificacion.task = task
                 edificacion.save()
-                return redirect('task_detail_importados', task_id=task_id)
+                return redirect('Detalle_inmueble', task_id=task_id)
             
         
         if inmueble.is_valid():
             inmueble.save()  # Guardar los cambios en la tarea
-            return redirect('tasks_importados')  # Redireccionar a 'tasks_importados' después de guardar
+            return redirect('Inmuebles')  # Redireccionar a 'Inmuebles' después de guardar
         
     else:
         inmueble = InmuebleForm(instance=task)
@@ -595,6 +623,7 @@ def task_detail_importados(request, task_id):
     return render(request, 'task_detail_importados.html', {
         'task': task,
         'inmueble': inmueble,
+        'titulo': task.NombreInmueble,
         'edificio_verde_form': edificio_verde_form,
         'edificacion_form': edificacion_form,
         'documento_propiedad_form': documento_propiedad_form,
@@ -979,7 +1008,7 @@ def editar_edificacionIMP(request, edificacion_id):
         inmueble = EdificacionFormIMP(request.POST, instance=edificacion)
         if inmueble.is_valid():
             inmueble.save()
-            return redirect('task_detail_importados', task_id=edificacion.task.id)
+            return redirect('Detalle_inmueble', task_id=edificacion.task.id)
     else:
         inmueble = EdificacionFormIMP(instance=edificacion)
 
@@ -993,7 +1022,7 @@ def borrar_edificacionIMP(request, edificacion_id):
     edificacion = get_object_or_404(EdificacionIMP, pk=edificacion_id)
     task_id = edificacion.task_id
     edificacion.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 # Edicion Titulo De Propiedad
@@ -1004,7 +1033,7 @@ def editar_documentoIMP(request, documento_id):
         form = DocumentoPropiedadFormIMP(request.POST, request.FILES, instance=documento)
         if form.is_valid():
             form.save()
-            return redirect('task_detail_importados', task_id=documento.task_id)
+            return redirect('Detalle_inmueble', task_id=documento.task_id)
     else:
         form = DocumentoPropiedadFormIMP(instance=documento)
     return render(request, 'update/editar_documentoIMP.html', {'form': form, 'documento': documento})
@@ -1014,7 +1043,7 @@ def eliminar_documentoIMP(request, documento_id):
     documento = get_object_or_404(DocumentoPropiedadIMP, id=documento_id)
     task_id = documento.task_id
     documento.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 # Edicion avaluo
 @login_required
@@ -1025,7 +1054,7 @@ def editar_avaluoIMP(request, avaluo_id):
         form = DatosAvaluosFormIMP(request.POST, instance=avaluo)
         if form.is_valid():
             form.save()
-            return redirect('task_detail_importados', task_id=avaluo.task_id)  # Redirige a la página de detalle de la tarea
+            return redirect('Detalle_inmueble', task_id=avaluo.task_id)  # Redirige a la página de detalle de la tarea
     else:
         form = DatosAvaluosFormIMP(instance=avaluo)
 
@@ -1039,7 +1068,7 @@ def eliminar_avaluoIMP(request, avaluo_id):
     avaluo = get_object_or_404(DatosAvaluosIMP, pk=avaluo_id)
     task_id = avaluo.task_id
     avaluo.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 @login_required
@@ -1050,7 +1079,7 @@ def editar_ocupacionIMP(request, ocupacion_id):
         form = OcupacionesFormIMP(request.POST, instance=ocupacion)
         if form.is_valid():
             form.save()
-            return redirect('task_detail_importados', task_id=ocupacion.task_id)  # Redirige a la página de detalle de la tarea
+            return redirect('Detalle_inmueble', task_id=ocupacion.task_id)  # Redirige a la página de detalle de la tarea
     else:
         form = OcupacionesFormIMP(instance=ocupacion)
 
@@ -1064,7 +1093,7 @@ def eliminar_ocupacionIMP(request, ocupacion_id):
     ocupacion = get_object_or_404(OcupacionesIMP, pk=ocupacion_id)
     task_id = ocupacion.task_id
     ocupacion.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 @login_required
@@ -1072,7 +1101,7 @@ def eliminar_tramite(request, tramite_id):
     tramite = get_object_or_404(TramitesDisposicionIMP, pk=tramite_id)
     task_id = tramite.task_id
     tramite.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 from django.shortcuts import get_object_or_404, redirect
@@ -1083,28 +1112,28 @@ def eliminar_dictamenIMP(request, dictamen_estructural_id):
     dictamen_estructural = get_object_or_404(DictamenEstructuralIMP, pk=dictamen_estructural_id)
     task_id = dictamen_estructural.task_id
     dictamen_estructural.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 def eliminar_docOcupacionIMP(request, docOcupacion_id):
     docOcupacion = get_object_or_404(Documento_ocupacionIMP, pk=docOcupacion_id)
     task_id = docOcupacion.task_id
     docOcupacion.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 def eliminar_DatoInstitucionOcupanteIMP(request, datoInstitucionOcupante_id):
     datoInstitucionOcupante = get_object_or_404(InstitucionesOcupantesIMP, pk=datoInstitucionOcupante_id)
     task_id = datoInstitucionOcupante.task_id
     datoInstitucionOcupante.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 def deleteDatosTercerosIMP(request, datos_terceros_id):
     datos_terceros = get_object_or_404(DatosTercerosIMP, pk=datos_terceros_id)
     task_id = datos_terceros.task_id
     datos_terceros.delete()
-    return redirect('task_detail_importados', task_id=task_id)
+    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 
@@ -1612,7 +1641,7 @@ def contacto(request):
         messages.success(request, 'Se ha enviado tu correo.')
 
         # Redirigir a alguna página después de enviar el correo
-        return redirect('tasks_importados')  # Puedes cambiar 'tasks_importados' por la vista a la que quieres redirigir
+        return redirect('Inmuebles')  # Puedes cambiar 'Inmuebles' por la vista a la que quieres redirigir
 
     # Si el método de solicitud no es POST, renderizar la página de contacto
     return render(request, 'extends_importados/email.html')

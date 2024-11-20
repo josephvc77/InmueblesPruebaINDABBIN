@@ -20,33 +20,34 @@ from djangocrud import settings
 from tasks import views
 from condia import views as views_condia
 from MDSJSEP import views as views_MDSJ
+from django.utils.text import slugify  # Para crear URLs basadas en texto
 
 app_name = 'tasks'
 
 urlpatterns = [
     path('', views.signin, name='signin'),
     path('403/', views.permission_denied, name='permission_denied'),
-    path('tasks_importados/', views.tasks_importados, name='tasks_importados'),
-    path('tasks/<int:task_id>', views.task_detail_importados, name='task_detail_importados'),
+    path('Inmuebles/', views.Inmuebles, name='Inmuebles'),
+    path('Inmueble/<int:task_id>', views.Detalle_inmueble, name='Detalle_inmueble'),
 
 
     path('llamadas_inmuebles/', views.llamadas_inmuebles, name='llamadas_inmuebles'),
-    path('tasks/<int:ficha_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
+    path('Inmueble/<int:ficha_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
     path('create_DatosLlamadasInmueble/', views.create_DatosLlamadasInmueble, name='create_DatosLlamadasInmueble'),
 
     
     path('admin/', admin.site.urls),
     # path('signup/', views.signup, name='signup'),
-    path('tasks_completed_importados/', views.tasks_completed_importados, name='tasks_completed_importados'),
-    path('inmuebles_baja_importados/', views.inmuebles_baja_importados, name='inmuebles_baja_importados'),
+    path('Inmuebles_Terminados/', views.Inmuebles_Terminados, name='Inmuebles_Terminados'),
+    path('Inmuebles_en_Baja/', views.Inmuebles_en_Baja, name='Inmuebles_en_Baja'),
     path('logout/', views.signout, name='logout'),
     path('signin/', views.signin, name='signin'),
     path('create_task/', views.create_task, name='create_task'),
-    path('tasks/<int:task_id>/complete_importados', views.complete_task_importados, name='complete_task_importados'),
-    path('tasks/<int:task_id>/bajas_importados', views.bajas_importados, name='bajas_importados'),
-    path('tasks/<int:task_id>/delete', views.delete_task, name='delete_task'),
+    path('Inmueble/<int:task_id>/complete_importados', views.complete_task_importados, name='complete_task_importados'),
+    path('Inmueble/<int:task_id>/bajas_importados', views.bajas_importados, name='bajas_importados'),
+    path('Inmueble/<int:task_id>/delete', views.delete_task, name='delete_task'),
     path('principal/', views.principal, name='principal'),
-    path('task/<int:task_id>/delete/', views.TaskDeleteView.as_view(), name='delete_task'),
+    path('Inmueble/<int:task_id>/delete/', views.TaskDeleteView.as_view(), name='delete_task'),
     path('get_entidades_federativas/', views.get_entidades_federativas, name='get_entidades_federativas'),
     path('get_municipios/<str:entidad_federativa>/', views.get_municipios_by_entidad_federativa, name='get_municipios'),
     path('agregar_dictamen_estructural<int:task_id>/', views.agregar_dictamen_estructural, name='agregar_dictamen_estructural'),

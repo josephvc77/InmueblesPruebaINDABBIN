@@ -31,7 +31,8 @@ class MensajeFormIMP(forms.ModelForm):
     class Meta:
         model = MensajeIMP
         fields = ['asunto', 'mensaje', 'enviar_a_imp', 'estado', 'enlace']  # Elimina 'enviado_por' ya que se llenará automáticamente
-    enviar_a_imp = forms.ModelChoiceField(queryset=User.objects.all(), label='Enviar A')
+    enviar_a_imp = forms.ModelChoiceField(queryset=User.objects.all(), label='Enviar A',widget=forms.Select(attrs={'class': 'form-control shadow-sm'}))
+    
 
 class PasswordConfirmationForm(forms.Form):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
