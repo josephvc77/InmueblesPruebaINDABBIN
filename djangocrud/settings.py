@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.101.214']
+ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx']
 
 # ALLOWED_HOSTS = []
 
@@ -110,8 +110,11 @@ DATABASES = {
         'NAME': 'djangodb',
         'USER': 'djangouser',
         'PASSWORD': 'p455w0rd',
-        'HOST': 'localhost',
-        'PORT': '5432',   
+        'HOST': '192.168.101.214',
+        'PORT': '5432',  
+         'OPTIONS': {
+            'client_encoding': 'UTF8',
+        } 
     }
 }
 
