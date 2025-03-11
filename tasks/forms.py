@@ -5,6 +5,45 @@ from django.forms import ClearableFileInput, ModelForm
 from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
+
+from django import forms
+from .models import CustomUser
+
+# Formulario para crear o editar usuarios
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'bio', 'puesto', 'is_active', 'is_staff', 'groups']
+
+class UserEditForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label="Correo electrónico")
+    first_name = forms.CharField(max_length=30, required=True, label="Nombre")
+    last_name = forms.CharField(max_length=30, required=True, label="Apellido")
+    groups = forms.ModelMultipleChoiceField(
+        queryset=Group.objects.all(),  # Aquí usamos el queryset para los grupos
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Grupos",
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'is_active', 'is_staff', 'groups']
+
+
+
+class UserCreateForm(UserCreationForm):
+    email = forms.EmailField(required=True, label="Correo electrónico")
+    first_name = forms.CharField(max_length=30, required=True, label="Nombre")
+    last_name = forms.CharField(max_length=30, required=True, label="Apellido")
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+
 
 class DatePickerWidget(forms.DateInput):
     input_type = 'date'
@@ -13,7 +52,6 @@ class CustomClearableFileInput(ClearableFileInput):
      template_with_clear='<br><label target="_blank" for="%(clear_checkbox_id)s formFile">%(clear_checkbox_label)s</label> %(clear)s'
 
 
-from django.contrib.auth.models import User
 class TaskCreateForm(ModelForm):
     class Meta:
         model = Inmueble
@@ -31,7 +69,7 @@ class MensajeFormIMP(forms.ModelForm):
     class Meta:
         model = MensajeIMP
         fields = ['asunto', 'mensaje', 'enviar_a_imp', 'estado', 'enlace']  # Elimina 'enviado_por' ya que se llenará automáticamente
-    enviar_a_imp = forms.ModelChoiceField(queryset=User.objects.all(), label='Enviar A',widget=forms.Select(attrs={'class': 'form-control shadow-sm'}))
+    enviar_a_imp = forms.ModelChoiceField(queryset=CustomUser.objects.all(), label='Enviar A',widget=forms.Select(attrs={'class': 'form-control shadow-sm'}))
     
 
 class PasswordConfirmationForm(forms.Form):
@@ -287,7 +325,7 @@ class SalasForm(forms.ModelForm):
 
 
 class CreateDatosLlamadasForm(forms.ModelForm):
-    assigned_to = forms.ModelChoiceField(queryset=User.objects.all(), required=False, label='Assigned to')
+    assigned_to = forms.ModelChoiceField(queryset=CustomUser.objects.all(), required=False, label='Assigned to')
 
     class Meta:
         model = DatosLlamadasInmuebles
@@ -297,7 +335,7 @@ class CreateDatosLlamadasForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(CreateDatosLlamadasForm, self).__init__(*args, **kwargs)
         if user:
-            self.fields['assigned_task'].queryset = User.objects.filter(username=user.username)
+            self.fields['assigned_task'].queryset = CustomUser.objects.filter(username=user.username)
 
 
 class DatosLlamadaForm(forms.ModelForm):

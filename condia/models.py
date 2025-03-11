@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
+
+from tasks.models import CustomUser
 # Create your models here.
 
 
 class TareasCondia(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     titulo = models.CharField(max_length=200, null=True, blank=True)
     descripcion = models.TextField( null=True, blank=True)
     uso_inmueble = models.CharField(max_length=200, null=True, blank=True)

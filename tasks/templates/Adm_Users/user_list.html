@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block titulo %}Administración de Usuarios{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+
+
+    <h1 class="mb-4">Lista de Usuarios</h1>
+
+    <!-- Tabla para mostrar los usuarios -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Puesto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.puesto }}</td>
+                <td>
+                    <a href="{% url 'edit_user' user.id %}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No hay usuarios disponibles</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'add_user' %}" class="btn btn-success mt-4">Agregar Usuario</a>
+</div>
+
+<!-- Estilos -->
+<style>
+    .alert-container {
+        position: fixed;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1050;
+        width: 80%;
+        max-width: 600px;
+    }
+
+    .alert {
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-size: 1rem;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+
+
+{% endblock %}

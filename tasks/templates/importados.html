@@ -81,103 +81,100 @@
     </div>
   </div>
 
-
   {% if inmuebles %}
-  <div class="card-container animated fadeIn">
-    {% for task in inmuebles %}
-    <div class="card">
-      <div class="card-header">
-        <h5 class="text-center">{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %} {{ task.NombreInmueble }}{% endif %}<a href="{% url 'generate_pdfIMP' task.id %}" aria-label="PDF" target="_blank" class="btn pdf"><i class="logo fi fi-rr-file-pdf"></i></a></h5>
-      </div>
-      <div class="card-body">
-        <div class="scroll-content">
-          <p class="estado"><strong>Estado: </strong> {% if task.estado == 'Activo' %} Activo{% else %}Baja{% endif %}</p>
-  
-          <p><strong>RFI:</strong> {{ task.rfi|default:"SIN ASIGNAR" }}</p>
-          <p class="text-center">{{ task.Sector|default:"SIN ASIGNAR" }}</p>
-          <p style="color: #83710f;" class="text-center">{{ task.seccion_del_inventario|default:"SIN ASIGNAR" }}</p>
-          <p class="text-center"><strong>Causa de Alta:</strong> <br>{{ task.causa_alta|default:"SIN ASIGNAR" }}</p>
-          <p class="text-center"><strong>Entidad Federativa:</strong> {{ task.entidad_federativa|default:"SIN ASIGNAR" }}</p>
-          <p class="text-center"><strong>Municipio :</strong> {{ task.municipio_alcaldia|default:"SIN ASIGNAR" }}</p>
-          <p class="text-center"><strong>UR :</strong> {{ task.UR|default:"SIN ASIGNAR" }}</p>
-          <p class="priority-paragraph text-center {% if task.prioridad == 'Alta' %} alta-priority {% elif task.prioridad == 'Media' %} media-priority {% else %} baja-priority {% endif %}">
-            Prioridad: {{ task.prioridad|default:"SIN ASIGNAR" }}
-          </p>
-          {% if task.assigned_to %}
-          <p class="text-center" for="assigned_to">Tarea asignada a:</p>
-          <div class="asigned">
-            <p class="text-center">{{ task.assigned_to.first_name|default:"SIN ASIGNAR" }} {{ task.assigned_to.last_name|default:"SIN ASIGNAR" }}<br> {{ task.assigned_to|default:"SIN ASIGNAR" }}</p>
-          </div>
+  <div class="container animated fadeIn">
+    <div class="table-responsive">
+    <table class="table table-striped responsive">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>RFI</th>>
+          <th>Entidad Federativa</th>
+          <th>Municipio</th>
+          <th>UR</th>
+          <th>Prioridad</th>
+          <th>Asignado a</th>
+          <th>Entrega para</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in inmuebles %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+              {% if task.important %}
+                <strong>{{ task.NombreInmueble }}</strong>
+              {% else %}
+                {{ task.NombreInmueble }}
+              {% endif %}
+            </td>
+            <td>{% if task.estado == 'Activo' %}Activo{% else %}Baja{% endif %}</td>
+            <td>{{ task.rfi|default:"SIN ASIGNAR" }}</td>
+            <td>{{ task.entidad_federativa|default:"SIN ASIGNAR" }}</td>
+            <td>{{ task.municipio_alcaldia|default:"SIN ASIGNAR" }}</td>
+            <td>{{ task.UR|default:"SIN ASIGNAR" }}</td>
+            <td>
+                {{ task.prioridad|default:"SIN ASIGNAR" }}
+            </td>
+            <td>
+              {% if task.assigned_to %}
+                {{ task.assigned_to.first_name|default:"SIN ASIGNAR" }} {{ task.assigned_to.last_name|default:"SIN ASIGNAR" }}
+              {% else %}
+                SIN ASIGNAR
+              {% endif %}
+            </td>
+            <td>{{ task.deadline|default:"SIN ASIGNAR" }}</td>
+            <td>
+              <a style="text-decoration: none; margin-right: 15px;" href="{% url 'Detalle_inmueble' task.id %}" class="text-primary" aria-label="Ver detalles">
+                <i class="bi bi-info-circle-fill"></i>
+              </a>
+              <a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="text-danger" aria-label="Generar PDF">
+                <i class="bi bi-file-earmark-pdf"></i>  
+              </a>
+            </td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+    <!-- Paginación -->
+    <div class="text-center">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if inmuebles.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
+            </li>
           {% endif %}
-        
-          {% if task.deadline %}
-          <p>Entrega para: {{ task.deadline }}</p>
+
+          <li class="page-item active"><span class="page-link">{{ inmuebles.number }}</span></li>
+
+          {% if inmuebles.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
           {% endif %}
-  
-          {% if task.completed %}
-          <p>Completada</p>
-      {% elif task.days_delayed > 0 %}
-          <p style="color: rgb(179, 73, 73);">
-              Retrasada por: {{ task.days_delayed }} días
-          </p>
-      {% elif task.days_remaining is not none %}
-          <p>
-              Tiempo restante: {{ task.days_remaining }} días
-          </p>
-      {% endif %}
-        </div>
-      </div>
-      {% if task.creado %}
-      <p class="completado">Creado el: {{ task.creado}}</p>
-      {% endif %}
-  
-  
-      
-      {% if task.datecompleted %}
-      <p class="completado">Completado el: {{ task.datecompleted|date:'j M Y' }}</p>
-    {% endif %}
-  
-    
-      <div class="card-footer">
-        <a style="background-color: #691c32; border-radius: 20px; color: #fff; width: 150px; margin: 0 auto;" href="{% url 'Detalle_inmueble' task.id %}" class="btn btn-outline">Ver detalles</a>
-      </div>
+        </ul>
+      </nav>
     </div>
-    {% endfor %}
-</div>
-<div class="text-center paginador">
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      {% if inmuebles.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
-      </li>
-      {% endif %}
-
-      <li class="page-item active"><span class="page-link">{{ inmuebles.number }}</span></li>
-
-      {% if inmuebles.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-      {% endif %}
-    </ul>
-  </nav>
-</div>
-
-
-
+  </div>
 {% else %}
-  <p class="m-5">No se encontraron tareas que coincidan con la búsqueda.</p>
+  <p class="m-5">No se encontraron inmuebles que coincidan con la búsqueda.</p>
 {% endif %}
 
 

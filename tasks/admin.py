@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from MDSJSEP.models import EventosCreados
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 class RegistroLlamadas(admin.TabularInline):
     model = RegistroLlamadas
@@ -115,9 +115,6 @@ class InmuebleAdmin(VersionAdmin, AllModelsAdminIMP):
 admin.site.register(TareasCondia)
 # Registra otros modelos aquí...
 
-class EventsAdmin(admin.ModelAdmin):
-    list_display = ('title',  'hora_inicio', 'hora_finalizacion', 'coordina')
-admin.site.register(Events, EventsAdmin)
 
 class EventosCreadosAdmin(admin.ModelAdmin):
     list_display = ('title', 'Nom_sala', 'hora_inicio', 'hora_finalizacion', 'coordina')

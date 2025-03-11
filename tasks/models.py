@@ -1,7 +1,38 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.deconstruct import deconstructible
 import os
+
+# myapp/models.py
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.db import models
+
+class CustomUser(AbstractUser):
+    bio = models.TextField(null=True, blank=True)
+    sitio_CHOICES = [
+        ('SIISEP', 'SIISEP'),
+        ('CONDIA', 'CONDIA'),
+        ('MDSJ', 'MDSJ'),
+    ]
+    puesto = models.CharField(max_length=50, choices=sitio_CHOICES, default='Usuario', blank=True, null=True)
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name="customuser_set",
+        blank=True,
+        help_text="Grupos a los que pertenece el usuario.",
+        verbose_name="grupos",
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name="customuser_set",
+        blank=True,
+        help_text="Permisos específicos para este usuario.",
+        verbose_name="permisos de usuario",
+    )
+
+    def __str__(self):
+        return self.username
+
 
 @deconstructible
 class TaskFilePath(object):
@@ -15,85 +46,8 @@ class InmueblesFiles(object):
         # Genera la ruta para guardar el archivo en la carpeta 'uploads'
         return os.path.join('uploads/importados', filename)
 
-
-
-
-
-class Events(models.Model):
-    id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100, null=True, blank=True)
-    dia = models.DateTimeField(null=True, blank=True)
-    hora_inicio = models.TimeField(null=True, blank=True)
-    hora_finalizacion = models.TimeField(null=True, blank=True)
-    OPCIONES_SALA = (
-        ('AUDITORIO CENTRO SEP (capacidad: 220, Nivel-0)', 'AUDITORIO CENTRO SEP (capacidad: 220, Nivel-0)'),
-        ('ESTUDIO DE GRABACIÓN (capacidad: 10, Nivel-0)', 'ESTUDIO DE GRABACIÓN (capacidad: 10, Nivel-0)'),
-        ('BODEGA DGTIC-DGRMyS (capacidad: 20, Nivel-0)', 'BODEGA DGTIC-DGRMyS (capacidad: 20, Nivel-0)'),
-        ('ÁREA ACTIVIDAD FISICA (capacidad: 50, Nivel-1)', 'ÁREA ACTIVIDAD FISICA (capacidad: 50, Nivel-1)'),
-        ('CAPACITACIÓN (capacidad: 25, Nivel: 1, Sala: 1)', 'CAPACITACIÓN (capacidad: 25, Nivel: 1, Sala: 1)'),
-        ('CAPACITACIÓN (capacidad: 25, Nivel: 1-H, Sala: 2)', 'CAPACITACIÓN (capacidad: 25, Nivel: 1-H, Sala: 2)'),
-        ('CAPACITACIÓN (ESPEJOS) (capacidad: 25, Nivel: 1-H, Sala: 1)', 'CAPACITACIÓN (ESPEJOS) (capacidad: 25, Nivel: 1-H, Sala: 1)'),
-        ('COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 1)', 'COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 1)'),
-        ('COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 2)', 'COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 2)'),
-        ('COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 3)', 'COMPUTO (capacidad: 20, Nivel: 1-H, Sala: 3)'),
-        ('SALA MEXICO (capacidad: 60, Nivel: 1-H)', 'SALA MEXICO (capacidad: 60, Nivel: 1-H)'),
-        ('ANEXO SALA MEXICO (capacidad: 30, Nivel: 1-H)', 'ANEXO SALA MEXICO (capacidad: 30, Nivel: 1-H)'),
-        ('ACCESO MAYORASGO (capacidad: 100, Nivel: 1)', 'ACCESO MAYORASGO (capacidad: 100, Nivel: 1)'),
-        ('ACCESO UNIVERSIDAD 1200 LADO NORTE (capacidad: 100, Nivel: 1)', 'ACCESO UNIVERSIDAD 1200 LADO NORTE (capacidad: 100, Nivel: 1)'),
-        ('ALA SUR (capacidad: 50, Nivel: 1)', 'ALA SUR (capacidad: 50, Nivel: 1)'),
-        ('JAIME TORRES BODET (capacidad: 50, Nivel: 2, Sala: 1)', 'JAIME TORRES BODET (capacidad: 50, Nivel: 2, Sala: 1)'),
-        ('NARCISO BASSOLS (capacidad: 35, Nivel: 2, Sala: 2)', 'NARCISO BASSOLS (capacidad: 35, Nivel: 2, Sala: 2)'),
-        ('GREGORIO TORRES QUINTERO (capacidad: 20, Nivel: 2, Sala: 3)', 'GREGORIO TORRES QUINTERO (capacidad: 20, Nivel: 2, Sala: 3)'),
-        ('ROSARIO CASTELLANOS (capacidad: 18, Nivel: 2, Sala: 4)', 'ROSARIO CASTELLANOS (capacidad: 18, Nivel: 2, Sala: 4)'),
-        ('ANTONIO CASO (capacidad: 25, Nivel: 2, Sala: 5)', 'ANTONIO CASO (capacidad: 25, Nivel: 2, Sala: 5)'),
-        ('JÓSE VASCONCELOS (capacidad: 60, Nivel: 2, Sala: 6)', 'JÓSE VASCONCELOS (capacidad: 60, Nivel: 2, Sala: 6)'),
-        ('SOR JUANA INES DE LA CRUZ (capacidad: 30, Nivel: 2, Sala: 7)', 'SOR JUANA INES DE LA CRUZ (capacidad: 30, Nivel: 2, Sala: 7)'),
-        ('JUAN JOSE ARREOLA (capacidad: 9, Nivel: 2, Sala: 9)', 'JUAN JOSE ARREOLA (capacidad: 9, Nivel: 2, Sala: 9)'),
-        ('FRIDA KHALO (capacidad: 15, Nivel: 2, Sala: 10)', 'FRIDA KHALO (capacidad: 15, Nivel: 2, Sala: 10)'),
-        ('JUSTO SIERRA (capacidad: 15, Nivel: 2, Sala: 11)', 'JUSTO SIERRA (capacidad: 15, Nivel: 2, Sala: 11)'),
-        ('SALA SIN NOMBRE (capacidad: 20, Nivel: 2, Sala: 12)', 'SALA SIN NOMBRE (capacidad: 20, Nivel: 2, Sala: 12)'),
-        ('SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 13)', 'SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 13)'),
-        ('AUDITIRES (capacidad: 10, Nivel: 2, Sala: 15)', 'AUDITIRES (capacidad: 10, Nivel: 2, Sala: 15)'),
-        ('AUDITORES (capacidad: 6, Nivel: 2, Sala: 16)', 'AUDITORES (capacidad: 6, Nivel: 2, Sala: 16)'),
-        ('SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 17)', 'SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 17)'),
-        ('SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 18)', 'SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 18)'),
-        ('SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 19)', 'SALA SIN NOMBRE (capacidad: 30, Nivel: 2, Sala: 19)'),
-        ('SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 20)', 'SALA SIN NOMBRE (capacidad: 15, Nivel: 2, Sala: 20)'),
-        ('"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: A)', '"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: A)'),
-        ('"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: B)', '"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: B)'),
-        ('"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: C)', '"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: C)'),
-        ('"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: D)', '"EJCUTIVA" (capacidad: 10, Nivel: 2, Sala: D)'),
-        ('INTERNA (capacidad: 12, Nivel: 5, Sala: 5.18)', 'INTERNA (capacidad: 12, Nivel: 5, Sala: 5.18)'),
-        ('SALA SIN NOMBRE (capacidad: 25, Nivel: 5, Sala: 5-G)', 'SALA SIN NOMBRE (capacidad: 25, Nivel: 5, Sala: 5-G)'),
-        ('AUDITORIO REVOLUCIÓN 1425 (capacidad: 220)', 'AUDITORIO REVOLUCIÓN 1425 (capacidad: 220)'),
-        ('SALA DGP REVOLUCIÓN 1425 (capacidad: 100)', 'SALA DGP REVOLUCIÓN 1425 (capacidad: 100)'),
-        ('MEZZANNINE REVOLUCIÓN 1425 (capacidad: 100)', 'MEZZANNINE REVOLUCIÓN 1425 (capacidad: 100)'),
-        ('SALA VIADUCTO 551 (capacidad: 50)', 'SALA VIADUCTO 551 (capacidad: 50)'),
-        ('RABOSO (PUEBLA) (capacidad: 15, Sala: 1)', 'RABOSO (PUEBLA) (capacidad: 15, Sala: 1)'),
-        ('RABOSO (PUEBLA) (capacidad: 15, Sala: 2)', 'RABOSO (PUEBLA) (capacidad: 15, Sala: 2)'),
-        ('RABOSO (PUEBLA) (capacidad: 15, Sala: 3)', 'RABOSO (PUEBLA) (capacidad: 15, Sala: 3)'),
-        ('RABOSO (PUEBLA) (capacidad: 15, Sala: 4)', 'RABOSO (PUEBLA) (capacidad: 15, Sala: 4)'),
-        ('RABOSO (PUEBLA) (capacidad: 15, Sala: 5)', 'RABOSO (PUEBLA) (capacidad: 15, Sala: 5)'),
-    )
-    sala = models.CharField(max_length=100, null=True, blank=True, choices=OPCIONES_SALA)
-    PRIORIDAD_CHOICES = (
-    ('Alta', 'Alta'),
-    ('Media', 'Media'),
-    ('Baja', 'Baja'),
-    )
-    prioridad = models.CharField(max_length=10, null=True, blank=True, choices=PRIORIDAD_CHOICES)
-    coordina = models.CharField(max_length=50, null=True, blank=True)
-    cargo = models.CharField(max_length=50, null=True, blank=True)
-    no_personas = models.CharField(max_length=10, null=True, blank=True)
-    contacto = models.CharField(max_length=20, null=True, blank=True)
-    servicios = models.CharField(max_length=100, null=True, blank=True)
-    observaciones = models.CharField(max_length=100, null=True, blank=True)
-    class Meta:
-        verbose_name = "Evento"
-        verbose_name_plural = "Eventos"
-
 class Inmueble(models.Model):
-    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='assigned_inmueble')
+    assigned_to = models.ForeignKey(CustomUser, on_delete=models.SET_NULL,  blank=True, null=True, related_name='assigned_inmueble')
     NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
     rfi = models.CharField(max_length=15, null=True, blank=True)
     CHOICES = (
@@ -169,7 +123,7 @@ class Inmueble(models.Model):
     updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     
     subir_archivo = models.FileField(upload_to=InmueblesFiles(), blank=True, null=True, editable=True)
     
@@ -946,8 +900,8 @@ class MensajeIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='mensajes',verbose_name="Inmueble")
     asunto = models.CharField(max_length=100, null=True)
     mensaje = models.TextField(null=True)
-    enviar_a_imp = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Destino", related_name='mensajes_enviados_imp')
-    enviado_por_imp = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Enviado", related_name='mensajes_recibidos_imp')
+    enviar_a_imp = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Destino", related_name='mensajes_enviados_imp')
+    enviado_por_imp = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Enviado", related_name='mensajes_recibidos_imp')
     fecha_envio = models.DateTimeField(auto_now_add=True)
     ESTADO_CHOICES = [
         ('Completado', 'Completado'),
@@ -980,7 +934,7 @@ class DatosLlamadasInmuebles(models.Model):
     datecompleted = models.DateTimeField(null=True, blank=True)
     PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'), ('Baja', 'Baja')]
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
-    assigned_task = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')
+    assigned_task = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')
     edo = models.CharField(max_length=100, null=True, blank=True)
     nd = models.CharField(max_length=100, null=True, blank=True)
     nombre_del_contacto = models.CharField(max_length=100, null=True, blank=True)

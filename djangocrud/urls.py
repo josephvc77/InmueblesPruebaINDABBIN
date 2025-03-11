@@ -30,6 +30,10 @@ urlpatterns = [
     path('Inmuebles/', views.Inmuebles, name='Inmuebles'),
     path('Inmueble/<int:task_id>', views.Detalle_inmueble, name='Detalle_inmueble'),
 
+    path('users/', views.user_list, name='user_list'),
+    path('users/edit/<int:id>/', views.edit_user, name='edit_user'),
+    path('users/add/', views.add_user, name='add_user'),
+
 
     path('llamadas_inmuebles/', views.llamadas_inmuebles, name='llamadas_inmuebles'),
     path('Inmueble/<int:ficha_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
@@ -120,8 +124,6 @@ urlpatterns = [
     
     path('task/<int:task_id>/delete_ColindanciaIMP/<int:colindancia_id>/', views.delete_ColindanciaIMP, name='delete_ColindanciaIMP'),
     
-    path('calendar/', views.calendar, name='calendar'),
-    
     # CONDIA ------------------------------------------------------------------
     # path('keep_session_alive/', views.keep_session_alive, name='keep_session_alive'),
 
@@ -135,13 +137,7 @@ urlpatterns = [
 
 
 
-
-    path('all_events/', views.all_events, name='all_events'), 
-    path('add_event/', views.add_event, name='add_event'), 
-    path('update/', views.update, name='update'),
-    path('remove/', views.remove, name='remove'),
     # MDSJ SEP
-
     path('signout_MDSJ/', views_MDSJ.signout_MDSJ, name='signout_MDSJ'),
     path('signinMDSJ/', views_MDSJ.signinMDSJ, name='signinMDSJ'),
     path('signupMDSJ/', views_MDSJ.signupMDSJ, name='signupMDSJ'),

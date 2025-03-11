@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx']
+# ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx']
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tasks.apps.TasksConfig',
+    'tasks',
     'import_export',
     'crispy_forms',
     'condia',
@@ -50,6 +50,15 @@ INSTALLED_APPS = [
     'reversion',
 ]
 
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 
 MIDDLEWARE = [
@@ -176,7 +185,6 @@ JAZZMIN_SETTINGS = {
 
 JAZZMIN_UI_TWEAKS = {
 
-    "theme": "darkly",
 }
 
 # Internationalization
@@ -203,6 +211,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+
+AUTH_USER_MODEL = 'tasks.CustomUser'
+
 
 
 LOGIN_URL = '/signin'

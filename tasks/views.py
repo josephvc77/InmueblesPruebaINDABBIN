@@ -13,8 +13,8 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import BajaForm, ColindanciasFormIMP, CreateDatosLlamadasForm, DatosAvaluosFormIMP, DatosLlamadaForm, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionFormIMP, registroLlamadaForm
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Events, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .forms import BajaForm, ColindanciasFormIMP, CreateDatosLlamadasForm, DatosAvaluosFormIMP, DatosLlamadaForm, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionFormIMP, UserCreateForm, UserEditForm, registroLlamadaForm
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 from .forms import TaskCreateForm
 
@@ -34,7 +34,55 @@ def error_404(request, exception):
     template_404 = '404.html'
     return render(request, template_404, status=404)
 
+# myapp/views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import CustomUser
+from .forms import CustomUserForm
 
+
+@login_required
+def user_list(request):
+    users = CustomUser.objects.all()
+    return render(request, 'Adm_Users/user_list.html', {'users': users})
+
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import CustomUser
+from .forms import UserEditForm
+
+@login_required
+def edit_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()  # Guarda el usuario y los grupos seleccionados
+            messages.success(request, 'Usuario actualizado correctamente.')
+            return redirect('user_list')  # Cambia 'user_list' al nombre de tu vista de lista de usuarios
+    else:
+        form = UserEditForm(instance=user)
+
+    return render(request, 'Adm_Users/edit_user.html', {'form': form})
+
+
+
+
+def add_user(request):
+    if request.method == 'POST':
+        form = UserCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuario creado correctamente.')
+            return redirect('user_list')  # Cambia 'login' si tu URL tiene otro nombre
+        else:
+            messages.error(request, 'Por favor, corrige los errores del formulario.')
+    else:
+        form = UserCreateForm()
+
+    return render(request, 'Adm_Users/add_user.html', {'form': form})
 
 def signup(request):
     if request.method == 'GET':
@@ -67,31 +115,26 @@ def signin(request):
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
+            # Enviar solo mensaje de error si la autenticación falla
             messages.error(request, 'Usuario o contraseña incorrectos.')
             return render(request, 'signin.html', {
                 'form': AuthenticationForm,
             })
         else:
+            # Enviar mensaje de éxito y redirigir si la autenticación es correcta
+            messages.success(request, 'Inicio de sesión exitoso.')
             login(request, user)
             return redirect('principal')
 
 
-    #     form = AuthenticationForm(request, data=request.POST)
-    #     if form.is_valid():
-    #         user = form.get_user()
-    #         login(request, user)
-    #         return redirect('Inmuebles')
-    # else:
-    #     form = AuthenticationForm()
-    
-    # return render(request, 'signin.html', {"form": form})
-        
 
 
 @login_required
 def signout(request):
     logout(request)
+    messages.success(request, 'Sesión cerrada con éxito.')
     return redirect('/')
+
     
 from django.http import JsonResponse
 from datetime import date, datetime, time
@@ -109,7 +152,9 @@ from django.http import HttpResponse
 
 from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import login_required, permission_required
-from django.utils.timezone import datetime, timezone
+from datetime import datetime
+from django.utils import timezone
+
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
@@ -125,7 +170,6 @@ def Inmuebles(request):
     request.session['ordenar'] = orden
 
     mensajes = MensajeIMP.objects.all()
-    eventos = Events.objects.all()
 
     # Obtener los valores de búsqueda y filtros de la sesión
     search_query = request.session.get('search_query', '')
@@ -164,23 +208,7 @@ def Inmuebles(request):
     page = request.GET.get('page')
     inmuebles = paginator.get_page(page)
 
-    today = date.today()
 
-    for task in inmuebles:
-        if task.deadline:
-            deadline_date = task.deadline.date()
-            days_remaining = (deadline_date - today).days
-
-            # Calcular los días de retraso
-            if days_remaining < 0:
-                days_delayed = abs(days_remaining)
-                days_remaining = 0
-            else:
-                days_delayed = 0
-
-            # Agregar los valores calculados al objeto de tarea
-            task.days_remaining = days_remaining
-            task.days_delayed = days_delayed
 
     total_pending_inmuebles = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -206,100 +234,10 @@ def Inmuebles(request):
         'mensajes': mensajes, 
         'prioridad': prioridad,
         'ur': ur,
-        'eventos': eventos,
+
         'orden': orden,
     })
 
-
-@login_required
-def calendar(request):  
-    mensajes = MensajeIMP.objects.all()
-    eventos = Events.objects.all()
-    all_events = Events.objects.all()
-
-    return render(request,'calendar.html', {
-        'mensajes': mensajes,
-        "events": all_events,
-        "eventos": eventos,
-    })
-
-@login_required
-def all_events(request):                                                                                                 
-    all_events = Events.objects.all()                                                                                    
-    out = []                                                                                                             
-    for event in all_events:  
-        dia_formatted = event.dia.strftime("%Y-%m-%d") if event.dia else None                                                                                         
-        out.append({                                                                                                     
-            'title': event.title,
-            'id': event.id,
-            'start': dia_formatted + 'T' + event.hora_inicio.strftime("%H:%M") if event.hora_inicio else None,
-            'end': dia_formatted + 'T' + event.hora_finalizacion.strftime("%H:%M") if event.hora_finalizacion else None,
-            'sala': event.sala,
-            'prioridad': event.prioridad,
-            'coordina': event.coordina,
-            'cargo': event.cargo,
-            'no_personas': event.no_personas,
-            'contacto': event.contacto,
-            'servicios': event.servicios,
-            'observaciones': event.observaciones,
-        })                                                                                                               
-                                                                                                                      
-    return JsonResponse(out, safe=False) 
-
-@login_required 
-def add_event(request):
-    dia = request.GET.get("dia", None)
-    hora_inicio = request.GET.get("hora_inicio", None)
-    hora_finalizacion = request.GET.get("hora_finalizacion", None)
-    title = request.GET.get("title", None)
-    prioridad = request.GET.get("prioridad", None)
-    sala = request.GET.get("sala", None)
-    coordina = request.GET.get("coordina", None)
-    cargo = request.GET.get("cargo", None)
-    no_personas = request.GET.get("no_personas", None)
-    contacto = request.GET.get("contacto", None)
-    servicios = request.GET.get("servicios", None)
-    observaciones = request.GET.get("observaciones", None)
-    
-    event = Events(title=title, dia=dia, hora_inicio=hora_inicio, hora_finalizacion=hora_finalizacion, prioridad=prioridad, sala=sala, coordina=coordina, cargo=cargo, no_personas=no_personas,
-                   contacto=contacto, servicios=servicios, observaciones=observaciones)
-    event.save()
-    data = {}
-    return JsonResponse(data)
-
-@login_required 
-def update(request):
-    if request.method == 'GET':
-        dia = request.GET.get("dia", None)
-        title = request.GET.get("title", None)
-        event_id = request.GET.get("id", None)
-        try:
-            event = Events.objects.get(id=event_id)
-            event.dia = dia
-            event.title = title
-            event.save()
-            data = {'success': True}
-        except Events.DoesNotExist:
-            data = {'success': False, 'error_message': 'Evento no encontrado'}
-    else:
-        data = {'success': False, 'error_message': 'Solicitud no válida'}
-
-    return JsonResponse(data)
- 
-@login_required 
-def remove(request):
-    if request.method == 'GET':
-        event_id = request.GET.get("id", None)
-        try:
-            event = Events.objects.get(id=event_id)
-            event.delete()
-            data = {'success': True}
-        except Events.DoesNotExist:
-            data = {'success': False, 'error_message': 'Evento no encontrado'}
-    else:
-        data = {'success': False, 'error_message': 'Solicitud no válida'}
-
-    return JsonResponse(data)
 
 
 
@@ -316,7 +254,6 @@ def Inmuebles_en_Baja(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     mensajes = MensajeIMP.objects.all()
-    eventos = Events.objects.all()
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -361,7 +298,7 @@ def Inmuebles_en_Baja(request):
         'total_pending_inmuebles': total_pending_inmuebles,
         'total_completed_inmuebles': total_completed_inmuebles,
         'mensajes': mensajes,
-        'eventos': eventos,
+
     })
 
 @login_required
@@ -372,7 +309,6 @@ def Inmuebles_Terminados(request):
     orden = request.GET.get('ordenar', '')
     
     mensajes = MensajeIMP.objects.all()
-    eventos = Events.objects.all()
 
     # Filtra los inmuebles completados y aplica los filtros de búsqueda
     inmuebles_list = Inmueble.objects.filter(
@@ -419,7 +355,6 @@ def Inmuebles_Terminados(request):
         'total_completed_inmuebles': total_completed_inmuebles,
         'total_pending_inmuebles': total_pending_inmuebles,
         'mensajes': mensajes,
-        'eventos': eventos,
         'prioridad': prioridad,
         'ur': ur,
         'orden': orden,
@@ -1136,30 +1071,233 @@ def deleteDatosTercerosIMP(request, datos_terceros_id):
     return redirect('Detalle_inmueble', task_id=task_id)
 
 
-
-from django.shortcuts import get_object_or_404, render
-from .utils import render_to_pdf
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.pdfgen import canvas
+from PIL import Image as PILImage
+import os
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def generate_pdfIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
+    # Buscar el inmueble por ID
+    inmueble = get_object_or_404(Inmueble, id=task_id)
 
-    context = {
-        'task': task,
-        'STATIC_URL': settings.STATIC_URL
-    }
+    # Crear la respuesta HTTP para el PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="reporte_inmueble_{inmueble.rfi}.pdf"'
 
-    pdf = render_to_pdf('pdf_template.html', context)
+    # Crear el PDF
+    pdf = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+    styles = getSampleStyleSheet()
 
-    if pdf:
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = f"task_{task_id}.pdf"
-        content = f"inline; filename={filename}"
-        response['Content-Disposition'] = content
-        return response
+    # Agregar una imagen al inicio (puedes cambiar la ruta)
+    image_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'logosep.webp')
+    img = Image(image_path, width=150, height=50)  # Ajusta el tamaño de la imagen según sea necesario
+    elements.append(img)
+    elements.append(Spacer(1, 12))  # Agrega un espacio después de la imagen
 
-    return HttpResponse("Error al generar el PDF.", status=500)
+    # Encabezado
+    elements.append(Paragraph("<b>Reporte de Inmueble</b>", styles['Title']))
+    elements.append(Spacer(1, 12))
+
+    # Datos Generales
+    elements.append(Paragraph("<b>Encabezado - Datos Generales</b>", styles['Heading2']))
+    encabezado_data = [
+        ["Campo", "Valor"],
+        ["RFI", inmueble.rfi],
+        ["Asignado a", inmueble.assigned_to],
+        ["Fecha Límite", inmueble.deadline.strftime('%d/%m/%Y') if inmueble.deadline else "N/A"],
+        ["Proveedor", inmueble.rfiProv],
+        ["Nombre del Inmueble", inmueble.NombreInmueble],
+        ["UR", inmueble.UR],
+        ["Sección del Inventario", inmueble.seccion_del_inventario],
+        ["Causa de Alta", inmueble.causa_alta],
+        ["Prioridad", inmueble.prioridad],
+        ["Sector", inmueble.Sector],
+        ["Nombre de la Institución", inmueble.Nombre_de_la_institucion_que_administra_el_inmueble],
+        ["Naturaleza Jurídica", inmueble.Naturaleza_Juridica_de_la_Institucion],
+        ["Dependencia Administradora", inmueble.Dependencia_Administradora],
+        ["Subsección", inmueble.subSeccion],
+        ["Certificado de Seguridad", inmueble.certificado_de_seguridad],
+        ["Sentido del Dictamen", inmueble.sentido_del_Dictamen],
+        ["Descripción del Sentido del Dictamen", inmueble.descripcion_del_sentido_del_Dictamen],
+        ["Fecha del Documento", inmueble.fecha_documento.strftime('%d/%m/%Y') if inmueble.fecha_documento else "N/A"],
+        ["Subir Archivo", inmueble.subir_archivo],
+        ["No. de Identificador Expediente I.", inmueble.no_de_identificador_del_expediente_institucion]
+    ]
+    elements.append(create_table(encabezado_data))
+    elements.append(PageBreak())
+
+
+   # Ubicación
+    elements.append(Paragraph("<b>Ubicación</b>", styles['Heading2']))
+    ubicacion_data = [
+        ["Campo", "Valor"],
+        ["País", inmueble.pais],
+        ["Entidad Federativa", inmueble.entidad_federativa],
+        ["Municipio/Alcaldía", inmueble.municipio_alcaldia],
+        ["Municipio No Existente", inmueble.municipio_no_existente],
+        ["Localidad", inmueble.localidad],
+        ["Componente Espacial", inmueble.componente_espacial],
+        ["Fotografía de la Ubicación", f'URL o Ruta: {inmueble.fotografia_de_la_ubicacion}'],  # Aquí asumo que es una URL o ruta
+        ["Tipo de Vialidad", inmueble.tipo_vialidad],
+        ["Nombre de Vialidad", inmueble.nombre_vialidad],
+        ["Número Exterior", inmueble.numero_exterior],
+        ["Número Exterior 2", inmueble.numero_exterior_2],
+        ["Número Interior", inmueble.numero_interior],
+        ["Tipo de Asentamiento", inmueble.tipo_asentamiento],
+        ["Nombre de Asentamiento", inmueble.nombre_asentamiento],
+        ["Código Postal", inmueble.codigo_postal],
+        ["Entre Vialidades Referencia 1", inmueble.entre_vialidades_referencia1],
+        ["Entre Vialidades Referencia 2", inmueble.entre_vialidades_referencia2],
+        ["Vialidad Posterior", inmueble.vialidad_posterior],
+        ["Descripción de la Ubicación", inmueble.descripcion_ubicacion],
+        ["Datum", inmueble.datum],
+        ["UTM X", inmueble.utmx],
+        ["UTM Y", inmueble.utmy],
+        ["UTM Zona", inmueble.utm_zona],
+        ["Latitud", inmueble.latitud],
+        ["Longitud", inmueble.longitud]
+    ]
+    elements.append(create_table(ubicacion_data))
+    elements.append(PageBreak())
+
+   # Características
+    elements.append(Paragraph("<b>Características</b>", styles['Heading2']))
+    caracteristicas_data = [
+        ["Campo", "Valor"],
+        ["Superficie del Terreno (M2)", inmueble.superficie_del_terreno_en_M2],
+        ["Superficie del Terreno (HA)", inmueble.superficie_del_terreno_HA],
+        ["Superficie de Desplante (M2)", inmueble.superficie_de_desplante_en_M2],
+        ["Superficie Construida (M2)", inmueble.superficie_construida_en_M2],
+        ["Superficie Útil (M2)", inmueble.superficie_util_m2],
+        ["Zona de Ubicación", inmueble.zona_ubicacion],
+        ["Tipo de Inmueble Rural", inmueble.tipo_inmueble_rural],
+        ["Uso Dominante de la Zona", inmueble.uso_dominante_zona],
+        ["Calidad de la Construcción", inmueble.calidad_construccion],
+        ["Clasificación por Edad", inmueble.clasificacion_edad],
+        ["Categoría", inmueble.categoria],
+        ["Grado de Consolidación", inmueble.grado_consolidacion],
+        ["Servicios", inmueble.servicios],
+        ["Teléfono del Inmueble", inmueble.telefono_inmueble],
+        ["Fecha de Inicio de Construcción", inmueble.fecha_inicio_construccion.strftime('%d/%m/%Y') if inmueble.fecha_inicio_construccion else "N/A"],
+        ["Siglo de Construcción", inmueble.siglo_construccion],
+        ["Fecha de Última Remodelación", inmueble.fecha_ultima_remodelacion.strftime('%d/%m/%Y') if inmueble.fecha_ultima_remodelacion else "N/A"],
+        ["Monumento", "Sí" if inmueble.monumento else "No"],
+        ["Histórico", "Sí" if inmueble.historico else "No"],
+        ["Artístico", "Sí" if inmueble.artistico else "No"],
+        ["Arqueológico", "Sí" if inmueble.arqueologico else "No"],
+        ["Estado de Conservación", inmueble.estado_conservacion],
+        ["Clave INAH", inmueble.clave_inah],
+        ["Folio Real INAH", inmueble.folio_real_inah],
+        ["No. Plano INAH", inmueble.no_plano_inah],
+        ["Clave CNMH", inmueble.clave_cnmh],
+        ["Clave DGSMPCCONACULTA", inmueble.clave_dgsmpc_conaculta],
+        ["Fecha de Inscripción en la UNESCO", inmueble.fecha_inscripcion_unesco if inmueble.fecha_inscripcion_unesco else "N/A"],
+        ["Observaciones Históricas", inmueble.observaciones_historicas]
+    ]
+    elements.append(create_table(caracteristicas_data))
+    elements.append(Spacer(1, 12))  
+
+    # Uso
+    elements.append(Spacer(1, 12))  
+    elements.append(Paragraph("<b>Uso</b>", styles['Heading2']))
+    uso_data = [
+        ["Campo", "Valor"],
+        ["Usuario Principal del Inmueble", inmueble.usuario_principal_del_inmueble],
+        ["Uso Genérico", inmueble.usoGenerico],
+        ["Uso Específico", inmueble.usoEspecifico],
+        ["Uso de Suelo Autorizado", inmueble.uso_de_suelo_autorizado],
+        ["Número de Empleados en el Inmueble", inmueble.numero_de_empleados_en_el_inmueble],
+        ["Documento que Autoriza Ocupación", inmueble.documento_que_autoriza_ocupacion],
+        ["Número de Documentos de Ocupación", inmueble.numero_de_documentos_de_ocupacion],
+        ["Instituciones Ocupantes", inmueble.instituciones_ocupantes],
+        ["Usuarios de Terceros", inmueble.usuarios_terceros],
+        ["Siglo o Periodo", inmueble.siglo_o_periodo],
+        ["Correlativo", inmueble.correlativo],
+        ["Conjunto", inmueble.conjunto],
+        ["Clave INBAL", inmueble.clave_inbal],
+        ["Registro Único INAH", inmueble.registro_unico_inah]
+    ]
+    elements.append(create_table(uso_data))
+    elements.append(PageBreak())
+
+    # Aprovechamiento
+    elements.append(Paragraph("<b>Aprovechamiento</b>", styles['Heading2']))
+    aprovechamiento_data = [
+        ["Campo", "Valor"],
+        ["Aprovechamiento", inmueble.aprovechamiento],
+        ["Inmueble con Atención al Público", "Sí" if inmueble.inmueble_con_atencion_al_publico else "No"],
+        ["Población Beneficiada", inmueble.poblacion_beneficiada],
+        ["Población en Servicio", inmueble.poblacion_servicio],
+        ["Cuenta con Proyecto de Uso Inmediato Desarrollado", "Sí" if inmueble.cuenta_con_proyecto_de_uso_inmediato_desarrollado else "No"],
+        ["Inversión Requerida", inmueble.inversion_requerida],
+        ["Fuente de Financiamiento", inmueble.fuente_financiamiento],
+        ["Fecha Solicitud", inmueble.fecha_solicitud if inmueble.fecha_solicitud else "N/A"],
+        ["Inmueble no Aprovechable (Especificar)", inmueble.inmueble_no_aprovechable_especificar],
+        ["Gasto Anual de Mantenimiento", inmueble.gasto_anual_de_mantenimiento],
+        ["Inmueble en Condominio", "Sí" if inmueble.inmueble_en_condominio else "No"],
+        ["Superficie Total", inmueble.superficie_total],
+        ["Indiviso", inmueble.indiviso]
+    ]
+    elements.append(create_table(aprovechamiento_data))
+    elements.append(PageBreak())
+
+    # Valor
+    elements.append(Paragraph("<b>Valor</b>", styles['Heading2']))
+    valor_data = [
+        ["Campo", "Valor"],
+        ["Valor Contable", inmueble.valor_contable],
+        ["Fecha Valor Contable", inmueble.fecha_valor_contable if inmueble.fecha_valor_contable else "N/A"],
+        ["Valor Asegurable", inmueble.valor_asegurable],
+        ["Fecha Valor Asegurable", inmueble.fecha_valor_asegurable if inmueble.fecha_valor_asegurable else "N/A"],
+        ["Valor Adquisición", inmueble.valor_adquisicion],
+        ["Fecha Valor Adquisición", inmueble.fecha_valor_adquisicion if inmueble.fecha_valor_adquisicion else "N/A"],
+        ["Valor Terreno", inmueble.valor_terreno],
+        ["Valor Construcción", inmueble.valor_construccion],
+        ["Valor Catastral Terreno", inmueble.valor_catastral_terreno],
+        ["Valor Catastral Construcción", inmueble.valor_catastral_construccion],
+        ["Valor Total Catastral", inmueble.valor_total_catastral],
+        ["Fecha Valor Catastral", inmueble.fecha_valor_catastral if inmueble.fecha_valor_catastral else "N/A"],
+        ["Documentación Soporte", inmueble.documentacion_soporte]
+    ]
+    elements.append(create_table(valor_data))
+    elements.append(PageBreak())
+
+
+    
+    # Pie de Página
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph("<i>Este reporte fue generado por el SIISEP</i>", styles['Normal']))
+
+    # Construcción del PDF
+    pdf.build(elements)
+
+    return response
+
+
+def create_table(data):
+    table = Table(data, colWidths=[180, 300])
+    table.setStyle(TableStyle([  
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#691c32")),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor("#f9f9f9")),
+        ('GRID', (0, 0), (-1, -1), 1, colors.gray),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 1), (-1, -1), 10)
+    ]))
+    return table
+
 
 
 import pandas as pd

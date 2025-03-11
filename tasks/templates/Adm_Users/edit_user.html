@@ -1,0 +1,56 @@
+<!-- edit_user.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Editar Usuario</h2>
+
+    
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username">Nombre de usuario</label>
+        {{ form.username }}
+      </div>
+      
+      <div class="form-group">
+        <label for="id_first_name">Nombre</label>
+        {{ form.first_name }}
+      </div>
+      
+      <div class="form-group">
+        <label for="id_last_name">Apellido</label>
+        {{ form.last_name }}
+      </div>
+  
+      <div class="form-group">
+        <label for="id_email">Correo electrónico</label>
+        {{ form.email }}
+      </div>
+  
+      <div style="display: flex;">
+      <div class="form-group form-check">
+        {{ form.is_active }}
+        <label class="form-check-label" for="id_is_active">Activo</label>
+      </div>
+      
+      <div class="form-group form-check">
+        {{ form.is_staff }}
+        <label class="form-check-label" for="id_is_staff">Miembro del staff</label>
+      </div>
+    </div>
+  
+      <div class="form-group">
+        <label for="id_groups">Grupos</label>
+        {{ form.groups }}
+        {% if form.groups.errors %}
+          <div class="text-danger">{{ form.groups.errors }}</div>
+        {% endif %}
+      </div>
+      
+      <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
+    </form>
+  </div>
+  
+
+{% endblock %}

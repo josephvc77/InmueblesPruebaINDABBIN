@@ -34,6 +34,16 @@ h1.h1{text-align:center;margin-top:30px;}p{text-align:center;color:red;}form{pos
 
   {% block content %}
 
+  {% if messages %}
+  <div class="alert-container">
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} fade show" role="alert">
+              {{ message }}
+          </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+
     <form action="/signin/" method="POST">
       {% csrf_token %}
       <div class="form-group">
@@ -117,6 +127,76 @@ h1.h1{text-align:center;margin-top:30px;}p{text-align:center;color:red;}form{pos
       window.location.href = selectedOption;
     }
   });
+</script>
+
+
+<style>
+  /* Archivo: styles.css */
+.alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    width: 80%;
+    max-width: 600px;
+    pointer-events: none; /* Evita que interfiera con otros clics */
+}
+
+.alert {
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    margin-bottom: 10px;
+    pointer-events: auto; /* Habilita interacción para las alertas */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+</style>
+<script>
+
+function showMessage(message, type = "success", duration = 2000) {
+    // Crear contenedor de mensajes si no existe
+    let alertContainer = document.querySelector(".alert-container");
+    if (!alertContainer) {
+        alertContainer = document.createElement("div");
+        alertContainer.className = "alert-container";
+        document.body.appendChild(alertContainer);
+    }
+
+    // Crear el mensaje
+    const alert = document.createElement("div");
+    alert.className = `alert alert-${type} fade show`;
+    alert.role = "alert";
+    alert.textContent = message;
+
+    // Agregar mensaje al contenedor
+    alertContainer.appendChild(alert);
+
+    // Desvanecer y eliminar mensaje después de la duración
+    setTimeout(() => {
+        alert.classList.add("fade-out");
+        setTimeout(() => alert.remove(), 500); // Elimina el elemento del DOM
+    }, duration);
+}
+
 </script>
 
     {% endblock %}

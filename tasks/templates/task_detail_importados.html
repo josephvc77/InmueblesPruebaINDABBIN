@@ -97,10 +97,12 @@ rel="stylesheet"
         {% include 'extends_importados/observaciones.html' %}
         {% include 'extends_importados/enviar_mensaje.html' %}
 
-        <button type="button" class="btn btn-outline-primary actualizar" onclick="mostrarAlerta()">Guardar Cambios</button>
+      
 
       </div>
     </form>
+  </div>
+  
 
     {% include 'extends_importados/scripts.html' %}
 
@@ -162,6 +164,7 @@ En lugar de guardar todos los datos en una sola instancia, estos formularios per
     
 
   <div class="buttons">
+    <button type="button" class="btn btn-outline-primary actualizar" onclick="mostrarAlerta()">Guardar Cambios</button>
     <a href="{% url 'generate_pdfIMP' task.id %}" class="btn btn-primary" target="_blank">
       <i class="fas fa-file-pdf"></i> Generar PDF
     </a>
