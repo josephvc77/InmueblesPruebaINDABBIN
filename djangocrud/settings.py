@@ -24,11 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx']
+ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx', 'localhost', '127.0.0.1']
 
-ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = [
+    'http://192.168.101.214',  # ✅ Asegúrate de poner http:// para IPs
+    'https://inmuebles_siisep.sep.gob.mx'  # ✅ Dominio en producción
+]
+
+# ALLOWED_HOSTS = []
 
 
 
@@ -209,10 +214,36 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
+# Para desarrollo
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+
+# Para producción (recopilación de archivos)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 AUTH_USER_MODEL = 'tasks.CustomUser'
+
+
+import os
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django_static.log'),  # Ruta correcta
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',  # Solo loguea errores y advertencias
+            'propagate': True,
+        },
+    },
+}
+
 
 
 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso denegado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>404</h2>
+        <h1>Acceso denegado</h1>
+        <p>No tienes permisos para acceder a esta página.</p>
+        <!-- Enlaces a las páginas de inicio de sesión -->
+        <a href="{% url 'Inmuebles' %}">Iniciar sesión en SIISEP</a>
+        <a href="{% url 'signinCondia' %}">Iniciar sesión en CONDIA</a>
+        <a href="{% url 'signinMDSJ' %}">Iniciar sesión en MDSJ</a>
+        <div><br><br><br>
+            <h2>Soporte técnico:</h2>
+            <p>Para soporte técnico, puedes contactar a:</p>
+            <p><a href="mailto:soporte.sii.sep@nube.sep.gob.mx">soporte.sii.sep@nube.sep.gob.mx</a></p>
+            <p><a href="mailto:joseph.valencia@nube.sep.gob.mx">joseph.valencia@nube.sep.gob.mx</a></p>
+        </div>
+    </div>
+   
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Envía una solicitud POST al endpoint de cierre de sesión de Django
+            fetch("{% url 'logout' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}",  // Agrega el token CSRF a la solicitud
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
+                },
+                credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
+            })
+            .then(response => {
+                if (response.ok) {
+             
+                } else {
+                    console.error('Error al cerrar sesión');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cerrar sesión:', error);
+            });
+        });
+    </script>
+</body>
+</html>
