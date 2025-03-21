@@ -30,7 +30,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.101.214']
 
 
 
