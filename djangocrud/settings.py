@@ -24,16 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx', 'localhost', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://192.168.101.214',  # ✅ Asegúrate de poner http:// para IPs
-    'https://inmuebles_siisep.sep.gob.mx'  # ✅ Dominio en producción
-]
 
-# ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = []
 
 
 
