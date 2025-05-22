@@ -26,11 +26,17 @@ SECRET_KEY = 'django-insecure-(oa(omhdw75#3qzk_p-6zfdfmvj#%tn=oci!ww+ssog(ib%-o=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx', 'localhost', '127.0.0.1']
+
+# CSRF_TRUSTED_ORIGINS = [
+    # 'https://192.168.101.214',  # IP local
+    # 'https://inmuebles_siisep.sep.gob.mx'  # Dominio en producción
+# ]
 
 
 
-ALLOWED_HOSTS = ['192.168.101.214']
+
+# ALLOWED_HOSTS = ['']
 
 
 
@@ -107,27 +113,27 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangodb',
-        'USER': 'djangouser',
-        'PASSWORD': 'p455w0rd',
-        'HOST': '192.168.101.214',
-        'PORT': '5432',  
-         'OPTIONS': {
-            'client_encoding': 'UTF8',
-        } 
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'djangodb',
+#         'USER': 'djangouser',
+#         'PASSWORD': 'p455w0rd',
+#         'HOST': '192.168.101.214',
+#         'PORT': '5432',  
+#          'OPTIONS': {
+#             'client_encoding': 'UTF8',
+#         } 
+#     }
+# }
 
 
 # DATABASES = {
