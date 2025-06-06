@@ -36,9 +36,9 @@
 
 
   <div dark class="contenedor-menu">
-    <button id="modoOscuroBtn" aria-label="modoOscuro">
+    <!-- <button id="modoOscuroBtn" aria-label="modoOscuro">
       <i class="fi fi-rs-moon-stars"></i></i>
-    </button>
+    </button> -->
 
     <button class="navbar-toggler" type="button" id="menu-btn" data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -54,15 +54,7 @@
     <a href="{% url 'Inmuebles' %}" aria-label="regresar" style="margin-left: 3.5em; text-decoration: none;" ><i class="fi fi-rr-undo"></i> Volver</a>
     {% endif %}
 
-    {% if task %}
-    <div class="tab mensajes actives" data-tab="tab-mensajes">
-      <span class="events">Pendientes</span>
-      <i class="far fa-envelope"></i>
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {{ task.mensajes.all|length }}
-      </span>
-    </div>
-    {% endif %}
+ 
     
     {% if not task %}
       {% if eventos.exist %}
@@ -74,65 +66,128 @@
     </a>
     {% endif %}
 
-
-      <div class="container-fluid">
-          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-              <div class="offcanvas-header">
-                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel"> <span style="color: #686868;">Navegación </span> <span style="color: brown; font-weight: bold;">SIISEP</span></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-              <div class="offcanvas-body">
-                  <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                      <li class="nav-item"><a class="nav-link" href="{% url 'Inmuebles' %}"><i class="icon fi fi-rr-bookmark"></i> Completados</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'Inmuebles_Terminados' %}"><i class="icon fi fi-rr-check"></i> Terminados</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'Inmuebles_en_Baja' %}"><i class="icon fi fi-rr-cross"></i> Bajas</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'create_task' %}"><i class="icon fi fi-rr-upload"></i> Agregar Alta</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'llamadas_inmuebles' %}"><i class="icon fi fi-rr-call-duration"></i> Fichas (llamadas)</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'create_DatosLlamadasInmueble' %}"><i class="icon fi fi-rr-call-outgoing"></i> Registrasr nueva Ficha</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'user_list' %}" ><i class="icon bi bi-people"></i>Administrador de  Usuarios </a></li>
-                      <br><br><br><br><br><br><li class="nav-item"><a class="nav-link" style="color: #0077b6;" href="{% url 'logout' %}"><i class="icon fi fi-rr-exit"></i>Salir de SIISEP</a></li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-
-
-    <div class="dropdown notifications">
-      <button style="background-color: #1a252f; width: 100%; height: 80%; margin-left: -16px"
-        class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <i class="fi fi-rr-bell"></i>
-        <span id="notifications-count"
-          class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
-          {{ mensajes|length }}</span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li></li>
-        <div class="encabezado" style="font-weight: 600; text-align: center; background-color: #691c32; color: #fff; padding: 6px; margin: -9px;margin-bottom: 10px; border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
-        <p>TAREAES PENDIENTES
-        </p>
+<div class="container-fluid">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+        <span class="text-secondary">Navegación</span> <span class="fw-bold text-danger">SIISEP</span>
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar menú"></button>
     </div>
-        {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
-        {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
-        <li>
-          
-          <a class="dropdown-item" style="margin-bottom: 1em;" href="{% url 'Detalle_inmueble' mensaje.task.id %}">
-            <p class="title-notificacion">{{ mensaje.task.NombreInmueble |truncatechars:35 }}</p>
-            <p><strong>{{ mensaje.asunto }}</strong></p>
-            <p style="color: #2a2a2a;">{{ mensaje.mensaje|truncatechars:50 }}</p>
-            {% if mensaje.estado == 'No Completado' %}
-            <span class="badge bg-danger">Pendiente</span>
-            {% else %}
-            <span class="badge bg-success">Completada</span>
-            {% endif %}
-            <br><br><hr>
+    
+    <div class="offcanvas-body">
+      <ul class="navbar-nav flex-column">
+        
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'Inmuebles' %}">
+            <i class="fi fi-rr-bookmark me-2"></i> Completados
           </a>
         </li>
-        {% endif %}
-        {% endfor %}
+        
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'Inmuebles_Terminados' %}">
+            <i class="fi fi-rr-check me-2"></i> Terminados
+          </a>
+        </li>
+        
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'Inmuebles_en_Baja' %}">
+            <i class="fi fi-rr-cross me-2"></i> Bajas
+          </a>
+        </li>
+
+        <hr class="my-3">
+
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'create_task' %}">
+            <i class="fi fi-rr-upload me-2"></i> Agregar Alta
+          </a>
+        </li>
+        
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'llamadas_inmuebles' %}">
+            <i class="fi fi-rr-call-duration me-2"></i> Fichas (Llamadas)
+          </a>
+        </li>
+        
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'create_DatosLlamadasInmueble' %}">
+            <i class="fi fi-rr-call-outgoing me-2"></i> Registrar Nueva Ficha
+          </a>
+        </li>
+
+        <hr class="my-3">
+
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="{% url 'user_list' %}">
+            <i class="bi bi-people me-2"></i> Administrador de Usuarios
+          </a>
+        </li>
+
+        <li class="nav-item mt-4">
+          <a class="nav-link text-primary d-flex align-items-center" href="{% url 'logout' %}">
+            <i class="fi fi-rr-exit me-2"></i> Salir de SIISEP
+          </a>
+        </li>
+        
       </ul>
     </div>
+    
   </div>
+</div>
+
+
+<div class="dropdown notifications">
+  <button class="btn btn-dark position-relative w-100 h-100" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fi fi-rr-bell fs-4"></i>
+    {% if mensajes %}
+    <span id="notifications-count"
+      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{ mensajes|length }}
+    </span>
+    {% endif %}
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-end shadow animated fadeIn" aria-labelledby="dropdownMenuButton" style="width: 400px; max-height: 500px; overflow-y: auto;">
+
+    <li style="background-color: #691c32;" class="dropdown-header text-white text-center py-2 fw-bold rounded-top">
+      <i class="fi fi-rr-bell-ring me-2"></i>Tareas Pendientes
+    </li>
+
+    {% if mensajes %}
+      {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
+        {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
+        <li>
+          <a href="{% url 'Detalle_inmueble' mensaje.task.id %}" class="dropdown-item py-2 px-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong class="text-dark text-truncate" style="max-width: 250px;">
+                {{ mensaje.task.NombreInmueble|truncatechars:40 }}
+              </strong>
+              <small class="text-muted">{{ mensaje.fecha_envio|date:"d/m/Y H:i" }}</small>
+            </div>
+            <div class="fw-semibold text-secondary">{{ mensaje.asunto|truncatechars:45 }}</div>
+            <div class="small text-muted">{{ mensaje.mensaje|truncatechars:60 }}</div>
+            <div class="mt-1">
+              {% if mensaje.estado == 'No Completado' %}
+                <span class="badge bg-danger">Pendiente</span>
+              {% else %}
+                <span class="badge bg-success">Completada</span>
+              {% endif %}
+            </div>
+          </a>
+          <hr class="my-1">
+        </li>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <li class="dropdown-item text-center text-muted py-3">
+        No tienes tareas pendientes.
+      </li>
+    {% endif %}
+  </ul>
+</div>
+
   {% endif %}
   {% block content %}
 
@@ -320,7 +375,27 @@ function showMessage(message, type = "success", duration = 2000) {
 * {
     scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* Color del thumb al pasar el mouse */
 }
- .nav-item{transition:.3s ease;}.nav-item:hover{color:#f0f0f0 !important;background-color:#94a6b8;transition:.3s ease;}.icon{font-size:26px;margin-bottom:15px;margin-top:10px;margin-right:1em !important;}@keyframes slide-in-top{0%{transform:translateY(-1000px);opacity:0;}100%{transform:translateY(0);opacity:1;}}.nav-item.animated{animation:slide-in-top 0.5s cubic-bezier(0.250,0.460,0.450,0.940) both;}.content{flex:1;}.footer{position:relative;background-color:#333;color:#fff;padding:20px 0;text-align:center;width:100%;margin-top:18em;}.footer .container{display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;}.footer .column{display:flex;flex:1;min-width:200px;justify-content:space-evenly;flex-wrap:wrap;}.footer .column a{color:#fff;text-decoration:none;display:block;margin:5px 10px;}.footer .column a:hover{text-decoration:underline;}.footer img{width:192px;height:auto;}@media (max-width:768px){.footer .container{flex-direction:column;}.footer .column{justify-content:center;text-align:center;}}.animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}.fast{-webkit-animation-duration:0.4s;animation-duration:0.4s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}.low{-webkit-animation-duration:1.5s;animation-duration:1.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}.i[class^="fi-rr-"]:before,i[class*="fi-rr-"]:before,span[class^="fi-rr-"]:before,span[class*="fi-rr-"]:before{width:25px !important;margin:5px;font-size:15px;}.fadeIn{animation-name:fadeIn;}.dropdown.notifications .btn{font-size:14px;padding:4px 12px;}.dropdown{position:absolute;right:0;}.dropdown.notifications .dropdown-menu{max-height:500px;overflow-y:auto;}.dropdown.notifications .fas{font-size:15px;}.dropdown.notifications .dropdown-menu{padding: 9px; border:1px solid #ccc;}.btn-calendar{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:6em;color:#fff;text-decoration:none;padding:2px 8px;border:0.1px solid #ccc;border-radius:5px;}.mensajes{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:15em;margin-left:10px;color:#fff;text-decoration:none;padding:5px 10px;border:0.1px solid #ccc;border-radius:5px;}.fa-envelope{margin-left:5px;}.containerT{position:relative;width:100%;display:flex;overflow:hidden;}.offcanvas.offcanvas-start{top:59px !important;left:-3px !important;width:300px !important}@media (max-width:768px){.email{display:none;}}.events{display:flex;}@media (max-width:560px){a.salir{position:absolute;margin-top:40px;right:0;}.title{font-size:13px;}.events{display:none;}.mensajes{left:16em;width:4em;top:7em;}}
+.dropdown-menu {
+  border-radius: 0.5rem;
+  animation: fadeInDown 0.3s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+ .nav-item{transition:.3s ease;}.nav-item:hover{color:#f0f0f0 !important;background-color:#94a6b8;transition:.3s ease;}.icon{font-size:26px;margin-bottom:15px;margin-top:10px;margin-right:1em !important;}@keyframes slide-in-top{0%{transform:translateY(-1000px);opacity:0;}100%{transform:translateY(0);opacity:1;}}.nav-item.animated{animation:slide-in-top 0.5s cubic-bezier(0.250,0.460,0.450,0.940) both;}.content{flex:1;}.footer{position:relative;background-color:#333;color:#fff;padding:20px 0;text-align:center;width:100%;margin-top:18em;}.footer .container{display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;}.footer .column{display:flex;flex:1;min-width:200px;justify-content:space-evenly;flex-wrap:wrap;}.footer .column a{color:#fff;text-decoration:none;display:block;margin:5px 10px;}.footer .column a:hover{text-decoration:underline;}.footer img{width:192px;height:auto;}@media (max-width:768px){.footer .container{flex-direction:column;}.footer .column{justify-content:center;text-align:center;}}.animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}.fast{-webkit-animation-duration:0.4s;animation-duration:0.4s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}.low{-webkit-animation-duration:1.5s;animation-duration:1.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}.i[class^="fi-rr-"]:before,i[class*="fi-rr-"]:before,span[class^="fi-rr-"]:before,span[class*="fi-rr-"]:before{width:25px !important;margin:5px;font-size:15px;}.fadeIn{animation-name:fadeIn;}.dropdown.notifications .btn{font-size:14px;padding:4px 12px;}.dropdown{position:absolute;right:1em;top: 5em;}.dropdown.notifications .dropdown.notifications .fas{font-size:15px;}.dropdown.notifications .btn-calendar{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:6em;color:#fff;text-decoration:none;padding:2px 8px;border:0.1px solid #ccc;border-radius:5px;}.mensajes{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:15em;margin-left:10px;color:#fff;text-decoration:none;padding:5px 10px;border:0.1px solid #ccc;border-radius:5px;}.fa-envelope{margin-left:5px;}.containerT{position:relative;width:100%;display:flex;overflow:hidden;}.offcanvas.offcanvas-start{top:59px !important;left:-3px !important;width:300px !important}@media (max-width:768px){.email{display:none;}}.events{display:flex;}@media (max-width:560px){a.salir{position:absolute;margin-top:40px;right:0;}.title{font-size:13px;}.events{display:none;}.mensajes{left:16em;width:4em;top:7em;}}
 </style>
 <script>
 

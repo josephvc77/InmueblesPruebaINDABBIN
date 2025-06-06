@@ -1,75 +1,154 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% block titulo %}Crear Alta de Llamada{% endblock %}
+{% block content %}
 
-<h1 class="text-center m-2">Crear Alta</h1>
-
-{{ error }}
-<div class="row justify-content-center">
-  <form action="{% url 'create_DatosLlamadasInmueble' %}" class="col-md-8 mb-2 m-4" enctype="multipart/form-data"
-    method="POST">
-    {% csrf_token %}
-    <div class="form-group form-check">
-      <label for="{{ form.NombreInmueble.id_for_label }}">Nombre del Inmueble:</label>
-      {{ form.NombreInmueble }}
-    </div>
-    <div class="form-group form-check-inline">
-      <label for="{{ form.nombre_del_contacto.id_for_label }}">Nombre del contacto:</label>
-      {{ form.nombre_del_contacto }}
-    </div>
-    <div class="form-group form-check-inline">
-      <label for="{{ form.puesto_o_cargo.id_for_label }}">Puesto o cargo:</label>
-      {{ form.puesto_o_cargo }}
-    </div>
-    <div class="form-group form-check-inline">
-      <label for="{{ form.tel_plantel.id_for_label }}">telefono del Plantel:</label>
-      {{ form.tel_plantel }}
-    </div>
-    <div class="form-group form-check-inline">
-      <label for="{{ form.prioridad.id_for_label }}">Prioridad:</label>
-      {{ form.prioridad }}
-    </div>
-    <div class="form-group form-check-inline">
-      <label for="{{ form.deadline.id_for_label }}">Fecha límite:</label>
-      <input type="date" id="{{ form.deadline.id_for_label }}" name="{{ form.deadline.name }}" />
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-header" style="background-color: #611232; color: #A57F2C;">
+      <h4 class="mb-0 text-white">
+        <i class="bi bi-telephone-plus-fill me-2"></i> Alta de Llamada
+      </h4>
     </div>
 
-    <div class="form-group form-check-inline">
-      <label for="{{ form.assigned_task.id_for_label }}">Asignar a:</label>
-      {{ form.assigned_task }}
-    </div>
+    <div class="card-body">
+      {% if error %}
+        <div class="alert alert-danger text-center">{{ error }}</div>
+      {% endif %}
 
-    <div class="form-group form-check-inline form-check-inline" id="fecha_documento_group">
-      <label for="{{ form.creado.id_for_label }}">Fecha de Creación:</label>
-      <input type="date" id="{{ form.creado.id_for_label }}" name="{{ form.creado.name }}" class="form-control"
-        value="{{ form_llamada.creado.value|default:'' }}" max="{{ 'now'|date:'Y-m-d' }}"
-        onchange="validateDate(this, 'creado')" />
-    </div>
-    <div id="dateAlertDocumento" class="alert alert-danger" style="display: none"></div>
+      <form action="{% url 'create_DatosLlamadasInmueble' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <button type="submit">Generar Alta</button>
-  </form>
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.NombreInmueble.id_for_label }}" class="form-label fw-bold">Nombre del Inmueble:</label>
+            {{ form.NombreInmueble }}
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.nombre_del_contacto.id_for_label }}" class="form-label fw-bold">Nombre del contacto:</label>
+            {{ form.nombre_del_contacto }}
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.puesto_o_cargo.id_for_label }}" class="form-label fw-bold">Puesto o cargo:</label>
+            {{ form.puesto_o_cargo }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.tel_plantel.id_for_label }}" class="form-label fw-bold">Teléfono del plantel:</label>
+            {{ form.tel_plantel }}
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.prioridad.id_for_label }}" class="form-label fw-bold">Prioridad:</label>
+            {{ form.prioridad }}
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.estatus_llamada.id_for_label }}" class="form-label fw-bold">Estatus de llamada:</label>
+            {{ form.estatus_llamada }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.ur.id_for_label }}" class="form-label fw-bold">Unidad Responsable:</label>
+            {{ form.ur }}
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.deadline.id_for_label }}" class="form-label fw-bold">Fecha límite:</label>
+            <div class="input-group">
+              <input type="text" id="{{ form.deadline.id_for_label }}"
+                     value="{{ form.deadline.value|date:'d/m/Y' }}"
+                     name="{{ form.deadline.name }}"
+                     class="form-control datepicker" placeholder="dd/mm/aaaa">
+              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.assigned_task.id_for_label }}" class="form-label fw-bold">Asignar a:</label>
+            {{ form.assigned_task }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.creado.id_for_label }}" class="form-label fw-bold">Fecha de creación:</label>
+            <div class="input-group">
+              <input type="text" id="{{ form.creado.id_for_label }}"
+                     name="{{ form.creado.name }}"
+                     class="form-control datepicker"
+                     value="{{ form.creado.value|date:'d/m/Y' }}"
+                     placeholder="dd/mm/aaaa"
+                     onchange="validateDate(this, 'creado')">
+              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div id="dateAlertDocumento" class="alert alert-danger d-none"></div>
+
+        <div class="text-end">
+          <button type="submit" class="btn btn-custom fw-bold">
+            <i class="fa fa-phone-plus me-1"></i> Generar Alta
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+<!-- Estilos adicionales -->
+<style>
+  .btn-custom {
+    background-color: #A57F2C;
+    color: #611232;
+    font-weight: 600;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-custom:hover, .btn-custom:focus {
+    background-color: #7f6a1b;
+    color: #fff;
+  }
+
+  .card-header h4 {
+    font-weight: 600;
+  }
+
+  .form-label {
+    color: #611232;
+  }
+
+  .input-group-text {
+    background-color: #f8f9fa;
+  }
+</style>
 
 <script>
   function validateDate(input, alertType) {
-    var selectedDate = new Date(input.value);
+    var selectedDate = new Date(input.value.split("/").reverse().join("-"));
     var currentDate = new Date();
+
     if (selectedDate > currentDate) {
-      var alert = document.getElementById("dateAlertDocumento");
-      alert.textContent = "La fecha no puede ser posterior a la fecha actual.";
-      alert.style.display = "block";
-      alert.style.position = "fixed";
-      alert.style.top = "10px";
-      alert.style.right = "10px";
-      alert.style.zIndex = "1000"; 
-      input.value = ""; 
-      setTimeout(function () {
-        alert.style.display = "none";
+      var alert = document.getElementById('dateAlertDocumento');
+      alert.textContent = 'La fecha no puede ser posterior a la fecha actual.';
+      alert.classList.remove('d-none');
+      alert.classList.add('position-fixed', 'top-0', 'end-0', 'm-3', 'shadow');
+
+      input.value = '';
+      setTimeout(() => {
+        alert.classList.add('d-none');
       }, 5000);
     } else {
-      document.getElementById("dateAlertDocumento").style.display = "none";
+      document.getElementById('dateAlertDocumento').classList.add('d-none');
     }
   }
 </script>
-<style>form{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);}.footer{position:fixed;bottom:-5em;margin-left:0;}.form-group{margin-bottom:20px;}.form-group label{display:block;margin-bottom:5px;}.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;}button[type="submit"]{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-weight:bold;text-transform:uppercase;background-color:#007bff;color:#fff;}@media screen and (max-width:768px){form{padding:10px;}.form-group input,.form-group select,.form-group textarea{padding:8px;}button[type="submit"]{padding:8px 16px;}}</style>
 
 {% endblock %}

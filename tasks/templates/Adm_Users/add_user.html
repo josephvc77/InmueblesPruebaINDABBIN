@@ -1,77 +1,78 @@
-<!-- add_user.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2>Agregar Usuario</h2>
-  
-  <form method="post">
-    {% csrf_token %}
-    
-    <!-- Mensaje de error general -->
-    {% if form.non_field_errors %}
-      <div class="alert alert-danger">
-        {{ form.non_field_errors }}
-      </div>
-    {% endif %}
+<div class="container mt-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-header text-white" style="background-color: #611232;">
+      <h4 class="mb-0">
+        <i class="bi bi-person-plus-fill me-2"></i> Agregar Usuario
+      </h4>
+    </div>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
 
-    <div class="form-group">
-      <label for="id_username">Nombre de usuario</label>
-      {{ form.username }}
-      {% if form.username.errors %}
-        <div class="text-danger">{{ form.username.errors }}</div>
-      {% endif %}
-    </div>
-    
-    <div class="form-group">
-      <label for="id_first_name">Nombre</label>
-      {{ form.first_name }}
-      {% if form.first_name.errors %}
-        <div class="text-danger">{{ form.first_name.errors }}</div>
-      {% endif %}
-    </div>
-    
-    <div class="form-group">
-      <label for="id_last_name">Apellido</label>
-      {{ form.last_name }}
-      {% if form.last_name.errors %}
-        <div class="text-danger">{{ form.last_name.errors }}</div>
-      {% endif %}
-    </div>
+        <!-- Errores generales -->
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
 
-    <div class="form-group">
-      <label for="id_email">Correo electrónico</label>
-      {{ form.email }}
-      {% if form.email.errors %}
-        <div class="text-danger">{{ form.email.errors }}</div>
-      {% endif %}
-    </div>
+        <div class="row">
+          {% for field in form %}
+            <div class="col-md-6 mb-3">
+              <label for="{{ field.id_for_label }}" class="form-label" style="color: #611232;">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
 
-    <div class="form-group">
-      <label for="id_password1">Contraseña</label>
-      {{ form.password1 }}
-      {% if form.password1.errors %}
-        <div class="text-danger">{{ form.password1.errors }}</div>
-      {% endif %}
+        <button type="submit" class="btn btn-custom w-100">
+          <i class="bi bi-check-circle-fill me-1"></i> Crear usuario
+        </button>
+      </form>
     </div>
-
-    <div class="form-group">
-      <label for="id_password2">Confirmar contraseña</label>
-      {{ form.password2 }}
-      {% if form.password2.errors %}
-        <div class="text-danger">{{ form.password2.errors }}</div>
-      {% endif %}
-    </div>
-    
-    <button type="submit" class="btn btn-primary mt-3">Crear usuario</button>
-  </form>
+  </div>
 </div>
-
 {% endblock %}
 
+{% block styles %}
 <style>
+  /* Campos input con borde vino oscuro */
+  .form-control {
+    border: 1.5px solid #611232;
+    transition: border-color 0.3s ease;
+  }
+  .form-control:focus {
+    border-color: #A57F2C;
+    box-shadow: 0 0 5px #A57F2C;
+  }
 
-  .alert{
-    color: #004d99;
+  /* Botón personalizado */
+  .btn-custom {
+    background-color: #A57F2C !important;
+    color: #611232;
+    font-weight: 600;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .btn-custom:hover, .btn-custom:focus {
+    background-color: #7f6a1b;
+    color: #fff;
+  }
+
+  /* Iconos color vino */
+  .bi-person-plus-fill {
+    color: #A57F2C;
+  }
+
+  /* Alertas de error */
+  .alert-danger {
+    border-left: 5px solid #611232;
   }
 </style>
+{% endblock %}

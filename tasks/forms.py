@@ -17,6 +17,7 @@ class CustomUserForm(forms.ModelForm):
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'bio', 'puesto', 'is_active', 'is_staff', 'groups']
 
+# Formulario para editar usuarios existentes
 class UserEditForm(forms.ModelForm):
     email = forms.EmailField(required=True, label="Correo electrónico")
     first_name = forms.CharField(max_length=30, required=True, label="Nombre")
@@ -33,7 +34,7 @@ class UserEditForm(forms.ModelForm):
         fields = ['username', 'first_name', 'last_name', 'email', 'is_active', 'is_staff', 'groups']
 
 
-
+# Formulario para crear un nuevo usuario
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True, label="Correo electrónico")
     first_name = forms.CharField(max_length=30, required=True, label="Nombre")
@@ -43,6 +44,13 @@ class UserCreateForm(UserCreationForm):
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Agrega la clase 'form-control' a todos los widgets del formulario
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+
+
 
 
 class DatePickerWidget(forms.DateInput):
@@ -51,19 +59,33 @@ class DatePickerWidget(forms.DateInput):
 class CustomClearableFileInput(ClearableFileInput):
      template_with_clear='<br><label target="_blank" for="%(clear_checkbox_id)s formFile">%(clear_checkbox_label)s</label> %(clear)s'
 
-
 class TaskCreateForm(ModelForm):
     class Meta:
         model = Inmueble
-        fields = ['NombreInmueble', 'assigned_to', 'causa_alta', 'prioridad', 'deadline', 'creado', 'Sector', 'Nombre_de_la_institucion_que_administra_el_inmueble']
-       
+        fields = [
+            'NombreInmueble', 
+            'assigned_to', 
+            'causa_alta', 
+            'prioridad', 
+            'deadline', 
+            'creado', 
+            'Sector', 
+            'Nombre_de_la_institucion_que_administra_el_inmueble'
+        ]
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(TaskCreateForm, self).__init__(*args, **kwargs)
-        
-        if not user.is_superuser:
-            # Oculta el campo 'assigned_to' si el usuario no es superusuario
+
+        # Agregar clases CSS a todos los campos automáticamente
+        for field_name, field in self.fields.items():
+            existing_classes = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = f'{existing_classes} form-control'.strip()
+
+        # Oculta el campo 'assigned_to' si el usuario no es superusuario
+        if not user or not user.is_superuser:
             self.fields['assigned_to'].widget = forms.HiddenInput()
+
             
 class MensajeFormIMP(forms.ModelForm):
     class Meta:
@@ -336,6 +358,11 @@ class CreateDatosLlamadasForm(forms.ModelForm):
         super(CreateDatosLlamadasForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['assigned_task'].queryset = CustomUser.objects.filter(username=user.username)
+            
+             # Agregar clases CSS a todos los campos automáticamente
+        for field_name, field in self.fields.items():
+            existing_classes = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = f'{existing_classes} form-control'.strip()
 
 
 class DatosLlamadaForm(forms.ModelForm):

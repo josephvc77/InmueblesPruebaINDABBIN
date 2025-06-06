@@ -245,7 +245,7 @@ class Inmueble(models.Model):
         ('ZONA MILITAR', 'Zona Militar'),
         ('ZONA NAVAL', 'Zona Naval'),
     ]
-    tipo_asentamiento = models.CharField(max_length=130, choices=TIPO_ASENTAMIENTO_CHOICES, default='SIN INFORMACIÓN',  null=True, blank=True)
+    tipo_asentamiento = models.CharField(max_length=130, choices=TIPO_ASENTAMIENTO_CHOICES,  null=True, blank=True)
 
     nombre_asentamiento = models.CharField(max_length=100,  null=True, blank=True)
     codigo_postal = models.CharField(max_length=40,  null=True, blank=True)
@@ -271,7 +271,6 @@ class Inmueble(models.Model):
     
      # Campos relacionados con Edificación
     NOMBRE_EDIFICACION_CHOICES = [
-        ('Sin informacion', 'Sin Información'),
         ('Edificacion', 'Edificación'),
         ('Mixto', 'Mixto'),
         ('Terreno', 'Terreno'),
@@ -283,14 +282,12 @@ class Inmueble(models.Model):
     superficie_construida_en_M2 = models.CharField(max_length=100, null=True, blank=True)
        # Opciones para los campos de selección
     ZONA_CHOICES = (
-        ('sin informacion', 'Sin Información'),
         ('rural', 'Rural'),
         ('semiurbana', 'Semiurbana'),
         ('urbana', 'Urbana'),
     )
 
     CALIDAD_CHOICES = (
-        ('sin informacion', 'Sin Información'),
         ('buena', 'Buena'),
         ('de_lujo', 'De Lujo'),
         ('economica', 'Económica'),
@@ -300,7 +297,6 @@ class Inmueble(models.Model):
     )
 
     SERVICIOS_CHOICES = (
-        ('sin informacion', 'Sin Información'),
         ('basicos', 'Básicos'),
         ('completos', 'Completos'),
         ('escasos', 'Escasos'),
@@ -319,9 +315,9 @@ class Inmueble(models.Model):
 
     # Caracteristicas
     superficie_util_m2 = models.CharField(max_length=150, null=True, blank=True)
-    zona_ubicacion = models.CharField(max_length=100, choices=ZONA_CHOICES, null=True, blank=True, default='Sin Información')
-    calidad_construccion = models.CharField(max_length=100, choices=CALIDAD_CHOICES, null=True, blank=True, default='Sin Información')
-    servicios = models.CharField(max_length=100, choices=SERVICIOS_CHOICES, null=True, blank=True, default='Sin Información')
+    zona_ubicacion = models.CharField(max_length=100, choices=ZONA_CHOICES, null=True, blank=True)
+    calidad_construccion = models.CharField(max_length=100, choices=CALIDAD_CHOICES, null=True, blank=True)
+    servicios = models.CharField(max_length=100, choices=SERVICIOS_CHOICES, null=True, blank=True)
     telefono_inmueble = models.CharField(max_length=150, null=True, blank=True)
     fecha_inicio_construccion = models.DateField(null=True, blank=True)
     siglo_construccion = models.CharField( max_length=100,null=True, blank=True)
@@ -379,7 +375,6 @@ class Inmueble(models.Model):
     )
 
     USO_DOMINANTE_ZONA_CHOICES = [
-        ("SIN INFORMACION", "SIN INFORMACIÓN"),
         ("COMERCIAL", "COMERCIAL"),
         ("DE OFICINAS", "DE OFICINAS"),
         ("HABITACIONAL", "HABITACIONAL"),
@@ -388,8 +383,7 @@ class Inmueble(models.Model):
     ]
     uso_dominante_zona = models.CharField(
         max_length=100,
-        choices=USO_DOMINANTE_ZONA_CHOICES,
-        default="SIN INFORMACIÓN", null=True, blank=True
+        choices=USO_DOMINANTE_ZONA_CHOICES, null=True, blank=True
     )
     
     CLASIFICACION_EDAD_CHOICES = [

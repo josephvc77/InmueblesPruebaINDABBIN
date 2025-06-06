@@ -1,96 +1,190 @@
 {% extends 'base.html' %}
 
-{% block titulo %} Tareas Pendientes {% endblock %}
+{% block titulo %}Tareas Pendientes{% endblock %}
 
 {% block content %}
+<style>
+  .contenedor-inmuebles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+  }
 
-<form class="search-form animated fadeIn" method="GET">
-  <!-- Campo de búsqueda -->
-  <div class="input-group">
-    <input type="text" name="q" placeholder="Buscar por Nombre, RFI, Entidad Federativa o Municipio" value="{{ search_query }}" class="form-control">
-    <div class="input-group-append">
-      <button class="btn btn-outline-primary" type="submit">Buscar</button>
-    </div>
+  .search-form {
+    max-width: 1000px;
+    margin: 0 auto 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .search-form > * {
+    flex-grow: 1;
+    min-width: 180px;
+  }
+
+  .search-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    display: block;
+    color: #333;
+  }
+
+  .search-form input[type="text"],
+  .search-form select {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 1rem;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+  }
+
+  .search-form input[type="text"]:focus,
+  .search-form select:focus {
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.4);
+  }
+
+  .search-form .btn,
+  .search-form a.btn {
+    min-width: 110px;
+    padding: 8px 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .search-form button.btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .search-form button.btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .search-form a.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border: none;
+  }
+
+  .search-form a.btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  .search-form a.btn-outline-success {
+    background-color: transparent;
+    color: #28a745;
+    border: 2px solid #28a745;
+    text-decoration: none;
+  }
+
+  .search-form a.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+  }
+</style>
+
+<div class="contenedor-inmuebles">
+<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+<form class="search-form" method="GET" aria-label="Formulario de búsqueda de inmuebles">
+
+  <div>
+    <label for="search-input">Buscar inmuebles</label>
+    <input
+      id="search-input"
+      type="text"
+      name="q"
+      value="{{ search_query }}"
+      placeholder="Nombre, RFI, Estado o Municipio"
+      autocomplete="off"
+    >
   </div>
-  
-  <!-- Selector de Prioridad -->
-  <div class="m-3 form-group animated fadeIn">
-    <label for="prioridad"></label>
-    <select id="prioridad" name="prioridad" class="form-control m-3">
-        <option value="">Prioridad</option>
-        <option value="">Todas</option>
-        <option value="Alta">Alta</option>
-        <option value="Media">Media</option>
-        <option value="Baja">Baja</option>
+
+  <div>
+    <label for="prioridad">Prioridad</label>
+    <select id="prioridad" name="prioridad">
+      <option value="" {% if not prioridad %}selected{% endif %}>Todas</option>
+      <option value="Alta" {% if prioridad == 'Alta' %}selected{% endif %}>Alta</option>
+      <option value="Media" {% if prioridad == 'Media' %}selected{% endif %}>Media</option>
+      <option value="Baja" {% if prioridad == 'Baja' %}selected{% endif %}>Baja</option>
     </select>
   </div>
 
-  <!-- Selector de UR -->
-  <div class="m-3 form-group animated fadeIn">
-    <label for="ur-select"></label>
-    <select id="ur-select" name="ur" class="form-control m-2">
-        <option value="">UR</option>
-        <option value="CGEE">CGEE</option>
-        <option value="DGB">DGB</option>
-        <option value="DGBTEPD">DGBTEPD</option>
-        <option value="DGCFT">DGCFT</option>
-        <option value="DGETAyCM">DGETAyCM</option>
-        <option value="DGETI">DGETI</option>
-        <option value="DGRMyS">DGRMyS</option>
-        <option value="RESEMS">RESEMS</option>
+  <div>
+    <label for="ur-select">Unidad Responsable</label>
+    <select id="ur-select" name="ur">
+      <option value="" {% if not ur %}selected{% endif %}>Todas</option>
+      <option value="CGEE" {% if ur == 'CGEE' %}selected{% endif %}>CGEE</option>
+      <option value="DGB" {% if ur == 'DGB' %}selected{% endif %}>DGB</option>
+      <option value="DGBTEPD" {% if ur == 'DGBTEPD' %}selected{% endif %}>DGBTEPD</option>
+      <option value="DGCFT" {% if ur == 'DGCFT' %}selected{% endif %}>DGCFT</option>
+      <option value="DGETAyCM" {% if ur == 'DGETAyCM' %}selected{% endif %}>DGETAyCM</option>
+      <option value="DGETI" {% if ur == 'DGETI' %}selected{% endif %}>DGETI</option>
+      <option value="DGRMyS" {% if ur == 'DGRMyS' %}selected{% endif %}>DGRMyS</option>
+      <option value="RESEMS" {% if ur == 'RESEMS' %}selected{% endif %}>RESEMS</option>
     </select>
   </div>
 
-  <!-- Selector de Ordenar -->
-  <div class="m-3 form-group animated fadeIn">
-    <label for="ordenar-por"></label>
-    <select id="ordenar-por" name="ordenar" class="form-control m-2">
-        <option value="">Ordenar</option>
-        <option value="">Más Utilizados</option>
-        <option value="az">A a Z</option>
-        <option value="za">Z a A</option>
-        <option value="nuevo">Más nuevo</option>
-        <option value="viejo">Más viejo</option>
+  <div>
+    <label for="ordenar-por">Ordenar</label>
+    <select id="ordenar-por" name="ordenar">
+      <option value="" {% if not orden %}selected{% endif %}>Ordenar</option>
+      <option value="mas_utilizados" {% if orden == 'mas_utilizados' %}selected{% endif %}>Más Utilizados</option>
+      <option value="az" {% if orden == 'az' %}selected{% endif %}>A a Z</option>
+      <option value="za" {% if orden == 'za' %}selected{% endif %}>Z a A</option>
+      <option value="nuevo" {% if orden == 'nuevo' %}selected{% endif %}>Más nuevo</option>
+      <option value="viejo" {% if orden == 'viejo' %}selected{% endif %}>Más viejo</option>
     </select>
   </div>
-  <a href="{% url 'export_tasks_to_excelIMP' %}" aria-label="Export" class="btn btn-outline-success btn-sm m-2 excell">Exportar Excel <i class="fas fa-file-excel"></i></a>
 
-{% if mensaje %}
-    <p>{{ mensaje }}</p>
-{% endif %}
+  <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+    <button class="btn btn-primary" type="submit" aria-label="Buscar inmuebles">Buscar</button>
+
+    <a href="{% url 'Inmuebles' %}" class="btn btn-secondary" aria-label="Limpiar filtros">Limpiar</a>
+
+    <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-outline-success" aria-label="Exportar listado a Excel">
+      <i class="fas fa-file-excel"></i> Excel
+    </a>
+  </div>
 
 </form>
-
-
-{% if message %}
-    <p>{{ message }}</p>
-{% endif %}
-<div id="message-container">
-  <!-- Aquí se mostrará el mensaje -->
 </div>
 
-  <div class="totals-card animated fadeIn">
-    <div class="totals-container">
-      <p class="total-label">Completados:</p>
-      <p class="total-value">{{ total_pending_inmuebles }}</p>
-    </div>
-    <h3 class="text-center" style="color: #4b4b4b;">INMUEBLES REGISTRADOS</h3>
-    <div class="totals-container">
-      <p class="total-label">Terminados:</p>
-      <p class="total-value">{{ total_completed_inmuebles }}</p>
-    </div>
-  </div>
 
-  {% if inmuebles %}
-  <div class="container animated fadeIn">
-    <div class="table-responsive">
-    <table class="table table-striped responsive">
+{% if mensaje %}
+  <div style="max-width:1000px;margin:0 auto 20px;color:#0366d6;font-weight:600;">{{ mensaje }}</div>
+{% endif %}
+
+
+
+{% if inmuebles %}
+<div>Total Inmuebles Terminados: {{ total_completed_inmuebles }} --- Total de Inmuebles Completados: {{ total_pending_inmuebles}}</div>
+
+  <div class="table-responsive">
+    <table>
       <thead>
         <tr>
           <th>#</th>
           <th>Nombre</th>
           <th>Estado</th>
-          <th>RFI</th>>
+          <th>RFI</th>
           <th>Entidad Federativa</th>
           <th>Municipio</th>
           <th>UR</th>
@@ -104,82 +198,64 @@
         {% for task in inmuebles %}
           <tr>
             <td>{{ forloop.counter }}</td>
-            <td>
-              {% if task.important %}
-                <strong>{{ task.NombreInmueble }}</strong>
-              {% else %}
-                {{ task.NombreInmueble }}
-              {% endif %}
-            </td>
-            <td>{% if task.estado == 'Activo' %}Activo{% else %}Baja{% endif %}</td>
+            <td>{% if task.important %}<strong>{{ task.NombreInmueble }}</strong>{% else %}{{ task.NombreInmueble }}{% endif %}</td>
+            <td>{{ task.estado|default_if_none:"Baja" }}</td>
             <td>{{ task.rfi|default:"SIN ASIGNAR" }}</td>
             <td>{{ task.entidad_federativa|default:"SIN ASIGNAR" }}</td>
             <td>{{ task.municipio_alcaldia|default:"SIN ASIGNAR" }}</td>
             <td>{{ task.UR|default:"SIN ASIGNAR" }}</td>
-            <td>
-                {{ task.prioridad|default:"SIN ASIGNAR" }}
-            </td>
+            <td>{{ task.prioridad|default:"SIN ASIGNAR" }}</td>
             <td>
               {% if task.assigned_to %}
-                {{ task.assigned_to.first_name|default:"SIN ASIGNAR" }} {{ task.assigned_to.last_name|default:"SIN ASIGNAR" }}
+                {{ task.assigned_to.first_name|default:"" }} {{ task.assigned_to.last_name|default:"" }}
               {% else %}
                 SIN ASIGNAR
               {% endif %}
             </td>
-            <td>{{ task.deadline|default:"SIN ASIGNAR" }}</td>
+            <td>{{ task.deadline|date:"d/m/Y"|default:"SIN ASIGNAR" }}</td>
             <td>
-              <a style="text-decoration: none; margin-right: 15px;" href="{% url 'Detalle_inmueble' task.id %}" class="text-primary" aria-label="Ver detalles">
+              <a href="{% url 'Detalle_inmueble' task.id %}" aria-label="Ver detalles {{ task.NombreInmueble }}" title="Detalles" style="color:#007bff;margin-right:8px;">
                 <i class="bi bi-info-circle-fill"></i>
               </a>
-              <a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="text-danger" aria-label="Generar PDF">
-                <i class="bi bi-file-earmark-pdf"></i>  
+              <a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" aria-label="Generar PDF {{ task.NombreInmueble }}" title="PDF" style="color:#dc3545;">
+                <i class="bi bi-file-earmark-pdf"></i>
               </a>
             </td>
-            
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 
-    <!-- Paginación -->
-    <div class="text-center">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          {% if inmuebles.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}">{{ inmuebles.previous_page_number }}</a>
-            </li>
-          {% endif %}
+  <!-- Paginación -->
+  <nav aria-label="Navegación de página" class="pagination-container">
+    <ul class="pagination">
+      {% if inmuebles.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" aria-label="Primera página">&laquo;</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}" aria-label="Página anterior">{{ inmuebles.previous_page_number }}</a>
+        </li>
+      {% endif %}
 
-          <li class="page-item active"><span class="page-link">{{ inmuebles.number }}</span></li>
+      <li class="page-item active" aria-current="page">
+        <span class="page-link">{{ inmuebles.number }}</span>
+      </li>
 
-          {% if inmuebles.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}">{{ inmuebles.next_page_number }}</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
-    </div>
-  </div>
+      {% if inmuebles.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}" aria-label="Página siguiente">{{ inmuebles.next_page_number }}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" aria-label="Última página">&raquo;</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+
 {% else %}
-  <p class="m-5">No se encontraron inmuebles que coincidan con la búsqueda.</p>
+  <p style="text-align:center; color:#666; font-size:1.1rem;">No se encontraron inmuebles que coincidan con la búsqueda.</p>
 {% endif %}
-
-
-{% include 'styles-home.html' %}
-
-
-
+</div>
 {% endblock %}

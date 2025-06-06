@@ -433,20 +433,19 @@ def Detalle_inmueble(request, task_id):
         mensaje_form = MensajeFormIMP(request.POST, prefix='mensaje')
         
         if documento_propiedad_form.is_valid():
-            # Validación adicional para verificar si hay datos antes de guardar
             if any(documento_propiedad_form.cleaned_data.values()):
                 documento_propiedad = documento_propiedad_form.save(commit=False)
                 documento_propiedad.task = task
                 documento_propiedad.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-        
+
         if datos_avaluos_form.is_valid():
             if any(datos_avaluos_form.cleaned_data.values()):
                 datos_avaluo = datos_avaluos_form.save(commit=False)
                 datos_avaluo.task = task
                 datos_avaluo.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if mensaje_form.is_valid():
             mensaje_form.instance.enviado_por_imp = request.user
             if any(mensaje_form.cleaned_data.values()):
@@ -454,12 +453,10 @@ def Detalle_inmueble(request, task_id):
                 mensaje.task = task
                 mensaje.save()
 
-                # Envío de correo con HTML
                 asunto = f"Nueva Tarea: {mensaje_form.cleaned_data['asunto']}"
                 mensaje_texto = mensaje_form.cleaned_data['mensaje']
                 enviar_a_email = mensaje_form.cleaned_data['enviar_a_imp']
 
-                # Definir el contenido HTML del correo
                 html_message = render_to_string('extends_importados/correo_template.html', {
                     'asunto': asunto,
                     'mensaje_texto': mensaje_texto,
@@ -468,78 +465,79 @@ def Detalle_inmueble(request, task_id):
                 try:
                     send_mail(
                         subject=asunto,
-                        message=mensaje_texto,  # Mensaje de respaldo en texto sin formato
+                        message=mensaje_texto,
                         from_email=settings.EMAIL_HOST_USER,
                         recipient_list=[enviar_a_email],
-                        html_message=html_message,  # Mensaje en formato HTML
+                        html_message=html_message,
                         fail_silently=False,
                     )
                     messages.success(request, "El mensaje se envió correctamente por correo electrónico.")
                 except Exception as e:
                     messages.error(request, f"Error al enviar el correo: {e}")
                 return redirect('Detalle_inmueble', task_id=task_id)
-        
+
         if ocupaciones_form.is_valid():
             if any(ocupaciones_form.cleaned_data.values()):
                 ocupaciones = ocupaciones_form.save(commit=False)
                 ocupaciones.task = task
                 ocupaciones.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if documento_ocupacion_form.is_valid():
             if any(documento_ocupacion_form.cleaned_data.values()):
                 documento_ocupacion = documento_ocupacion_form.save(commit=False)
                 documento_ocupacion.task = task
                 documento_ocupacion.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if instituciones_ocupantes_form.is_valid():
             if any(instituciones_ocupantes_form.cleaned_data.values()):
                 instituciones_ocupantes = instituciones_ocupantes_form.save(commit=False)
                 instituciones_ocupantes.task = task
                 instituciones_ocupantes.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-        
+
         if datos_terceros_form.is_valid():
             if any(datos_terceros_form.cleaned_data.values()):
                 datos_terceros = datos_terceros_form.save(commit=False)
                 datos_terceros.task = task
                 datos_terceros.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if edificio_verde_form.is_valid():
             if any(edificio_verde_form.cleaned_data.values()):
                 edificio_verde = edificio_verde_form.save(commit=False)
                 edificio_verde.task = task
                 edificio_verde.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if colindancia_form.is_valid():
-             if any(colindancia_form.cleaned_data.values()):
+            if any(colindancia_form.cleaned_data.values()):
                 colindancia = colindancia_form.save(commit=False)
                 colindancia.task = task
-                colindancia.save()      
+                colindancia.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if tramite_disposicion_form.is_valid():
-             if any(tramite_disposicion_form.cleaned_data.values()):
+            if any(tramite_disposicion_form.cleaned_data.values()):
                 tramite_disposicion = tramite_disposicion_form.save(commit=False)
                 tramite_disposicion.task = task
                 tramite_disposicion.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
+
         if edificacion_form.is_valid():
-             if any(edificacion_form.cleaned_data.values()):
+            if any(edificacion_form.cleaned_data.values()):
                 edificacion = edificacion_form.save(commit=False)
                 edificacion.task = task
                 edificacion.save()
                 return redirect('Detalle_inmueble', task_id=task_id)
-            
         
         if inmueble.is_valid():
-            inmueble.save()  # Guardar los cambios en la tarea
-            return redirect('Inmuebles')  # Redireccionar a 'Inmuebles' después de guardar
-        
+            inmueble.save()
+            return redirect('Inmuebles')
+        else:
+            print(inmueble.errors)         
+    
     else:
         inmueble = InmuebleForm(instance=task)
         documento_propiedad_form = DocumentoPropiedadFormIMP()
@@ -552,9 +550,8 @@ def Detalle_inmueble(request, task_id):
         colindancia_form = ColindanciasFormIMP()
         tramite_disposicion_form = TramitesDisposicionFormIMP()
         edificacion_form = EdificacionFormIMP()
-        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP()
         mensaje_form = MensajeFormIMP(prefix='mensaje') 
-        
+    
     return render(request, 'task_detail_importados.html', {
         'task': task,
         'inmueble': inmueble,
@@ -1804,6 +1801,7 @@ def create_DatosLlamadasInmueble(request):
     context = {'form': form}
     return render(request, 'create_llamada.html', context)
 
+
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def llamadas_inmuebles(request):
@@ -1859,6 +1857,9 @@ def llamadas_inmuebles(request):
         Q(rfi__icontains=search_query),
         estado='Completado'
     ).count()
+    
+    ur_opciones = "CGEE,DGB,DGBTEPD,DGCFT,DGETAyCM,DGETI,DGRMyS,RESEMS".split(',')
+
 
     return render(request, 'llamadas.html', {
         'llamadas': llamadas, 
@@ -1868,6 +1869,7 @@ def llamadas_inmuebles(request):
         'prioridad': prioridad,
         'ur': ur,
         'orden': orden,
+        'ur_opciones': ur_opciones,
     })
 
 @login_required
