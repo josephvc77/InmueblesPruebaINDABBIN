@@ -28,18 +28,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-# ALLOWED_HOSTS = ['192.168.101.214', 'inmuebles_siisep.sep.gob.mx', 'localhost', '127.0.0.1']
-
-# CSRF_TRUSTED_ORIGINS = [
-    # 'https://192.168.101.214',  # IP local
-    # 'https://inmuebles_siisep.sep.gob.mx'  # Dominio en producción
-# ]
-
-
-
-
-# ALLOWED_HOSTS = ['']
-
 
 
 # Application definition
@@ -122,48 +110,6 @@ DATABASES = {
     }
 }
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'djangodb',
-#         'USER': 'djangouser',
-#         'PASSWORD': 'p455w0rd',
-#         'HOST': '192.168.101.214',
-#         'PORT': '5432',  
-#          'OPTIONS': {
-#             'client_encoding': 'UTF8',
-#         } 
-#     }
-# }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'inmuebles',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'SIISEP',
-#         'USER': 'postgres',
-#         'PASSWORD': 'root',
-#         'HOST': 'localhost',
-#         'PORT': '5432',   
-#         'OPTIONS': {
-#             'client_encoding': 'UTF8',
-#         }
-#     }
-# }
 
 
 # Password validation
