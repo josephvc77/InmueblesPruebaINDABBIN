@@ -1094,10 +1094,11 @@ def generate_pdfIMP(request, task_id):
     styles = getSampleStyleSheet()
 
     # Agregar una imagen al inicio (puedes cambiar la ruta)
-    image_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'logosep.webp')
-    img = Image(image_path, width=150, height=50)  # Ajusta el tamaño de la imagen según sea necesario
-    elements.append(img)
+    # image_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'logosep.webp')
+    # img = Image(image_path, width=150, height=50)  # Ajusta el tamaño de la imagen según sea necesario
+    # elements.append(img)
     elements.append(Spacer(1, 12))  # Agrega un espacio después de la imagen
+    
 
     # Encabezado
     elements.append(Paragraph("<b>Reporte de Inmueble</b>", styles['Title']))
