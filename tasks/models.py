@@ -48,7 +48,7 @@ class InmueblesFiles(object):
 
 class Inmueble(models.Model):
     assigned_to = models.ForeignKey(CustomUser, on_delete=models.SET_NULL,  blank=True, null=True, related_name='assigned_inmueble')
-    NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
+    NombreInmueble = models.CharField(max_length=60, verbose_name='Nombre del inmueble', null=True, blank=True)
     rfi = models.CharField(max_length=15, null=True, blank=True)
     CHOICES = (
     ('Si', 'Si'),
@@ -79,16 +79,16 @@ class Inmueble(models.Model):
         ('Completado', 'Completado'),
     ]
     estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='Activo', null=True, blank=True)
-    seccion_del_inventario = models.CharField(max_length=100, null=True, blank=True)
+    seccion_del_inventario = models.CharField(max_length=60, null=True, blank=True)
     
     deadline = models.DateField(null=True, blank=True)
    
-    Dependencia_Administradora = models.CharField(max_length=100, null=True, blank=True)
+    Dependencia_Administradora = models.CharField(max_length=60, null=True, blank=True)
     
     SECTOR_INSTITUCION_CHOICES = [
         ('SECRETARÍA DE EDUCACIÓN PÚBLICA', 'SECRETARÍA DE EDUCACIÓN PÚBLICA'),
     ]
-    Sector = models.CharField(max_length=100, choices=SECTOR_INSTITUCION_CHOICES, null=True, blank=True)
+    Sector = models.CharField(max_length=60, choices=SECTOR_INSTITUCION_CHOICES, null=True, blank=True)
     
     
     
@@ -96,14 +96,14 @@ class Inmueble(models.Model):
     NOMBRE_INSTITUCION_CHOICES = [
         ('SECRETARÍA DE EDUCACIÓN PÚBLICA', 'SECRETARÍA DE EDUCACIÓN PÚBLICA'),
     ]
-    Nombre_de_la_institucion_que_administra_el_inmueble = models.CharField(max_length=100, choices=NOMBRE_INSTITUCION_CHOICES,  null=True, blank=True)
+    Nombre_de_la_institucion_que_administra_el_inmueble = models.CharField(max_length=60, choices=NOMBRE_INSTITUCION_CHOICES,  null=True, blank=True)
     
-    subSeccion= models.CharField(max_length=100, null=True, blank=True)
+    subSeccion= models.CharField(max_length=60, null=True, blank=True)
     
     NATURALEZA_JURIDICA_CHOICES = [
         ('DEPENDENCIA', 'DEPENDENCIA'),
     ]
-    Naturaleza_Juridica_de_la_Institucion = models.CharField(max_length=100, choices=NATURALEZA_JURIDICA_CHOICES, default='DEPENDENCIA',  null=True, blank=True)
+    Naturaleza_Juridica_de_la_Institucion = models.CharField(max_length=60, choices=NATURALEZA_JURIDICA_CHOICES, default='DEPENDENCIA',  null=True, blank=True)
     causa_alta_choices = [
         ('SIN INFORMACION', 'SIN INFORMACION'),
         ('POR ADQUISICION DEL INMUEBLE', 'POR ADQUISICION DEL INMUEBLE'),
@@ -112,13 +112,13 @@ class Inmueble(models.Model):
         ('EN CASO DE QUE SE TENGA CONOCIMIENTO DE QUE UN INMUEBLE ES FEDERAL EN TERMINOS DE LA LEY', 'EN CASO DE QUE SE TENGA CONOCIMIENTO DE QUE UN INMUEBLE ES FEDERAL EN TERMINOS DE LA LEY'),
     ]
     
-    causa_alta = models.CharField(max_length=100, choices=causa_alta_choices, default='SIN INFORMACION',  null=True, blank=True)
+    causa_alta = models.CharField(max_length=90, choices=causa_alta_choices, default='SIN INFORMACION',  null=True, blank=True)
     
     PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'),('Baja', 'Baja') ]
     
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
 
-    Denominaciones_anteriores = models.CharField(max_length=400,  null=True, blank=True)
+    Denominaciones_anteriores = models.CharField(max_length=60,  null=True, blank=True)
     creado = models.CharField(max_length=20,null=True, blank=True)
     updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
@@ -140,11 +140,11 @@ class Inmueble(models.Model):
         ('Inmueble con Daño estructural', 'Inmueble con Daño estructural'),
         ('Otros', 'Otros'),
     ]
-    sentido_del_Dictamen = models.CharField(max_length=100, choices=SENTIDO_DICTAMEN_OPCIONES, default='Inmueble Seguro',  null=True, blank=True)
+    sentido_del_Dictamen = models.CharField(max_length=60, choices=SENTIDO_DICTAMEN_OPCIONES, default='Inmueble Seguro',  null=True, blank=True)
     
     descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=True)
     fecha_documento = models.DateField(null=True, blank=True)
-    no_de_identificador_del_expediente_institucion = models.CharField(max_length=100,  null=True, blank=True)
+    no_de_identificador_del_expediente_institucion = models.CharField(max_length=60,  null=True, blank=True)
 
 
     # Nuevos campos para la sección de Ubicación
@@ -152,14 +152,14 @@ class Inmueble(models.Model):
         ('MÉXICO', 'MÉXICO'),
         # Otras opciones para países si las necesitas
     ]
-    pais = models.CharField(max_length=100, choices=pais_choices, default='MÉXICO', null=True, blank=True)
+    pais = models.CharField(max_length=50, choices=pais_choices, default='MÉXICO', null=True, blank=True)
 
     # Otros campos existentes...
 
-    entidad_federativa = models.CharField(max_length=100, blank=True, null=True)
-    municipio_alcaldia = models.CharField(max_length=100, blank=True, null=True)
-    municipio_no_existente = models.CharField(max_length=120, blank=True, null=True)
-    localidad = models.CharField(max_length=100, null=True, blank=True)
+    entidad_federativa = models.CharField(max_length=50, blank=True, null=True)
+    municipio_alcaldia = models.CharField(max_length=50, blank=True, null=True)
+    municipio_no_existente = models.CharField(max_length=50, blank=True, null=True)
+    localidad = models.CharField(max_length=50, null=True, blank=True)
     fotografia_de_la_ubicacion = models.ImageField(upload_to='ubicacion_photos/', blank=True, null=True)
     COMPONENTE_ESPACIAL_CHOICES = [
         ('SIN INFORMACION', 'Sin Información'),
@@ -168,7 +168,7 @@ class Inmueble(models.Model):
         ('ISLA', 'Isla'),
         ('VIALIDAD', 'Vialidad'),
     ]
-    componente_espacial = models.CharField(max_length=150, choices=COMPONENTE_ESPACIAL_CHOICES, default='SIN INFORMACION',  null=True, blank=True)
+    componente_espacial = models.CharField(max_length=50, choices=COMPONENTE_ESPACIAL_CHOICES, default='SIN INFORMACION',  null=True, blank=True)
 
     TIPO_VIALIDAD_CHOICES = [
         ('SIN INFORMACION', 'Sin Información'),
@@ -194,12 +194,12 @@ class Inmueble(models.Model):
         ('RETORNO', 'Retorno'),
         ('VIADUCTO', 'Viaducto'),
     ]
-    tipo_vialidad = models.CharField(max_length=150, choices=TIPO_VIALIDAD_CHOICES, default='SIN INFORMACION',  null=True, blank=True)
+    tipo_vialidad = models.CharField(max_length=60, choices=TIPO_VIALIDAD_CHOICES, default='SIN INFORMACION',  null=True, blank=True)
 
-    nombre_vialidad = models.CharField(max_length=100,  null=True, blank=True)
-    numero_exterior = models.CharField(max_length=240,  null=True, blank=True)
-    numero_exterior_2 = models.CharField(max_length=240, null=True, blank=True)
-    numero_interior = models.CharField(max_length=240, null=True, blank=True)
+    nombre_vialidad = models.CharField(max_length=10,  null=True, blank=True)
+    numero_exterior = models.CharField(max_length=10,  null=True, blank=True)
+    numero_exterior_2 = models.CharField(max_length=10, null=True, blank=True)
+    numero_interior = models.CharField(max_length=10, null=True, blank=True)
     TIPO_ASENTAMIENTO_CHOICES = [
         ('SIN INFORMACIÓN', 'Sin Información'),
         ('AEROPUERTO', 'Aeropuerto'),
@@ -245,13 +245,13 @@ class Inmueble(models.Model):
         ('ZONA MILITAR', 'Zona Militar'),
         ('ZONA NAVAL', 'Zona Naval'),
     ]
-    tipo_asentamiento = models.CharField(max_length=130, choices=TIPO_ASENTAMIENTO_CHOICES,  null=True, blank=True)
+    tipo_asentamiento = models.CharField(max_length=50, choices=TIPO_ASENTAMIENTO_CHOICES,  null=True, blank=True)
 
-    nombre_asentamiento = models.CharField(max_length=100,  null=True, blank=True)
-    codigo_postal = models.CharField(max_length=40,  null=True, blank=True)
-    entre_vialidades_referencia1 = models.CharField(max_length=100,  null=True, blank=True)
-    entre_vialidades_referencia2 = models.CharField(max_length=100,  null=True, blank=True)
-    vialidad_posterior = models.CharField(max_length=100,  null=True, blank=True)
+    nombre_asentamiento = models.CharField(max_length=60,  null=True, blank=True)
+    codigo_postal = models.CharField(max_length=20,  null=True, blank=True)
+    entre_vialidades_referencia1 = models.CharField(max_length=60,  null=True, blank=True)
+    entre_vialidades_referencia2 = models.CharField(max_length=60,  null=True, blank=True)
+    vialidad_posterior = models.CharField(max_length=60,  null=True, blank=True)
     descripcion_ubicacion = models.TextField(null=True, blank=True)
     
     DATUM_CHOICES = (
@@ -262,12 +262,12 @@ class Inmueble(models.Model):
         ('WGS84', 'WGS84'),
     )
 
-    datum = models.CharField(max_length=100, choices=DATUM_CHOICES, null=True, blank=True)
-    utmx = models.CharField(max_length=100, blank=True, null=True)
-    utmy = models.CharField(max_length=100, blank=True, null=True)
-    utm_zona = models.CharField(max_length=100, blank=True, null=True)
-    latitud = models.CharField(max_length=100, blank=True, null=True)
-    longitud = models.CharField(max_length=100, blank=True, null=True)
+    datum = models.CharField(max_length=60, choices=DATUM_CHOICES, null=True, blank=True)
+    utmx = models.CharField(max_length=60, blank=True, null=True)
+    utmy = models.CharField(max_length=60, blank=True, null=True)
+    utm_zona = models.CharField(max_length=60, blank=True, null=True)
+    latitud = models.CharField(max_length=60, blank=True, null=True)
+    longitud = models.CharField(max_length=60, blank=True, null=True)
     
      # Campos relacionados con Edificación
     NOMBRE_EDIFICACION_CHOICES = [
@@ -276,10 +276,10 @@ class Inmueble(models.Model):
         ('Terreno', 'Terreno'),
     ]
     
-    superficie_del_terreno_en_M2 = models.CharField(max_length=100, null=True, blank=True)
-    superficie_del_terreno_HA = models.CharField(max_length=100, null=True, blank=True)
-    superficie_de_desplante_en_M2 = models.CharField(max_length=100, null=True, blank=True)
-    superficie_construida_en_M2 = models.CharField(max_length=100, null=True, blank=True)
+    superficie_del_terreno_en_M2 = models.CharField(max_length=60, null=True, blank=True)
+    superficie_del_terreno_HA = models.CharField(max_length=60, null=True, blank=True)
+    superficie_de_desplante_en_M2 = models.CharField(max_length=60, null=True, blank=True)
+    superficie_construida_en_M2 = models.CharField(max_length=60, null=True, blank=True)
        # Opciones para los campos de selección
     ZONA_CHOICES = (
         ('rural', 'Rural'),
@@ -314,13 +314,13 @@ class Inmueble(models.Model):
     )
 
     # Caracteristicas
-    superficie_util_m2 = models.CharField(max_length=150, null=True, blank=True)
-    zona_ubicacion = models.CharField(max_length=100, choices=ZONA_CHOICES, null=True, blank=True)
-    calidad_construccion = models.CharField(max_length=100, choices=CALIDAD_CHOICES, null=True, blank=True)
-    servicios = models.CharField(max_length=100, choices=SERVICIOS_CHOICES, null=True, blank=True)
-    telefono_inmueble = models.CharField(max_length=150, null=True, blank=True)
+    superficie_util_m2 = models.CharField(max_length=60, null=True, blank=True)
+    zona_ubicacion = models.CharField(max_length=60, choices=ZONA_CHOICES, null=True, blank=True)
+    calidad_construccion = models.CharField(max_length=60, choices=CALIDAD_CHOICES, null=True, blank=True)
+    servicios = models.CharField(max_length=60, choices=SERVICIOS_CHOICES, null=True, blank=True)
+    telefono_inmueble = models.CharField(max_length=60, null=True, blank=True)
     fecha_inicio_construccion = models.DateField(null=True, blank=True)
-    siglo_construccion = models.CharField( max_length=100,null=True, blank=True)
+    siglo_construccion = models.CharField( max_length=60,null=True, blank=True)
     fecha_ultima_remodelacion = models.DateField(null=True, blank=True)
     MONUMENTO_CHOICES = (
         ('SI', 'SI'),
@@ -346,21 +346,21 @@ class Inmueble(models.Model):
     )
     arqueologico = models.CharField(max_length=4, choices=ARQUEOLOGICO_CHOICES, null=True, blank=True, default='No')
     
-    clave_inah = models.CharField(max_length=100, null=True, blank=True)
-    folio_real_inah = models.CharField(max_length=100, null=True, blank=True)
-    no_plano_inah = models.CharField(max_length=100, null=True, blank=True)
-    clave_cnmh = models.CharField(max_length=100, null=True, blank=True)
-    clave_dgsmpc_conaculta = models.CharField(max_length=100, null=True, blank=True)
-    fecha_inscripcion_unesco = models.CharField(max_length=100 ,null=True, blank=True)
+    clave_inah = models.CharField(max_length=60, null=True, blank=True)
+    folio_real_inah = models.CharField(max_length=60, null=True, blank=True)
+    no_plano_inah = models.CharField(max_length=60, null=True, blank=True)
+    clave_cnmh = models.CharField(max_length=60, null=True, blank=True)
+    clave_dgsmpc_conaculta = models.CharField(max_length=60, null=True, blank=True)
+    fecha_inscripcion_unesco = models.CharField(max_length=60 ,null=True, blank=True)
     observaciones_historicas = models.TextField(null=True, blank=True)
-    siglo_o_periodo = models.CharField(max_length=100, null=True, blank=True)
-    correlativo = models.CharField(max_length=100, null=True, blank=True)
-    conjunto = models.CharField(max_length=100, null=True, blank=True)
-    clave_inbal = models.CharField(max_length=100, null=True, blank=True)
-    registro_unico_inah = models.CharField(max_length=100, null=True, blank=True)
+    siglo_o_periodo = models.CharField(max_length=60, null=True, blank=True)
+    correlativo = models.CharField(max_length=60, null=True, blank=True)
+    conjunto = models.CharField(max_length=60, null=True, blank=True)
+    clave_inbal = models.CharField(max_length=60, null=True, blank=True)
+    registro_unico_inah = models.CharField(max_length=60, null=True, blank=True)
     
 
-    estado_conservacion = models.CharField(max_length=100, choices=ESTADO_CONSERVACION_CHOICES, null=True, blank=True)
+    estado_conservacion = models.CharField(max_length=60, choices=ESTADO_CONSERVACION_CHOICES, null=True, blank=True)
     
     TIPO_INMUEBLE_RURAL_CHOICES = [
         ("SIN INFORMACIÓN", "SIN INFORMACIÓN"),
@@ -369,7 +369,7 @@ class Inmueble(models.Model):
         ("TEMPORAL", "TEMPORAL"),
     ]
     tipo_inmueble_rural = models.CharField(
-        max_length=100,
+        max_length=60,
         choices=TIPO_INMUEBLE_RURAL_CHOICES,
         default="SIN INFORMACIÓN" , null=True, blank=True
     )
@@ -382,7 +382,7 @@ class Inmueble(models.Model):
         ("OTRO", "OTRO"),
     ]
     uso_dominante_zona = models.CharField(
-        max_length=100,
+        max_length=60,
         choices=USO_DOMINANTE_ZONA_CHOICES, null=True, blank=True
     )
     
@@ -392,7 +392,7 @@ class Inmueble(models.Model):
         ("MODERNO", "MODERNO"),
     ]
     clasificacion_edad = models.CharField(
-        max_length=100,
+        max_length=60,
         choices=CLASIFICACION_EDAD_CHOICES,
         default="SIN CLASIFICACIÓN", null=True, blank=True
     )
@@ -409,7 +409,7 @@ class Inmueble(models.Model):
         ("OTRO", "OTRO"),
     ]
     categoria = models.CharField(
-        max_length=100,
+        max_length=60,
         choices=CATEGORIA_CHOICES,
         default="SIN CATEGORÍA", null=True, blank=True
     )
@@ -424,15 +424,15 @@ class Inmueble(models.Model):
         ("OTRO", "OTRO"),
     ]
     grado_consolidacion = models.CharField(
-        max_length=100,
+        max_length=60,
         choices=GRADO_CONSOLIDACION_CHOICES,
         default="SIN INFORMACIÓN", null=True, blank=True
     )
     
     # ---------------------------- campos Uso ----------------------------------------------------
-    usuario_principal_del_inmueble = models.CharField(max_length=355, null=True, blank=True)
-    usoGenerico = models.CharField(max_length=355, null=True, blank=True)
-    usoEspecifico = models.CharField(max_length=355, null=True, blank=True)
+    usuario_principal_del_inmueble = models.CharField(max_length=60, null=True, blank=True)
+    usoGenerico = models.CharField(max_length=60, null=True, blank=True)
+    usoEspecifico = models.CharField(max_length=60, null=True, blank=True)
     
     UsoSueloChoice = [
         ("SIN INFORMACIÓN", "SIN INFORMACIÓN"),
@@ -470,16 +470,16 @@ class Inmueble(models.Model):
         ("ZONA URBANA ÁREAS VERDES, ESPACIOS ABIERTOS, DEPORTIVOS, PARQUES, PLAZAS, VIVEROS", "ZONA URBANA ÁREAS VERDES, ESPACIOS ABIERTOS, DEPORTIVOS, PARQUES, PLAZAS, VIVEROS"),
     ]
     
-    uso_de_suelo_autorizado = models.CharField(max_length=355, choices=UsoSueloChoice, default="SIN INFORMACIÓN", null=True, blank=True)
+    uso_de_suelo_autorizado = models.CharField(max_length=99, choices=UsoSueloChoice, default="SIN INFORMACIÓN", null=True, blank=True)
     
     
-    numero_de_empleados_en_el_inmueble = models.CharField(max_length=100, null=True, blank=True)
+    numero_de_empleados_en_el_inmueble = models.CharField(max_length=60, null=True, blank=True)
     DOCUMENTO_OCUPACION_CHOICEONES = [
         ('Si', 'Si'),
         ('No', 'No'),
     ]
     documento_que_autoriza_ocupacion = models.CharField(max_length=4, choices=DOCUMENTO_OCUPACION_CHOICEONES, default='No',  null=True, blank=True)
-    numero_de_documentos_de_ocupacion = models.CharField(max_length=100, null=True, blank=True)
+    numero_de_documentos_de_ocupacion = models.CharField(max_length=60, null=True, blank=True)
     INSTITUCIONES_OCUPANTES_CHOICE = [
         ('Si', 'Si'),
         ('No', 'No'),
@@ -502,7 +502,7 @@ class Inmueble(models.Model):
         ('NO APROVECHADO', 'NO APROVECHADO'),
     ]
     
-    aprovechamiento = models.CharField(max_length=100, choices=APROVECHAMIENTO_CHOICES, default='SIN INFORMACIÓN', null=True, blank=True)
+    aprovechamiento = models.CharField(max_length=60, choices=APROVECHAMIENTO_CHOICES, default='SIN INFORMACIÓN', null=True, blank=True)
     
     inmueble_con_atencion_al_publico_choice = [
         ('Si', 'Si'),
@@ -511,45 +511,45 @@ class Inmueble(models.Model):
     inmueble_con_atencion_al_publico = models.CharField(max_length=5, choices=inmueble_con_atencion_al_publico_choice, null=True, blank=True)
     
     
-    poblacion_beneficiada = models.CharField(max_length=100, null=True, blank=True)
-    poblacion_servicio = models.CharField(max_length=100, null=True, blank=True)
+    poblacion_beneficiada = models.CharField(max_length=60, null=True, blank=True)
+    poblacion_servicio = models.CharField(max_length=60, null=True, blank=True)
     cuenta_con_proyecto_de_uso_inmediato_desarrollado_choice = [
         ('Si', 'Si'),
         ('No', 'No'),
     ]
-    cuenta_con_proyecto_de_uso_inmediato_desarrollado = models.CharField(max_length=100, choices=cuenta_con_proyecto_de_uso_inmediato_desarrollado_choice, null=True, blank=True)
+    cuenta_con_proyecto_de_uso_inmediato_desarrollado = models.CharField(max_length=60, choices=cuenta_con_proyecto_de_uso_inmediato_desarrollado_choice, null=True, blank=True)
     
     
-    inversion_requerida = models.CharField(max_length=100, null=True, blank=True)
-    fuente_financiamiento = models.CharField(max_length=100, null=True, blank=True)
-    fecha_solicitud = models.CharField(max_length=100 ,null=True, blank=True)
+    inversion_requerida = models.CharField(max_length=60, null=True, blank=True)
+    fuente_financiamiento = models.CharField(max_length=60, null=True, blank=True)
+    fecha_solicitud = models.CharField(max_length=60 ,null=True, blank=True)
     
     inmueble_no_aprovechable_especificar = models.TextField(null=True, blank=True)
     
-    gasto_anual_de_mantenimiento = models.CharField(max_length=100, null=True, blank=True)
+    gasto_anual_de_mantenimiento = models.CharField(max_length=60, null=True, blank=True)
     inmueble_en_condominio_choice = [
         ('Si', 'Si'),
         ('No', 'No'),
     ]
     inmueble_en_condominio = models.CharField(max_length=20, choices=inmueble_en_condominio_choice, null=True, blank=True)
     
-    superficie_total = models.CharField(max_length=100, null=True, blank=True)
-    indiviso = models.CharField(max_length=100, null=True, blank=True)
+    superficie_total = models.CharField(max_length=60, null=True, blank=True)
+    indiviso = models.CharField(max_length=60, null=True, blank=True)
     
     # -------------------------------- campos Valor ------------------------------------------------------------------
-    valor_contable = models.CharField(max_length=100, null=True, blank=True)
-    fecha_valor_contable = models.CharField(max_length=100 ,null=True, blank=True)
-    valor_asegurable = models.CharField(max_length=100, null=True, blank=True)
-    fecha_valor_asegurable = models.CharField(max_length=100 ,null=True, blank=True)
-    valor_adquisicion = models.CharField(max_length=100, null=True, blank=True)
-    fecha_valor_adquisicion = models.CharField(max_length=100 ,null=True, blank=True)
-    valor_terreno = models.CharField(max_length=100, null=True, blank=True)
-    valor_construccion = models.CharField(max_length=100, null=True, blank=True)
-    valor_catastral_terreno = models.CharField(max_length=100, null=True, blank=True)
-    valor_catastral_construccion = models.CharField(max_length=100, null=True, blank=True)
-    valor_total_catastral = models.CharField(max_length=100, null=True, blank=True)
-    fecha_valor_catastral = models.CharField(max_length=100 ,null=True, blank=True)
-    documentacion_soporte = models.CharField(max_length=100, null=True, blank=True)
+    valor_contable = models.CharField(max_length=60, null=True, blank=True)
+    fecha_valor_contable = models.CharField(max_length=60 ,null=True, blank=True)
+    valor_asegurable = models.CharField(max_length=60, null=True, blank=True)
+    fecha_valor_asegurable = models.CharField(max_length=60 ,null=True, blank=True)
+    valor_adquisicion = models.CharField(max_length=60, null=True, blank=True)
+    fecha_valor_adquisicion = models.CharField(max_length=60 ,null=True, blank=True)
+    valor_terreno = models.CharField(max_length=60, null=True, blank=True)
+    valor_construccion = models.CharField(max_length=60, null=True, blank=True)
+    valor_catastral_terreno = models.CharField(max_length=60, null=True, blank=True)
+    valor_catastral_construccion = models.CharField(max_length=60, null=True, blank=True)
+    valor_total_catastral = models.CharField(max_length=60, null=True, blank=True)
+    fecha_valor_catastral = models.CharField(max_length=60 ,null=True, blank=True)
+    documentacion_soporte = models.CharField(max_length=60, null=True, blank=True)
     
     class Meta:
         verbose_name = "Inmueble"
@@ -563,17 +563,17 @@ class Inmueble(models.Model):
         
 class DictamenEstructuralIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='dictamen_estructural')
-    no_de_identificador_del_expediente_institucion = models.CharField(max_length=100, unique=True, null=True, blank=False)
+    no_de_identificador_del_expediente_institucion = models.CharField(max_length=60, unique=True, null=True, blank=False)
     subir_archivo_dictamen = models.FileField(upload_to='Dictamen-Estructurales/', blank=True, null=True, editable=True)
     certificado_de_seguridad = models.CharField(max_length=4, null=True, blank=False)
-    sentido_del_Dictamen = models.CharField(max_length=100, null=True, blank=False)
+    sentido_del_Dictamen = models.CharField(max_length=60, null=True, blank=False)
     descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=False)
     fecha_documento = models.DateField(null=True, blank=False)
     
     
 class FoliosRealesIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales')
-    folios_reales_data = models.CharField(max_length=100, unique=True, null=True, blank=False)
+    folios_reales_data = models.CharField(max_length=60, unique=True, null=True, blank=False)
     archivo_folios_reales = models.FileField(upload_to='FoliosReales/', blank=True, null=True, editable=True)
     
 class NumeroPlanoIMP(models.Model):
@@ -585,7 +585,7 @@ class NumeroPlanoIMP(models.Model):
     
 class Expedientes_CEDOCIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='expedientes_deoc')
-    expediente_cedoc_data = models.CharField(max_length=100, unique=True, null=True)
+    expediente_cedoc_data = models.CharField(max_length=60, unique=True, null=True)
     archivo_Expedientes_CEDOC = models.FileField(upload_to='Expedientes-CEDOC/', blank=True, null=True, editable=True)
 
    
@@ -619,15 +619,15 @@ class EdificacionIMP(models.Model):
         ('TERRENO', 'Terreno'),
     ]
     tipo_de_inmueble = models.CharField(max_length=20, choices=tipo_de_inmueble_choices, default='SIN INFORMACION')
-    nombre_edificacion = models.CharField(max_length=100, null=True, blank=True)
-    propietario_de_la_edificacion = models.CharField(max_length=100, null=True, blank=True)
-    niveles_por_edificio = models.CharField(max_length=100, null=True, blank=True)
-    superficie_construida_por_edificacion_m2 = models.CharField(max_length=100, null=True, blank=True)
+    nombre_edificacion = models.CharField(max_length=60, null=True, blank=True)
+    propietario_de_la_edificacion = models.CharField(max_length=60, null=True, blank=True)
+    niveles_por_edificio = models.CharField(max_length=60, null=True, blank=True)
+    superficie_construida_por_edificacion_m2 = models.CharField(max_length=60, null=True, blank=True)
     fecha_construccion_por_edificacion = models.DateField(null=True, blank=True)
     caracteristicas_de_la_edificacion = models.TextField(null=True, blank=True)
-    usoEdificacion = models.CharField(max_length=100, null=True, blank=True)
-    calidadEdificacion = models.CharField(max_length=100, null=True, blank=True)
-    cajones_de_estacionamiento_por_edificacion = models.CharField(max_length=100,null=True, blank=True)
+    usoEdificacion = models.CharField(max_length=60, null=True, blank=True)
+    calidadEdificacion = models.CharField(max_length=60, null=True, blank=True)
+    cajones_de_estacionamiento_por_edificacion = models.CharField(max_length=60,null=True, blank=True)
     rampa_de_acceso = models.BooleanField(default=False, null=True, blank=True)
     ruta_de_evacuacion = models.BooleanField(default=False, null=True, blank=True)
     sanitario_para_personas_con_discapacidad = models.BooleanField(default=False, null=True, blank=True)
@@ -652,8 +652,8 @@ class ColindanciasIMP(models.Model):
         ('ORIENTE', 'ORIENTE')
     ]
     orientacion = models.CharField(max_length=15,choices=ORIENTACION_CHOICES, null=False, blank=True)
-    colindancia = models.CharField(max_length=100, null=True, blank=True)
-    medida_en_metros = models.CharField(max_length=100, null=True, blank=True)
+    colindancia = models.CharField(max_length=60, null=True, blank=True)
+    medida_en_metros = models.CharField(max_length=60, null=True, blank=True)
 
 # ----------------
 
@@ -675,9 +675,9 @@ class DocumentoPropiedadIMP(models.Model):
             ("ÓRGANO DESCONCENTRADO", "ÓRGANO DESCONCENTRADO"),
             ("OTROS", "OTROS"),
         ]
-    propietario_inmueble =  models.CharField(max_length=100, choices=propietario_inmueble_choice, default="SIN INFORMACIÓN")
+    propietario_inmueble =  models.CharField(max_length=60, choices=propietario_inmueble_choice, default="SIN INFORMACIÓN")
 
-    institucion_propietario = models.CharField(max_length=100)
+    institucion_propietario = models.CharField(max_length=60)
     SUPERFICIE_CHOICES = [
         ('SIN INFORMACIÓN', 'SIN INFORMACIÓN'),
         ('Escritura Pública', 'Escritura Pública'),
@@ -700,9 +700,9 @@ class DocumentoPropiedadIMP(models.Model):
     ]
     
     superficie_amparada_m2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    tipo_documento = models.CharField(max_length=100, choices=SUPERFICIE_CHOICES, default='SIN INFORMACIÓN')
+    tipo_documento = models.CharField(max_length=60, choices=SUPERFICIE_CHOICES, default='SIN INFORMACIÓN')
     numero_de_documento = models.DecimalField(max_digits=10, decimal_places=0, null=True, blank=True)
-    expedido_por = models.CharField(max_length=100)
+    expedido_por = models.CharField(max_length=60)
     INSCRIPCION_RPPF_CHOICES = [
         ('Si', 'Si'),
         ('No', 'No'),
@@ -720,7 +720,7 @@ class DocumentoPropiedadIMP(models.Model):
     inscripcion_registro_local = models.CharField(max_length=2, choices=INSCRIPCION_REGISTRO_LOCAL_CHOICES, default='No')
     folio_real_local = models.CharField(max_length=50, null=True, blank=True)
     folio_real_auxiliar = models.CharField(max_length=50, null=True, blank=True)
-    nombre_libro = models.CharField(max_length=100, null=True, blank=True)
+    nombre_libro = models.CharField(max_length=60, null=True, blank=True)
     tomo_o_volumen = models.CharField(max_length=50, null=True, blank=True)
     numero = models.CharField(max_length=50, null=True, blank=True)
     foja_o_folio = models.CharField(max_length=50, null=True, blank=True)
@@ -732,10 +732,10 @@ class DocumentoPropiedadIMP(models.Model):
 #--------------------------- Valor (datos de los Avalúos de Otras Instituciones)---------------------------
 class DatosAvaluosIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='avaluos')
-    numero_de_avaluo = models.CharField(max_length=255)
+    numero_de_avaluo = models.CharField(max_length=10)
     valor_de_avaluo = models.DecimalField(max_digits=12, decimal_places=2)
     fecha_valor_de_avaluo = models.DateField()
-    uso_del_avaluo = models.CharField(max_length=255)
+    uso_del_avaluo = models.CharField(max_length=60)
     valor_de_terreno = models.DecimalField(max_digits=12, decimal_places=2)
     valor_de_construccion = models.DecimalField(max_digits=12, decimal_places=2)
 
@@ -760,7 +760,7 @@ class OcupacionesIMP(models.Model):
         default='sin_informacion'
     )
 
-    nombre_ocupante = models.CharField(max_length=100)
+    nombre_ocupante = models.CharField(max_length=60)
     superficie_invadida = models.DecimalField(max_digits=10, decimal_places=2)
     no_expediente = models.CharField(max_length=50, null=True, blank=True)
     juzgado = models.CharField(max_length=50, null=True, blank=True)
@@ -838,7 +838,7 @@ class Documento_ocupacionIMP(models.Model):
     ('NO APLICA', 'NO APLICA'),
     ('OTROS', 'OTROS'),
     )
-    tipo_de_documento = models.CharField(max_length=150, choices=TIPO_DOCUMENTO_CHOICES)
+    tipo_de_documento = models.CharField(max_length=80, choices=TIPO_DOCUMENTO_CHOICES)
     fecha_documento = models.DateField()
     
     INSCRIPCION_RPPF_CHOICES = (
@@ -846,14 +846,14 @@ class Documento_ocupacionIMP(models.Model):
         ('No', 'No'),
     )
     inscripcion_RPPF = models.CharField(max_length=2, choices=INSCRIPCION_RPPF_CHOICES, default='No')
-    folio_real_federal = models.CharField(max_length=255, null=True, blank=True)
+    folio_real_federal = models.CharField(max_length=60, null=True, blank=True)
     fecha_inscripcion_federal = models.DateField(null=True, blank=True)
     
 class InstitucionesOcupantesIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='instOcupante')
-    institucion_publica_ocupante = models.CharField(max_length=150, null=True, blank=True)
+    institucion_publica_ocupante = models.CharField(max_length=60, null=True, blank=True)
     superficie_asignada = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=False)
-    uso_institucion_ocupante = models.CharField(max_length=150, null=True, blank=False)
+    uso_institucion_ocupante = models.CharField(max_length=60, null=True, blank=False)
     superficie_disponible = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=False)
     
 class DatosTercerosIMP(models.Model):
@@ -878,21 +878,21 @@ class DatosTercerosIMP(models.Model):
     )
 
     beneficiario = models.CharField(max_length=50, choices=BENEFICIARIO_CHOICES, default='SIN INFORMACIÓN')
-    nombre_beneficiario = models.CharField(max_length=255)
+    nombre_beneficiario = models.CharField(max_length=60)
     rfc = models.CharField( max_length=13)
     fecha_inicio_vigencia = models.DateField(null=True, blank=True)
     fecha_termino_vigencia = models.DateField(null=True, blank=True)
     prorroga = models.DateField(null=True, blank=True)
-    inscripcion_folio_real_federal = models.CharField(max_length=255,null=True, blank=True)
+    inscripcion_folio_real_federal = models.CharField(max_length=15,null=True, blank=True)
     superficie_objeto_ocupacion_metros = models.DecimalField(max_digits=10,decimal_places=2,null=True , blank=True)
-    uso = models.CharField( max_length=255,null=True, blank=True )
+    uso = models.CharField( max_length=60,null=True, blank=True )
     
     
     
     
 class MensajeIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='mensajes',verbose_name="Inmueble")
-    asunto = models.CharField(max_length=100, null=True)
+    asunto = models.CharField(max_length=60, null=True)
     mensaje = models.TextField(null=True)
     enviar_a_imp = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Destino", related_name='mensajes_enviados_imp')
     enviado_por_imp = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Enviado", related_name='mensajes_recibidos_imp')
@@ -903,7 +903,7 @@ class MensajeIMP(models.Model):
         ('No Completado', 'No Completado'),
     ]
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='No Completado')
-    enlace = models.CharField(max_length=100, null=True, blank=True)
+    enlace = models.CharField(max_length=60, null=True, blank=True)
 
 
 
@@ -914,7 +914,7 @@ class MensajeIMP(models.Model):
 
 
 class DatosLlamadasInmuebles(models.Model):
-    NombreInmueble = models.CharField(max_length=100, verbose_name='Nombre del inmueble', null=True, blank=True)
+    NombreInmueble = models.CharField(max_length=60, verbose_name='Nombre del inmueble', null=True, blank=True)
     rfi = models.CharField(max_length=15, null=True, blank=True)
     ESTADO_CHOICES = [
         ('Activo', 'Activo'),
@@ -929,14 +929,14 @@ class DatosLlamadasInmuebles(models.Model):
     PRIORIDAD_CHOICES = [('Alta', 'Alta'), ('Media', 'Media'), ('Baja', 'Baja')]
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
     assigned_task = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True, related_name='assigned_task')
-    edo = models.CharField(max_length=100, null=True, blank=True)
-    nd = models.CharField(max_length=100, null=True, blank=True)
-    nombre_del_contacto = models.CharField(max_length=100, null=True, blank=True)
-    puesto_o_cargo = models.CharField(max_length=100, null=True, blank=True)
-    tel_plantel = models.CharField(max_length=100, null=True, blank=True)
-    ext = models.CharField(max_length=100, null=True, blank=True)
-    celular = models.CharField(max_length=100, null=True, blank=True)
-    email = models.CharField(max_length=100, null=True, blank=True)
+    edo = models.CharField(max_length=60, null=True, blank=True)
+    nd = models.CharField(max_length=60, null=True, blank=True)
+    nombre_del_contacto = models.CharField(max_length=60, null=True, blank=True)
+    puesto_o_cargo = models.CharField(max_length=60, null=True, blank=True)
+    tel_plantel = models.CharField(max_length=60, null=True, blank=True)
+    ext = models.CharField(max_length=60, null=True, blank=True)
+    celular = models.CharField(max_length=60, null=True, blank=True)
+    email = models.CharField(max_length=60, null=True, blank=True)
     ESTATUS_LLAMADA_CHOICES = [
         ('Pendiente', 'Pendiente'),
         ('Faltante', 'Faltante'),
@@ -968,16 +968,16 @@ class DatosLlamadasInmuebles(models.Model):
 
 class RegistroLlamadas(models.Model):
     ficha = models.ForeignKey(DatosLlamadasInmuebles, on_delete=models.CASCADE, related_name='registro_llamadas')
-    NumLlamada = models.CharField(max_length=200, null=True, blank=True)
+    NumLlamada = models.CharField(max_length=10, null=True, blank=True)
     fecha_llamada = models.DateField(null=True, blank=True)
     hora_llamada = models.TimeField(null=True, blank=True)
-    acuerdos_compromisos = models.CharField(max_length=200, null=True, blank=True)
+    acuerdos_compromisos = models.CharField(max_length=60, null=True, blank=True)
     fecha_comprometida = models.DateField(null=True, blank=True)
     fecha_respuesta_email = models.DateField(null=True, blank=True)
     fecha_revision_correcciones = models.DateField(null=True, blank=True)
     fecha_envio_correccion = models.DateField(null=True, blank=True)
     fecha_aprobacion_fichas_corregidas = models.DateField(null=True, blank=True)
-    observaciones_generales = models.CharField(max_length=250, null=True, blank=True)
+    observaciones_generales = models.CharField(max_length=60, null=True, blank=True)
     fecha_compromiso_de_envio_de_informacion = models.DateField(null=True, blank=True)
     fecha_compromiso_de_observaciones_subsanadas =  models.DateField(null=True, blank=True)
     fecha_autorizacion_de_documento = models.DateField(null=True, blank=True)
