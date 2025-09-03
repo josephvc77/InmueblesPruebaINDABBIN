@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '168.255.101.50']
 
+APP_VERSION = os.environ.get('APP_VERSION', '1.0.11')
 
 
 # Application definition
@@ -90,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'context_processors.app_version',
             ],
         },
     },

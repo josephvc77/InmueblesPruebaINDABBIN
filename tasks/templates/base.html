@@ -5,445 +5,287 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Sitio SIISEP">
-  <title>{% block titulo %} {% endblock %}</title>
-  {% load static%}
+  <title>{% block titulo %}{% endblock %}</title>
+  {% load static %}
+
+  <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
-  <link href="{% static 'inicio/css/styles.css'%}" rel='stylesheet' type='text/css'>
-  <link href="{% static 'inicio/css/menu.css'%}" rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css'>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- CSS -->
+  <link href="{% static 'inicio/css/styles.css' %}" rel="stylesheet">
+  <link href="{% static 'inicio/css/menu.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* General */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    /* Header */
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .header-icons .navbar-toggler,
+    .header-icons .btn-home,
+    .header-icons .dropdown button {
+      font-size: 1.2rem;
+      color: #691c32;
+      background-color: transparent;
+      border: none;
+    }
+
+    .header-user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 0.95rem;
+    }
+
+    .header-user .user {
+      font-weight: 600;
+    }
+
+    .header-user .email {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    /* Dropdown Notificaciones */
+    .dropdown.notifications {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      width: 400px;
+      max-height: 500px;
+      overflow-y: auto;
+      border-radius: 0.5rem;
+      animation: fadeInDown 0.3s ease-in-out;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Footer */
+    footer.footer {
+      background-color: #343a40;
+      color: #ffffff;
+      padding: 1rem 0;
+    }
+
+    footer.footer a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    footer.footer a:hover {
+      color: #ffc107;
+      text-decoration: underline;
+    }
+
+    footer.footer h6 {
+      color: #ffc107;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-user {
+        align-items: flex-start;
+        margin-top: 0.5rem;
+      }
+
+      .header-icons {
+        width: 100%;
+        justify-content: flex-start;
+        margin-bottom: 0.5rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
   {% if user.is_authenticated %}
-  <div class="containerT ">
-      <h1 class="title">SISTEMA DE INVENTARIO DE INMUEBLES SEP SIISEP</h1>
-    <h2 class="title2">
-        <p class="user">Bienvenido: {{ user.first_name }} {{ user.last_name }} <i class="fi fi-rs-user"></i></p><br><br>
-        <p class="email">{{user.email}}</p><br><br>
-    </h2>
+  <!-- Encabezado usuario y menú -->
+  <div class="header-container">
+    <div class="header-icons">
+      <!-- Botón Offcanvas -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar">
+        <i class="fi fi-rr-align-justify"></i>
+      </button>
+
+      <!-- Botón Home -->
+      <a href="{% url 'principal' %}" class="btn-home"><i class="fi fi-rr-home"></i></a>
+
+      <!-- Notificaciones -->
+      <div class="dropdown notifications">
+        <button class="btn btn-dark position-relative" id="dropdownMenuButton" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="fi fi-rr-bell fs-4"></i>
+          {% if mensajes %}
+          <span style="width: 15px; font-size: 9px;height: 15px; top: 0.5em;" class="position-absolute translate-middle badge rounded-pill bg-danger">{{ mensajes|length }}</span>
+          {% endif %}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
+          <li class="dropdown-header text-white bg-dark text-center py-2 rounded-top">
+            <i class="fi fi-rr-bell-ring me-2"></i>Tareas Pendientes
+          </li>
+          {% if mensajes %}
+          {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
+          {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
+          <li>
+            <a href="{% url 'Detalle_inmueble' mensaje.task.id %}" class="dropdown-item py-2 px-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <strong class="text-dark text-truncate" style="max-width: 250px;">
+                  {{ mensaje.task.NombreInmueble|truncatechars:40 }}
+                </strong>
+                <small class="text-muted">{{ mensaje.fecha_envio|date:"d/m/Y H:i" }}</small>
+              </div>
+              <div class="fw-semibold text-secondary">{{ mensaje.asunto|truncatechars:45 }}</div>
+              <div class="small text-muted">{{ mensaje.mensaje|truncatechars:60 }}</div>
+              <div class="mt-1">
+                <span
+                  class="badge {% if mensaje.estado == 'No Completado' %}bg-danger{% else %}bg-success{% endif %}">{{mensaje.estado }}</span>
+              </div>
+            </a>
+            <hr class="my-1">
+          </li>
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          <li class="dropdown-item text-center text-muted py-3">No tienes tareas pendientes.</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="header-user">
+      <span class="user">Bienvenido: {{ user.first_name }} {{ user.last_name }} <i class="fi fi-rs-user"></i></span>
+      <span class="email">{{ user.email }}</span>
+    </div>
   </div>
 
-
-  <div dark class="contenedor-menu">
-    <!-- <button id="modoOscuroBtn" aria-label="modoOscuro">
-      <i class="fi fi-rs-moon-stars"></i></i>
-    </button> -->
-
-    <button class="navbar-toggler" type="button" id="menu-btn" data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-      <i class="fi fi-rr-align-justify"></i>
-    </button>
-
-    <a href="{%url 'principal' %}" aria-label="home" class="btn-home"><i class="fi fi-rr-home"></i></a>
-
-    {% if registro_Llamadas_Form %}
-    <a href="{% url 'llamadas_inmuebles' %}" aria-label="regresar" style="margin-left: 3.5em; text-decoration: none;" ><i class="fi fi-rr-undo"></i> Volver</a>
-    {% endif %}
-    {% if inmueble %}
-    <a href="{% url 'Inmuebles' %}" aria-label="regresar" style="margin-left: 3.5em; text-decoration: none;" ><i class="fi fi-rr-undo"></i> Volver</a>
-    {% endif %}
-
- 
-    
-    {% if not task %}
-      {% if eventos.exist %}
-      <span id="notifications-count"
-        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {{ eventos|length }}
-      </span>
-      {% endif %}
-    </a>
-    {% endif %}
-
-<div class="container-fluid">
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-    
+  <!-- Offcanvas Menu -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
     <div class="offcanvas-header border-bottom">
-      <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-        <span class="text-secondary">Navegación</span> <span class="fw-bold text-danger">SIISEP</span>
-      </h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar menú"></button>
+      <h5 class="offcanvas-title"><span class="text-secondary">Navegación</span> <span
+          class="fw-bold text-danger">SIISEP</span></h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    
     <div class="offcanvas-body">
       <ul class="navbar-nav flex-column">
-        
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'Inmuebles' %}">
-            <i class="fi fi-rr-bookmark me-2"></i> Completados
-          </a>
-        </li>
-        
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'Inmuebles_Terminados' %}">
-            <i class="fi fi-rr-check me-2"></i> Terminados
-          </a>
-        </li>
-        
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'Inmuebles_en_Baja' %}">
-            <i class="fi fi-rr-cross me-2"></i> Bajas
-          </a>
-        </li>
-
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'Inmuebles' %}"><i
+              class="fi fi-rr-bookmark me-2"></i>Completados</a></li>
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'Inmuebles_Terminados' %}"><i
+              class="fi fi-rr-check me-2"></i>Terminados</a></li>
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'Inmuebles_en_Baja' %}"><i
+              class="fi fi-rr-cross me-2"></i>Bajas</a></li>
         <hr class="my-3">
-
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'create_task' %}">
-            <i class="fi fi-rr-upload me-2"></i> Agregar Alta
-          </a>
-        </li>
-        
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'llamadas_inmuebles' %}">
-            <i class="fi fi-rr-call-duration me-2"></i> Fichas (Llamadas)
-          </a>
-        </li>
-        
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'create_DatosLlamadasInmueble' %}">
-            <i class="fi fi-rr-call-outgoing me-2"></i> Registrar Nueva Ficha
-          </a>
-        </li>
-
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'create_task' %}"><i
+              class="fi fi-rr-upload me-2"></i>Agregar Alta</a></li>
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'tareas_list' %}"><i
+              class="fi fi-rr-call-duration me-2"></i>Fichas (Llamadas)</a></li>
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'crear_tarea' %}"><i
+              class="fi fi-rr-call-outgoing me-2"></i>Registrar Nueva Ficha</a></li>
         <hr class="my-3">
-
-        <li class="nav-item mb-2">
-          <a class="nav-link d-flex align-items-center" href="{% url 'user_list' %}">
-            <i class="bi bi-people me-2"></i> Administrador de Usuarios
-          </a>
-        </li>
-
-        <li class="nav-item mt-4">
-          <a class="nav-link text-primary d-flex align-items-center" href="{% url 'logout' %}">
-            <i class="fi fi-rr-exit me-2"></i> Salir de SIISEP
-          </a>
-        </li>
-        
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'user_list' %}"><i
+              class="bi bi-people me-2"></i>Administrador de Usuarios</a></li>
+        <li class="nav-item mt-4"><a class="nav-link text-primary" href="{% url 'logout' %}"><i
+              class="fi fi-rr-exit me-2"></i>Salir de SIISEP</a></li>
       </ul>
     </div>
-    
   </div>
-</div>
-
-
-<div class="dropdown notifications">
-  <button class="btn btn-dark position-relative w-100 h-100" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-    <i class="fi fi-rr-bell fs-4"></i>
-    {% if mensajes %}
-    <span id="notifications-count"
-      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-      {{ mensajes|length }}
-    </span>
-    {% endif %}
-  </button>
-
-  <ul class="dropdown-menu dropdown-menu-end shadow animated fadeIn" aria-labelledby="dropdownMenuButton" style="width: 400px; max-height: 500px; overflow-y: auto;">
-
-    <li style="background-color: #691c32;" class="dropdown-header text-white text-center py-2 fw-bold rounded-top">
-      <i class="fi fi-rr-bell-ring me-2"></i>Tareas Pendientes
-    </li>
-
-    {% if mensajes %}
-      {% for mensaje in mensajes|dictsortreversed:"fecha_envio" %}
-        {% if mensaje.enviar_a_imp == request.user or mensaje.enviado_por_imp == request.user %}
-        <li>
-          <a href="{% url 'Detalle_inmueble' mensaje.task.id %}" class="dropdown-item py-2 px-3">
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-dark text-truncate" style="max-width: 250px;">
-                {{ mensaje.task.NombreInmueble|truncatechars:40 }}
-              </strong>
-              <small class="text-muted">{{ mensaje.fecha_envio|date:"d/m/Y H:i" }}</small>
-            </div>
-            <div class="fw-semibold text-secondary">{{ mensaje.asunto|truncatechars:45 }}</div>
-            <div class="small text-muted">{{ mensaje.mensaje|truncatechars:60 }}</div>
-            <div class="mt-1">
-              {% if mensaje.estado == 'No Completado' %}
-                <span class="badge bg-danger">Pendiente</span>
-              {% else %}
-                <span class="badge bg-success">Completada</span>
-              {% endif %}
-            </div>
-          </a>
-          <hr class="my-1">
-        </li>
-        {% endif %}
-      {% endfor %}
-    {% else %}
-      <li class="dropdown-item text-center text-muted py-3">
-        No tienes tareas pendientes.
-      </li>
-    {% endif %}
-  </ul>
-</div>
-
   {% endif %}
-  {% block content %}
 
+  {% block content %}{% endblock %}
 
-  {% endblock %}
-  <footer class="footer">
+  <!-- Footer -->
+  <footer class="footer mt-5 bg-dark text-white py-4">
     <div class="container">
-      <div class="logo">
-        <img 
-            src="{% static 'inicio/img/logosep.webp' %}?v=1.0" 
-            alt="logo-sep" 
-            width="768" 
-            height="238"
-            srcset="
-              {% static 'inicio/img/logosep.webp' %} 320w, 
-              {% static 'inicio/img/logosep.webp' %} 640w, 
-              {% static 'inicio/img/logosep.webp' %} 768w"
-            sizes="(max-width: 600px) 320px, (max-width: 900px) 640px, 768px"
-            loading="lazy">
-    </div>
-      <div class="column">
-        <a href="{% url 'Inmuebles' %}">Completados</a>
-        <a href="{% url 'Inmuebles_Terminados' %}">Terminados</a>
-        <a href="{% url 'Inmuebles_en_Baja' %}">Bajas</a>
-        <a href="{% url 'llamadas_inmuebles' %}">Registro de llamadas</a>
-        <a href="{% url 'create_task' %}">Agregar Alta</a>
+      <div class="row align-items-center">
+        <!-- Logo -->
+        <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+          <img src="{% static 'inicio/img/logosep.webp' %}" alt="Logo SIISEP" width="180" loading="lazy">
+        </div>
+
+        <!-- Enlaces rápidos -->
+        <div class="col-md-4 text-center mb-3 mb-md-0">
+          <h6 class="fw-bold">Enlaces Rápidos</h6>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'Inmuebles' %}" class="text-white text-decoration-none">Completados</a></li>
+            <li><a href="{% url 'Inmuebles_Terminados' %}" class="text-white text-decoration-none">Terminados</a></li>
+            <li><a href="{% url 'Inmuebles_en_Baja' %}" class="text-white text-decoration-none">Bajas</a></li>
+            <li><a href="{% url 'tareas_list' %}" class="text-white text-decoration-none">Registro de
+                llamadas</a></li>
+            <li><a href="{% url 'create_task' %}" class="text-white text-decoration-none">Agregar Alta</a></li>
+          </ul>
+        </div>
+
+        <!-- Contacto / Derechos -->
+        <div class="col-md-4 text-center text-md-end">
+          <h6 class="fw-bold">Contacto</h6>
+          <p class="mb-1">Correo: soporte@siisep.com</p>
+          <p class="mb-0">&copy; {{ now.year }} SIISEP. Todos los derechos reservados.</p>
+        </div>
       </div>
     </div>
   </footer>
 
-  {% if messages %}
-  <div class="alert-container">
-      {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} fade show" role="alert">
-              {{ message }}
-          </div>
-      {% endfor %}
-  </div>
-  {% endif %}
-  
 
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
-
-<style>
-
-  
-  .fade-out {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out; 
-}
-
-.alert-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1050;
-    width: 80%;
-    max-width: 600px;
-    pointer-events: none; 
-}
-
-.alert {
-    border-radius: 8px;
-    padding: 15px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 1rem;
-    margin-bottom: 10px;
-    pointer-events: auto; 
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-  .dropdown-menu{
-    width: 22em;
-    text-align: center;
-    font-size: 13px;
-  }
-  .title-notificacion{
-    font-size: 13px;
-  }
-  
-
-}
-
-</style>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-      const alerts = document.querySelectorAll('.alert');
-      setTimeout(() => {
-          alerts.forEach(alert => {
-              alert.classList.add('fade-out');
-              setTimeout(() => alert.remove(), 500); // Elimina el elemento del DOM
-          });
-      }, 2000); // Desaparecen después de 2 segundos
-  });
-</script>
-<script>
-
-function showMessage(message, type = "success", duration = 2000) {
-    // Crear contenedor de mensajes si no existe
-    let alertContainer = document.querySelector(".alert-container");
-    if (!alertContainer) {
-        alertContainer = document.createElement("div");
-        alertContainer.className = "alert-container";
-        document.body.appendChild(alertContainer);
-    }
-
-    // Crear el mensaje
-    const alert = document.createElement("div");
-    alert.className = `alert alert-${type} fade show`;
-    alert.role = "alert";
-    alert.textContent = message;
-
-    // Agregar mensaje al contenedor
-    alertContainer.appendChild(alert);
-
-    // Desvanecer y eliminar mensaje después de la duración
-    setTimeout(() => {
-        alert.classList.add("fade-out");
-        setTimeout(() => {
-            alert.remove(); // Elimina el mensaje del DOM después de la animación
-            alertContainer.remove(); // Elimina el contenedor si no hay más mensajes
-        }, 500); // El tiempo debe coincidir con el tiempo de la animación
-    }, duration);
-}
-
-</script>
-
-
+<!-- jQuery UI (CSS y JS) -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 </body>
 
-<script>
-  document.getElementById('offcanvasNavbar').addEventListener('show.bs.offcanvas', function () {
-      let navItems = document.querySelectorAll('.nav-item');
-      navItems.forEach(function (item, index) {
-          setTimeout(function () {
-              item.classList.add('animated');
-          }, index * 50);
-      });
-  });
-
-  document.getElementById('offcanvasNavbar').addEventListener('hidden.bs.offcanvas', function () {
-      let navItems = document.querySelectorAll('.nav-item');
-      navItems.forEach(function (item) {
-          item.classList.remove('animated');
-      });
-  });
-</script>
-<style>
- /* Estilo para scrollbar en navegadores Webkit (Chrome, Safari) */
-::-webkit-scrollbar {
-    width: 8px; /* Ancho del scrollbar */
-    background-color: transparent; /* Fondo del scrollbar */
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3); /* Color del "thumb" del scrollbar */
-    border-radius: 10px; /* Bordes redondeados */
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.5); /* Color del thumb al pasar el mouse */
-}
-
-/* Estilo para scrollbar en Firefox */
-* {
-    scrollbar-width: thin; /* Hacer el scrollbar más delgado */
-    scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* Color del thumb y del fondo */
-}
-
-/* Cambiar color del thumb al pasar el mouse */
-* {
-    scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* Color del thumb al pasar el mouse */
-}
-.dropdown-menu {
-  border-radius: 0.5rem;
-  animation: fadeInDown 0.3s ease-in-out;
-}
-
-.dropdown-item:hover {
-  background-color: #f8f9fa;
-}
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.text-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
- .nav-item{transition:.3s ease;}.nav-item:hover{color:#f0f0f0 !important;background-color:#94a6b8;transition:.3s ease;}.icon{font-size:26px;margin-bottom:15px;margin-top:10px;margin-right:1em !important;}@keyframes slide-in-top{0%{transform:translateY(-1000px);opacity:0;}100%{transform:translateY(0);opacity:1;}}.nav-item.animated{animation:slide-in-top 0.5s cubic-bezier(0.250,0.460,0.450,0.940) both;}.content{flex:1;}.footer{position:relative;background-color:#333;color:#fff;padding:20px 0;text-align:center;width:100%;margin-top:18em;}.footer .container{display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;}.footer .column{display:flex;flex:1;min-width:200px;justify-content:space-evenly;flex-wrap:wrap;}.footer .column a{color:#fff;text-decoration:none;display:block;margin:5px 10px;}.footer .column a:hover{text-decoration:underline;}.footer img{width:192px;height:auto;}@media (max-width:768px){.footer .container{flex-direction:column;}.footer .column{justify-content:center;text-align:center;}}.animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}.fast{-webkit-animation-duration:0.4s;animation-duration:0.4s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}.low{-webkit-animation-duration:1.5s;animation-duration:1.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both;}@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}.i[class^="fi-rr-"]:before,i[class*="fi-rr-"]:before,span[class^="fi-rr-"]:before,span[class*="fi-rr-"]:before{width:25px !important;margin:5px;font-size:15px;}.fadeIn{animation-name:fadeIn;}.dropdown.notifications .btn{font-size:14px;padding:4px 12px;}.dropdown{position:absolute;right:1em;top: 5em;}.dropdown.notifications .dropdown.notifications .fas{font-size:15px;}.dropdown.notifications .btn-calendar{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:6em;color:#fff;text-decoration:none;padding:2px 8px;border:0.1px solid #ccc;border-radius:5px;}.mensajes{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:15em;margin-left:10px;color:#fff;text-decoration:none;padding:5px 10px;border:0.1px solid #ccc;border-radius:5px;}.fa-envelope{margin-left:5px;}.containerT{position:relative;width:100%;display:flex;overflow:hidden;}.offcanvas.offcanvas-start{top:59px !important;left:-3px !important;width:300px !important}@media (max-width:768px){.email{display:none;}}.events{display:flex;}@media (max-width:560px){a.salir{position:absolute;margin-top:40px;right:0;}.title{font-size:13px;}.events{display:none;}.mensajes{left:16em;width:4em;top:7em;}}
-</style>
-<script>
-
-  function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("active");
-  }
-
-  function activarModoOscuro() {
-    document.body.classList.add('dark-mode');
-    localStorage.setItem('modoOscuro', 'activado');
-  }
-
-  function desactivarModoOscuro() {
-    document.body.classList.remove('dark-mode');
-    localStorage.setItem('modoOscuro', 'desactivado');
-  }
-
-  window.addEventListener('load', function () {
-    const modoOscuro = localStorage.getItem('modoOscuro');
-    if (modoOscuro === 'activado') {
-      activarModoOscuro();
-    }
-  });
-
-  const botonModoOscuro = document.getElementById('modoOscuroBtn');
-  botonModoOscuro.addEventListener('click', function () {
-    if (document.body.classList.contains('dark-mode')) {
-      desactivarModoOscuro();
-    } else {
-      activarModoOscuro();
-    }
-  });
-</script>
-
-<script src="{% static 'inicio/js/app.js' %}"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            autoclose: true,
-            todayHighlight: true
-        });
-    });
-  </script>
-</body>
 </html>

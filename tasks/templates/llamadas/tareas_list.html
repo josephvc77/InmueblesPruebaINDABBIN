@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Tareas Pendientes{% endblock %}
+
+{% block content %}<div class="container my-4">
+
+  <!-- Buscador y filtros -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <form class="row g-3 align-items-end" method="GET">
+        <div class="col-md-3">
+          <label for="search-input" class="form-label">Buscar</label>
+          <input type="text" class="form-control" id="search-input" name="q"
+                 value="{{ search_query }}" placeholder="Nombre, RFI, Estado o Municipio">
+        </div>
+
+        <div class="col-md-2">
+          <label for="prioridad" class="form-label">Prioridad</label>
+          <select id="prioridad" name="prioridad" class="form-select">
+            <option value="" {% if not prioridad %}selected{% endif %}>Todas</option>
+            <option value="Alta" {% if prioridad == 'Alta' %}selected{% endif %}>Alta</option>
+            <option value="Media" {% if prioridad == 'Media' %}selected{% endif %}>Media</option>
+            <option value="Baja" {% if prioridad == 'Baja' %}selected{% endif %}>Baja</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="ur-select" class="form-label">Unidad Responsable</label>
+          <select id="ur-select" name="ur" class="form-select">
+            <option value="">Todas</option>
+            {% for opcion in ur_opciones %}
+              <option value="{{ opcion }}" {% if ur == opcion %}selected{% endif %}>{{ opcion }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label for="ordenar-por" class="form-label">Ordenar</label>
+          <select id="ordenar-por" name="ordenar" class="form-select">
+            <option value="" {% if not orden %}selected{% endif %}>Ordenar</option>
+            <option value="az" {% if orden == "az" %}selected{% endif %}>A a Z</option>
+            <option value="za" {% if orden == "za" %}selected{% endif %}>Z a A</option>
+            <option value="nuevo" {% if orden == "nuevo" %}selected{% endif %}>Más nuevo</option>
+            <option value="viejo" {% if orden == "viejo" %}selected{% endif %}>Más viejo</option>
+          </select>
+        </div>
+
+        <div class="col-md-2 d-flex gap-2 flex-wrap">
+          <!-- Botón Buscar -->
+          <button class="btn btn-primary flex-fill" type="submit">
+            <i class="fas fa-search me-1"></i> Buscar
+          </button>
+
+          <!-- Botón Crear Tarea -->
+          <a href="{% url 'crear_tarea' %}" class="btn btn-success flex-fill">
+            <i class="bi bi-plus-circle me-1"></i> Crear Tarea
+          </a>
+
+          <!-- Botón Exportar Excel -->
+          <a href="{% url 'export_llamadas_excel' %}" class="btn btn-outline-success flex-fill">
+            <i class="fas fa-file-excel me-1"></i> Exportar Excel
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  {% if llamadas %}
+    <div class="table-responsive shadow-sm">
+      <table class="table table-striped table-hover align-middle border rounded">
+        <thead class="table-dark sticky-top text-center">
+          <tr>
+            <th>#</th>
+            <th>Nombre Inmueble</th>
+            <th>RFI</th>
+            <th>EDO</th>
+            <th>UR</th>
+            <th>Estatus Llamada</th>
+            <th>Prioridad</th>
+            <th>Tarea Asignada</th>
+            <th>Entrega</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="text-center" style="font-size: 12px;">
+          {% for ficha in llamadas %}
+          <tr>
+            <td class="fw-bold">{{ forloop.counter }}</td>
+            <td>{{ ficha.NombreInmueble }}</td>
+            <td>{{ ficha.rfi|default:"SIN ASIGNAR" }}</td>
+            <td>{{ ficha.edo|default:"SIN ASIGNAR" }}</td>
+            <td>{{ ficha.ur|default:"SIN ASIGNAR" }}</td>
+            <td>{{ ficha.estatus_llamada|default:"SIN ESTATUS" }}</td>
+            <td>
+              {% if ficha.prioridad %}
+                <span class="badge d-inline-flex align-items-center
+                  {% if ficha.prioridad == 'Alta' %} bg-danger
+                  {% elif ficha.prioridad == 'Media' %} bg-warning text-dark
+                  {% else %} bg-success {% endif %}">
+                  {{ ficha.prioridad }}
+                </span>
+              {% else %}
+                <span class="text-muted">SIN ASIGNAR</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if ficha.assigned_task %}
+                {{ ficha.assigned_task.first_name }} {{ ficha.assigned_task.last_name }}
+              {% else %}
+                <span class="text-muted">No asignada</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if ficha.deadline %}
+                {{ ficha.deadline|date:"d/m/Y H:i" }}
+              {% else %}
+                <span class="text-muted">No definida</span>
+              {% endif %}
+            </td>
+            <td class="text-center">
+              <div class="btn-group" role="group">
+                <a href="{% url 'task_detail_llamadas' ficha.id %}" class="btn btn-sm btn-outline-primary" title="Ver detalles">
+                  <i class="bi bi-info-circle-fill"></i>
+                </a>
+                <a href="{% url 'registro_llamada' ficha.id %}" class="btn btn-sm btn-outline-success" title="Agregar llamada">
+                  <i class="bi bi-plus-circle"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-warning text-center shadow-sm rounded">
+      <i class="bi bi-exclamation-circle"></i> No se encontraron tareas.
+    </div>
+  {% endif %}
+
+  <!-- Paginador -->
+  <nav aria-label="Navegación de página" class="mt-4">
+    <ul class="pagination justify-content-center pagination-sm">
+      {% if llamadas.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primero</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ llamadas.previous_page_number }}">Anterior</a></li>
+      {% endif %}
+
+      <li class="page-item active"><span class="page-link">{{ llamadas.number }}</span></li>
+
+      {% if llamadas.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ llamadas.next_page_number }}">Siguiente</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ llamadas.paginator.num_pages }}">Última &raquo;</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endblock %}

@@ -8,9 +8,11 @@
       <h4 class="mb-0" style="color: #fff;">
         <i class="bi bi-people-fill me-2"></i> Administración de Usuarios
       </h4>
+      {% if request.user.is_staff or request.user.is_superuser %}
       <a href="{% url 'add_user' %}" class="btn btn-custom btn-sm">
         <i class="bi bi-person-plus-fill me-1"></i> Agregar Usuario
       </a>
+      {% endif %}
     </div>
     <div class="card-body p-0">
       <div class="table-responsive">
@@ -32,9 +34,11 @@
               <td>{{ user.email }}</td>
               <td>{{ user.puesto }}</td>
               <td class="text-end">
+                {% if request.user.is_staff or request.user.is_superuser %}
                 <a href="{% url 'edit_user' user.id %}" class="btn btn-outline-warning btn-sm">
                   <i class="bi bi-pencil-square"></i> Editar
                 </a>
+                {% endif %}
               </td>
             </tr>
             {% empty %}
@@ -48,6 +52,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Estilos adicionales -->
 <style>

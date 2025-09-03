@@ -1,22 +1,77 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Importar Inmuebles</title>
-</head>
-<body>
-    <h1>Importar Inmuebles</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="archivo">
-        <button type="submit">Importar</button>
-    </form>
+{% extends "base.html" %}
+{% load static %}
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-</body>
-</html>
+{% block titulo %} Importar Inmuebles {% endblock %}
+
+{% block content %}
+<div class="container my-5" style="margin-bottom: 15em !important;">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-dark text-white text-center rounded-top">
+                    <h4 class="mb-0"><i class="fi fi-rr-upload me-2"></i> Importar Inmuebles</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="archivo" class="form-label fw-semibold">Seleccionar archivo Excel</label>
+                            <input type="file" class="form-control" id="archivo" name="archivo" accept=".xls,.xlsx" required>
+                            <div class="form-text text-muted">
+                                Solo se admiten archivos <strong>.xls</strong> o <strong>.xlsx</strong>.
+                            </div>
+                            <div class="invalid-feedback">Por favor selecciona un archivo válido.</div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="fi fi-rr-check me-2"></i> Importar
+                            </button>
+                        </div>
+                    </form>
+
+                    {% if messages %}
+                    <div class="mt-4">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if errores %}
+                    <div class="mt-4">
+                        <div class="alert alert-danger">
+                            <h6><i class="fi fi-rr-exclamation me-1"></i> Errores detectados en el archivo:</h6>
+                            <ul class="mb-0">
+                                {% for error in errores %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Bootstrap validation frontend
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+{% endblock %}

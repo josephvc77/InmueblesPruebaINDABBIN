@@ -76,32 +76,51 @@
     }
   });
 
+ // Función mostrar alerta antes de guardar
   function mostrarAlerta() {
-          swal({
-              title: "¿Estás seguro de guardar?",
-              text: "",
-              icon: "warning",
-              buttons: true,
-              dangerMode: true,
-             
-          })
-          .then((confirmar) => {
-              if (confirmar) {
-                swal("¡Se han guardado los cambios!", {
-                      icon: "success",
-                      buttons: false,
-                  });
-
-                     setTimeout(function() {
-                    document.getElementById('form_detail').submit();
-                    swal("¡Se han guardado los cambios!", {
-                        icon: "success",
-                    });
-                }, 2000);
-                 
-              } else {
-                  swal("No se han realizado cambios.");
-              }
-          });
+    Swal.fire({
+      title: '¿Estás seguro de guardar?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, Guardar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('form_detail').submit();
+        Swal.fire({
+          title: '¡Se han guardado los cambios!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } else {
+        Swal.fire({
+          title: 'No se han realizado cambios',
+          icon: 'info',
+          timer: 1500,
+          showConfirmButton: false
+        });
       }
+    });
+  }
+
+  // Función para confirmar completado de tarea
+  function showCompleteConfirmation() {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Una vez completada, la tarea ya no podrá ser modificada.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: 'Sí, Completar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('complete-form').submit();
+      }
+    });
+  }
 </script>

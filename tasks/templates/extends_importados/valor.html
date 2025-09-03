@@ -1,168 +1,189 @@
 <div class="tab-content animated fadeIn" id="tab-valor">
     <div class="section">
         <div class="separador">
-
             <h4>Datos Contables</h4>
             <div class="form-group form-check-inline width-label">
                 <label for="{{ inmueble.valor_contable.id_for_label }}">Valor Contable (S):</label>
                 {{ inmueble.valor_contable }}
             </div>
+
             <div class="form-group form-check-inline width-label">
                 <label for="fecha_valor_contable">Fecha Valor Contable:</label>
-                <div class="datepicker-container">
-                    <input type="text" id="fecha_valor_contable" value="{{inmueble.fecha_valor_contable.value}}"
-                        name="fecha_valor_contable" class="form-control datepicker" placeholder="dd/mm/aaaa">
-                    <div class="input-group-append">
-                        <i class="fa fa-calendar"></i>
+               {{ inmueble.fecha_valor_contable }}
+            </div>
+            </div>
+
+            <div class="separador">
+                <h4>Datos Asegurables (S)</h4>
+                <div class="form-group form-check-inline width-label">
+                    <label for="{{ inmueble.valor_asegurable.id_for_label }}">Valor Asegurable (S):</label>
+                    {{ inmueble.valor_asegurable }}
+                </div>
+                <div class="form-group form-check-inline width-label">
+                    <label for="fecha_valor_asegurable">Fecha Valor Asegurable:</label>
+                    {{ inmueble.fecha_valor_asegurable }}
+                </div>
+                </div>
+
+                <div class="separador">
+                    <h4>Datos de Adquisición</h4>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.valor_adquisicion.id_for_label }}">Valor de Adquisición (S):</label>
+                        {{ inmueble.valor_adquisicion }}
                     </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="fecha_valor_adquisicion">Fecha de Valor de Adquisición:</label>
+                        {{ inmueble.fecha_valor_adquisicion }}
+                    </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.valor_terreno.id_for_label }}">Valor de Terreno (S):</label>
+                        {{ inmueble.valor_terreno }}
+                    </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.valor_construccion.id_for_label }}">Valor de Construcción (S):</label>
+                        {{ inmueble.valor_construccion }}
+                    </div>
+                </div>
+
+                <div class="separador">
+                    <h4>Datos Catastrales</h4>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.valor_catastral_terreno.id_for_label }}">Valor Catastral del
+                            Terreno:</label>
+                        {{ inmueble.valor_catastral_terreno }}
+                    </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.valor_catastral_construccion.id_for_label }}">Valor Catastral de la
+                            Construcción (es):</label>
+                        {{ inmueble.valor_catastral_construccion }}
+                    </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.valor_total_catastral.id_for_label }}">Valor Total Catastral
+                            (es):</label>
+                        {{ inmueble.valor_total_catastral }}
+                    </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="fecha_valor_catastral">Fecha Valor Catastral:</label>
+                        {{ inmueble.fecha_valor_catastral }}    
+                    </div>
+                    <div class="form-group form-check-inline width-label">
+                        <label for="{{ inmueble.documentacion_soporte.id_for_label }}">Documentación Soporte:</label>
+                        {{ inmueble.documentacion_soporte }}
+                    </div>
+                </div>
+
+                <h3>Avaluos Registrados:</h3>
+                <div class="table-responsive" id="tablaAvaluos">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Número de Avalúo</th>
+                                <th>Valor de Avalúo</th>
+                                <th>Fecha Valor de Avalúo</th>
+                                <th>Uso del Avalúo</th>
+                                <th>Valor de Terreno</th>
+                                <th>Valor de Construcción</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for avaluo in task.avaluos.all %}
+                            <tr>
+                                <td>{{ avaluo.numero_de_avaluo }}</td>
+                                <td>{{ avaluo.valor_de_avaluo }}</td>
+                                <td>{{ avaluo.fecha_valor_de_avaluo }}</td>
+                                <td>{{ avaluo.uso_del_avaluo }}</td>
+                                <td>{{ avaluo.valor_de_terreno }}</td>
+                                <td>{{ avaluo.valor_de_construccion }}</td>
+                                <td>
+                                    <a href="{% url 'editar_avaluoIMP' avaluo.id %}"
+                                        class="btn btn-outline-warning btn-sm">Editar</a>
+                                    <a href="{% url 'eliminar_avaluoIMP' avaluo_id=avaluo.id %}"
+                                        class="btn btn-outline-danger btn-sm" id="delete"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este avalúo?')">
+                                        Eliminar
+                                        Avalúo</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="separador">
+                    <h4>
+                        Agregar nuevo Avalúo de Otras Instituciones:</h4>
+                    <form method="post" id="avaluoForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ datos_avaluos_form.numero_de_avaluo.id_for_label }}">Número de
+                                Avalúo:</label>
+                            {{ datos_avaluos_form.numero_de_avaluo }}
+                        </div>
+                        <div class="form-group form-check-inline width-label">
+                            <label for="{{ datos_avaluos_form.valor_de_avaluo.id_for_label }}">Valor de Avalúo:</label>
+                            {{ datos_avaluos_form.valor_de_avaluo }}
+                        </div>
+                        <div class="form-group form-check-inline width-label">
+                            <label for="{{ datos_avaluos_form.fecha_valor_de_avaluo.id_for_label }}">Fecha Valor de
+                                Avalúo:</label>
+                            {{ datos_avaluos_form.fecha_valor_de_avaluo }}
+                        </div>
+                        <div class="form-group ">
+                            <label for="{{ datos_avaluos_form.uso_del_avaluo.id_for_label }}">Uso del Avalúo:</label>
+                            {{ datos_avaluos_form.uso_del_avaluo }}
+                        </div>
+                        <div class="form-group form-check-inline width-label">
+                            <label for="{{ datos_avaluos_form.valor_de_terreno.id_for_label }}">Valor de
+                                Terreno:</label>
+                            {{ datos_avaluos_form.valor_de_terreno }}
+                        </div>
+                        <div class="form-group form-check-inline width-label">
+                            <label for="{{ datos_avaluos_form.valor_de_construccion.id_for_label }}">Valor de
+                                Construcción:</label>
+                            {{ datos_avaluos_form.valor_de_construccion }}
+                        </div>
+                        <button type="submit" id="guardarAvaluoIMP" class="btn btn-outline-success">Guardar
+                            Avaluos</button>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <div class="separador">
-            <h4>Datos Asegurables (S)</h4>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_asegurable.id_for_label }}">Valor Asegurable (S):</label>
-                {{ inmueble.valor_asegurable }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.fecha_valor_asegurable.id_for_label }}">Fecha Valor Asegurable:</label>
-                <div class="datepicker-container">
-                    <input type="text" id="fecha_valor_asegurable" value="{{ inmueble.fecha_valor_asegurable.value }}"
-                        name="fecha_valor_asegurable" class="form-control datepicker" placeholder="dd/mm/aaaa">
-                    <div class="input-group-append">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="separador">
-            <h4>Datos de Adquisición</h4>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_adquisicion.id_for_label }}">Valor de Adquisición (S):</label>
-                {{ inmueble.valor_adquisicion }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.fecha_valor_adquisicion.id_for_label }}">Fecha de Valor de Adquisición (es):</label>
-                <div class="datepicker-container">
-                    <input type="text" id="fecha_valor_adquisicion" value="{{ inmueble.fecha_valor_adquisicion.value }}"
-                        name="fecha_valor_adquisicion" class="form-control datepicker" placeholder="dd/mm/aaaa">
-                    <div class="input-group-append">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_terreno.id_for_label }}">Valor de Terreno (S):</label>
-                {{ inmueble.valor_terreno }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_construccion.id_for_label }}">Valor de Construcción (S):</label>
-                {{ inmueble.valor_construccion }}
-            </div>
-        </div>
-    
-        <div class="separador">
-            <h4>Datos Catastrales</h4>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_catastral_terreno.id_for_label }}">Valor Catastral del Terreno:</label>
-                {{ inmueble.valor_catastral_terreno }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_catastral_construccion.id_for_label }}">Valor Catastral de la Construcción (es):</label>
-                {{ inmueble.valor_catastral_construccion }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.valor_total_catastral.id_for_label }}">Valor Total Catastral (es):</label>
-                {{ inmueble.valor_total_catastral }}
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.fecha_valor_catastral.id_for_label }}">Fecha Valor Catastral:</label>
-                <div class="datepicker-container">
-                    <input type="text" id="fecha_valor_catastral" value="{{ inmueble.fecha_valor_catastral.value }}"
-                        name="fecha_valor_catastral" class="form-control datepicker" placeholder="dd/mm/aaaa">
-                    <div class="input-group-append">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group form-check-inline width-label">
-                <label for="{{ inmueble.documentacion_soporte.id_for_label }}">Documentación Soporte:</label>
-                {{ inmueble.documentacion_soporte }}
-            </div>
-        </div>
+        <!-- Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        <h3>Avaluos Registrados:</h3>
-        <div class="table-responsive" id="tablaAvaluos">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Número de Avalúo</th>
-                        <th>Valor de Avalúo</th>
-                        <th>Fecha Valor de Avalúo</th>
-                        <th>Uso del Avalúo</th>
-                        <th>Valor de Terreno</th>
-                        <th>Valor de Construcción</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for avaluo in task.avaluos.all %}
-                    <tr>
-                        <td>{{ avaluo.numero_de_avaluo }}</td>
-                        <td>{{ avaluo.valor_de_avaluo }}</td>
-                        <td>{{ avaluo.fecha_valor_de_avaluo }}</td>
-                        <td>{{ avaluo.uso_del_avaluo }}</td>
-                        <td>{{ avaluo.valor_de_terreno }}</td>
-                        <td>{{ avaluo.valor_de_construccion }}</td>
-                        <td>
-                            <a href="{% url 'editar_avaluoIMP' avaluo.id %}"
-                                class="btn btn-outline-warning btn-sm">Editar</a>
-                            <a href="{% url 'eliminar_avaluoIMP' avaluo_id=avaluo.id %}"
-                                class="btn btn-outline-danger btn-sm" id="delete"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este avalúo?')"> Eliminar
-                                Avalúo</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="separador">
-            <h4>
-                Agregar nuevo Avalúo de Otras Instituciones:</h4>
-            <form method="post" id="avaluoForm" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="{{ datos_avaluos_form.numero_de_avaluo.id_for_label }}">Número de Avalúo:</label>
-                    {{ datos_avaluos_form.numero_de_avaluo }}
-                </div>
-                <div class="form-group form-check-inline width-label">
-                    <label for="{{ datos_avaluos_form.valor_de_avaluo.id_for_label }}">Valor de Avalúo:</label>
-                    {{ datos_avaluos_form.valor_de_avaluo }}
-                </div>
-                <div class="form-group form-check-inline width-label">
-                    <label for="{{ datos_avaluos_form.fecha_valor_de_avaluo.id_for_label }}">Fecha Valor de
-                        Avalúo:</label>
-                    {{ datos_avaluos_form.fecha_valor_de_avaluo }}
-                </div>
-                <div class="form-group ">
-                    <label for="{{ datos_avaluos_form.uso_del_avaluo.id_for_label }}">Uso del Avalúo:</label>
-                    {{ datos_avaluos_form.uso_del_avaluo }}
-                </div>
-                <div class="form-group form-check-inline width-label">
-                    <label for="{{ datos_avaluos_form.valor_de_terreno.id_for_label }}">Valor de Terreno:</label>
-                    {{ datos_avaluos_form.valor_de_terreno }}
-                </div>
-                <div class="form-group form-check-inline width-label">
-                    <label for="{{ datos_avaluos_form.valor_de_construccion.id_for_label }}">Valor de
-                        Construcción:</label>
-                    {{ datos_avaluos_form.valor_de_construccion }}
-                </div>
-                <button type="submit" id="guardarAvaluoIMP" class="btn btn-outline-success">Guardar Avaluos</button>
-            </form>
-        </div>
-    </div>
-</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecciona todos los inputs con clase datepicker
+    flatpickr("#{{ inmueble.fecha_valor_contable.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+    flatpickr("#{{ inmueble.fecha_valor_adquisicion.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+    flatpickr("#{{ inmueble.fecha_valor_asegurable.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+    flatpickr("#{{ inmueble.fecha_valor_catastral.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+    flatpickr("#{{ inmueble.fecha_valor_contable.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+    flatpickr("#{{ inmueble.fecha_valor_catastral.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+    flatpickr("#{{ datos_avaluos_form.fecha_valor_de_avaluo.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        allowInput: true
+    });
+});
 
+</script>

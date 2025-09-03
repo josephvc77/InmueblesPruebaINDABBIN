@@ -1,12 +1,14 @@
-version: '3.8'
-
 services:
   web:
     build: .
-    image: iodocker-dgtic.sep.gob.mx/siisep/siisep-django:1.0.0
+    image: iodocker-dgtic.sep.gob.mx/siisep/siisep-django:${APP_VERSION}
     ports:
       - "8000:8000"
     volumes:
       - .:/app
     environment:
       - PYTHONUNBUFFERED=1
+      - APP_VERSION=${APP_VERSION}
+      - DJANGO_SETTINGS_MODULE=djangocrud.settings
+    env_file:
+      - .env

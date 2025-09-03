@@ -1,158 +1,210 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <div class="tab-content animated fadeIn" id="tab-registros">
-    <div class="section">
-  
-        <div class="separador" id="RegistroLlamadas">
-        <h4>Registro de llamadas</h4>
-            <br><br>
-        <form method="post" class="task-form">
-            {% csrf_token %}
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.NumLlamada.id_for_label }}">Llamada: </label>
-                <input type="number" name="NumLlamada" id="id_NumLlamada" placeholder="# 1" >
-            </div>
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_llamada.id_for_label }}">Fecha de Llamada:</label>
-                <input type="date" name="fecha_llamada" id="id_fecha_llamada" >
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.hora_llamada.id_for_label }}">Hora de Llamada:</label>
-                <input type="time" name="hora_llamada" id="id_hora_llamada" >
-            </div>
-                            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.acuerdos_compromisos.id_for_label }}">Acuerdos de Compromiso:</label>
-                <input type="text" name="acuerdos_compromisos" id="id_acuerdos_compromisos" required>
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_comprometida.id_for_label }}">Fecha Comprometida:</label>
-                <input type="date" name="fecha_comprometida" id="id_fecha_comprometida" >
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_respuesta_email.id_for_label }}">Fecha respuesta de email:</label>
-                <input type="date" name="fecha_respuesta_email" id="id_fecha_respuesta_email" >
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_revision_correcciones.id_for_label }}">Fecha de revision de correcciones:</label>
-                <input type="date" name="fecha_revision_correcciones" id="id_fecha_revision_correcciones" >
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_envio_correccion.id_for_label }}">Fecha de envio de correcciones:</label>
-                <input type="date" name="fecha_envio_correccion" id="id_fecha_envio_correccion" >
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_aprobacion_fichas_corregidas.id_for_label }}">Fecha de aprobacion de fichas corregidas:</label>
-                <input type="date" name="fecha_aprobacion_fichas_corregidas" id="id_fecha_aprobacion_fichas_corregidas" >
-            </div>
-            <!-- Nuevos campos -->
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_compromiso_de_envio_de_informacion.id_for_label }}">FECHA DE COMPROMISO DE ENVIO DE INFORMACIÓN:</label>
-                <input type="date" name="fecha_compromiso_de_envio_de_informacion" id="id_fecha_compromiso_de_envio_de_informacion" >
-            </div>
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_compromiso_de_observaciones_subsanadas.id_for_label }}">FECHA DE COMPROMISO DE OBSERVACIONES SUBSANADAS:</label>
-                <input type="date" name="fecha_compromiso_de_observaciones_subsanadas" id="id_fecha_compromiso_de_observaciones_subsanadas" >
-            </div>
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.fecha_autorizacion_de_documento.id_for_label }}">FECHA DE AUTORIZACIÓN DE DOCUMENTACIÓN:</label>
-                <input type="date" name="fecha_autorizacion_de_documento" id="id_fecha_autorizacion_de_documento" >
-            </div>
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.finalizacion.id_for_label }}">Finalización:</label>
-                <input type="date" name="finalizacion" id="id_finalizacion" >
-            </div>
-            
-            <div class="form-group form-check-inline">
-                <label for="{{ registro_Llamadas_Form.observaciones_generales.id_for_label }}">Observaciones generales:</label>
-                <input type="text" name="observaciones_generales" id="id_observaciones_generales" required>
-            </div>
-            
-            <button type="submit" class="btn btn-outline-success">Guardar</button>
-         </form>
+  <div class="section">
 
+    <div class="separador" id="RegistroLlamadas">
+      <h4>Registro de llamadas</h4>
+       <form method="post" id="registroLlamadaForm" class="task-form">
+        {% csrf_token %}
 
-        <div class="table-responsive m-3"> 
-            <table class="table table-bordered ">
-                <thead>
-                    <tr>
-                        <th>Llamada</th>
-                        <th>Fecha de Llamada</th>
-                        <th>Hora de Llamada</th>
-                        <th>Acuerdos de Compromiso</th>
-                        <th>Fecha Comprometida</th>
-                        <th>Fecha respuesta de email</th>
-                        <th>Fecha de revisión de correcciones</th>
-                        <th>Fecha de envío de correcciones</th>
-                        <th>Fecha de aprobación de fichas corregidas</th>
-                        <th>Fecha de compromiso de envio de información</th>
-                        <th>Fecha de compromiso de observaciones subsanadas</th>
-                        <th>Fecha de autorización de documentación</th>
-                        <th>Finalización</th>
-                        <th>Observaciones generales</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for registro_llamadas in ficha.registro_llamadas.all %}
-                    <tr>
-                        <td>{{ registro_llamadas.NumLlamada|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_llamada|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.hora_llamada|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.acuerdos_compromisos|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_comprometida|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_respuesta_email|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_revision_correcciones|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_envio_correccion|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_aprobacion_fichas_corregidas|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_compromiso_de_envio_de_informacion|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_compromiso_de_observaciones_subsanadas|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.fecha_autorizacion_de_documento|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.finalizacion|default_if_none:"" }}</td>
-                        <td>{{ registro_llamadas.observaciones_generales|default_if_none:"" }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="10">No hay registros de llamadas.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="row g-3">
+          <div class="col-md-2 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.NumLlamada.id_for_label }}">Llamada:</label>
+            <input type="number" name="NumLlamada" id="id_NumLlamada" placeholder="# 1" class="form-control">
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_llamada.id_for_label }}">Fecha de Llamada:</label>
+            <input type="text" name="fecha_llamada" id="id_fecha_llamada" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-2 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.hora_llamada.id_for_label }}">Hora de Llamada:</label>
+            <input type="text" name="hora_llamada" id="id_hora_llamada" class="form-control timepicker">
+          </div>
+
+          <div class="col-md-5 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.acuerdos_compromisos.id_for_label }}">Acuerdos de Compromiso:</label>
+            <input type="text" name="acuerdos_compromisos" id="id_acuerdos_compromisos" class="form-control" required>
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_comprometida.id_for_label }}">Fecha Comprometida:</label>
+            <input type="text" name="fecha_comprometida" id="id_fecha_comprometida" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_respuesta_email.id_for_label }}">Fecha respuesta email:</label>
+            <input type="text" name="fecha_respuesta_email" id="id_fecha_respuesta_email" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_revision_correcciones.id_for_label }}">Fecha revisión de correcciones:</label>
+            <input type="text" name="fecha_revision_correcciones" id="id_fecha_revision_correcciones" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_envio_correccion.id_for_label }}">Fecha envío de correcciones:</label>
+            <input type="text" name="fecha_envio_correccion" id="id_fecha_envio_correccion" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_aprobacion_fichas_corregidas.id_for_label }}">Fecha aprobación fichas corregidas:</label>
+            <input type="text" name="fecha_aprobacion_fichas_corregidas" id="id_fecha_aprobacion_fichas_corregidas" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-4 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_compromiso_de_envio_de_informacion.id_for_label }}">Fecha compromiso envío info:</label>
+            <input type="text" name="fecha_compromiso_de_envio_de_informacion" id="id_fecha_compromiso_de_envio_de_informacion" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-4 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_compromiso_de_observaciones_subsanadas.id_for_label }}">Fecha compromiso observaciones subsanadas:</label>
+            <input type="text" name="fecha_compromiso_de_observaciones_subsanadas" id="id_fecha_compromiso_de_observaciones_subsanadas" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-4 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.fecha_autorizacion_de_documento.id_for_label }}">Fecha autorización documentación:</label>
+            <input type="text" name="fecha_autorizacion_de_documento" id="id_fecha_autorizacion_de_documento" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-3 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.finalizacion.id_for_label }}">Finalización:</label>
+            <input type="text" name="finalizacion" id="id_finalizacion" class="form-control datepicker">
+          </div>
+
+          <div class="col-md-9 form-group form-check-inline width-label">
+            <label for="{{ registro_Llamadas_Form.observaciones_generales.id_for_label }}">Observaciones generales:</label>
+            <input type="text" name="observaciones_generales" id="id_observaciones_generales" class="form-control" required>
+          </div>
+
         </div>
-    </div>
+      </form>
 
-    
+      <!-- Tabla de registros -->
+      <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped align-middle text-center">
+          <thead class="table-dark">
+            <tr>
+        <th>Llamada</th>
+        <th>Fecha de Llamada</th>
+        <th>Hora de Llamada</th>
+        <th>Acuerdos de Compromiso</th>
+        <th>Fecha Comprometida</th>
+        <th>Fecha respuesta email</th>
+        <th>Fecha revisión de correcciones</th>
+        <th>Fecha envío de correcciones</th>
+        <th>Fecha aprobación fichas corregidas</th>
+        <th>Fecha compromiso envío info</th>
+        <th>Fecha compromiso observaciones subsanadas</th>
+        <th>Fecha autorización documentación</th>
+        <th>Finalización</th>
+        <th>Observaciones generales</th>
+      </tr>
+          </thead>
+          <tbody>
+            {% for registro in ficha.registro_llamadas.all %}
+           <tr>
+        <td>{{ registro.NumLlamada|default_if_none:"" }}</td>
+        <td>{{ registro.fecha_llamada|date:"d/m/Y" }}</td>
+        <td>{{ registro.hora_llamada|default_if_none:"" }}</td>
+        <td>{{ registro.acuerdos_compromisos|default_if_none:"" }}</td>
+        <td>{{ registro.fecha_comprometida|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_respuesta_email|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_revision_correcciones|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_envio_correccion|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_aprobacion_fichas_corregidas|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_compromiso_de_envio_de_informacion|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_compromiso_de_observaciones_subsanadas|date:"d/m/Y" }}</td>
+        <td>{{ registro.fecha_autorizacion_de_documento|date:"d/m/Y" }}</td>
+        <td>{{ registro.finalizacion|date:"d/m/Y" }}</td>
+        <td>{{ registro.observaciones_generales|default_if_none:"" }}</td>
+      </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7">No hay registros de llamadas.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
     </div>
+  </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    $(document).ready(function() {
-        $('#id_NumLlamada').on('blur', function() {
-            var numLlamada = $(this).val();
-            var fichaID = '{{ ficha.id }}';
-            $.ajax({
-                url: '{% url "verificar_num_llamada" %}',
-                data: {
-                    'num_llamada': numLlamada,
-                    'ficha_id': fichaID
-                },
-                success: function(data) {
-                    if (data.exists) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Número de llamada duplicado',
-                            text: 'El número de llamada ya existe.',
-                        });
-                        $('#id_NumLlamada').val('');
-                    }
+$(document).ready(function() {
+    // Inicializa Flatpickr
+    flatpickr(".datepicker", { dateFormat: "d/m/Y", allowInput: true });
+    flatpickr(".timepicker", { enableTime: true, noCalendar: true, dateFormat: "H:i", time_24hr: true });
+
+    // Configura CSRF para AJAX
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
-            });
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Guardar Registro de Llamadas vía AJAX
+    $("#guardarRegistroLlamada").click(function() {
+        var formData = $("#registroLlamadaForm").serialize();
+
+        $.ajax({
+            url: "{% url 'guardar_registro_llamada' ficha_id=ficha.id %}",
+            type: "POST",
+            data: formData,
+            headers: {'X-CSRFToken': csrftoken},
+            success: function(response) {
+                if (response.success) {
+                    // Recarga solo la tabla
+                    $("#tablaRegistrosLlamadas").load("{% url 'task_detail_llamadas' ficha_id=ficha.id %} #tablaRegistrosLlamadas");
+
+                    // Reinicia el formulario
+                    $("#registroLlamadaForm")[0].reset();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Guardado exitoso',
+                        text: 'La llamada se ha registrado correctamente.',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.error || 'Hubo un error al guardar.'
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Se produjo un error al enviar el formulario.'
+                });
+            }
         });
     });
-    </script>
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializa Flatpickr en todos los campos de fecha
+    flatpickr(".datepicker", { dateFormat: "d/m/Y", allowInput: true });
+    flatpickr(".timepicker", { enableTime: true, noCalendar: true, dateFormat: "H:i", time_24hr: true });
+});
+</script>

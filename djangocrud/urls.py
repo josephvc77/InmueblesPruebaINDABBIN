@@ -36,7 +36,8 @@ urlpatterns = [
 
 
     path('llamadas_inmuebles/', views.llamadas_inmuebles, name='llamadas_inmuebles'),
-    path('Inmueble/<int:ficha_id>/', views.task_detail_llamadas, name='task_detail_llamadas'),
+    path('create_DatosLlamadasInmueble/', views.create_DatosLlamadasInmueble, name='create_DatosLlamadasInmueble'),
+    path('Inmueble/<int:ficha_id>/guardar-registro-llamada/', views.guardar_registro_llamada, name='guardar_registro_llamada'),
     path('create_DatosLlamadasInmueble/', views.create_DatosLlamadasInmueble, name='create_DatosLlamadasInmueble'),
 
     
@@ -101,14 +102,15 @@ urlpatterns = [
     
     path('generate_pdfIMP/<int:task_id>/', views.generate_pdfIMP, name='generate_pdfIMP'),
 
-    path('export_tasks_to_excelIMP/', views.export_tasks_to_excelIMP, name='export_tasks_to_excelIMP'),
-    path('export_Llamadas_to_excelIMP/', views.export_Llamadas_to_excelIMP, name='export_Llamadas_to_excelIMP'),
-    path('verificar-num-llamada/', views.verificar_num_llamada, name='verificar_num_llamada'),
-   
-    
-    
 
-    
+    # Llamadas
+    path("tareas/", views.tareas_list, name="tareas_list"),
+    path("tareas/<int:pk>/", views.task_detail_llamadas, name="task_detail_llamadas"),
+    path("tareas/<int:pk>/add-llamada/", views.registro_llamada, name="registro_llamada"),
+    path("tareas/crear/", views.crear_tarea, name="crear_tarea"),
+    path('tareas/exportar/', views.export_Llamadas_to_excelIMP, name='export_llamadas_excel'),
+
+
     path('importar/', views.importar, name='importar'),
     path('importar_Llamadas/', views.importar_Llamadas, name='importar_Llamadas'),
     path('contacto/', views.contacto, name='contacto'),

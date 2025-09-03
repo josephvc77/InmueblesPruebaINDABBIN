@@ -75,23 +75,31 @@ class TaskCreateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(TaskCreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-        # Agregar clases CSS a todos los campos automáticamente
         for field_name, field in self.fields.items():
             existing_classes = field.widget.attrs.get('class', '')
             field.widget.attrs['class'] = f'{existing_classes} form-control'.strip()
 
-        # Oculta el campo 'assigned_to' si el usuario no es superusuario
+        # Flag para template
+        self.assigned_to_visible = True
         if not user or not user.is_superuser:
             self.fields['assigned_to'].widget = forms.HiddenInput()
+            self.assigned_to_visible = False
 
             
 class MensajeFormIMP(forms.ModelForm):
+    enviar_a_imp = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        label='Enviar A',
+        required=False,  # <- Esto permite que no sea obligatorio
+        widget=forms.Select(attrs={'class': 'form-control shadow-sm'})
+    )
+
     class Meta:
         model = MensajeIMP
-        fields = ['asunto', 'mensaje', 'enviar_a_imp', 'estado', 'enlace']  # Elimina 'enviado_por' ya que se llenará automáticamente
-    enviar_a_imp = forms.ModelChoiceField(queryset=CustomUser.objects.all(), label='Enviar A',widget=forms.Select(attrs={'class': 'form-control shadow-sm'}))
+        fields = ['asunto', 'mensaje', 'enviar_a_imp', 'estado', 'enlace']
+
     
 
 class PasswordConfirmationForm(forms.Form):
@@ -365,13 +373,83 @@ class CreateDatosLlamadasForm(forms.ModelForm):
             field.widget.attrs['class'] = f'{existing_classes} form-control'.strip()
 
 
-class DatosLlamadaForm(forms.ModelForm):
-    class Meta: 
+from django import forms
+from .models import DatosLlamadasInmuebles
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class DatosLlamadasInmueblesForm(forms.ModelForm):
+    class Meta:
         model = DatosLlamadasInmuebles
         fields = [
-            'NombreInmueble', 'rfi', 'estado', 'deadline', 'prioridad', 'assigned_task', 'edo', 'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel', 'ext', 'celular', 'email', 'estatus_llamada', 'ur', 'observaciones', 
+            'NombreInmueble', 'rfi', 'estado', 'deadline', 'prioridad', 'assigned_task',
+            'edo', 'nd', 'nombre_del_contacto', 'puesto_o_cargo', 'tel_plantel',
+            'ext', 'celular', 'email', 'estatus_llamada', 'ur', 'observaciones'
         ]
-class registroLlamadaForm(forms.ModelForm):
+        widgets = {
+            'NombreInmueble': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del inmueble'}),
+            'rfi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'RFI'}),
+            'estado': forms.Select(attrs={'class': 'form-select'}),
+            'deadline': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'prioridad': forms.Select(attrs={'class': 'form-select'}),
+            'assigned_task': forms.Select(attrs={'class': 'form-select'}),
+            'edo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Estado'}),
+            'nd': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ND'}),
+            'nombre_del_contacto': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del contacto'}),
+            'puesto_o_cargo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Puesto o cargo'}),
+            'tel_plantel': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono del plantel'}),
+            'ext': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Extensión'}),
+            'celular': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Celular'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
+            'estatus_llamada': forms.Select(attrs={'class': 'form-select'}),
+            'ur': forms.Select(attrs={'class': 'form-select'}),
+            'observaciones': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Observaciones'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Campos obligatorios
+        self.fields['NombreInmueble'].required = True
+        self.fields['estado'].required = True
+
+
+# forms.py
+from django import forms
+from .models import RegistroLlamadas
+
+class RegistroLlamadasForm(forms.ModelForm):
     class Meta:
         model = RegistroLlamadas
-        fields = ['fecha_llamada', 'hora_llamada', 'acuerdos_compromisos', 'fecha_comprometida', 'fecha_respuesta_email', 'fecha_revision_correcciones', 'fecha_envio_correccion', 'fecha_aprobacion_fichas_corregidas', 'observaciones_generales', 'NumLlamada', 'fecha_compromiso_de_envio_de_informacion', 'fecha_compromiso_de_observaciones_subsanadas', 'fecha_autorizacion_de_documento', 'finalizacion']
+        fields = [
+            "NumLlamada",
+            "fecha_llamada",
+            "hora_llamada",
+            "acuerdos_compromisos",
+            "fecha_comprometida",
+            "fecha_respuesta_email",
+            "fecha_revision_correcciones",
+            "fecha_envio_correccion",
+            "fecha_aprobacion_fichas_corregidas",
+            "observaciones_generales",
+            "fecha_compromiso_de_envio_de_informacion",
+            "fecha_compromiso_de_observaciones_subsanadas",
+            "fecha_autorizacion_de_documento",
+            "finalizacion",
+        ]
+        widgets = {
+            "fecha_llamada": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "hora_llamada": forms.TimeInput(attrs={"type": "time", "class": "form-control"}),
+            "fecha_comprometida": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_respuesta_email": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_revision_correcciones": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_envio_correccion": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_aprobacion_fichas_corregidas": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_compromiso_de_envio_de_informacion": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_compromiso_de_observaciones_subsanadas": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "fecha_autorizacion_de_documento": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "finalizacion": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "NumLlamada": forms.TextInput(attrs={"class": "form-control"}),
+            "acuerdos_compromisos": forms.TextInput(attrs={"class": "form-control"}),
+            "observaciones_generales": forms.TextInput(attrs={"class": "form-control"}),
+        }

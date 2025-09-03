@@ -1,88 +1,79 @@
 {% extends 'base.html' %}
 {% block titulo %}Crear Alta{% endblock %}
-{% block content %}
 
+{% block content %}
 <div class="container mt-5">
   <div class="card shadow-sm">
-    <div class="card-header" style="background-color: #611232; color: #A57F2C;">
-      <h4 class="mb-0" style="color: #fff;">
+    <div class="card-header text-white">
+      <h4 class="mb-0">
         <i class="bi bi-file-earmark-plus-fill me-2"></i> Crear Alta
       </h4>
     </div>
 
     <div class="card-body">
       {% if error %}
-        <div class="alert alert-danger text-center">{{ error }}</div>
+      <div class="alert alert-danger text-center">{{ error }}</div>
       {% endif %}
 
- <form action="{% url 'create_task' %}" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
+      <form action="{% url 'create_task' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-  <div class="row">
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.NombreInmueble.id_for_label }}" class="form-label fw-bold">Nombre del Inmueble:</label>
-      {{ form.NombreInmueble }}
-    </div>
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.NombreInmueble.id_for_label }}" class="form-label fw-bold">Nombre del Inmueble:</label>
+            {{ form.NombreInmueble }}
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.Sector.id_for_label }}" class="form-label fw-bold">Sector:</label>
+            {{ form.Sector }}
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.prioridad.id_for_label }}" class="form-label fw-bold">Prioridad:</label>
+            {{ form.prioridad }}
+          </div>
+        </div>
 
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.Sector.id_for_label }}" class="form-label fw-bold">Sector:</label>
-      {{ form.Sector }}
-    </div>
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.Nombre_de_la_institucion_que_administra_el_inmueble.id_for_label }}"
+              class="form-label fw-bold">
+              Institución que administra:
+            </label>
+            {{ form.Nombre_de_la_institucion_que_administra_el_inmueble }}
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.causa_alta.id_for_label }}" class="form-label fw-bold">Causa Alta:</label>
+            {{ form.causa_alta }}
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.deadline.id_for_label }}" class="form-label fw-bold">Fecha límite:</label>
+            {{ form.deadline }}
+          </div>
+        </div>
 
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.prioridad.id_for_label }}" class="form-label fw-bold">Prioridad:</label>
-      {{ form.prioridad }}
-    </div>
-  </div>
+        <div class="row">
+          {% if form.assigned_to_visible %}
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.assigned_to.id_for_label }}" class="form-label fw-bold">Asignar a:</label>
+            {{ form.assigned_to }}
+          </div>
+          {% else %}
+          <input type="hidden" name="{{ form.assigned_to.name }}" value="">
+          <div class="mb-3 col-md-4 text-muted">
+            No tienes permisos para asignar tareas a otros usuarios.
+          </div>
+          {% endif %}
 
-  <div class="row">
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.Nombre_de_la_institucion_que_administra_el_inmueble.id_for_label }}" class="form-label fw-bold">
-        Institución que administra:
-      </label>
-      {{ form.Nombre_de_la_institucion_que_administra_el_inmueble }}
-    </div>
-
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.causa_alta.id_for_label }}" class="form-label fw-bold">Causa Alta:</label>
-      {{ form.causa_alta }}
-    </div>
-
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.deadline.id_for_label }}" class="form-label fw-bold">Fecha límite:</label>
-      <div class="input-group">
-        <input type="text" id="{{ form.deadline.id_for_label }}" value="{{ form.deadline.value|date:"d/m/Y" }}"
-          name="{{ form.deadline.name }}" class="form-control datepicker" placeholder="dd/mm/aaaa">
-        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.assigned_to.id_for_label }}" class="form-label fw-bold">Asignar a:</label>
-      {{ form.assigned_to }}
-      {% if not request.user.is_superuser %}
-        <div class="form-text text-muted">No tienes permisos para asignar tareas a otros usuarios.</div>
-      {% endif %}
-    </div>
-
-    <div class="mb-3 col-md-4">
-      <label for="{{ form.creado.id_for_label }}" class="form-label fw-bold">Fecha de Creación:</label>
-      <div class="input-group">
-        <input type="text" id="{{ form.creado.id_for_label }}" name="{{ form.creado.name }}"
-          class="form-control datepicker" value="{{ form.creado.value|date:"d/m/Y" }}" placeholder="dd/mm/aaaa"
-          onchange="validateDate(this, 'creado')">
-        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-      </div>
-    </div>
-  </div>
-
+          <div class="mb-3 col-md-4">
+            <label for="{{ form.creado.id_for_label }}" class="form-label fw-bold">Fecha de Creación:</label>
+            {{ form.creado }}
+          </div>
+        </div>
 
         <div id="dateAlertDocumento" class="alert alert-danger d-none"></div>
 
-        <div class="text-end">
-          <button type="submit" class="btn btn-custom fw-bold">
+        <div class="text-end mt-3">
+          <button type="submit" class="btn btn-success fw-bold">
             <i class="fa fa-plus-circle me-1"></i> Generar Alta
           </button>
         </div>
@@ -91,53 +82,68 @@
   </div>
 </div>
 
-<!-- Estilos adicionales -->
+<!-- Estilos -->
 <style>
-  .btn-custom {
-    background-color: #A57F2C;
-    color: #611232;
-    font-weight: 600;
-    border: none;
-    transition: background-color 0.3s ease;
+  .card-header {
+    background-color: #611232;
+    color: #fff;
   }
 
-  .btn-custom:hover, .btn-custom:focus {
+  .btn-success {
+    background-color: #A57F2C;
+    border: none;
+  }
+
+  .btn-success:hover {
     background-color: #7f6a1b;
     color: #fff;
   }
 
-  .card-header h4 {
-    font-weight: 600;
-  }
-
-  .form-label {
-    color: #611232;
-  }
-
-  .input-group-text {
-    background-color: #f8f9fa;
+  .datepicker {
+    cursor: pointer;
   }
 </style>
 
+<!-- Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-  function validateDate(input, alertType) {
-    var selectedDate = new Date(input.value.split("/").reverse().join("-"));
-    var currentDate = new Date();
+  document.addEventListener('DOMContentLoaded', () => {
+    // Fecha límite: solo hoy o futuras
+    flatpickr("#{{ form.deadline.id_for_label }}", {
+      dateFormat: "d/m/Y",
+      minDate: "today", // no permite fechas pasadas
+      allowInput: true
+    });
 
-    if (selectedDate > currentDate) {
+    // Fecha de creación: solo hoy
+    flatpickr("#{{ form.creado.id_for_label }}", {
+      dateFormat: "d/m/Y",
+      defaultDate: "today",
+      allowInput: false // no permite modificar
+    });
+  });
+
+  // Validación adicional para fecha límite (opcional)
+  function validateDeadline(input) {
+    var val = input.value;
+    if (!val) return;
+    var parts = val.split("/");
+    var selectedDate = new Date(parts[2], parts[1]-1, parts[0]);
+    var today = new Date();
+    today.setHours(0,0,0,0);
+    if (selectedDate < today) {
       var alert = document.getElementById('dateAlertDocumento');
-      alert.textContent = 'La fecha no puede ser posterior a la fecha actual.';
+      alert.textContent = 'La fecha límite no puede ser pasada.';
       alert.classList.remove('d-none');
       alert.classList.add('position-fixed', 'top-0', 'end-0', 'm-3', 'shadow');
-
       input.value = '';
-      setTimeout(() => {
-        alert.classList.add('d-none');
-      }, 5000);
-    } else {
-      document.getElementById('dateAlertDocumento').classList.add('d-none');
+      setTimeout(() => alert.classList.add('d-none'), 5000);
     }
   }
-</script>
 
+  document.querySelector("#{{ form.deadline.id_for_label }}").addEventListener('change', function() {
+    validateDeadline(this);
+  });
+</script>
 {% endblock %}

@@ -13,7 +13,7 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import BajaForm, ColindanciasFormIMP, CreateDatosLlamadasForm, DatosAvaluosFormIMP, DatosLlamadaForm, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionFormIMP, UserCreateForm, UserEditForm, registroLlamadaForm
+from .forms import BajaForm, ColindanciasFormIMP, CreateDatosLlamadasForm, DatosAvaluosFormIMP, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionFormIMP, UserCreateForm, UserEditForm
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 from .forms import TaskCreateForm
@@ -65,11 +65,15 @@ def edit_user(request, id):
     else:
         form = UserEditForm(instance=user)
 
-    return render(request, 'Adm_Users/edit_user.html', {'form': form})
+        mensajes = MensajeIMP.objects.filter(
+            Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+        ).order_by("-fecha_envio")
+
+    return render(request, 'Adm_Users/edit_user.html', {'form': form, 'mensajes': mensajes})
 
 
 
-
+@login_required
 def add_user(request):
     if request.method == 'POST':
         form = UserCreateForm(request.POST)
@@ -82,7 +86,11 @@ def add_user(request):
     else:
         form = UserCreateForm()
 
-    return render(request, 'Adm_Users/add_user.html', {'form': form})
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
+
+    return render(request, 'Adm_Users/add_user.html', {'form': form, 'mensajes': mensajes})
 
 def signup(request):
     if request.method == 'GET':
@@ -106,22 +114,23 @@ def signup(request):
 from django.contrib.auth.decorators import login_required
 
 
+from django.contrib import messages
+
 def signin(request):
     if request.method == 'GET':
         return render(request, 'signin.html', {
-            'form': AuthenticationForm
+            'form': AuthenticationForm()
         })
     else:
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            # Enviar solo mensaje de error si la autenticación falla
-            messages.error(request, 'Usuario o contraseña incorrectos.')
+            # Mensaje con etiqueta específica
+            messages.add_message(request, messages.ERROR, 'Usuario o contraseña incorrectos.', extra_tags='login-error')
             return render(request, 'signin.html', {
-                'form': AuthenticationForm,
+                'form': AuthenticationForm(),
             })
         else:
-            # Enviar mensaje de éxito y redirigir si la autenticación es correcta
             messages.success(request, 'Inicio de sesión exitoso.')
             login(request, user)
             return redirect('principal')
@@ -169,7 +178,9 @@ def Inmuebles(request):
     request.session['ur'] = ur
     request.session['ordenar'] = orden
 
-    mensajes = MensajeIMP.objects.all()
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
 
     # Obtener los valores de búsqueda y filtros de la sesión
     search_query = request.session.get('search_query', '')
@@ -240,20 +251,29 @@ def Inmuebles(request):
 
 
 
+from django.db.models import Q
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def principal(request):
-    mensajes = MensajeIMP.objects.all()
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
+
     return render(request, 'home.html', {
         'mensajes': mensajes,
-    } )
+    })
+
 
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def Inmuebles_en_Baja(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
-    mensajes = MensajeIMP.objects.all()
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
 
     inmuebles_list = Inmueble.objects.filter(
         Q(NombreInmueble__icontains=search_query) |
@@ -302,13 +322,16 @@ def Inmuebles_en_Baja(request):
     })
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def Inmuebles_Terminados(request):
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     ur = request.GET.get('ur', '')
     orden = request.GET.get('ordenar', '')
-    
-    mensajes = MensajeIMP.objects.all()
+
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
 
     # Filtra los inmuebles completados y aplica los filtros de búsqueda
     inmuebles_list = Inmueble.objects.filter(
@@ -361,6 +384,7 @@ def Inmuebles_Terminados(request):
     })
     
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def bajas_importados(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if task.estado == 'Activo':
@@ -374,6 +398,7 @@ def bajas_importados(request, task_id):
             form = BajaForm()
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def complete_task_importados(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -386,6 +411,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import TaskCreateForm
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def create_task(request):
     if request.method == 'POST':
         form = TaskCreateForm(request.POST, user=request.user)
@@ -402,7 +428,12 @@ def create_task(request):
             return redirect('Inmuebles')
     else:
         form = TaskCreateForm(user=request.user)
-    context = {'form': form}
+
+    mensajes = MensajeIMP.objects.filter(
+            Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+        ).order_by("-fecha_envio")
+
+    context = {'form': form, 'mensajes': mensajes}
     return render(request, 'create_task.html', context)
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -411,14 +442,19 @@ from .forms import InmuebleForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages 
-
-
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def Detalle_inmueble(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
-    
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
+
+    errores = {}  # Diccionario para enviar errores al template
+    todo_valido = True  # Bandera para saber si todo se guardó sin errores
+
     if request.method == 'POST':
+        # Inicializa todos los formularios
         inmueble = InmuebleForm(request.POST, request.FILES, instance=task)
         edificio_verde_form = Edificio_VerdeFormIMP(request.POST)
         documento_propiedad_form = DocumentoPropiedadFormIMP(request.POST, request.FILES)
@@ -431,114 +467,78 @@ def Detalle_inmueble(request, task_id):
         tramite_disposicion_form = TramitesDisposicionFormIMP(request.POST)
         edificacion_form = EdificacionFormIMP(request.POST)
         mensaje_form = MensajeFormIMP(request.POST, prefix='mensaje')
-        
-        if documento_propiedad_form.is_valid():
-            if any(documento_propiedad_form.cleaned_data.values()):
-                documento_propiedad = documento_propiedad_form.save(commit=False)
-                documento_propiedad.task = task
-                documento_propiedad.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
 
-        if datos_avaluos_form.is_valid():
-            if any(datos_avaluos_form.cleaned_data.values()):
-                datos_avaluo = datos_avaluos_form.save(commit=False)
-                datos_avaluo.task = task
-                datos_avaluo.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
+        # Helper: guarda si tiene datos válidos y recolecta errores
+        def save_if_valid(form, nombre):
+            nonlocal todo_valido
+            if form.is_valid() and any(form.cleaned_data.values()):
+                obj = form.save(commit=False)
+                obj.task = task
+                obj.save()
+                messages.success(request, f"{nombre} guardado correctamente.")
+            elif not form.is_valid() and any(form.data.values()):
+                errores[nombre] = form.errors
+                todo_valido = False
 
-        if mensaje_form.is_valid():
-            mensaje_form.instance.enviado_por_imp = request.user
-            if any(mensaje_form.cleaned_data.values()):
-                mensaje = mensaje_form.save(commit=False)
-                mensaje.task = task
-                mensaje.save()
+        # Procesar cada form
+        save_if_valid(documento_propiedad_form, "Documento de Propiedad")
+        save_if_valid(datos_avaluos_form, "Datos de Avalúos")
+        save_if_valid(ocupaciones_form, "Ocupaciones")
+        save_if_valid(documento_ocupacion_form, "Documento Ocupación")
+        save_if_valid(instituciones_ocupantes_form, "Instituciones Ocupantes")
+        save_if_valid(datos_terceros_form, "Datos de Terceros")
+        save_if_valid(edificio_verde_form, "Edificio Verde")
+        save_if_valid(colindancia_form, "Colindancias")
+        save_if_valid(tramite_disposicion_form, "Trámite de Disposición")
+        save_if_valid(edificacion_form, "Edificación")
 
-                asunto = f"Nueva Tarea: {mensaje_form.cleaned_data['asunto']}"
-                mensaje_texto = mensaje_form.cleaned_data['mensaje']
-                enviar_a_email = mensaje_form.cleaned_data['enviar_a_imp']
+        # Procesar mensaje con lógica especial
+        if mensaje_form.is_valid() and any(mensaje_form.cleaned_data.values()):
+            mensaje = mensaje_form.save(commit=False)
+            mensaje.task = task
+            mensaje.enviado_por_imp = request.user
+            mensaje.save()
 
+            asunto = mensaje_form.cleaned_data.get('asunto') or "Nueva Tarea"
+            mensaje_texto = mensaje_form.cleaned_data.get('mensaje') or ""
+            enviar_a_email = mensaje_form.cleaned_data.get('enviar_a_imp')
+
+            if enviar_a_email:
                 html_message = render_to_string('extends_importados/correo_template.html', {
                     'asunto': asunto,
                     'mensaje_texto': mensaje_texto,
                 })
-
                 try:
                     send_mail(
                         subject=asunto,
                         message=mensaje_texto,
                         from_email=settings.EMAIL_HOST_USER,
-                        recipient_list=[enviar_a_email],
+                        recipient_list=[enviar_a_email.email],
                         html_message=html_message,
                         fail_silently=False,
                     )
-                    messages.success(request, "El mensaje se envió correctamente por correo electrónico.")
+                    messages.success(request, "El mensaje se envió correctamente por correo.")
                 except Exception as e:
-                    messages.error(request, f"Error al enviar el correo: {e}")
-                return redirect('Detalle_inmueble', task_id=task_id)
+                    errores["Mensaje"] = f"Error al enviar correo: {e}"
+                    todo_valido = False
+        elif not mensaje_form.is_valid() and any(mensaje_form.data.values()):
+            errores["Mensaje"] = mensaje_form.errors
+            todo_valido = False
 
-        if ocupaciones_form.is_valid():
-            if any(ocupaciones_form.cleaned_data.values()):
-                ocupaciones = ocupaciones_form.save(commit=False)
-                ocupaciones.task = task
-                ocupaciones.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if documento_ocupacion_form.is_valid():
-            if any(documento_ocupacion_form.cleaned_data.values()):
-                documento_ocupacion = documento_ocupacion_form.save(commit=False)
-                documento_ocupacion.task = task
-                documento_ocupacion.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if instituciones_ocupantes_form.is_valid():
-            if any(instituciones_ocupantes_form.cleaned_data.values()):
-                instituciones_ocupantes = instituciones_ocupantes_form.save(commit=False)
-                instituciones_ocupantes.task = task
-                instituciones_ocupantes.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if datos_terceros_form.is_valid():
-            if any(datos_terceros_form.cleaned_data.values()):
-                datos_terceros = datos_terceros_form.save(commit=False)
-                datos_terceros.task = task
-                datos_terceros.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if edificio_verde_form.is_valid():
-            if any(edificio_verde_form.cleaned_data.values()):
-                edificio_verde = edificio_verde_form.save(commit=False)
-                edificio_verde.task = task
-                edificio_verde.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if colindancia_form.is_valid():
-            if any(colindancia_form.cleaned_data.values()):
-                colindancia = colindancia_form.save(commit=False)
-                colindancia.task = task
-                colindancia.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if tramite_disposicion_form.is_valid():
-            if any(tramite_disposicion_form.cleaned_data.values()):
-                tramite_disposicion = tramite_disposicion_form.save(commit=False)
-                tramite_disposicion.task = task
-                tramite_disposicion.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-
-        if edificacion_form.is_valid():
-            if any(edificacion_form.cleaned_data.values()):
-                edificacion = edificacion_form.save(commit=False)
-                edificacion.task = task
-                edificacion.save()
-                return redirect('Detalle_inmueble', task_id=task_id)
-        
+        # Procesar inmueble principal
         if inmueble.is_valid():
             inmueble.save()
-            return redirect('Inmuebles')
+            messages.success(request, "Inmueble actualizado correctamente.")
         else:
-            print(inmueble.errors)         
-    
+            errores["Inmueble"] = inmueble.errors
+            todo_valido = False
+
+        # Si todo fue válido, redirige a la lista de inmuebles
+        if todo_valido:
+            return redirect('Inmuebles')  # <-- Redirige aquí si todo se guardó
+
     else:
+        # GET request: inicializamos los formularios vacíos
         inmueble = InmuebleForm(instance=task)
         documento_propiedad_form = DocumentoPropiedadFormIMP()
         datos_avaluos_form = DatosAvaluosFormIMP()
@@ -551,7 +551,7 @@ def Detalle_inmueble(request, task_id):
         tramite_disposicion_form = TramitesDisposicionFormIMP()
         edificacion_form = EdificacionFormIMP()
         mensaje_form = MensajeFormIMP(prefix='mensaje') 
-    
+
     return render(request, 'task_detail_importados.html', {
         'task': task,
         'inmueble': inmueble,
@@ -567,7 +567,10 @@ def Detalle_inmueble(request, task_id):
         'colindancia_form': colindancia_form,
         'tramite_disposicion_form': tramite_disposicion_form,
         'mensaje_form': mensaje_form,
+        'mensajes': mensajes,
+        'errores': errores,  # Pasamos los errores al template
     })
+
     
 @login_required
 def completar_mensajeIMP(request, mensaje_id):
@@ -589,6 +592,7 @@ from django.urls import reverse
 
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def agregar_dictamen_estructural(request, task_id):
     inmueble = get_object_or_404(Inmueble, pk=task_id)
 
@@ -616,6 +620,7 @@ def agregar_dictamen_estructural(request, task_id):
 
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def agregar_folio_real(request, task_id):
     inmueble = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -642,6 +647,7 @@ def agregar_folio_real(request, task_id):
     return render(request, 'add/add_folios_reales.html', {'inmueble': inmueble, 'folio_real_form': folio_real_form})
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def agregar_no_plano(request, task_id):
     inmueble = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -669,6 +675,7 @@ def agregar_no_plano(request, task_id):
 from django.http import JsonResponse
 
 @login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def agregar_expediente_CEDOC(request, task_id):
     inmueble = get_object_or_404(Inmueble, pk=task_id)
 
@@ -698,7 +705,8 @@ def agregar_expediente_CEDOC(request, task_id):
 
 
 
-
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def guardar_documento_ocupacionIMP(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -717,7 +725,7 @@ def guardar_documento_ocupacionIMP(request, task_id):
         return JsonResponse({"success": False})
     
 
-
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def guardar_instituciones_ocupantesIMP(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -735,7 +743,7 @@ def guardar_instituciones_ocupantesIMP(request, task_id):
     else:
         return JsonResponse({"success": False})
 
-
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def guardar_datos_tercerosIMP(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -752,8 +760,9 @@ def guardar_datos_tercerosIMP(request, task_id):
             return JsonResponse({"success": False})
     else:
         return JsonResponse({"success": False})
-    
 
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def guardar_docPropiedadIMP(request, task_id):
     task = get_object_or_404(Inmueble, pk=task_id)
     if request.method == 'POST':
@@ -1678,32 +1687,50 @@ from tablib import Dataset
 
 from tablib import Dataset
 from django.contrib import messages
+from django.http import HttpResponseForbidden
+
+def staff_or_superuser_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not (request.user.is_staff or request.user.is_superuser):
+            return HttpResponseForbidden("No tienes permisos para acceder a esta vista.")
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
 @login_required
+@staff_or_superuser_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def importar(request):
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
+    errores = []
     if request.method == 'POST':
         inmueble_resource = InmuebleResource()
         dataset = Dataset()
         
         archivo = request.FILES['archivo']
 
-        if archivo.name.endswith('.csv'):
-            imported_data = dataset.load(archivo.read().decode('utf-8'), format='csv')
-        elif archivo.name.endswith(('xls', 'xlsx')):
+        if archivo.name.endswith(('xls', 'xlsx')):
             imported_data = dataset.load(archivo.read(), format='xlsx')
         else:
-            messages.error(request, 'El archivo no es ni un archivo CSV ni un archivo Excel válido.')
+            messages.error(request, 'El archivo debe ser un Excel válido (.xls o .xlsx).')
             return render(request, 'importar.html')
 
         result = inmueble_resource.import_data(dataset, dry_run=True)
-        
+
         if not result.has_errors():
-            # Realiza la importación real
+            # Importación real
             result = inmueble_resource.import_data(dataset, dry_run=False)
             messages.success(request, 'Los datos se importaron con éxito.')
         else:
             messages.error(request, 'Se encontraron errores en la importación.')
+            for error in result.row_errors():
+                row_index, row_errors = error
+                errores.append(f"Fila {row_index + 1}: {', '.join([str(e.error) for e in row_errors])}")
 
-    return render(request, 'importar.html')
+    return render(request, 'importar.html', {"errores": errores, "mensajes": mensajes})
+
 
 from tablib import Dataset
 from django.contrib import messages
@@ -1799,13 +1826,19 @@ def create_DatosLlamadasInmueble(request):
             return redirect('llamadas_inmuebles')
     else:
         form = CreateDatosLlamadasForm(user=request.user)
-    context = {'form': form}
+        mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
+    context = {'form': form, 'mensajes': mensajes}
     return render(request, 'create_llamada.html', context)
 
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def llamadas_inmuebles(request):
+    mensajes = MensajeIMP.objects.filter(
+        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
+    ).order_by("-fecha_envio")
     search_query = request.GET.get('q', '')
     prioridad = request.GET.get('prioridad', '')
     ur = request.GET.get('ur', '')
@@ -1871,43 +1904,46 @@ def llamadas_inmuebles(request):
         'ur': ur,
         'orden': orden,
         'ur_opciones': ur_opciones,
+        'mensajes': mensajes,
     })
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
+from django.contrib import messages
+from django.db.models import Q
+
+from .models import DatosLlamadasInmuebles, RegistroLlamadas, MensajeIMP
+
+
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def task_detail_llamadas(request, ficha_id):
+def guardar_registro_llamada(request, ficha_id):
+    """
+    Vista AJAX para guardar un registro de llamada sin recargar la página.
+    Devuelve JsonResponse con success=True/False.
+    """
     ficha = get_object_or_404(DatosLlamadasInmuebles, pk=ficha_id)
-    
+
     if request.method == 'POST':
-        llamada = DatosLlamadaForm(request.POST, request.FILES, instance=ficha)
-        registro_Llamadas_Form = registroLlamadaForm(request.POST)
+        registro_form = registroLlamadaForm(request.POST)
 
-        if registro_Llamadas_Form.is_valid():
-            num_llamada = registro_Llamadas_Form.cleaned_data.get('NumLlamada')
+        if registro_form.is_valid():
+            num_llamada = registro_form.cleaned_data.get('NumLlamada')
+            # Validación de duplicado
             if RegistroLlamadas.objects.filter(NumLlamada=num_llamada, ficha=ficha).exists():
-                registro_Llamadas_Form.add_error('NumLlamada', 'El número de llamada ya existe.')
-            else:
-                registroLlamadas = registro_Llamadas_Form.save(commit=False)
-                registroLlamadas.ficha = ficha
-                registroLlamadas.save()
-                return redirect('task_detail_llamadas', ficha_id=ficha_id)
+                return JsonResponse({"success": False, "error": "El número de llamada ya existe."})
 
-        if llamada.is_valid():
-            llamada.save()
-            return redirect('llamadas_inmuebles')
-        
-    else:
-        llamada = DatosLlamadaForm(instance=ficha)
-        registro_Llamadas_Form = registroLlamadaForm()
+            # Guardado del registro
+            registro_llamada = registro_form.save(commit=False)
+            registro_llamada.ficha = ficha
+            registro_llamada.save()
+            return JsonResponse({"success": True})
 
-    mensajes = MensajeIMP.objects.all()
-   
-    return render(request, 'detail_llamadas.html', {
-        'ficha': ficha,
-        'llamada': llamada,
-        'registro_Llamadas_Form': registro_Llamadas_Form,
-        'mensajes': mensajes,
-    })
+        return JsonResponse({"success": False, "error": "Por favor, corrige los errores en el formulario."})
+
+    return JsonResponse({"success": False, "error": "Método no permitido"})
+
 
 
 def verificar_num_llamada(request):
@@ -1916,92 +1952,191 @@ def verificar_num_llamada(request):
     exists = RegistroLlamadas.objects.filter(NumLlamada=num_llamada, ficha_id=ficha_id).exists()
     return JsonResponse({'exists': exists})
 
-
 import pandas as pd
+from datetime import datetime, date, time
 from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import NamedStyle
-from datetime import datetime
+from .models import DatosLlamadasInmuebles, RegistroLlamadas
 
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
 def export_Llamadas_to_excelIMP(request):
-    # Obtener todas las tareas del usuario logueado
+    # Obtener todas las tareas
     RLlamadas = DatosLlamadasInmuebles.objects.all()
 
-    # Crear una lista vacía para almacenar los datos de tareas y modelos relacionados
+    # Lista para almacenar los datos
     data = []
 
-    # Recorrer todas las tareas y obtener los datos necesarios
-    for llamadasPendientes in RLlamadas:
+    for tarea in RLlamadas:
         task_data = {
-            'rfi': llamadasPendientes.rfi,
-            'Nombre del Inmueble': llamadasPendientes.NombreInmueble,
-            'Estado': llamadasPendientes.estado,
-            'Prioridad': llamadasPendientes.prioridad,
-            'Tarea asignada': str(llamadasPendientes.assigned_task),  # Convertir a cadena
-            'Edo': llamadasPendientes.edo,
-            'nd': llamadasPendientes.nd,
-            'Nombre del contacto': llamadasPendientes.nombre_del_contacto,
-            'Puesto o Cargo': llamadasPendientes.puesto_o_cargo,
-            'Tel. del Plantel': llamadasPendientes.tel_plantel,
-            'Celular': llamadasPendientes.celular,
-            'Email': llamadasPendientes.email,
-            'Estatus de la llamada': llamadasPendientes.estatus_llamada,
-            'UR': llamadasPendientes.ur,
-            'Observaciones': llamadasPendientes.observaciones,
+            'RFI': tarea.rfi,
+            'Nombre del Inmueble': tarea.NombreInmueble,
+            'Estado': tarea.estado,
+            'Prioridad': tarea.prioridad,
+            'Tarea asignada': str(tarea.assigned_task) if tarea.assigned_task else '',
+            'Edo': tarea.edo,
+            'ND': tarea.nd,
+            'Nombre del contacto': tarea.nombre_del_contacto,
+            'Puesto o Cargo': tarea.puesto_o_cargo,
+            'Tel. del Plantel': tarea.tel_plantel,
+            'Ext': tarea.ext,
+            'Celular': tarea.celular,
+            'Email': tarea.email,
+            'Estatus de la llamada': tarea.estatus_llamada,
+            'UR': tarea.ur,
+            'Observaciones': tarea.observaciones,
         }
 
-        # Consulta para obtener la Edificacion relacionada con la tarea actual (si existe)
-        registros = RegistroLlamadas.objects.filter(ficha=llamadasPendientes)
-
-        # Expandir task_data con los registros de llamadas
-        for i, registro in enumerate(registros):
-            task_data[f'NumLlamada_{i+1}'] = registro.NumLlamada
-            task_data[f'Fecha de Llamada_{i+1}'] = registro.fecha_llamada
-            task_data[f'Hora de llamada_{i+1}'] = registro.hora_llamada
-            task_data[f'Acuerdos o compromisos_{i+1}'] = registro.acuerdos_compromisos
-            task_data[f'Fecha comprometida_{i+1}'] = registro.fecha_comprometida
-            task_data[f'Fecha de respuesta del email_{i+1}'] = registro.fecha_respuesta_email
-            task_data[f'Fecha de revision de correcciones_{i+1}'] = registro.fecha_revision_correcciones
-            task_data[f'Fecha de envio de correcciones_{i+1}'] = registro.fecha_envio_correccion
-            task_data[f'Fecha de aprobacion de fichas corregidas_{i+1}'] = registro.fecha_aprobacion_fichas_corregidas
-            task_data[f'Observaciones Generales_{i+1}'] = registro.observaciones_generales
+        # Agregar registros de llamadas relacionados
+        registros = RegistroLlamadas.objects.filter(ficha=tarea)
+        for i, reg in enumerate(registros):
+            task_data[f'NumLlamada_{i+1}'] = reg.NumLlamada
+            task_data[f'Fecha de Llamada_{i+1}'] = reg.fecha_llamada
+            task_data[f'Hora de Llamada_{i+1}'] = reg.hora_llamada
+            task_data[f'Acuerdos/Compromisos_{i+1}'] = reg.acuerdos_compromisos
+            task_data[f'Fecha Comprometida_{i+1}'] = reg.fecha_comprometida
+            task_data[f'Observaciones Generales_{i+1}'] = reg.observaciones_generales
 
         data.append(task_data)
 
-    # Comprobar la cantidad de datos recopilados
-    print(f"Total de registros recopilados: {len(data)}")
-
-    # Convertir la lista de datos a un DataFrame de Pandas
+    # Convertir a DataFrame
     df = pd.DataFrame(data)
 
-    # Crear un nuevo libro de trabajo de openpyxl
+    # Crear workbook
     wb = Workbook()
     ws = wb.active
     ws.title = 'Registros de Llamadas'
 
-    # Estilo de fecha y hora
+    # Crear estilos de fecha y hora
     date_style = NamedStyle(name='date_style', number_format='DD/MM/YYYY')
     time_style = NamedStyle(name='time_style', number_format='HH:MM:SS')
     datetime_style = NamedStyle(name='datetime_style', number_format='DD/MM/YYYY HH:MM:SS')
 
-    # Añadir los datos del DataFrame a la hoja
+    # Registrar estilos (evita error si ya existen)
+    for style in [date_style, time_style, datetime_style]:
+        if style.name not in wb.named_styles:
+            wb.add_named_style(style)
+
+    # Agregar filas al Excel
     for r_idx, row in enumerate(dataframe_to_rows(df, index=False, header=True), 1):
         ws.append(row)
-        for c_idx, cell in enumerate(row, 1):
+        for c_idx, cell_value in enumerate(row, 1):
             cell = ws.cell(row=r_idx, column=c_idx)
-            if isinstance(cell.value, datetime):
+            if isinstance(cell_value, datetime):
                 cell.style = datetime_style
-            elif isinstance(cell.value, date):
+            elif isinstance(cell_value, date):
                 cell.style = date_style
-            elif isinstance(cell.value, time):
+            elif isinstance(cell_value, time):
                 cell.style = time_style
 
-    # Crear la respuesta del archivo Excel
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # Crear respuesta HTTP
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
     response['Content-Disposition'] = 'attachment; filename="RegistrodeLlamadas.xlsx"'
 
-    # Guardar el libro en el response
     wb.save(response)
-
     return response
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import DatosLlamadasInmuebles, RegistroLlamadas
+from .forms import  RegistroLlamadasForm
+
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
+def tareas_list(request):
+    search_query = request.GET.get("q", "")
+    prioridad = request.GET.get("prioridad", "")
+    ur = request.GET.get("ur", "")
+    orden = request.GET.get("ordenar", "")
+
+    tareas = DatosLlamadasInmuebles.objects.all()
+
+    if search_query:
+        tareas = tareas.filter(
+            Q(NombreInmueble__icontains=search_query) |
+            Q(rfi__icontains=search_query) |
+            Q(edo__icontains=search_query) |
+            Q(nd__icontains=search_query)
+        )
+    if prioridad:
+        tareas = tareas.filter(prioridad=prioridad)
+    if ur:
+        tareas = tareas.filter(ur=ur)
+
+    if orden == "az":
+        tareas = tareas.order_by("NombreInmueble")
+    elif orden == "za":
+        tareas = tareas.order_by("-NombreInmueble")
+    elif orden == "nuevo":
+        tareas = tareas.order_by("-creado")
+    elif orden == "viejo":
+        tareas = tareas.order_by("creado")
+
+    paginator = Paginator(tareas, 10)
+    page = request.GET.get("page")
+    llamadas = paginator.get_page(page)
+
+    context = {
+        "llamadas": llamadas,
+        "search_query": search_query,
+        "prioridad": prioridad,
+        "ur": ur,
+        "orden": orden,
+        "ur_opciones": [op[0] for op in DatosLlamadasInmuebles.UR_CHOICES],
+    }
+    return render(request, "llamadas/tareas_list.html", context)
+
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
+def task_detail_llamadas(request, pk):
+    tarea = get_object_or_404(DatosLlamadasInmuebles, pk=pk)
+    registros = tarea.registro_llamadas.all().order_by("fecha_llamada")
+    context = {
+        "tarea": tarea,
+        "registros": registros,
+    }
+    return render(request, "llamadas/task_detail.html", context)
+
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
+def registro_llamada(request, pk):
+    tarea = get_object_or_404(DatosLlamadasInmuebles, pk=pk)
+    if request.method == "POST":
+        form = RegistroLlamadasForm(request.POST)
+        if form.is_valid():
+            llamada = form.save(commit=False)
+            llamada.ficha = tarea
+            llamada.save()
+            return redirect("task_detail_llamadas", pk=tarea.id)
+    else:
+        form = RegistroLlamadasForm()
+
+    context = {
+        "form": form,
+        "tarea": tarea,
+    }
+    return render(request, "llamadas/registro_llamada.html", context)
+
+
+from django.shortcuts import render, redirect
+from .forms import DatosLlamadasInmueblesForm
+
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
+def crear_tarea(request):
+    if request.method == "POST":
+        form = DatosLlamadasInmueblesForm(request.POST)
+        if form.is_valid():
+            tarea = form.save()
+            return redirect("task_detail_llamadas", pk=tarea.id)  # Redirige al detalle de la tarea
+    else:
+        form = DatosLlamadasInmueblesForm()
+
+    context = {
+        "form": form,
+    }
+    return render(request, "llamadas/crear_tarea.html", context)

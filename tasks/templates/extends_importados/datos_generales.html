@@ -57,12 +57,7 @@
         </div>
         <div class="form-group form-check-inline width-label">
             <label for="{{ inmueble.deadline.id_for_label }}">Fecha limite:</label>
-            <div class="datepicker-container">
-                <input type="text" id="deadline" value="{{ inmueble.deadline.value|date:"d/m/Y" }}"
-                    name="deadline" class="form-control datepicker" placeholder="dd/mm/aaaa">
-                <div class="input-group-append">
-                    <i class="fa fa-calendar"></i>
-                </div>
+            {{ inmueble.deadline }}
             </div>
         </div>
 
@@ -73,3 +68,17 @@
 
     </div>
 </div>
+<!-- Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar deadline con flatpickr
+    flatpickr("#{{ inmueble.deadline.id_for_label }}", {
+        dateFormat: "d/m/Y",
+        minDate: "today", // no permite fechas pasadas
+        allowInput: true
+    });
+});
+</script>

@@ -1,184 +1,252 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
-/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-<style>
-h1.h1{text-align:center;margin-top:30px;}p{text-align:center;color:red;}form{position:absolute;max-width:408px;margin:5px auto;top:42%;width:33%;right:11em;height:4%;}.form-group{margin-bottom:20px;}.form-group label{display:block;font-weight:bold;margin-bottom:5px;}.form-group input{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;}button{width:75%;min-height:35px;background:#ddcaad 0 0 no-repeat padding-box;box-shadow:0 3px 6px rgba(0,0,0,.5019607843137255);border-radius:12px;font-weight:700;border:none!important;transition:all .3s ease-out;margin-left:2.5em;}button:hover{color:#691c32;background-color:#d3bb9a;outline:0;}.container{display:flex;justify-content:space-between;align-items:flex-end;max-width:1140px;width:100%;margin:0 auto;padding:20px;}.logo-sgis{position:relative; margin-bottom: 15em;}.logo-GM{width:30%;z-index:128;position:relative;bottom:3em;left:-45em;}.bg img{background-size:cover;width:50%;height:100vh;position:fixed;right:0;z-index:-1;top:0;box-shadow:inset 0 0 38px rgba(0,0,1.0);}.contenedor-logo{width:71.4%;}.alert{display:block;position:absolute;top:-23em;left:39em;transform:translateX(-50%);width:18em;padding:10px 22px;background-color:#f89406;border:none;z-index:1;color:#ffffff;overflow:hidden;font-size:12px;flex-direction:row;flex-wrap:nowrap;}.icon{width:20px}@media (max-width:436px){.container{display:flex;justify-content:space-between;align-items:flex-end;max-width:1140px;width:100%;margin:0 auto;padding:20px;}.labels{left:0em;display:flex;flex-direction:column;width:19em;margin:0 auto;position:relative;top:6em;}.ingresar{display:flex;flex-direction:column;width:100%;align-items:center;justify-content:center;position:relative;top:6em;margin:0 auto;left:6em;}.contenedor-logo{display:flex;width:100%;align-items:center;justify-content:center;flex-direction:column;margin:0 auto;margin-bottom:17em;}.bg{display:none;}.logo-sgis{position:static;margin-top:-15em;width:100%;}form{display:flex;flex-wrap:nowrap;margin:0;flex-direction:column;justify-content:center;right:14em;}.logo-GM{width:60%;z-index:128;position:relative;bottom:2em;left:0em;}.password-input{position:relative;}.toggle-password{position:absolute;top:50%;right:10px;transform:translateY(-50%);cursor:pointer;}.icon{color:#ffffff;width:5%;}.toggle-password i{font-size:18px;}button{position:relative;cursor:pointer;margin:auto;left:70%;width:100%;top:10em;}@media (max-width:768px){.select-site{display: flex;position: relative;top: 18em;width: 300px;} .container{flex-direction:column;align-items:center;}.form{position:relative;top:0;margin-top:2em;max-width:100%;}.logo-sgis,.logo-GM{margin-top:0;}}}
-</style> 
+<script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-{% load static%}
-{% if messages %}
-  <div class="container mt-3">
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
+{% load static %}
 
-<div class="container">
-  <div class="contenedor-logo">
-    <img class="logo-sgis" src="{% static 'inicio/img/logo-sgis.png' %}">
-  </div>
+<style>
+  /* Fondo y centrado */
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+    background: url("{% static 'inicio/img/Fondo.png' %}") no-repeat center center fixed;
+    background-size: cover;
+  }
 
-  <img class="logo-GM" src="{% static 'inicio/img/logo.png' %}" alt="">
-  <div class="bg">
-    <img src="{% static 'inicio/img/bg.png' %}">
-  </div> 
+  /* Contenedor de la tarjeta */
+  .card-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 550px;
+    margin-top: -27em;
+  }
 
-  {% block content %}
+  /* Tarjeta con 2 caras */
+  .login-card {
+    width: 100%;
+    position: relative;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
 
-  {% if messages %}
-  <div class="alert-container">
-      {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} fade show" role="alert">
-              {{ message }}
-          </div>
-      {% endfor %}
-  </div>
-  {% endif %}
+  .login-card.flipped {
+    transform: rotateY(180deg);
+  }
 
-    <form action="/signin/" method="POST">
-      {% csrf_token %}
-      <div class="form-group">
-        <select id="sitio-select" name="sitio" class="form-control select-site">
-          <option value="">Seleccione un sitio</option>
-          <option value="{% url 'signinMDSJ' %}">Modulo de Sala de Juntas</option>
-          <option value="{% url 'signin' %}">SIISEP</option>
-          <option value="{% url 'signinCondia' %}">Condia</option>
-        </select>
-      </div>
+  .card-face {
+    position: absolute;
+    width: 100%;
+    backface-visibility: hidden;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 2.5rem;
+    animation: fadeInUp 0.6s ease;
+    min-height: 420px;
+  }
 
-      <div class="labels">
-        <div class="form-group">
-            <input type="text" name="username" placeholder="Usuario" required class="form-control form-control-sm">
-        </div>
-        <div class="form-group">
-            <div class="password-input">
-                <input type="password" name="password" placeholder="Contraseña" required class="form-control form-control-sm" id="password">
-                <span class="toggle-password" id="toggle-password">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-        </div>
-    </div>
-      <button>Sigin</button>
-      {% if error %}
-      <script>
-        swal("Usuario o Contraseñas Incorrecta", "Ingresa tus credenciales de nuevo", "error");
-      </script>
-      {% endif %}
- 
-    </form>
-    <script>
-     document.addEventListener('DOMContentLoaded', function() {
-    // Función para obtener el valor de la cookie
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+  .card-face h2 {
+    text-align: center;
+    font-weight: 700;
+    color: #611232;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-front {
+    z-index: 2;
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    text-align: center;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 0.75rem;
+    background: #a57f2c;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-login:hover {
+    background: #7f6a1b;
+    color: #fff;
+  }
+
+  .link-register,
+  .link-login {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+    color: #611232;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .link-register:hover,
+  .link-login:hover {
+    text-decoration: underline;
+  }
+
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
     }
 
-    // Obtener el token CSRF de las cookies
-    const csrftoken = getCookie('csrftoken');
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
 
-    // Envía una solicitud POST al endpoint de cierre de sesión de Django
-    fetch("/logout/", {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrftoken,  // Agrega el token CSRF a la solicitud
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'  // Indica que es una solicitud AJAX
-        },
-        credentials: 'same-origin'  // Incluye las cookies de sesión en la solicitud
-    })
-    .then(response => {
-        if (response.ok) {
-            console.log('Sesión cerrada con éxito');
-        } else {
-            console.error('Error al cerrar sesión');
-        }
-    })
-    .catch(error => {
-        console.error('Error al cerrar sesión:', error);
-    });
-});
-  </script>
-  
+<div class="card-container">
+  <div class="login-card" id="login-card">
+
+    <!-- FRONT: LOGIN -->
+    <div class="card-face card-front">
+      <h2>Iniciar Sesión en SIISEP</h2>
+
+      {% if messages %}
+      <div class="alert-container">
+        {% for message in messages %}
+        {% if "login-error" in message.tags %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+
+      <form action="/signin/" method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <select id="sitio-select" name="sitio" class="form-control">
+            <option value="">Seleccione un sitio</option>
+            <option value="{% url 'signinMDSJ' %}">Módulo Sala de Juntas</option>
+            <option value="{% url 'signin' %}">SIISEP</option>
+            <option value="{% url 'signinCondia' %}">Condia</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="username" placeholder="Usuario" required class="form-control">
+        </div>
+
+        <div class="mb-3 position-relative">
+          <input type="password" name="password" placeholder="Contraseña" required class="form-control" id="password">
+          <span class="toggle-password" id="toggle-password">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+
+        <button type="submit" class="btn-login">Ingresar</button>
+
+        {% if error %}
+        <script>
+          swal("Usuario o Contraseña Incorrecta", "Ingresa tus credenciales de nuevo", "error");
+        </script>
+        {% endif %}
+      </form>
+
+      <a class="link-register" id="show-register">¿No tienes cuenta? Registrar</a>
+      <div class="text-center mt-3 text-muted" style="font-size: 0.85rem;">
+        SIISEP:  V-{{ APP_VERSION }}
+      </div>
+    </div>
+
+    <!-- BACK: REGISTRO -->
+    <div class="card-face card-back">
+      <h2>Solicitar Usuario Nuevo</h2>
+      <p>Para solicitar una cuenta nueva envía un correo a:</p>
+      <ul class="list-unstyled">
+        <p><a href="mailto:soporte.sii.sep@nube.sep.gob.mx">soporte.sii.sep@nube.sep.gob.mx</a></p>
+        <p><a href="mailto:joseph.valencia@nube.sep.gob.mx">joseph.valencia@nube.sep.gob.mx</a></p>
+      </ul>
+      <p>El equipo revisará tu solicitud y se pondrá en contacto contigo.</p>
+
+      <a class="link-login" id="show-login">Ya tengo cuenta</a>
+
+    </div>
+
+  </div>
+</div>
+
 <script>
-  document.getElementById('sitio-select').addEventListener('change', function() {
+  /* Toggle mostrar/ocultar contraseña */
+  document.getElementById('toggle-password').addEventListener('click', function () {
+    const passwordInput = document.getElementById('password');
+    const icon = this.querySelector('i');
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      icon.classList.remove("fa-eye");
+      icon.classList.add("fa-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      icon.classList.remove("fa-eye-slash");
+      icon.classList.add("fa-eye");
+    }
+  });
+
+  /* Redirección del select */
+  document.getElementById('sitio-select').addEventListener('change', function () {
     var selectedOption = this.value;
     if (selectedOption) {
       window.location.href = selectedOption;
     }
   });
+
+  /* Flip card animación */
+  const card = document.getElementById('login-card');
+  document.getElementById('show-register').addEventListener('click', () => {
+    card.classList.add('flipped');
+  });
+  document.getElementById('show-login').addEventListener('click', () => {
+    card.classList.remove('flipped');
+  });
 </script>
 
-
-<style>
-  /* Archivo: styles.css */
-.alert-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1050;
-    width: 80%;
-    max-width: 600px;
-    pointer-events: none; /* Evita que interfiera con otros clics */
-}
-
-.alert {
-    border-radius: 8px;
-    padding: 15px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 1rem;
-    margin-bottom: 10px;
-    pointer-events: auto; /* Habilita interacción para las alertas */
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.fade-out {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-</style>
 <script>
 
-function showMessage(message, type = "success", duration = 2000) {
+  function showMessage(message, type = "success", duration = 4000) {
     // Crear contenedor de mensajes si no existe
     let alertContainer = document.querySelector(".alert-container");
     if (!alertContainer) {
-        alertContainer = document.createElement("div");
-        alertContainer.className = "alert-container";
-        document.body.appendChild(alertContainer);
+      alertContainer = document.createElement("div");
+      alertContainer.className = "alert-container";
+      document.body.appendChild(alertContainer);
     }
 
     // Crear el mensaje
@@ -192,11 +260,9 @@ function showMessage(message, type = "success", duration = 2000) {
 
     // Desvanecer y eliminar mensaje después de la duración
     setTimeout(() => {
-        alert.classList.add("fade-out");
-        setTimeout(() => alert.remove(), 500); // Elimina el elemento del DOM
+      alert.classList.add("fade-out");
+      setTimeout(() => alert.remove(), 4000); // Elimina el elemento del DOM
     }, duration);
-}
+  }
 
 </script>
-
-    {% endblock %}
