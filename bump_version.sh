@@ -33,7 +33,6 @@ sed -i.bak "s/APP_VERSION=.*/APP_VERSION=$NEW_VERSION/" $ENV_FILE
 
 echo "Nueva versión: $NEW_VERSION"
 
-# Opcional: construir Docker automáticamente
 docker buildx build --platform=linux/x86_64 --load --no-cache -t iodocker-dgtic.sep.gob.mx/siisep/siisep-django:$NEW_VERSION .
 
 echo "Docker construido con versión $NEW_VERSION"

@@ -44,11 +44,15 @@ INSTALLED_APPS = [
     'tasks',
     'import_export',
     'crispy_forms',
+    'widget_tweaks',
     'condia',
     'MDSJSEP',
     'reversion',
 ]
 
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {

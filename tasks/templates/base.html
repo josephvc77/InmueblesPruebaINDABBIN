@@ -11,18 +11,20 @@
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
 
-  <!-- CSS -->
+  <!-- CSS de la aplicación -->
   <link href="{% static 'inicio/css/styles.css' %}" rel="stylesheet">
   <link href="{% static 'inicio/css/menu.css' %}" rel="stylesheet">
+
+  <!-- CSS de Bootstrap y Mapeo -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <link rel="stylesheet"
-    href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-  <link rel="stylesheet"
-    href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- CSS de fuentes y SweetAlert -->
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
   <style>
     /* General */
@@ -219,14 +221,10 @@
     </div>
     <div class="offcanvas-body">
       <ul class="navbar-nav flex-column">
-        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'Inmuebles' %}"><i
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'inmuebles_list' %}"><i
               class="fi fi-rr-bookmark me-2"></i>Completados</a></li>
-        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'Inmuebles_Terminados' %}"><i
-              class="fi fi-rr-check me-2"></i>Terminados</a></li>
-        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'Inmuebles_en_Baja' %}"><i
-              class="fi fi-rr-cross me-2"></i>Bajas</a></li>
         <hr class="my-3">
-        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'create_task' %}"><i
+        <li class="nav-item mb-2"><a class="nav-link" href="{% url 'crear_inmueble' %}"><i
               class="fi fi-rr-upload me-2"></i>Agregar Alta</a></li>
         <li class="nav-item mb-2"><a class="nav-link" href="{% url 'tareas_list' %}"><i
               class="fi fi-rr-call-duration me-2"></i>Fichas (Llamadas)</a></li>
@@ -257,12 +255,10 @@
         <div class="col-md-4 text-center mb-3 mb-md-0">
           <h6 class="fw-bold">Enlaces Rápidos</h6>
           <ul class="list-unstyled">
-            <li><a href="{% url 'Inmuebles' %}" class="text-white text-decoration-none">Completados</a></li>
-            <li><a href="{% url 'Inmuebles_Terminados' %}" class="text-white text-decoration-none">Terminados</a></li>
-            <li><a href="{% url 'Inmuebles_en_Baja' %}" class="text-white text-decoration-none">Bajas</a></li>
+            <li><a href="{% url 'inmuebles_list' %}" class="text-white text-decoration-none">Completados</a></li>
             <li><a href="{% url 'tareas_list' %}" class="text-white text-decoration-none">Registro de
                 llamadas</a></li>
-            <li><a href="{% url 'create_task' %}" class="text-white text-decoration-none">Agregar Alta</a></li>
+            <li><a href="{% url 'crear_inmueble' %}" class="text-white text-decoration-none">Agregar Alta</a></li>
           </ul>
         </div>
 
@@ -276,16 +272,11 @@
     </div>
   </footer>
 
-
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- jQuery UI (CSS y JS) -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

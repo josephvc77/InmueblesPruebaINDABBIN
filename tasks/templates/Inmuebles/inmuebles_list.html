@@ -55,7 +55,7 @@
 
 <div class="col-md-2 d-flex gap-2" style="flex-wrap: wrap;">
   <button class="btn btn-primary flex-fill" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
-  <a href="{% url 'Inmuebles' %}" class="btn btn-secondary flex-fill"><i class="fas fa-sync-alt me-1"></i> Limpiar</a>
+  <a href="{% url 'inmuebles_list' %}" class="btn btn-secondary flex-fill"><i class="fas fa-sync-alt me-1"></i> Limpiar</a>
   <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-success flex-fill"><i class="fas fa-file-excel me-1"></i> Excel</a>
 </div>
 
@@ -67,6 +67,16 @@
 {% if mensaje %}
   <div class="alert alert-info text-center shadow-sm rounded">{{ mensaje }}</div>
 {% endif %}
+
+        {% if messages %}
+            <ul class="list-unstyled mb-4">
+            {% for message in messages %}
+                <li class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} text-center" role="alert">
+                    {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
 
 {% if inmuebles %}
   <div class="mb-3 text-muted fw-semibold">
@@ -132,7 +142,7 @@
           <td>{{ task.deadline|date:"d/m/Y"|default:" Pendiente" }}</td>
           <td class="text-center">
             <div class="btn-group" role="group">
-              <a href="{% url 'Detalle_inmueble' task.id %}" class="btn btn-sm btn-outline-primary" title="Detalles">
+              <a href="{% url 'detalle_inmueble' task.id %}" class="btn btn-sm btn-outline-primary" title="Detalles">
                 <i class="bi bi-info-circle-fill"></i>
               </a>
               <a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="btn btn-sm btn-outline-danger" title="PDF">

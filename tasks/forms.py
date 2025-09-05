@@ -4,7 +4,7 @@ from django.forms import ClearableFileInput, ModelForm
 
 from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, Observaciones, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 
@@ -130,6 +130,9 @@ class SiteSelectionForm(forms.Form):
     
         
         
+from django import forms
+from .models import Inmueble
+
 class InmuebleForm(forms.ModelForm):
     class Meta:
         model = Inmueble
@@ -161,145 +164,228 @@ class InmuebleForm(forms.ModelForm):
             
                 # Valor
                   'valor_contable', 'fecha_valor_contable', 'valor_asegurable', 'fecha_valor_asegurable', 'valor_adquisicion', 'fecha_valor_adquisicion', 'valor_terreno', 
-                  'valor_construccion', 'valor_catastral_terreno', 'valor_catastral_construccion', 'valor_total_catastral', 'fecha_valor_catastral', 'documentacion_soporte' ]
-        
-        widgets = {
-            'subir_archivo': CustomClearableFileInput,
-            'fecha_documento': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'entidad_federativa': forms.Select(attrs={'onchange': "loadMunicipios(this.value);"}),  # Añadir el widget para el campo entidad_federativa
-            'municipio_alcaldia': forms.Select,  # Añadir el widget para el campo municipio_alcaldia
-    }
-        
-    
-from django import forms
-from .models import DictamenEstructuralIMP
-
-class DictamenEstructuralForm(forms.ModelForm):
-    class Meta:
-        model = DictamenEstructuralIMP
-        fields = ['no_de_identificador_del_expediente_institucion', 'subir_archivo_dictamen', 'certificado_de_seguridad', 'sentido_del_Dictamen', 
-                  'descripcion_del_sentido_del_Dictamen', 'fecha_documento']
-
-
-class DocumentoOcupacionFormIMP(forms.ModelForm):
-    class Meta:
-        model = Documento_ocupacionIMP
-        fields = 'tipo_de_documento', 'fecha_documento', 'inscripcion_RPPF', 'folio_real_federal', 'fecha_inscripcion_federal'
-        widgets = {
-            'fecha_documento': forms.DateInput(attrs={'type': 'date'}),
-            'fecha_inscripcion_federal': forms.DateInput(attrs={'type': 'date'}),
-        }
-        
-class InstitucionesOcupantesFormIMP(forms.ModelForm):
-    class Meta:
-        model = InstitucionesOcupantesIMP
-        fields = ['institucion_publica_ocupante', 'superficie_asignada', 'uso_institucion_ocupante', 'superficie_disponible']
-        
-class DatosTercerosFormIMP(forms.ModelForm):
-    class Meta:
-        model = DatosTercerosIMP
-        fields = [
-            'tipo_usuario_tercero',
-            'beneficiario',
-            'nombre_beneficiario',
-            'rfc',
-            'fecha_inicio_vigencia',
-            'fecha_termino_vigencia',
-            'prorroga',
-            'inscripcion_folio_real_federal',
-            'superficie_objeto_ocupacion_metros',
-            'uso',
-        ]
-
-class TramitesDisposicionFormIMP(forms.ModelForm):
-    class Meta:
-        model = TramitesDisposicionIMP
-        fields = ['tramite_disposicion', 'estatus', 'numero_de_expediente']
-
-class ColindanciasFormIMP(ModelForm):
-    class Meta:
-        model = ColindanciasIMP
-        fields = ['orientacion', 'colindancia', 'medida_en_metros']
-
-        
-class FoliosRealesFormIMP(forms.ModelForm):
-    class Meta:
-        model = FoliosRealesIMP
-        fields = ['folios_reales_data', 'archivo_folios_reales']
-        
-class Numero_PlanoFormIMP(forms.ModelForm):
-    class Meta:
-        model = NumeroPlanoIMP
-        fields = ['numero_plano_data', 'archivo_Numero_Plano']
-        
-class Expedientes_CEDOCFormIMP(forms.ModelForm):
-    class Meta:
-        model = Expedientes_CEDOCIMP
-        fields = ['expediente_cedoc_data', 'archivo_Expedientes_CEDOC']
-        
-class Edificio_VerdeFormIMP(forms.ModelForm):
-    class Meta:
-        model = EdificioVerdeIMP
-        fields = ['edificio_verde_data']
-
-class EdificacionFormIMP(forms.ModelForm):
-    
-    class Meta:
-        model = EdificacionIMP
-        fields = ['nombre_edificacion', 'propietario_de_la_edificacion', 'niveles_por_edificio', 'tipo_de_inmueble',
-                  'superficie_construida_por_edificacion_m2', 'fecha_construccion_por_edificacion',
-                  'caracteristicas_de_la_edificacion', 'usoEdificacion', 'calidadEdificacion',
-                  'cajones_de_estacionamiento_por_edificacion', 'rampa_de_acceso', 'ruta_de_evacuacion',
-                  'sanitario_para_personas_con_discapacidad']
-
-
-class DocumentoPropiedadFormIMP(forms.ModelForm):
-    class Meta:
-        model = DocumentoPropiedadIMP
-        fields = ['propietario_inmueble','institucion_propietario','superficie_amparada_m2','tipo_documento', 'numero_de_documento', 'fecha_creacion_DOC', 
-                  'expedido_por', 'inscripcion_rppf', 'folio_real_federal', 'fecha_inscripcion_federal',
-                  'inscripcion_registro_local', 'folio_real_local', 'folio_real_auxiliar', 'nombre_libro', 'tomo_o_volumen', 'numero', 'foja_o_folio', 'seccion', 'fecha_inscripcion_local',
-                  'archivo'
+                  'valor_construccion', 'valor_catastral_terreno', 'valor_catastral_construccion', 'valor_total_catastral', 'fecha_valor_catastral', 'documentacion_soporte', 'estado', 'important'
                   ]
         
         widgets = {
-            'fecha_creacion_DOC': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'fecha_inscripcion_federal': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
-            'fecha_inscripcion_local': forms.DateInput(attrs={'placeholder': 'dd/mm/aaa',}),
+            # Datos generales
+            'rfi': forms.TextInput(attrs={'class': 'form-control'}),
+            'assigned_to': forms.Select(attrs={'class': 'form-select'}),
+            'deadline': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'rfiProv': forms.Select(attrs={'class': 'form-select'}),
+            'NombreInmueble': forms.TextInput(attrs={'class': 'form-control'}),
+            'UR': forms.Select(attrs={'class': 'form-select'}),
+            'seccion_del_inventario': forms.TextInput(attrs={'class': 'form-control'}),
+            'causa_alta': forms.Select(attrs={'class': 'form-select'}),
+            'prioridad': forms.Select(attrs={'class': 'form-select'}),
+            'Sector': forms.Select(attrs={'class': 'form-select'}),
+            'Nombre_de_la_institucion_que_administra_el_inmueble': forms.Select(attrs={'class': 'form-select'}),
+            'Naturaleza_Juridica_de_la_Institucion': forms.Select(attrs={'class': 'form-select'}),
+            'Denominaciones_anteriores': forms.TextInput(attrs={'class': 'form-control'}),
+            'Dependencia_Administradora': forms.TextInput(attrs={'class': 'form-control'}),
+            'subSeccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'certificado_de_seguridad': forms.Select(attrs={'class': 'form-select'}),
+            'sentido_del_Dictamen': forms.Select(attrs={'class': 'form-select'}),
+            'descripcion_del_sentido_del_Dictamen': forms.Textarea(attrs={'class': 'form-control'}),
+            'fecha_documento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'subir_archivo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'no_de_identificador_del_expediente_institucion': forms.TextInput(attrs={'class': 'form-control'}),
+            'estado': forms.Select(attrs={'class': 'form-select'}),
+            'important': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            
+            # Ubicación
+            'pais': forms.Select(attrs={'class': 'form-select'}),
+            'entidad_federativa': forms.TextInput(attrs={'class': 'form-control'}),
+            'municipio_alcaldia': forms.TextInput(attrs={'class': 'form-control'}),
+            'municipio_no_existente': forms.TextInput(attrs={'class': 'form-control'}),
+            'localidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'componente_espacial': forms.Select(attrs={'class': 'form-select'}),
+            'fotografia_de_la_ubicacion': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'tipo_vialidad': forms.Select(attrs={'class': 'form-select'}),
+            'nombre_vialidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_exterior': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_exterior_2': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_interior': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_asentamiento': forms.Select(attrs={'class': 'form-select'}),
+            'nombre_asentamiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'codigo_postal': forms.TextInput(attrs={'class': 'form-control'}),
+            'entre_vialidades_referencia1': forms.TextInput(attrs={'class': 'form-control'}),
+            'entre_vialidades_referencia2': forms.TextInput(attrs={'class': 'form-control'}),
+            'vialidad_posterior': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion_ubicacion': forms.Textarea(attrs={'class': 'form-control'}),
+            'datum': forms.Select(attrs={'class': 'form-select'}),
+            'utmx': forms.TextInput(attrs={'class': 'form-control'}),
+            'utmy': forms.TextInput(attrs={'class': 'form-control'}),
+            'utm_zona': forms.TextInput(attrs={'class': 'form-control'}),
+            'latitud': forms.TextInput(attrs={'class': 'form-control'}),
+            'longitud': forms.TextInput(attrs={'class': 'form-control'}),
+
+            # Caracteristicas
+            'superficie_del_terreno_en_M2': forms.TextInput(attrs={'class': 'form-control'}),
+            'superficie_del_terreno_HA': forms.TextInput(attrs={'class': 'form-control'}),
+            'superficie_de_desplante_en_M2': forms.TextInput(attrs={'class': 'form-control'}),
+            'superficie_construida_en_M2': forms.TextInput(attrs={'class': 'form-control'}),
+            'superficie_util_m2': forms.TextInput(attrs={'class': 'form-control'}),
+            'zona_ubicacion': forms.Select(attrs={'class': 'form-select'}),
+            'calidad_construccion': forms.Select(attrs={'class': 'form-select'}),
+            'servicios': forms.Select(attrs={'class': 'form-select'}),
+            'telefono_inmueble': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_inicio_construccion': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'siglo_construccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_ultima_remodelacion': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'monumento': forms.Select(attrs={'class': 'form-select'}),
+            'historico': forms.Select(attrs={'class': 'form-select'}),
+            'artistico': forms.Select(attrs={'class': 'form-select'}),
+            'arqueologico': forms.Select(attrs={'class': 'form-select'}),
+            'clave_inah': forms.TextInput(attrs={'class': 'form-control'}),
+            'folio_real_inah': forms.TextInput(attrs={'class': 'form-control'}),
+            'no_plano_inah': forms.TextInput(attrs={'class': 'form-control'}),
+            'clave_cnmh': forms.TextInput(attrs={'class': 'form-control'}),
+            'clave_dgsmpc_conaculta': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_inscripcion_unesco': forms.TextInput(attrs={'class': 'form-control'}),
+            'observaciones_historicas': forms.Textarea(attrs={'class': 'form-control'}),
+            'siglo_o_periodo': forms.TextInput(attrs={'class': 'form-control'}),
+            'correlativo': forms.TextInput(attrs={'class': 'form-control'}),
+            'conjunto': forms.TextInput(attrs={'class': 'form-control'}),
+            'clave_inbal': forms.TextInput(attrs={'class': 'form-control'}),
+            'registro_unico_inah': forms.TextInput(attrs={'class': 'form-control'}),
+            'estado_conservacion': forms.Select(attrs={'class': 'form-select'}),
+            'tipo_inmueble_rural': forms.Select(attrs={'class': 'form-select'}),
+            'uso_dominante_zona': forms.Select(attrs={'class': 'form-select'}),
+            'clasificacion_edad': forms.Select(attrs={'class': 'form-select'}),
+            'categoria': forms.Select(attrs={'class': 'form-select'}),
+            'grado_consolidacion': forms.Select(attrs={'class': 'form-select'}),
+
+            # Uso
+            'usuario_principal_del_inmueble': forms.TextInput(attrs={'class': 'form-control'}),
+            'usoGenerico': forms.TextInput(attrs={'class': 'form-control'}),
+            'usoEspecifico': forms.TextInput(attrs={'class': 'form-control'}),
+            'uso_de_suelo_autorizado': forms.Select(attrs={'class': 'form-select'}),
+            'numero_de_empleados_en_el_inmueble': forms.TextInput(attrs={'class': 'form-control'}),
+            'documento_que_autoriza_ocupacion': forms.Select(attrs={'class': 'form-select'}),
+            'numero_de_documentos_de_ocupacion': forms.TextInput(attrs={'class': 'form-control'}),
+            'instituciones_ocupantes': forms.Select(attrs={'class': 'form-select'}),
+            'usuarios_terceros': forms.Select(attrs={'class': 'form-select'}),
+
+            # Aprovechamiento
+            'aprovechamiento': forms.Select(attrs={'class': 'form-select'}),
+            'inmueble_con_atencion_al_publico': forms.Select(attrs={'class': 'form-select'}),
+            'poblacion_beneficiada': forms.TextInput(attrs={'class': 'form-control'}),
+            'poblacion_servicio': forms.Textarea(attrs={'class': 'form-control'}),
+            'cuenta_con_proyecto_de_uso_inmediato_desarrollado': forms.Select(attrs={'class': 'form-select'}),
+            'inversion_requerida': forms.TextInput(attrs={'class': 'form-control'}),
+            'fuente_financiamiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_solicitud': forms.TextInput(attrs={'class': 'form-control'}),
+            'inmueble_no_aprovechable_especificar': forms.Textarea(attrs={'class': 'form-control'}),
+            'gasto_anual_de_mantenimiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'inmueble_en_condominio': forms.Select(attrs={'class': 'form-select'}),
+            'superficie_total': forms.TextInput(attrs={'class': 'form-control'}),
+            'indiviso': forms.TextInput(attrs={'class': 'form-control'}),
+
+            # Valor
+            'valor_contable': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_valor_contable': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_asegurable': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_valor_asegurable': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_adquisicion': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_valor_adquisicion': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_terreno': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_construccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_catastral_terreno': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_catastral_construccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'valor_total_catastral': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_valor_catastral': forms.TextInput(attrs={'class': 'form-control'}),
+            'documentacion_soporte': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['archivo'].widget.attrs.update({'class': 'form-control-file'})
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['propietario_inmueble'].initial = 'SIN INFORMACIÓN'
-        self.fields['tipo_documento'].initial = 'SIN INFORMACIÓN'
         
-        
-class DatosAvaluosFormIMP(forms.ModelForm):
+class DictamenEstructuralIMPForm(forms.ModelForm):
     class Meta:
-        model = DatosAvaluosIMP
-        fields = ['numero_de_avaluo', 'valor_de_avaluo', 'fecha_valor_de_avaluo', 'uso_del_avaluo', 'valor_de_terreno', 'valor_de_construccion']
+        model = DictamenEstructuralIMP
+        fields = [
+            'no_de_identificador_del_expediente_institucion', 'subir_archivo_dictamen', 
+            'certificado_de_seguridad', 'sentido_del_Dictamen', 'descripcion_del_sentido_del_Dictamen',
+            'fecha_documento',
+        ]
         widgets = {
-            'fecha_valor_de_avaluo': forms.DateInput(attrs={'type': 'date'}),
+            'no_de_identificador_del_expediente_institucion': forms.TextInput(attrs={'class': 'form-control'}),
+            'subir_archivo_dictamen': CustomClearableFileInput(attrs={'class': 'form-control'}),
+            'certificado_de_seguridad': forms.TextInput(attrs={'class': 'form-control'}),
+            'sentido_del_Dictamen': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion_del_sentido_del_Dictamen': forms.Textarea(attrs={'class': 'form-control'}),
+            'fecha_documento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
-        
-class OcupacionesFormIMP(forms.ModelForm):
+
+
+class ObservacionesForm(forms.ModelForm):
     class Meta:
-        model = OcupacionesIMP
-        fields = (
-            'tipo_procedimiento',
-            'nombre_ocupante',
-            'superficie_invadida',
-            'no_expediente',
-            'juzgado',
-            'estatus_procedimiento',
-            'suspension_acto',
-            'recuperado',
-            'fecha_recuperado'
-        )
-        
+        model = Observaciones
+        fields = ['observaciones_data', 'fecha_observacion']
+        widgets = {
+            'observaciones_data': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_observacion': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }
+
+class FoliosRealesIMPForm(forms.ModelForm):
+    class Meta:
+        model = FoliosRealesIMP
+        fields = ['folios_reales_data', 'archivo_folios_reales']
+        widgets = {
+            'folios_reales_data': forms.TextInput(attrs={'class': 'form-control'}),
+            'archivo_folios_reales': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+class NumeroPlanoIMPForm(forms.ModelForm):
+    class Meta:
+        model = NumeroPlanoIMP
+        fields = ['numero_plano_data', 'archivo_Numero_Plano']
+        widgets = {
+            'numero_plano_data': forms.TextInput(attrs={'class': 'form-control'}),
+            'archivo_Numero_Plano': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+class Expedientes_CEDOCIMPForm(forms.ModelForm):
+    class Meta:
+        model = Expedientes_CEDOCIMP
+        fields = ['expediente_cedoc_data', 'archivo_Expedientes_CEDOC']
+        widgets = {
+            'expediente_cedoc_data': forms.TextInput(attrs={'class': 'form-control'}),
+            'archivo_Expedientes_CEDOC': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+
+class DocumentoPropiedadIMPForm(forms.ModelForm):
+    class Meta:
+        model = DocumentoPropiedadIMP
+        fields = [
+            'fecha_creacion_DOC', 'archivo', 'propietario_inmueble', 
+            'institucion_propietario', 'superficie_amparada_m2', 'tipo_documento', 
+            'numero_de_documento', 'expedido_por', 'inscripcion_rppf', 
+            'folio_real_federal', 'fecha_inscripcion_federal', 'inscripcion_registro_local', 
+            'folio_real_local', 'folio_real_auxiliar', 'nombre_libro', 'tomo_o_volumen', 
+            'numero', 'foja_o_folio', 'seccion', 'fecha_inscripcion_local',
+        ]
+        widgets = {
+            'fecha_creacion_DOC': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'archivo': CustomClearableFileInput(attrs={'class': 'form-control'}),
+            'propietario_inmueble': forms.Select(attrs={'class': 'form-select'}),
+            'institucion_propietario': forms.TextInput(attrs={'class': 'form-control'}),
+            'superficie_amparada_m2': forms.NumberInput(attrs={'class': 'form-control'}),
+            'tipo_documento': forms.Select(attrs={'class': 'form-select'}),
+            'numero_de_documento': forms.NumberInput(attrs={'class': 'form-control'}),
+            'expedido_por': forms.TextInput(attrs={'class': 'form-control'}),
+            'inscripcion_rppf': forms.Select(attrs={'class': 'form-select'}),
+            'folio_real_federal': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_inscripcion_federal': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'inscripcion_registro_local': forms.Select(attrs={'class': 'form-select'}),
+            'folio_real_local': forms.TextInput(attrs={'class': 'form-control'}),
+            'folio_real_auxiliar': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre_libro': forms.TextInput(attrs={'class': 'form-control'}),
+            'tomo_o_volumen': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero': forms.TextInput(attrs={'class': 'form-control'}),
+            'foja_o_folio': forms.TextInput(attrs={'class': 'form-control'}),
+            'seccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_inscripcion_local': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }
         
 # CONDIA ---------------------------------------------------------------------
 
@@ -453,3 +539,4 @@ class RegistroLlamadasForm(forms.ModelForm):
             "acuerdos_compromisos": forms.TextInput(attrs={"class": "form-control"}),
             "observaciones_generales": forms.TextInput(attrs={"class": "form-control"}),
         }
+

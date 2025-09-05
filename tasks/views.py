@@ -13,7 +13,7 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import BajaForm, ColindanciasFormIMP, CreateDatosLlamadasForm, DatosAvaluosFormIMP, DatosTercerosFormIMP, DictamenEstructuralForm, DocumentoOcupacionFormIMP, DocumentoPropiedadFormIMP, EdificacionFormIMP, Edificio_VerdeFormIMP, Expedientes_CEDOCFormIMP, FoliosRealesFormIMP, InmuebleForm, InstitucionesOcupantesFormIMP, MensajeFormIMP, Numero_PlanoFormIMP, OcupacionesFormIMP, PasswordConfirmationForm, TramitesDisposicionFormIMP, UserCreateForm, UserEditForm
+from .forms import CreateDatosLlamadasForm, DictamenEstructuralIMPForm, DocumentoPropiedadIMPForm, Expedientes_CEDOCIMPForm, FoliosRealesIMPForm, NumeroPlanoIMPForm, ObservacionesForm, UserCreateForm
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 from .forms import TaskCreateForm
@@ -265,312 +265,6 @@ def principal(request):
     })
 
 
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def Inmuebles_en_Baja(request):
-    search_query = request.GET.get('q', '')
-    prioridad = request.GET.get('prioridad', '')
-    mensajes = MensajeIMP.objects.filter(
-        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
-    ).order_by("-fecha_envio")
-
-    inmuebles_list = Inmueble.objects.filter(
-        Q(NombreInmueble__icontains=search_query) |
-        Q(rfi__icontains=search_query) |
-        Q(municipio_alcaldia__icontains=search_query) |
-        Q(entidad_federativa__icontains=search_query),
-        estado='Baja'  # Filtra los inmuebles con estado 'Baja'
-    )
-
-    if prioridad:
-        inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
-
-    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles por página
-
-    page = request.GET.get('page')
-    try:
-        inmuebles = paginator.page(page)
-    except PageNotAnInteger:
-        inmuebles = paginator.page(1)
-    except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
-
-    total_pending_inmuebles = Inmueble.objects.filter(
-        Q(NombreInmueble__icontains=search_query) |
-        Q(rfi__icontains=search_query) |
-        Q(municipio_alcaldia__icontains=search_query) |
-        Q(entidad_federativa__icontains=search_query),
-        datecompleted__isnull=True
-    ).count()  # Total de inmuebles pendientes por completar
-
-    total_completed_inmuebles = Inmueble.objects.filter(
-        Q(NombreInmueble__icontains=search_query) |
-        Q(rfi__icontains=search_query) |
-        Q(municipio_alcaldia__icontains=search_query) |
-        Q(entidad_federativa__icontains=search_query),
-        datecompleted__isnull=False
-    ).count()  # Total de inmuebles completados
-
-    return render(request, 'importados.html', {
-        'inmuebles': inmuebles, 
-        'search_query': search_query,
-        'total_pending_inmuebles': total_pending_inmuebles,
-        'total_completed_inmuebles': total_completed_inmuebles,
-        'mensajes': mensajes,
-
-    })
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def Inmuebles_Terminados(request):
-    search_query = request.GET.get('q', '')
-    prioridad = request.GET.get('prioridad', '')
-    ur = request.GET.get('ur', '')
-    orden = request.GET.get('ordenar', '')
-
-    mensajes = MensajeIMP.objects.filter(
-        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
-    ).order_by("-fecha_envio")
-
-    # Filtra los inmuebles completados y aplica los filtros de búsqueda
-    inmuebles_list = Inmueble.objects.filter(
-        Q(NombreInmueble__icontains=search_query) |
-        Q(rfi__icontains=search_query) |
-        Q(municipio_alcaldia__icontains=search_query) |
-        Q(entidad_federativa__icontains=search_query),
-        datecompleted__isnull=False
-    ).order_by('-datecompleted')
-
-    if prioridad:
-        inmuebles_list = inmuebles_list.filter(prioridad=prioridad)
-        
-    if ur:
-        inmuebles_list = inmuebles_list.filter(UR=ur)
-
-    # Aplica filtros de orden
-    if orden == 'az':
-        inmuebles_list = inmuebles_list.order_by('NombreInmueble')
-    elif orden == 'za':
-        inmuebles_list = inmuebles_list.order_by('-NombreInmueble')
-    elif orden == 'nuevo':
-        inmuebles_list = inmuebles_list.order_by('-datecompleted')
-    elif orden == 'viejo':
-        inmuebles_list = inmuebles_list.order_by('datecompleted')
-
-    paginator = Paginator(inmuebles_list, 20)  # Muestra 20 inmuebles completados por página
-
-    page = request.GET.get('page')
-    try:
-        inmuebles = paginator.page(page)
-    except PageNotAnInteger:
-        inmuebles = paginator.page(1)
-    except EmptyPage:
-        inmuebles = paginator.page(paginator.num_pages)
-
-    total_completed_inmuebles = Inmueble.objects.filter(datecompleted__isnull=False).count()  # Total de inmuebles completados
-    
-    total_pending_inmuebles = Inmueble.objects.filter(datecompleted__isnull=True).count()  # Total de inmuebles pendientes por completar
-
-    return render(request, 'importados.html', {
-        'inmuebles': inmuebles,
-        'search_query': search_query,
-        'total_completed_inmuebles': total_completed_inmuebles,
-        'total_pending_inmuebles': total_pending_inmuebles,
-        'mensajes': mensajes,
-        'prioridad': prioridad,
-        'ur': ur,
-        'orden': orden,
-    })
-    
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def bajas_importados(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if task.estado == 'Activo':
-        if request.method == 'POST':
-            form = BajaForm(request.POST)
-            if form.is_valid():
-                task.estado = 'Baja'
-                task.save()
-                return redirect('Inmuebles_en_Baja')
-        else:
-            form = BajaForm()
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def complete_task_importados(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        task.datecompleted = timezone.now()
-        task.save()
-        return redirect('Inmuebles')
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .forms import TaskCreateForm
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def create_task(request):
-    if request.method == 'POST':
-        form = TaskCreateForm(request.POST, user=request.user)
-        if form.is_valid():
-            task = form.save(commit=False)
-            # Asignar la tarea al usuario seleccionado (si se ha seleccionado)
-            assigned_to = form.cleaned_data['assigned_to']
-            if assigned_to:
-                task.assigned_to = assigned_to
-                task.user = assigned_to  # Asignar la tarea al usuario seleccionado
-            else:
-                task.user = request.user  # El usuario actual crea la tarea
-            task.save()
-            return redirect('Inmuebles')
-    else:
-        form = TaskCreateForm(user=request.user)
-
-    mensajes = MensajeIMP.objects.filter(
-            Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
-        ).order_by("-fecha_envio")
-
-    context = {'form': form, 'mensajes': mensajes}
-    return render(request, 'create_task.html', context)
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Inmueble
-from .forms import InmuebleForm
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages 
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def Detalle_inmueble(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    mensajes = MensajeIMP.objects.filter(
-        Q(enviar_a_imp=request.user) | Q(enviado_por_imp=request.user)
-    ).order_by("-fecha_envio")
-
-    errores = {}  # Diccionario para enviar errores al template
-    todo_valido = True  # Bandera para saber si todo se guardó sin errores
-
-    if request.method == 'POST':
-        # Inicializa todos los formularios
-        inmueble = InmuebleForm(request.POST, request.FILES, instance=task)
-        edificio_verde_form = Edificio_VerdeFormIMP(request.POST)
-        documento_propiedad_form = DocumentoPropiedadFormIMP(request.POST, request.FILES)
-        datos_avaluos_form = DatosAvaluosFormIMP(request.POST)
-        ocupaciones_form = OcupacionesFormIMP(request.POST)
-        documento_ocupacion_form = DocumentoOcupacionFormIMP(request.POST)
-        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP(request.POST)
-        datos_terceros_form = DatosTercerosFormIMP(request.POST)
-        colindancia_form = ColindanciasFormIMP(request.POST)
-        tramite_disposicion_form = TramitesDisposicionFormIMP(request.POST)
-        edificacion_form = EdificacionFormIMP(request.POST)
-        mensaje_form = MensajeFormIMP(request.POST, prefix='mensaje')
-
-        # Helper: guarda si tiene datos válidos y recolecta errores
-        def save_if_valid(form, nombre):
-            nonlocal todo_valido
-            if form.is_valid() and any(form.cleaned_data.values()):
-                obj = form.save(commit=False)
-                obj.task = task
-                obj.save()
-                messages.success(request, f"{nombre} guardado correctamente.")
-            elif not form.is_valid() and any(form.data.values()):
-                errores[nombre] = form.errors
-                todo_valido = False
-
-        # Procesar cada form
-        save_if_valid(documento_propiedad_form, "Documento de Propiedad")
-        save_if_valid(datos_avaluos_form, "Datos de Avalúos")
-        save_if_valid(ocupaciones_form, "Ocupaciones")
-        save_if_valid(documento_ocupacion_form, "Documento Ocupación")
-        save_if_valid(instituciones_ocupantes_form, "Instituciones Ocupantes")
-        save_if_valid(datos_terceros_form, "Datos de Terceros")
-        save_if_valid(edificio_verde_form, "Edificio Verde")
-        save_if_valid(colindancia_form, "Colindancias")
-        save_if_valid(tramite_disposicion_form, "Trámite de Disposición")
-        save_if_valid(edificacion_form, "Edificación")
-
-        # Procesar mensaje con lógica especial
-        if mensaje_form.is_valid() and any(mensaje_form.cleaned_data.values()):
-            mensaje = mensaje_form.save(commit=False)
-            mensaje.task = task
-            mensaje.enviado_por_imp = request.user
-            mensaje.save()
-
-            asunto = mensaje_form.cleaned_data.get('asunto') or "Nueva Tarea"
-            mensaje_texto = mensaje_form.cleaned_data.get('mensaje') or ""
-            enviar_a_email = mensaje_form.cleaned_data.get('enviar_a_imp')
-
-            if enviar_a_email:
-                html_message = render_to_string('extends_importados/correo_template.html', {
-                    'asunto': asunto,
-                    'mensaje_texto': mensaje_texto,
-                })
-                try:
-                    send_mail(
-                        subject=asunto,
-                        message=mensaje_texto,
-                        from_email=settings.EMAIL_HOST_USER,
-                        recipient_list=[enviar_a_email.email],
-                        html_message=html_message,
-                        fail_silently=False,
-                    )
-                    messages.success(request, "El mensaje se envió correctamente por correo.")
-                except Exception as e:
-                    errores["Mensaje"] = f"Error al enviar correo: {e}"
-                    todo_valido = False
-        elif not mensaje_form.is_valid() and any(mensaje_form.data.values()):
-            errores["Mensaje"] = mensaje_form.errors
-            todo_valido = False
-
-        # Procesar inmueble principal
-        if inmueble.is_valid():
-            inmueble.save()
-            messages.success(request, "Inmueble actualizado correctamente.")
-        else:
-            errores["Inmueble"] = inmueble.errors
-            todo_valido = False
-
-        # Si todo fue válido, redirige a la lista de inmuebles
-        if todo_valido:
-            return redirect('Inmuebles')  # <-- Redirige aquí si todo se guardó
-
-    else:
-        # GET request: inicializamos los formularios vacíos
-        inmueble = InmuebleForm(instance=task)
-        documento_propiedad_form = DocumentoPropiedadFormIMP()
-        datos_avaluos_form = DatosAvaluosFormIMP()
-        ocupaciones_form = OcupacionesFormIMP()
-        documento_ocupacion_form = DocumentoOcupacionFormIMP()
-        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP()
-        datos_terceros_form = DatosTercerosFormIMP()
-        edificio_verde_form = Edificio_VerdeFormIMP()
-        colindancia_form = ColindanciasFormIMP()
-        tramite_disposicion_form = TramitesDisposicionFormIMP()
-        edificacion_form = EdificacionFormIMP()
-        mensaje_form = MensajeFormIMP(prefix='mensaje') 
-
-    return render(request, 'task_detail_importados.html', {
-        'task': task,
-        'inmueble': inmueble,
-        'titulo': task.NombreInmueble,
-        'edificio_verde_form': edificio_verde_form,
-        'edificacion_form': edificacion_form,
-        'documento_propiedad_form': documento_propiedad_form,
-        'datos_avaluos_form': datos_avaluos_form,
-        'ocupaciones_form': ocupaciones_form,
-        'documento_ocupacion_form': documento_ocupacion_form,
-        'instituciones_ocupantes_form': instituciones_ocupantes_form,
-        'datos_terceros_form': datos_terceros_form,
-        'colindancia_form': colindancia_form,
-        'tramite_disposicion_form': tramite_disposicion_form,
-        'mensaje_form': mensaje_form,
-        'mensajes': mensajes,
-        'errores': errores,  # Pasamos los errores al template
-    })
-
     
 @login_required
 def completar_mensajeIMP(request, mensaje_id):
@@ -582,288 +276,6 @@ def completar_mensajeIMP(request, mensaje_id):
     return JsonResponse({'success': False})
 
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import FoliosRealesIMP
-from .forms import FoliosRealesFormIMP
-
-from django.db import IntegrityError
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def agregar_dictamen_estructural(request, task_id):
-    inmueble = get_object_or_404(Inmueble, pk=task_id)
-
-    if request.method == 'POST':
-        dictamen_estructural_form = DictamenEstructuralForm(request.POST, request.FILES)
-
-        if not request.POST.get('no_de_identificador_del_expediente_institucion', '').strip():
-            error_message = 'Todos los campos son requeridos.'
-            return JsonResponse({'success': False, 'error_message': error_message}, status=400)
-
-        if dictamen_estructural_form.is_valid():
-            dictamen_estructural = dictamen_estructural_form.save(commit=False)
-            dictamen_estructural.task = inmueble
-            dictamen_estructural.save()
-            return JsonResponse({'success': True, 'message': 'Dictamen Estructural agregado correctamente.'})
-        else:
-            # Manejar errores de formulario
-            error_message = 'Ya existe un Dictamen Estructural con este ID'
-            errors = dictamen_estructural_form.errors.as_json()
-            return JsonResponse({'success': False, 'error_message': error_message, 'errors': errors}, status=400)
-    else:
-        dictamen_estructural_form = DictamenEstructuralForm()
-
-    return render(request, 'add/add_dictamen.html', {'inmueble': inmueble, 'dictamen_estructural_form': dictamen_estructural_form})
-
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def agregar_folio_real(request, task_id):
-    inmueble = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        folio_real_form = FoliosRealesFormIMP(request.POST, request.FILES)
-
-# Validar si el campo está vacío y devolver un error
-        if not request.POST.get('folios_reales_data', '').strip():
-            error_message = 'El campo Folio real es requerido'
-            return JsonResponse({'success': False, 'error_message': error_message}, status=400)
-
-
-        if folio_real_form.is_valid():
-            folio_real = folio_real_form.save(commit=False)
-            folio_real.task = inmueble
-            folio_real.save()
-            return JsonResponse({'success': True, 'message': 'Folio Real agregado correctamente.'})
-        else:
-            # Manejar errores de formulario
-            error_message = 'Ya existe un Folio Real con este ID'
-            errors = folio_real_form.errors.as_json()
-            return JsonResponse({'success': False, 'error_message': error_message, 'errors': errors}, status=400)
-    else:
-        folio_real_form = FoliosRealesFormIMP()
-    return render(request, 'add/add_folios_reales.html', {'inmueble': inmueble, 'folio_real_form': folio_real_form})
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def agregar_no_plano(request, task_id):
-    inmueble = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        numero_plano_form = Numero_PlanoFormIMP(request.POST, request.FILES)
-
-                # Validar si el campo está vacío y devolver un error
-        if not request.POST.get('numero_plano_data', '').strip():
-            error_message = 'El campo número plano es requerido.'
-            return JsonResponse({'success': False, 'error_message': error_message}, status=400)
-        
-        if numero_plano_form.is_valid():
-            numero_plano = numero_plano_form.save(commit=False)
-            numero_plano.task = inmueble
-            numero_plano.save()
-            return JsonResponse({'success': True, 'message': 'Numero plano  agregado correctamente.'})
-        else:
-            # Manejar errores de formulario
-            error_message = 'Ya existe un número plano con este ID'
-            errors = numero_plano_form.errors.as_json()
-            return JsonResponse({'success': False, 'error_message': error_message, 'errors': errors}, status=400)
-    else:
-        numero_plano_form = Numero_PlanoFormIMP()
-    return render(request, 'add/add_NoPlano.html', {'inmueble': inmueble, 'numero_plano_form': numero_plano_form})
-
-from django.http import JsonResponse
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def agregar_expediente_CEDOC(request, task_id):
-    inmueble = get_object_or_404(Inmueble, pk=task_id)
-
-    if request.method == 'POST':
-        expediente_form = Expedientes_CEDOCFormIMP(request.POST, request.FILES)
-        
-        # Validar si el campo está vacío y devolver un error
-        if not request.POST.get('expediente_cedoc_data', '').strip():
-            error_message = 'Este campo expediente CEDOC es requerido.'
-            return JsonResponse({'success': False, 'error_message': error_message}, status=400)
-
-        if expediente_form.is_valid():
-            expediente = expediente_form.save(commit=False)
-            expediente.task = inmueble
-            expediente.save()
-            return JsonResponse({'success': True, 'message': 'Expediente CEDOC agregado correctamente.'})
-        else:
-            # Manejar errores de formulario
-            error_message = 'Ya existe un expediente CEDOC con este ID'
-            errors = expediente_form.errors.as_json()
-            return JsonResponse({'success': False, 'error_message': error_message, 'errors': errors}, status=400)
-
-    else:
-        expediente_form = Expedientes_CEDOCFormIMP()
-
-    return render(request, 'add/add_expedientes_cedoc.html', {'inmueble': inmueble, 'expediente_form': expediente_form})
-
-
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def guardar_documento_ocupacionIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        documento_ocupacion_form = DocumentoOcupacionFormIMP(request.POST)
-
-        if documento_ocupacion_form.is_valid():
-            # Realiza cualquier validación adicional si es necesario
-            documento_ocupacion = documento_ocupacion_form.save(commit=False)
-            # Asegúrate de obtener la tarea relacionada correctamente
-            documento_ocupacion.task = task
-            documento_ocupacion.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-    
-
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def guardar_instituciones_ocupantesIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        instituciones_ocupantes_form = InstitucionesOcupantesFormIMP(request.POST)
-
-        if instituciones_ocupantes_form.is_valid():
-            # Realiza cualquier validación adicional si es necesario
-            instituciones_ocupantes = instituciones_ocupantes_form.save(commit=False)
-            # Asegúrate de obtener la tarea relacionada correctamente
-            instituciones_ocupantes.task = task
-            instituciones_ocupantes.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def guardar_datos_tercerosIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        datos_terceros_form = DatosTercerosFormIMP(request.POST)
-
-        if datos_terceros_form.is_valid():
-            # Realiza cualquier validación adicional si es necesario
-            datos_terceros = datos_terceros_form.save(commit=False)
-            # Asegúrate de obtener la tarea relacionada correctamente
-            datos_terceros.task = task
-            datos_terceros.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def guardar_docPropiedadIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        documento_propiedad_form = DocumentoPropiedadFormIMP(request.POST, request.FILES)
-
-        if documento_propiedad_form.is_valid():
-            # Realiza cualquier validación adicional si es necesario
-            documento_propiedad = documento_propiedad_form.save(commit=False)
-            # Asegúrate de obtener la tarea relacionada correctamente
-            documento_propiedad.task = task
-            documento_propiedad.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-
-
-def guardar_AvaluoIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        datos_avaluos_form = DatosAvaluosFormIMP(request.POST)
-
-        if datos_avaluos_form.is_valid():
-            # Realiza cualquier validación adicional si es necesario
-            datos_avaluo = datos_avaluos_form.save(commit=False)
-            # Asegúrate de obtener la tarea relacionada correctamente
-            datos_avaluo.task = task
-            datos_avaluo.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-
-
-
-def guardar_OcupacionesIMP(request, task_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    if request.method == 'POST':
-        ocupaciones_form = OcupacionesFormIMP(request.POST)
-
-        if ocupaciones_form.is_valid():
-            # Realiza cualquier validación adicional si es necesario
-            ocupaciones = ocupaciones_form.save(commit=False)
-            # Asegúrate de obtener la tarea relacionada correctamente
-            ocupaciones.task = task
-            ocupaciones.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False})
-    else:
-        return JsonResponse({"success": False})
-                
-               
-# Eliminar folios
-def delete_folio_realIMP(request, task_id, folio_real_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    folio_real = get_object_or_404(FoliosRealesIMP, pk=folio_real_id, task=task)
-    
-    # Eliminar el folio real
-    folio_real.delete()
-    
-    # Devolver una respuesta JSON indicando que la eliminación fue exitosa
-    return JsonResponse({'success': True})
-
-
-def delete_numero_planoIMP(request, task_id, numero_plano_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    numero_plano = get_object_or_404(NumeroPlanoIMP, pk=numero_plano_id, task=task)
-
-    # Eliminar el número de plano
-    numero_plano.delete()
-
-    # Devolver una respuesta JSON indicando que la eliminación fue exitosa
-    return JsonResponse({'success': True})
-
-
-
-def delete_expediente_cedocIMP(request, task_id, expediente_cedoc_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    expediente_cedoc = get_object_or_404(Expedientes_CEDOCIMP, pk=expediente_cedoc_id, task=task)
-
-    # Eliminar el expediente cedoc
-    expediente_cedoc.delete()
-
-    # Devolver una respuesta JSON indicando que la eliminación fue exitosa
-    return JsonResponse({'success': True})
-
-def delete_edificio_verdeIMP(request, task_id, edificio_verde_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    edificio_verde = get_object_or_404(EdificioVerdeIMP, pk=edificio_verde_id, task=task)
-    edificio_verde.delete()
-    return JsonResponse({'success': True})
-
-def delete_ColindanciaIMP(request, task_id, colindancia_id):
-    task = get_object_or_404(Inmueble, pk=task_id)
-    colindancia = get_object_or_404(ColindanciasIMP, pk=colindancia_id, task=task)
-    colindancia.delete()
-    return JsonResponse({'success': True})
-
 
 @login_required
 def delete_task(request, task_id):
@@ -872,32 +284,6 @@ def delete_task(request, task_id):
         task.delete()
         return redirect('tasks')
     
-class TaskDeleteView(View):
-    def get(self, request, task_id):
-        task = get_object_or_404(Inmueble, id=task_id)
-        form = PasswordConfirmationForm()
-        return render(request, 'delete_task.html', {'task': task, 'form': form})
-
-    def post(self, request, task_id):
-        task = get_object_or_404(Inmueble, id=task_id)
-        form = PasswordConfirmationForm(request.POST)
-        
-        if form.is_valid():
-            # Validar la contraseña del usuario aquí
-            password = form.cleaned_data['password']
-            
-            # Lógica para validar la contraseña
-            # En este ejemplo, suponemos que tienes un usuario autenticado en request.user
-            if request.user.check_password(password):
-                # Si la contraseña es válida, eliminar la tarea y redirigir a la lista de tareas
-                task.delete()
-                return redirect('tasks')
-            else:
-                # Si la contraseña no es válida, mostrar un mensaje de error
-                form.add_error('password', 'Contraseña incorrecta. Inténtalo de nuevo.')
-
-        return render(request, 'delete_task.html', {'task': task, 'form': form})
-
 from django.http import JsonResponse
 import csv
 
@@ -941,140 +327,26 @@ def get_salas(request):
 
     return JsonResponse({'salas': salas_data})
 
-@login_required
-def editar_edificacionIMP(request, edificacion_id):
-    edificacion = get_object_or_404(EdificacionIMP, pk=edificacion_id)
 
+@login_required
+@permission_required('tasks.add_inmueble', raise_exception=True)
+def crear_inmueble(request):
     if request.method == 'POST':
-        inmueble = EdificacionFormIMP(request.POST, instance=edificacion)
-        if inmueble.is_valid():
+        form = TaskCreateForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            inmueble = form.save(commit=False)
+            inmueble.user = request.user
+            inmueble.creado = timezone.now()
             inmueble.save()
-            return redirect('Detalle_inmueble', task_id=edificacion.task.id)
+            messages.success(request, 'El inmueble se creó correctamente ✅')
+            return redirect('inmuebles_list')
+        else:
+            messages.error(request, 'Hubo un error al crear el inmueble ❌')
     else:
-        inmueble = EdificacionFormIMP(instance=edificacion)
-
-    return render(request, 'update/editar_edificacion_imp.html', {
-        'inmueble': inmueble,
-        'edificacion': edificacion,
-    })
-
-@login_required
-def borrar_edificacionIMP(request, edificacion_id):
-    edificacion = get_object_or_404(EdificacionIMP, pk=edificacion_id)
-    task_id = edificacion.task_id
-    edificacion.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-
-# Edicion Titulo De Propiedad
-@login_required
-def editar_documentoIMP(request, documento_id):
-    documento = get_object_or_404(DocumentoPropiedadIMP, id=documento_id)
-    if request.method == 'POST':
-        form = DocumentoPropiedadFormIMP(request.POST, request.FILES, instance=documento)
-        if form.is_valid():
-            form.save()
-            return redirect('Detalle_inmueble', task_id=documento.task_id)
-    else:
-        form = DocumentoPropiedadFormIMP(instance=documento)
-    return render(request, 'update/editar_documentoIMP.html', {'form': form, 'documento': documento})
-
-
-def eliminar_documentoIMP(request, documento_id):
-    documento = get_object_or_404(DocumentoPropiedadIMP, id=documento_id)
-    task_id = documento.task_id
-    documento.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-# Edicion avaluo
-@login_required
-def editar_avaluoIMP(request, avaluo_id):
-    avaluo = get_object_or_404(DatosAvaluosIMP, id=avaluo_id)
-
-    if request.method == 'POST':
-        form = DatosAvaluosFormIMP(request.POST, instance=avaluo)
-        if form.is_valid():
-            form.save()
-            return redirect('Detalle_inmueble', task_id=avaluo.task_id)  # Redirige a la página de detalle de la tarea
-    else:
-        form = DatosAvaluosFormIMP(instance=avaluo)
-
-    return render(request, 'update/editar_avaluoIMP.html', {
-        'avaluo': avaluo,
-        'form': form,
-    })
+        form = TaskCreateForm(user=request.user)
     
-@login_required
-def eliminar_avaluoIMP(request, avaluo_id):
-    avaluo = get_object_or_404(DatosAvaluosIMP, pk=avaluo_id)
-    task_id = avaluo.task_id
-    avaluo.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
+    return render(request, 'Inmuebles/crear_inmueble.html', {'form': form})
 
-
-@login_required
-def editar_ocupacionIMP(request, ocupacion_id):
-    ocupacion = get_object_or_404(OcupacionesIMP, id=ocupacion_id)
-
-    if request.method == 'POST':
-        form = OcupacionesFormIMP(request.POST, instance=ocupacion)
-        if form.is_valid():
-            form.save()
-            return redirect('Detalle_inmueble', task_id=ocupacion.task_id)  # Redirige a la página de detalle de la tarea
-    else:
-        form = OcupacionesFormIMP(instance=ocupacion)
-
-    return render(request, 'update/editar_ocupacionIMP.html', {
-        'ocupacion': ocupacion,
-        'form': form,
-    })
-
-@login_required
-def eliminar_ocupacionIMP(request, ocupacion_id):
-    ocupacion = get_object_or_404(OcupacionesIMP, pk=ocupacion_id)
-    task_id = ocupacion.task_id
-    ocupacion.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-
-@login_required
-def eliminar_tramite(request, tramite_id):
-    tramite = get_object_or_404(TramitesDisposicionIMP, pk=tramite_id)
-    task_id = tramite.task_id
-    tramite.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-
-from django.shortcuts import get_object_or_404, redirect
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-
-def eliminar_dictamenIMP(request, dictamen_estructural_id):
-    dictamen_estructural = get_object_or_404(DictamenEstructuralIMP, pk=dictamen_estructural_id)
-    task_id = dictamen_estructural.task_id
-    dictamen_estructural.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-
-def eliminar_docOcupacionIMP(request, docOcupacion_id):
-    docOcupacion = get_object_or_404(Documento_ocupacionIMP, pk=docOcupacion_id)
-    task_id = docOcupacion.task_id
-    docOcupacion.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-
-def eliminar_DatoInstitucionOcupanteIMP(request, datoInstitucionOcupante_id):
-    datoInstitucionOcupante = get_object_or_404(InstitucionesOcupantesIMP, pk=datoInstitucionOcupante_id)
-    task_id = datoInstitucionOcupante.task_id
-    datoInstitucionOcupante.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
-
-
-def deleteDatosTercerosIMP(request, datos_terceros_id):
-    datos_terceros = get_object_or_404(DatosTercerosIMP, pk=datos_terceros_id)
-    task_id = datos_terceros.task_id
-    datos_terceros.delete()
-    return redirect('Detalle_inmueble', task_id=task_id)
 
 
 from django.shortcuts import get_object_or_404
@@ -1916,33 +1188,6 @@ from .models import DatosLlamadasInmuebles, RegistroLlamadas, MensajeIMP
 
 
 
-@login_required
-@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
-def guardar_registro_llamada(request, ficha_id):
-    """
-    Vista AJAX para guardar un registro de llamada sin recargar la página.
-    Devuelve JsonResponse con success=True/False.
-    """
-    ficha = get_object_or_404(DatosLlamadasInmuebles, pk=ficha_id)
-
-    if request.method == 'POST':
-        registro_form = registroLlamadaForm(request.POST)
-
-        if registro_form.is_valid():
-            num_llamada = registro_form.cleaned_data.get('NumLlamada')
-            # Validación de duplicado
-            if RegistroLlamadas.objects.filter(NumLlamada=num_llamada, ficha=ficha).exists():
-                return JsonResponse({"success": False, "error": "El número de llamada ya existe."})
-
-            # Guardado del registro
-            registro_llamada = registro_form.save(commit=False)
-            registro_llamada.ficha = ficha
-            registro_llamada.save()
-            return JsonResponse({"success": True})
-
-        return JsonResponse({"success": False, "error": "Por favor, corrige los errores en el formulario."})
-
-    return JsonResponse({"success": False, "error": "Método no permitido"})
 
 
 
@@ -2140,3 +1385,194 @@ def crear_tarea(request):
         "form": form,
     }
     return render(request, "llamadas/crear_tarea.html", context)
+
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
+from .models import Inmueble
+from .forms import InmuebleForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.utils import timezone
+
+@login_required
+@permission_required('tasks.view_inmueble', raise_exception=True)
+def inmuebles_list(request):
+    search_query = request.GET.get("q", "")
+    prioridad = request.GET.get("prioridad", "")
+    ur = request.GET.get("ur", "")
+    orden = request.GET.get("ordenar", "")
+
+    inmuebles = Inmueble.objects.all()
+
+    # 🔎 Filtros de búsqueda
+    if search_query:
+        inmuebles = inmuebles.filter(
+            Q(NombreInmueble__icontains=search_query) |
+            Q(rfi__icontains=search_query) |
+            Q(entidad_federativa__icontains=search_query) |
+            Q(municipio_alcaldia__icontains=search_query)
+        )
+    if prioridad:
+        inmuebles = inmuebles.filter(prioridad=prioridad)
+    if ur:
+        inmuebles = inmuebles.filter(UR=ur)
+
+    # 🔃 Ordenamientos
+    if orden == "az":
+        inmuebles = inmuebles.order_by("NombreInmueble")
+    elif orden == "za":
+        inmuebles = inmuebles.order_by("-NombreInmueble")
+    elif orden == "nuevo":
+        inmuebles = inmuebles.order_by("-creado")
+    elif orden == "viejo":
+        inmuebles = inmuebles.order_by("creado")
+
+    # 📊 Paginación
+    paginator = Paginator(inmuebles, 30)
+    page = request.GET.get("page")
+    inmuebles_page = paginator.get_page(page)
+
+    # ✅ Totales usando `datecompleted`
+    total_completed_inmuebles = inmuebles.filter(datecompleted__isnull=False).count()
+    total_pending_inmuebles = inmuebles.filter(datecompleted__isnull=True).count()
+
+    context = {
+        "inmuebles": inmuebles_page,
+        "search_query": search_query,
+        "prioridad": prioridad,
+        "ur": ur,
+        "orden": orden,
+        "ur_opciones": [op[0] for op in Inmueble.UR_CHOICES],
+        "total_completed_inmuebles": total_completed_inmuebles,
+        "total_pending_inmuebles": total_pending_inmuebles,
+    }
+    return render(request, "Inmuebles/inmuebles_list.html", context)
+
+
+
+# 🏠 Detalle y actualización de inmueble
+@login_required
+@permission_required('tasks.change_inmueble', raise_exception=True)
+def detalle_inmueble(request, pk):
+    inmueble = get_object_or_404(Inmueble, pk=pk)
+
+    # Lógica para el formulario principal (inmueble)
+    inmueble_form = InmuebleForm(request.POST or None, request.FILES or None, instance=inmueble)
+    if 'inmueble_form_submit' in request.POST and inmueble_form.is_valid():
+        if inmueble_form.cleaned_data.get('estado') == 'Completado' and not inmueble.datecompleted:
+            inmueble.datecompleted = timezone.now()
+        inmueble_form.save()
+        messages.success(request, "El inmueble se actualizó correctamente ✅")
+        # Redirige a la misma página, manteniendo la pestaña activa
+        return redirect(f"{request.path}?tab=informacion")
+
+    # Lógica para el formulario de Dictamenes
+    dictamen_form = DictamenEstructuralIMPForm(request.POST or None, request.FILES or None)
+    if 'dictamen_form_submit' in request.POST and dictamen_form.is_valid():
+        new_dictamen = dictamen_form.save(commit=False)
+        new_dictamen.task = inmueble
+        new_dictamen.save()
+        messages.success(request, "El dictamen se guardó correctamente ✅")
+        # Redirige a la misma página, manteniendo la pestaña activa
+        return redirect(f"{request.path}?tab=dictamenes")
+    elif 'dictamen_form_submit' in request.POST and not dictamen_form.is_valid():
+        messages.error(request, "Hubo un error al guardar el dictamen ❌")
+
+    # Lógica para el formulario de Folios Reales
+    folios_form = FoliosRealesIMPForm(request.POST or None, request.FILES or None)
+    if 'folios_form_submit' in request.POST and folios_form.is_valid():
+        new_folios = folios_form.save(commit=False)
+        new_folios.task = inmueble
+        new_folios.save()
+        messages.success(request, "El folio real se guardó correctamente ✅")
+        # Redirige a la misma página, manteniendo la pestaña activa
+        return redirect(f"{request.path}?tab=dictamenes")
+    elif 'folios_form_submit' in request.POST and not folios_form.is_valid():
+        messages.error(request, "Hubo un error al guardar el folio real ❌")
+
+    # Lógica para el formulario de Números de Plano
+    planos_form = NumeroPlanoIMPForm(request.POST or None, request.FILES or None)
+    if 'planos_form_submit' in request.POST and planos_form.is_valid():
+        new_plano = planos_form.save(commit=False)
+        new_plano.task = inmueble
+        new_plano.save()
+        messages.success(request, "El número de plano se guardó correctamente ✅")
+        # Redirige a la misma página, manteniendo la pestaña activa
+        return redirect(f"{request.path}?tab=dictamenes")
+    elif 'planos_form_submit' in request.POST and not planos_form.is_valid():
+        messages.error(request, "Hubo un error al guardar el número de plano ❌")
+
+    # Lógica para el formulario de Expedientes CEDOC
+    cedoc_form = Expedientes_CEDOCIMPForm(request.POST or None, request.FILES or None)
+    if 'cedoc_form_submit' in request.POST and cedoc_form.is_valid():
+        new_cedoc = cedoc_form.save(commit=False)
+        new_cedoc.task = inmueble
+        new_cedoc.save()
+        messages.success(request, "El expediente CEDOC se guardó correctamente ✅")
+        # Redirige a la misma página, manteniendo la pestaña activa
+        return redirect(f"{request.path}?tab=dictamenes")
+    elif 'cedoc_form_submit' in request.POST and not cedoc_form.is_valid():
+        messages.error(request, "Hubo un error al guardar el expediente CEDOC ❌")
+
+    # Lógica para el formulario de Títulos de Propiedad
+    titulo_form = DocumentoPropiedadIMPForm(request.POST or None, request.FILES or None)
+    if 'titulo_form_submit' in request.POST and titulo_form.is_valid():
+        new_titulo = titulo_form.save(commit=False)
+        new_titulo.task = inmueble
+        new_titulo.save()
+        messages.success(request, "El título de propiedad se guardó correctamente ✅")
+        # Redirige a la misma página, manteniendo la pestaña activa
+        return redirect(f"{request.path}?tab=titulos")
+    elif 'titulo_form_submit' in request.POST and not titulo_form.is_valid():
+        messages.error(request, "Hubo un error al guardar el título de propiedad ❌")
+        
+    # Lógica para el formulario de Observaciones
+    observaciones_form = ObservacionesForm(request.POST or None, request.FILES or None)
+    if 'observaciones_form_submit' in request.POST and observaciones_form.is_valid():
+        new_observacion = observaciones_form.save(commit=False)
+        new_observacion.task = inmueble
+        new_observacion.save()
+        messages.success(request, "La observación se guardó correctamente ✅")
+        return redirect(f"{request.path}?tab=observaciones")
+    elif 'observaciones_form_submit' in request.POST and not observaciones_form.is_valid():
+        messages.error(request, "Hubo un error al guardar la observación ❌")
+
+    # Si la solicitud no es POST, se inicializan los formularios
+    if request.method != "POST":
+        inmueble_form = InmuebleForm(instance=inmueble)
+        dictamen_form = DictamenEstructuralIMPForm()
+        folios_form = FoliosRealesIMPForm()
+        planos_form = NumeroPlanoIMPForm()
+        cedoc_form = Expedientes_CEDOCIMPForm()
+        titulo_form = DocumentoPropiedadIMPForm()
+        observaciones_form = ObservacionesForm()
+
+    # Datos para la plantilla
+    dictamenes = inmueble.dictamen_estructural.all()
+    titulos = inmueble.docprop.all()
+    folios_reales = inmueble.folios_reales.all()
+    numeros_planos = inmueble.numeros_planos.all()
+    expedientes_cedoc = inmueble.expedientes_deoc.all()
+    observaciones_list = inmueble.observaciones.all()
+
+    return render(request, "Inmuebles/detalle_inmueble.html", {
+        "form": inmueble_form,
+        "inmueble": inmueble,
+        "dictamen_form": dictamen_form,
+        "dictamenes": dictamenes,
+        "titulo_form": titulo_form,
+        "titulos": titulos,
+        "folios_form": folios_form,
+        "folios_reales": folios_reales,
+        "planos_form": planos_form,
+        "numeros_planos": numeros_planos,
+        "cedoc_form": cedoc_form,
+        "expedientes_cedoc": expedientes_cedoc,
+        "observaciones_form": observaciones_form,
+        "observaciones_list": observaciones_list,
+    })

@@ -1,0 +1,1234 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block titulo %}
+    {% if inmueble %}
+        Editar {{ inmueble.NombreInmueble }}
+    {% else %}
+        Crear Inmueble
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<style>
+    .tabs {
+        overflow: hidden;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+    .tab-link {
+        background-color: #f1f1f1;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 16px;
+        transition: background-color 0.3s;
+        margin-right: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .tab-link:hover {
+        background-color: #ddd;
+    }
+    .tab-link.active {
+        background-color: #fff;
+        border-bottom: 2px solid #007bff;
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+    .loading-spinner {
+        display: none;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #3498db;
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        animation: spin 1s linear infinite;
+        margin-left: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<div class="container my-4">
+    <div class="card shadow-sm p-4">
+        <h1 class="h3 font-weight-bold mb-4 text-center">
+            {% if inmueble %}
+                Editar Inmueble: {{ inmueble.NombreInmueble }}
+            {% else %}
+                Crear Nuevo Inmueble
+            {% endif %}
+        </h1>
+
+        {% if messages %}
+            <ul class="list-unstyled mb-4">
+            {% for message in messages %}
+                <li class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} text-center" role="alert">
+                    {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <!-- Pestañas -->
+        <div class="tabs">
+            <button class="tab-link active" onclick="openTab(event, 'informacion')">Información General</button>
+            <button class="tab-link" onclick="openTab(event, 'ubicacion')">Ubicación</button>
+            <button class="tab-link" onclick="openTab(event, 'edificacion')">Edificación</button>
+            <button class="tab-link" onclick="openTab(event, 'caracteristicas')">Características</button>
+            <button class="tab-link" onclick="openTab(event, 'uso')">Uso</button>
+            <button class="tab-link" onclick="openTab(event, 'aprovechamiento')">Aprovechamiento</button>
+            <button class="tab-link" onclick="openTab(event, 'valor')">Valor</button>
+            <button class="tab-link" onclick="openTab(event, 'dictamenes')">Dictámenes</button>
+            <button class="tab-link" onclick="openTab(event, 'titulos')">Títulos de Propiedad</button>
+            <button class="tab-link" onclick="openTab(event, 'observaciones')">Observaciones</button>
+        </div>
+
+        <!-- Contenido de las pestañas -->
+        <div id="informacion" class="tab-content active">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Información General</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.NombreInmueble.id_for_label }}" class="form-label">{{ form.NombreInmueble.label }}</label>
+                            {{ form.NombreInmueble|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.rfi.id_for_label }}" class="form-label">{{ form.rfi.label }}</label>
+                            {{ form.rfi|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.rfiProv.id_for_label }}" class="form-label">{{ form.rfiProv.label }}</label>
+                            {{ form.rfiProv|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.UR.id_for_label }}" class="form-label">{{ form.UR.label }}</label>
+                            {{ form.UR|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                            {{ form.estado|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.seccion_del_inventario.id_for_label }}" class="form-label">{{ form.seccion_del_inventario.label }}</label>
+                            <div class="d-flex align-items-center">
+                                <select id="{{ form.seccion_del_inventario.auto_id }}" name="{{ form.seccion_del_inventario.html_name }}" class="form-select"></select>
+                                <span id="spinner-seccion" class="loading-spinner"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.Dependencia_Administradora.id_for_label }}" class="form-label">{{ form.Dependencia_Administradora.label }}</label>
+                            <div class="d-flex align-items-center">
+                                <select id="{{ form.Dependencia_Administradora.auto_id }}" name="{{ form.Dependencia_Administradora.html_name }}" class="form-select"></select>
+                                <span id="spinner-dependencia" class="loading-spinner"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.Sector.id_for_label }}" class="form-label">{{ form.Sector.label }}</label>
+                            {{ form.Sector|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.Nombre_de_la_institucion_que_administra_el_inmueble.id_for_label }}" class="form-label">{{ form.Nombre_de_la_institucion_que_administra_el_inmueble.label }}</label>
+                            {{ form.Nombre_de_la_institucion_que_administra_el_inmueble|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.subSeccion.id_for_label }}" class="form-label">{{ form.subSeccion.label }}</label>
+                            <div class="d-flex align-items-center">
+                                <select id="{{ form.subSeccion.auto_id }}" name="{{ form.subSeccion.html_name }}" class="form-select"></select>
+                                <span id="spinner-subseccion" class="loading-spinner"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.Naturaleza_Juridica_de_la_Institucion.id_for_label }}" class="form-label">{{ form.Naturaleza_Juridica_de_la_Institucion.label }}</label>
+                            {{ form.Naturaleza_Juridica_de_la_Institucion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.causa_alta.id_for_label }}" class="form-label">{{ form.causa_alta.label }}</label>
+                            {{ form.causa_alta|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.prioridad.id_for_label }}" class="form-label">{{ form.prioridad.label }}</label>
+                            {{ form.prioridad|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.Denominaciones_anteriores.id_for_label }}" class="form-label">{{ form.Denominaciones_anteriores.label }}</label>
+                            {{ form.Denominaciones_anteriores|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.subir_archivo.id_for_label }}" class="form-label">{{ form.subir_archivo.label }}</label>
+                            {{ form.subir_archivo|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.assigned_to.id_for_label }}" class="form-label">Asignar a:</label>
+                            {{ form.assigned_to|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4 form-check form-switch d-flex align-items-center mt-4">
+                            {{ form.important|add_class:"form-check-input" }}
+                            <label for="{{ form.important.id_for_label }}" class="form-check-label">Es importante:</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ubicacion" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Ubicación</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.pais.id_for_label }}" class="form-label">{{ form.pais.label }}</label>
+                            {{ form.pais|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.entidad_federativa.id_for_label }}" class="form-label">{{ form.entidad_federativa.label }}</label>
+                            <div class="d-flex align-items-center">
+                                <select id="{{ form.entidad_federativa.auto_id }}" name="{{ form.entidad_federativa.html_name }}" class="form-select"></select>
+                                <span id="spinner-entidad" class="loading-spinner"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.municipio_alcaldia.id_for_label }}" class="form-label">{{ form.municipio_alcaldia.label }}</label>
+                            <div class="d-flex align-items-center">
+                                <select id="{{ form.municipio_alcaldia.auto_id }}" name="{{ form.municipio_alcaldia.html_name }}" class="form-select"></select>
+                                <span id="spinner-municipio" class="loading-spinner"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.municipio_no_existente.id_for_label }}" class="form-label">{{ form.municipio_no_existente.label }}</label>
+                            {{ form.municipio_no_existente|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.localidad.id_for_label }}" class="form-label">{{ form.localidad.label }}</label>
+                            {{ form.localidad|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.fotografia_de_la_ubicacion.id_for_label }}" class="form-label">
+                                {{ form.fotografia_de_la_ubicacion.label }}
+                            </label>
+                            {{ form.fotografia_de_la_ubicacion|add_class:"form-control"|attr:"type:file"|attr:"accept:image/*" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.componente_espacial.id_for_label }}" class="form-label">{{ form.componente_espacial.label }}</label>
+                            {{ form.componente_espacial|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_vialidad.id_for_label }}" class="form-label">{{ form.tipo_vialidad.label }}</label>
+                            {{ form.tipo_vialidad|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.nombre_vialidad.id_for_label }}" class="form-label">{{ form.nombre_vialidad.label }}</label>
+                            {{ form.nombre_vialidad|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.numero_exterior.id_for_label }}" class="form-label">{{ form.numero_exterior.label }}</label>
+                            {{ form.numero_exterior|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.numero_exterior_2.id_for_label }}" class="form-label">{{ form.numero_exterior_2.label }}</label>
+                            {{ form.numero_exterior_2|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.numero_interior.id_for_label }}" class="form-label">{{ form.numero_interior.label }}</label>
+                            {{ form.numero_interior|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_asentamiento.id_for_label }}" class="form-label">{{ form.tipo_asentamiento.label }}</label>
+                            {{ form.tipo_asentamiento|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.nombre_asentamiento.id_for_label }}" class="form-label">{{ form.nombre_asentamiento.label }}</label>
+                            {{ form.nombre_asentamiento|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.codigo_postal.id_for_label }}" class="form-label">{{ form.codigo_postal.label }}</label>
+                            {{ form.codigo_postal|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.entre_vialidades_referencia1.id_for_label }}" class="form-label">{{ form.entre_vialidades_referencia1.label }}</label>
+                            {{ form.entre_vialidades_referencia1|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.entre_vialidades_referencia2.id_for_label }}" class="form-label">{{ form.entre_vialidades_referencia2.label }}</label>
+                            {{ form.entre_vialidades_referencia2|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.vialidad_posterior.id_for_label }}" class="form-label">{{ form.vialidad_posterior.label }}</label>
+                            {{ form.vialidad_posterior|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.descripcion_ubicacion.id_for_label }}" class="form-label">{{ form.descripcion_ubicacion.label }}</label>
+                            {{ form.descripcion_ubicacion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.datum.id_for_label }}" class="form-label">{{ form.datum.label }}</label>
+                            {{ form.datum|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.utmx.id_for_label }}" class="form-label">{{ form.utmx.label }}</label>
+                            {{ form.utmx|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.utmy.id_for_label }}" class="form-label">{{ form.utmy.label }}</label>
+                            {{ form.utmy|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.utm_zona.id_for_label }}" class="form-label">{{ form.utm_zona.label }}</label>
+                            {{ form.utm_zona|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.latitud.id_for_label }}" class="form-label">{{ form.latitud.label }}</label>
+                            {{ form.latitud|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.longitud.id_for_label }}" class="form-label">{{ form.longitud.label }}</label>
+                            {{ form.longitud|add_class:"form-control" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edificacion" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Información de la Edificación</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.superficie_del_terreno_en_M2.id_for_label }}" class="form-label">{{ form.superficie_del_terreno_en_M2.label }}</label>
+                            {{ form.superficie_del_terreno_en_M2|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.superficie_del_terreno_HA.id_for_label }}" class="form-label">{{ form.superficie_del_terreno_HA.label }}</label>
+                            {{ form.superficie_del_terreno_HA|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.superficie_de_desplante_en_M2.id_for_label }}" class="form-label">{{ form.superficie_de_desplante_en_M2.label }}</label>
+                            {{ form.superficie_de_desplante_en_M2|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.superficie_construida_en_M2.id_for_label }}" class="form-label">{{ form.superficie_construida_en_M2.label }}</label>
+                            {{ form.superficie_construida_en_M2|add_class:"form-control" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="caracteristicas" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Características</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.superficie_util_m2.id_for_label }}" class="form-label">{{ form.superficie_util_m2.label }}</label>
+                            {{ form.superficie_util_m2|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.zona_ubicacion.id_for_label }}" class="form-label">{{ form.zona_ubicacion.label }}</label>
+                            {{ form.zona_ubicacion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_inmueble_rural.id_for_label }}" class="form-label">{{ form.tipo_inmueble_rural.label }}</label>
+                            {{ form.tipo_inmueble_rural|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.uso_dominante_zona.id_for_label }}" class="form-label">{{ form.uso_dominante_zona.label }}</label>
+                            {{ form.uso_dominante_zona|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.calidad_construccion.id_for_label }}" class="form-label">{{ form.calidad_construccion.label }}</label>
+                            {{ form.calidad_construccion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.clasificacion_edad.id_for_label }}" class="form-label">{{ form.clasificacion_edad.label }}</label>
+                            {{ form.clasificacion_edad|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.categoria.id_for_label }}" class="form-label">{{ form.categoria.label }}</label>
+                            {{ form.categoria|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.grado_consolidacion.id_for_label }}" class="form-label">{{ form.grado_consolidacion.label }}</label>
+                            {{ form.grado_consolidacion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.servicios.id_for_label }}" class="form-label">{{ form.servicios.label }}</label>
+                            {{ form.servicios|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.telefono_inmueble.id_for_label }}" class="form-label">{{ form.telefono_inmueble.label }}</label>
+                            {{ form.telefono_inmueble|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_inicio_construccion.id_for_label }}" class="form-label">{{ form.fecha_inicio_construccion.label }}</label>
+                            {{ form.fecha_inicio_construccion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.siglo_construccion.id_for_label }}" class="form-label">{{ form.siglo_construccion.label }}</label>
+                            {{ form.siglo_construccion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_ultima_remodelacion.id_for_label }}" class="form-label">{{ form.fecha_ultima_remodelacion.label }}</label>
+                            {{ form.fecha_ultima_remodelacion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.monumento.id_for_label }}" class="form-label">{{ form.monumento.label }}</label>
+                            {{ form.monumento|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.historico.id_for_label }}" class="form-label">{{ form.historico.label }}</label>
+                            {{ form.historico|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.artistico.id_for_label }}" class="form-label">{{ form.artistico.label }}</label>
+                            {{ form.artistico|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.arqueologico.id_for_label }}" class="form-label">{{ form.arqueologico.label }}</label>
+                            {{ form.arqueologico|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.clave_inah.id_for_label }}" class="form-label">{{ form.clave_inah.label }}</label>
+                            {{ form.clave_inah|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.folio_real_inah.id_for_label }}" class="form-label">{{ form.folio_real_inah.label }}</label>
+                            {{ form.folio_real_inah|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.no_plano_inah.id_for_label }}" class="form-label">{{ form.no_plano_inah.label }}</label>
+                            {{ form.no_plano_inah|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.clave_cnmh.id_for_label }}" class="form-label">{{ form.clave_cnmh.label }}</label>
+                            {{ form.clave_cnmh|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.clave_dgsmpc_conaculta.id_for_label }}" class="form-label">{{ form.clave_dgsmpc_conaculta.label }}</label>
+                            {{ form.clave_dgsmpc_conaculta|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_inscripcion_unesco.id_for_label }}" class="form-label">{{ form.fecha_inscripcion_unesco.label }}</label>
+                            {{ form.fecha_inscripcion_unesco|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.observaciones_historicas.id_for_label }}" class="form-label">{{ form.observaciones_historicas.label }}</label>
+                            {{ form.observaciones_historicas|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.siglo_o_periodo.id_for_label }}" class="form-label">{{ form.siglo_o_periodo.label }}</label>
+                            {{ form.siglo_o_periodo|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.correlativo.id_for_label }}" class="form-label">{{ form.correlativo.label }}</label>
+                            {{ form.correlativo|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.conjunto.id_for_label }}" class="form-label">{{ form.conjunto.label }}</label>
+                            {{ form.conjunto|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.clave_inbal.id_for_label }}" class="form-label">{{ form.clave_inbal.label }}</label>
+                            {{ form.clave_inbal|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.registro_unico_inah.id_for_label }}" class="form-label">{{ form.registro_unico_inah.label }}</label>
+                            {{ form.registro_unico_inah|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.estado_conservacion.id_for_label }}" class="form-label">{{ form.estado_conservacion.label }}</label>
+                            {{ form.estado_conservacion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.tipo_inmueble_rural.id_for_label }}" class="form-label">{{ form.tipo_inmueble_rural.label }}</label>
+                            {{ form.tipo_inmueble_rural|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.uso_dominante_zona.id_for_label }}" class="form-label">{{ form.uso_dominante_zona.label }}</label>
+                            {{ form.uso_dominante_zona|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.calidad_construccion.id_for_label }}" class="form-label">{{ form.calidad_construccion.label }}</label>
+                            {{ form.calidad_construccion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.clasificacion_edad.id_for_label }}" class="form-label">{{ form.clasificacion_edad.label }}</label>
+                            {{ form.clasificacion_edad|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.categoria.id_for_label }}" class="form-label">{{ form.categoria.label }}</label>
+                            {{ form.categoria|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.grado_consolidacion.id_for_label }}" class="form-label">{{ form.grado_consolidacion.label }}</label>
+                            {{ form.grado_consolidacion|add_class:"form-select" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="uso" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Uso</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.usuario_principal_del_inmueble.id_for_label }}" class="form-label">{{ form.usuario_principal_del_inmueble.label }}</label>
+                            {{ form.usuario_principal_del_inmueble|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.usoGenerico.id_for_label }}" class="form-label">{{ form.usoGenerico.label }}</label>
+                            {{ form.usoGenerico|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.usoEspecifico.id_for_label }}" class="form-label">{{ form.usoEspecifico.label }}</label>
+                            {{ form.usoEspecifico|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.uso_de_suelo_autorizado.id_for_label }}" class="form-label">{{ form.uso_de_suelo_autorizado.label }}</label>
+                            {{ form.uso_de_suelo_autorizado|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.numero_de_empleados_en_el_inmueble.id_for_label }}" class="form-label">{{ form.numero_de_empleados_en_el_inmueble.label }}</label>
+                            {{ form.numero_de_empleados_en_el_inmueble|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.documento_que_autoriza_ocupacion.id_for_label }}" class="form-label">{{ form.documento_que_autoriza_ocupacion.label }}</label>
+                            {{ form.documento_que_autoriza_ocupacion|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.numero_de_documentos_de_ocupacion.id_for_label }}" class="form-label">{{ form.numero_de_documentos_de_ocupacion.label }}</label>
+                            {{ form.numero_de_documentos_de_ocupacion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.instituciones_ocupantes.id_for_label }}" class="form-label">{{ form.instituciones_ocupantes.label }}</label>
+                            {{ form.instituciones_ocupantes|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.usuarios_terceros.id_for_label }}" class="form-label">{{ form.usuarios_terceros.label }}</label>
+                            {{ form.usuarios_terceros|add_class:"form-select" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="aprovechamiento" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Aprovechamiento</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.aprovechamiento.id_for_label }}" class="form-label">{{ form.aprovechamiento.label }}</label>
+                            {{ form.aprovechamiento|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.inmueble_con_atencion_al_publico.id_for_label }}" class="form-label">{{ form.inmueble_con_atencion_al_publico.label }}</label>
+                            {{ form.inmueble_con_atencion_al_publico|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.poblacion_beneficiada.id_for_label }}" class="form-label">{{ form.poblacion_beneficiada.label }}</label>
+                            {{ form.poblacion_beneficiada|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.poblacion_servicio.id_for_label }}" class="form-label">{{ form.poblacion_servicio.label }}</label>
+                            {{ form.poblacion_servicio|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado.id_for_label }}" class="form-label">{{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado.label }}</label>
+                            {{ form.cuenta_con_proyecto_de_uso_inmediato_desarrollado|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.inversion_requerida.id_for_label }}" class="form-label">{{ form.inversion_requerida.label }}</label>
+                            {{ form.inversion_requerida|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fuente_financiamiento.id_for_label }}" class="form-label">{{ form.fuente_financiamiento.label }}</label>
+                            {{ form.fuente_financiamiento|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_solicitud.id_for_label }}" class="form-label">{{ form.fecha_solicitud.label }}</label>
+                            {{ form.fecha_solicitud|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.inmueble_no_aprovechable_especificar.id_for_label }}" class="form-label">{{ form.inmueble_no_aprovechable_especificar.label }}</label>
+                            {{ form.inmueble_no_aprovechable_especificar|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.gasto_anual_de_mantenimiento.id_for_label }}" class="form-label">{{ form.gasto_anual_de_mantenimiento.label }}</label>
+                            {{ form.gasto_anual_de_mantenimiento|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.inmueble_en_condominio.id_for_label }}" class="form-label">{{ form.inmueble_en_condominio.label }}</label>
+                            {{ form.inmueble_en_condominio|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.superficie_total.id_for_label }}" class="form-label">{{ form.superficie_total.label }}</label>
+                            {{ form.superficie_total|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.indiviso.id_for_label }}" class="form-label">{{ form.indiviso.label }}</label>
+                            {{ form.indiviso|add_class:"form-control" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="valor" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Valor</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_contable.id_for_label }}" class="form-label">{{ form.valor_contable.label }}</label>
+                            {{ form.valor_contable|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_valor_contable.id_for_label }}" class="form-label">{{ form.fecha_valor_contable.label }}</label>
+                            {{ form.fecha_valor_contable|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_asegurable.id_for_label }}" class="form-label">{{ form.valor_asegurable.label }}</label>
+                            {{ form.valor_asegurable|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_valor_asegurable.id_for_label }}" class="form-label">{{ form.fecha_valor_asegurable.label }}</label>
+                            {{ form.fecha_valor_asegurable|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_adquisicion.id_for_label }}" class="form-label">{{ form.valor_adquisicion.label }}</label>
+                            {{ form.valor_adquisicion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_valor_adquisicion.id_for_label }}" class="form-label">{{ form.fecha_valor_adquisicion.label }}</label>
+                            {{ form.fecha_valor_adquisicion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_terreno.id_for_label }}" class="form-label">{{ form.valor_terreno.label }}</label>
+                            {{ form.valor_terreno|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_construccion.id_for_label }}" class="form-label">{{ form.valor_construccion.label }}</label>
+                            {{ form.valor_construccion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_catastral_terreno.id_for_label }}" class="form-label">{{ form.valor_catastral_terreno.label }}</label>
+                            {{ form.valor_catastral_terreno|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_catastral_construccion.id_for_label }}" class="form-label">{{ form.valor_catastral_construccion.label }}</label>
+                            {{ form.valor_catastral_construccion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_total_catastral.id_for_label }}" class="form-label">{{ form.valor_total_catastral.label }}</label>
+                            {{ form.valor_total_catastral|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.fecha_valor_catastral.id_for_label }}" class="form-label">{{ form.fecha_valor_catastral.label }}</label>
+                            {{ form.fecha_valor_catastral|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.documentacion_soporte.id_for_label }}" class="form-label">{{ form.documentacion_soporte.label }}</label>
+                            {{ form.documentacion_soporte|add_class:"form-control" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="dictamenes" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Agregar Nuevo Dictamen</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ dictamen_form.no_de_identificador_del_expediente_institucion.id_for_label }}" class="form-label">
+                                {{ dictamen_form.no_de_identificador_del_expediente_institucion.label }}
+                            </label>
+                            {{ dictamen_form.no_de_identificador_del_expediente_institucion|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ dictamen_form.subir_archivo_dictamen.id_for_label }}" class="form-label">
+                                {{ dictamen_form.subir_archivo_dictamen.label }}
+                            </label>
+                            {{ dictamen_form.subir_archivo_dictamen|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ dictamen_form.certificado_de_seguridad.id_for_label }}" class="form-label">
+                                {{ dictamen_form.certificado_de_seguridad.label }}
+                            </label>
+                            {{ dictamen_form.certificado_de_seguridad|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ dictamen_form.sentido_del_Dictamen.id_for_label }}" class="form-label">
+                                {{ dictamen_form.sentido_del_Dictamen.label }}
+                            </label>
+                            {{ dictamen_form.sentido_del_Dictamen|add_class:"form-select" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ dictamen_form.descripcion_del_sentido_del_Dictamen.id_for_label }}" class="form-label">
+                                {{ dictamen_form.descripcion_del_sentido_del_Dictamen.label }}
+                            </label>
+                            {{ dictamen_form.descripcion_del_sentido_del_Dictamen|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ dictamen_form.fecha_documento.id_for_label }}" class="form-label">
+                                {{ dictamen_form.fecha_documento.label }}
+                            </label>
+                            {{ dictamen_form.fecha_documento|add_class:"form-control" }}
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" name="dictamen_form_submit" class="btn btn-success">
+                                <i class="bi bi-save me-2"></i>Guardar Dictamen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Historial de Dictámenes</h2>
+                    {% if dictamenes %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID Expediente</th>
+                                        <th>Sentido del Dictamen</th>
+                                        <th>Fecha del Documento</th>
+                                        <th>Archivo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for dictamen in dictamenes %}
+                                    <tr>
+                                        <td>{{ dictamen.no_de_identificador_del_expediente_institucion }}</td>
+                                        <td>{{ dictamen.sentido_del_Dictamen }}</td>
+                                        <td>{{ dictamen.fecha_documento|date:"d/m/Y" }}</td>
+                                        <td>
+                                            {% if dictamen.subir_archivo_dictamen %}
+                                                <a href="{{ dictamen.subir_archivo_dictamen.url }}" target="_blank">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i> Descargar
+                                                </a>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay dictámenes registrados para este inmueble.</p>
+                    {% endif %}
+                </div>
+
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Agregar Folios Reales</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ folios_form.folios_reales_data.id_for_label }}" class="form-label">
+                                {{ folios_form.folios_reales_data.label }}
+                            </label>
+                            {{ folios_form.folios_reales_data|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ folios_form.archivo_folios_reales.id_for_label }}" class="form-label">
+                                {{ folios_form.archivo_folios_reales.label }}
+                            </label>
+                            {{ folios_form.archivo_folios_reales|add_class:"form-control" }}
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" name="folios_form_submit" class="btn btn-success">
+                                <i class="bi bi-save me-2"></i>Guardar Folio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Historial de Folios Reales</h2>
+                    {% if folios_reales %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Folio</th>
+                                        <th>Archivo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for folio in folios_reales %}
+                                    <tr>
+                                        <td>{{ folio.folios_reales_data }}</td>
+                                        <td>
+                                            {% if folio.archivo_folios_reales %}
+                                                <a href="{{ folio.archivo_folios_reales.url }}" target="_blank">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i> Descargar
+                                                </a>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay folios reales registrados para este inmueble.</p>
+                    {% endif %}
+                </div>
+
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Agregar Número de Plano</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ planos_form.numero_plano_data.id_for_label }}" class="form-label">
+                                {{ planos_form.numero_plano_data.label }}
+                            </label>
+                            {{ planos_form.numero_plano_data|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ planos_form.archivo_Numero_Plano.id_for_label }}" class="form-label">
+                                {{ planos_form.archivo_Numero_Plano.label }}
+                            </label>
+                            {{ planos_form.archivo_Numero_Plano|add_class:"form-control" }}
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" name="planos_form_submit" class="btn btn-success">
+                                <i class="bi bi-save me-2"></i>Guardar Plano
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Historial de Números de Plano</h2>
+                    {% if numeros_planos %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Número de Plano</th>
+                                        <th>Archivo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for plano in numeros_planos %}
+                                    <tr>
+                                        <td>{{ plano.numero_plano_data }}</td>
+                                        <td>
+                                            {% if plano.archivo_Numero_Plano %}
+                                                <a href="{{ plano.archivo_Numero_Plano.url }}" target="_blank">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i> Descargar
+                                                </a>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay números de plano registrados para este inmueble.</p>
+                    {% endif %}
+                </div>
+
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Agregar Expediente CEDOC</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="{{ cedoc_form.expediente_cedoc_data.id_for_label }}" class="form-label">
+                                {{ cedoc_form.expediente_cedoc_data.label }}
+                            </label>
+                            {{ cedoc_form.expediente_cedoc_data|add_class:"form-control" }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ cedoc_form.archivo_Expedientes_CEDOC.id_for_label }}" class="form-label">
+                                {{ cedoc_form.archivo_Expedientes_CEDOC.label }}
+                            </label>
+                            {{ cedoc_form.archivo_Expedientes_CEDOC|add_class:"form-control" }}
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" name="cedoc_form_submit" class="btn btn-success">
+                                <i class="bi bi-save me-2"></i>Guardar Expediente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Historial de Expedientes CEDOC</h2>
+                    {% if expedientes_cedoc %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Expediente CEDOC</th>
+                                        <th>Archivo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for expediente in expedientes_cedoc %}
+                                    <tr>
+                                        <td>{{ expediente.expediente_cedoc_data }}</td>
+                                        <td>
+                                            {% if expediente.archivo_Expedientes_CEDOC %}
+                                                <a href="{{ expediente.archivo_Expedientes_CEDOC.url }}" target="_blank">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i> Descargar
+                                                </a>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay expedientes CEDOC registrados para este inmueble.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div id="titulos" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Agregar Título de Propiedad</h2>
+                    <div class="row g-4">
+                        {% for field in titulo_form %}
+                            <div class="col-md-4">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field|add_class:"form-control" }}
+                            </div>
+                        {% endfor %}
+                        <div class="col-12 mt-4">
+                            <button type="submit" name="titulo_form_submit" class="btn btn-success">
+                                <i class="bi bi-save me-2"></i>Guardar Título
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Historial de Títulos de Propiedad</h2>
+                    {% if titulos %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tipo de Documento</th>
+                                        <th>Propietario</th>
+                                        <th>Superficie (m²)</th>
+                                        <th>Fecha de Creación</th>
+                                        <th>Archivo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for titulo in titulos %}
+                                    <tr>
+                                        <td>{{ titulo.pk }}</td>
+                                        <td>{{ titulo.get_tipo_documento_display }}</td>
+                                        <td>{{ titulo.institucion_propietario }}</td>
+                                        <td>{{ titulo.superficie_amparada_m2 }}</td>
+                                        <td>{{ titulo.fecha_creacion_DOC|date:"d/m/Y" }}</td>
+                                        <td>
+                                            {% if titulo.archivo %}
+                                                <a href="{{ titulo.archivo.url }}" target="_blank">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i> Descargar
+                                                </a>
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay títulos de propiedad registrados para este inmueble.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div id="observaciones" class="tab-content">
+                <div class="border p-4 rounded mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">Agregar Observación</h2>
+                  
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="{{ observaciones_form.observaciones_data.id_for_label }}" class="form-label">{{ observaciones_form.observaciones_data.label }}</label>
+                                {{ observaciones_form.observaciones_data|add_class:"form-control" }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ observaciones_form.fecha_observacion.id_for_label }}" class="form-label">{{ observaciones_form.fecha_observacion.label }}</label>
+                                {{ observaciones_form.fecha_observacion|add_class:"form-control" }}
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" name="observaciones_form_submit" class="btn btn-success">
+                                    <i class="bi bi-save me-2"></i>Guardar Observación
+                                </button>
+                            </div>
+                        </div>
+                  
+                </div>
+                <div class="border p-4 rounded mt-4">
+                    <h2 class="h5 font-weight-bold mb-3">Historial de Observaciones</h2>
+                    {% if observaciones_list %}
+                        <div class="table-responsive table-container">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Observación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for observacion in observaciones_list %}
+                                    <tr>
+                                        <td>{{ observacion.fecha_observacion|date:"d/m/Y" }}</td>
+                                        <td>{{ observacion.observaciones_data }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No hay observaciones registradas para este inmueble.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Botones de acción generales del formulario, fuera de las pestañas -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a href="{% url 'inmuebles_list' %}" class="btn btn-secondary shadow-sm">Volver</a>
+                <button type="submit" name="inmueble_form_submit" class="btn btn-primary shadow-sm">Guardar Cambios del Inmueble</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JS para pestañas -->
+<script>
+function openTab(evt, tabName) {
+    const tabContents = document.getElementsByClassName("tab-content");
+    const tabLinks = document.getElementsByClassName("tab-link");
+
+    for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+        tabContents[i].classList.remove('active');
+    }
+    for (let i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].classList.remove("active");
+    }
+
+    const selectedTab = document.getElementById(tabName);
+    if (selectedTab) {
+        selectedTab.style.display = "block";
+        selectedTab.classList.add('active');
+    }
+    evt.currentTarget.classList.add("active");
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('tab') || 'informacion';
+        const activeTabButton = $(`.tab-link[onclick*="'${activeTab}'"]`);
+        const activeTabContent = $(`#${activeTab}`);
+
+        if (activeTabButton.length) {
+            activeTabButton.click();
+        } else {
+            // Activar la pestaña 'informacion' por defecto si no hay una en la URL
+            $('.tab-link.active').click();
+        }
+    });
+
+    function loadSeccionesInventario() {
+        const selectSecciones = $('#{{ form.seccion_del_inventario.auto_id }}');
+        const spinner = $('#spinner-seccion');
+        selectSecciones.prop('disabled', true);
+        spinner.show();
+        
+        const selectedValue = '{{ form.seccion_del_inventario.value }}';
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/1/inventario/.json', function (data) {
+            const secciones = [...new Set(data.map(item => item.seccion_inventario))];
+            
+            selectSecciones.empty();
+            selectSecciones.append($('<option>').text('---------').attr('value', ''));
+
+            $.each(secciones, function (index, value) {
+                const selected = value === selectedValue ? 'selected' : '';
+                selectSecciones.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+            loadDependenciasAdministradoras();
+        }).always(function() {
+            spinner.hide();
+            selectSecciones.prop('disabled', false);
+        });
+    }
+
+    function loadDependenciasAdministradoras() {
+        const seccionInventario = $('#{{ form.seccion_del_inventario.auto_id }}').val();
+        const selectDependencias = $('#{{ form.Dependencia_Administradora.auto_id }}');
+        const spinner = $('#spinner-dependencia');
+        selectDependencias.prop('disabled', true);
+        spinner.show();
+        
+        const selectedValue = '{{ form.Dependencia_Administradora.value }}';
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/1/inventario/.json', function (data) {
+            const dependencias = [...new Set(data.filter(item => item.seccion_inventario === seccionInventario).map(item => item.dependencia_administradora))];
+            
+            selectDependencias.empty();
+            selectDependencias.append($('<option>').text('---------').attr('value', ''));
+
+            $.each(dependencias, function (index, value) {
+                const selected = value === selectedValue ? 'selected' : '';
+                selectDependencias.append($('<option>').text(value).attr('value', value).prop('selected', selected));
+            });
+            loadSubsecciones();
+        }).always(function() {
+            spinner.hide();
+            selectDependencias.prop('disabled', false);
+        });
+    }
+
+    function loadSubsecciones() {
+        const seccionInventario = $('#{{ form.seccion_del_inventario.auto_id }}').val();
+        const dependenciaAdministradora = $('#{{ form.Dependencia_Administradora.auto_id }}').val();
+        const selectSubsecciones = $('#{{ form.subSeccion.auto_id }}');
+        const spinner = $('#spinner-subseccion');
+        selectSubsecciones.prop('disabled', true);
+        spinner.show();
+
+        const selectedValue = '{{ form.subSeccion.value }}';
+        $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/1/inventario/.json', function (data) {
+            const subsecciones = [...new Set(data.filter(item => item.seccion_inventario === seccionInventario && item.dependencia_administradora === dependenciaAdministradora).map(item => item.subSeccion))];
+            
+            selectSubsecciones.empty();
+            selectSubsecciones.append($('<option>').text('---------').attr('value', ''));
+
+            $.each(subsecciones, function (index, value) {
+                const option = $('<option>').text(value).attr('value', value);
+                if (value === selectedValue) {
+                    option.prop('selected', true);
+                }
+                selectSubsecciones.append(option);
+            });
+        }).always(function() {
+            spinner.hide();
+            selectSubsecciones.prop('disabled', false);
+        });
+    }
+
+    function loadEntidadesFederativas() {
+        const selectEntidades = $('#{{ form.entidad_federativa.auto_id }}');
+        const spinner = $('#spinner-entidad');
+        selectEntidades.prop('disabled', true);
+        spinner.show();
+
+        const selectedValue = '{{ inmueble.entidad_federativa }}';
+
+        $.getJSON('/get_entidades_federativas/', function (data) {
+            selectEntidades.empty();
+            selectEntidades.append($('<option>').text('---------').attr('value', ''));
+
+            $.each(data.entidades_federativas, function (index, value) {
+                const option = $('<option>').text(value).attr('value', value);
+                if (value === selectedValue) {
+                    option.prop('selected', true);
+                }
+                selectEntidades.append(option);
+            });
+            loadMunicipios(selectEntidades.val());
+        }).always(function() {
+            spinner.hide();
+            selectEntidades.prop('disabled', false);
+        });
+    }
+
+    function loadMunicipios(entidadFederativa) {
+        const selectMunicipios = $('#{{ form.municipio_alcaldia.auto_id }}');
+        const spinner = $('#spinner-municipio');
+        selectMunicipios.prop('disabled', true);
+        spinner.show();
+        
+        const selectedValue = '{{ inmueble.municipio_alcaldia }}';
+
+        $.getJSON('/get_municipios/' + entidadFederativa + '/', function (data) {
+            selectMunicipios.empty();
+            selectMunicipios.append($('<option>').text('---------').attr('value', ''));
+            
+            $.each(data.municipios, function (index, value) {
+                const option = $('<option>').text(value).attr('value', value);
+                if (value === selectedValue) {
+                    option.prop('selected', true);
+                }
+                selectMunicipios.append(option);
+            });
+        }).always(function() {
+            spinner.hide();
+            selectMunicipios.prop('disabled', false);
+        });
+    }
+
+    $(document).ready(function () {
+        loadSeccionesInventario();
+        loadEntidadesFederativas();
+    
+        $('#{{ form.seccion_del_inventario.auto_id }}').change(function () {
+            loadDependenciasAdministradoras();
+        });
+    
+        $('#{{ form.Dependencia_Administradora.auto_id }}').change(function () {
+            loadSubsecciones();
+        });
+
+        $('#{{ form.entidad_federativa.auto_id }}').change(function () {
+            loadMunicipios($(this).val());
+        });
+    });
+
+    // Código para pestañas
+    function openTab(evt, tabName) {
+        const tabContents = document.getElementsByClassName("tab-content");
+        const tabLinks = document.getElementsByClassName("tab-link");
+
+        for (let i = 0; i < tabContents.length; i++) {
+            tabContents[i].style.display = "none";
+            tabContents[i].classList.remove('active');
+        }
+        for (let i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].classList.remove("active");
+        }
+
+        const selectedTab = document.getElementById(tabName);
+        if (selectedTab) {
+            selectedTab.style.display = "block";
+            selectedTab.classList.add('active');
+        }
+        evt.currentTarget.classList.add("active");
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('tab') || 'informacion';
+        const activeTabButton = document.querySelector(`.tab-link[onclick*="'${activeTab}'"]`);
+        const activeTabContent = document.getElementById(activeTab);
+
+        if (activeTabButton) {
+            activeTabButton.click();
+        } else {
+            // Activar la pestaña 'informacion' por defecto si no hay una en la URL
+            document.querySelector('.tab-link.active').click();
+        }
+    });
+</script>
+{% endblock %}

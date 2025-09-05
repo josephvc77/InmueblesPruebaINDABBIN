@@ -144,7 +144,7 @@ class Inmueble(models.Model):
     
     descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=True)
     fecha_documento = models.DateField(null=True, blank=True)
-    no_de_identificador_del_expediente_institucion = models.CharField(max_length=60,  null=True, blank=True)
+    no_de_identificador_del_expediente_institucion = models.CharField(max_length=100,  null=True, blank=True)
 
 
     # Nuevos campos para la sección de Ubicación
@@ -563,29 +563,33 @@ class Inmueble(models.Model):
         
 class DictamenEstructuralIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='dictamen_estructural')
-    no_de_identificador_del_expediente_institucion = models.CharField(max_length=60, unique=True, null=True, blank=False)
+    no_de_identificador_del_expediente_institucion = models.CharField(max_length=100, unique=True, null=True, blank=True)
     subir_archivo_dictamen = models.FileField(upload_to='Dictamen-Estructurales/', blank=True, null=True, editable=True)
-    certificado_de_seguridad = models.CharField(max_length=4, null=True, blank=False)
-    sentido_del_Dictamen = models.CharField(max_length=60, null=True, blank=False)
-    descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=False)
-    fecha_documento = models.DateField(null=True, blank=False)
-    
-    
+    certificado_de_seguridad = models.CharField(max_length=4, null=True, blank=True)
+    sentido_del_Dictamen = models.CharField(max_length=60, null=True, blank=True)
+    descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=True)
+    fecha_documento = models.DateField(null=True, blank=True)
+
+class Observaciones(models.Model):
+    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='observaciones')
+    observaciones_data = models.CharField(max_length=60, unique=True, null=True, blank=True)
+    fecha_observacion = models.DateField(null=True, blank=True)
+
 class FoliosRealesIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales')
-    folios_reales_data = models.CharField(max_length=60, unique=True, null=True, blank=False)
+    folios_reales_data = models.CharField(max_length=60, unique=True, null=True, blank=True)
     archivo_folios_reales = models.FileField(upload_to='FoliosReales/', blank=True, null=True, editable=True)
     
 class NumeroPlanoIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='numeros_planos')
-    numero_plano_data = models.CharField(max_length=10, null=True, unique=True)
+    numero_plano_data = models.CharField(max_length=10, null=True, unique=True, blank=True)
     archivo_Numero_Plano = models.FileField(upload_to='NumerosPlanos/', blank=True, null=True, editable=True)
  
 
     
 class Expedientes_CEDOCIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='expedientes_deoc')
-    expediente_cedoc_data = models.CharField(max_length=60, unique=True, null=True)
+    expediente_cedoc_data = models.CharField(max_length=60, unique=True, null=True, blank=True)
     archivo_Expedientes_CEDOC = models.FileField(upload_to='Expedientes-CEDOC/', blank=True, null=True, editable=True)
 
    

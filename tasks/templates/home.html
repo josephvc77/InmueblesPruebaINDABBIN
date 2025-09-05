@@ -17,7 +17,7 @@
           <img src="/static/inicio/img/house.svg" alt="Inmuebles" class="mb-3" style="height: 48px;">
           <h5 class="card-title">Inmuebles</h5>
           <p class="card-text">Explora el catálogo completo de inmuebles registrados.</p>
-          <a href="{% url 'Inmuebles' %}" class="btn btn-primary btn-sm">Ver Inmuebles</a>
+          <a href="{% url 'inmuebles_list' %}" class="btn btn-primary btn-sm">Ver Inmuebles</a>
         </div>
       </div>
     </div>
@@ -28,21 +28,11 @@
           <img src="/static/inicio/img/create.svg" alt="Crear" class="mb-3" style="height: 48px;">
           <h5 class="card-title">Registrar Inmueble</h5>
           <p class="card-text">Da de alta un nuevo inmueble en el sistema.</p>
-          <a href="{% url 'create_task' %}" class="btn btn-primary btn-sm">Registrar</a>
+          <a href="{% url 'crear_inmueble' %}" class="btn btn-primary btn-sm">Registrar</a>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow border-0 h-100 text-center">
-        <div class="card-body">
-          <img src="/static/inicio/img/bajas.svg" alt="Bajas" class="mb-3" style="height: 48px;">
-          <h5 class="card-title">Inmuebles Dados de Baja</h5>
-          <p class="card-text">Consulta el historial de bajas de inmuebles.</p>
-          <a href="{% url 'Inmuebles_en_Baja' %}" class="btn btn-primary btn-sm">Ver Bajas</a>
-        </div>
-      </div>
-    </div>
 
     <div class="col-md-6 col-lg-4">
       <div class="card shadow border-0 h-100 text-center">
