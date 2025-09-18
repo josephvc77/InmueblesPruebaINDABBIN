@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '168.255.101.50']
 
-APP_VERSION = os.environ.get('APP_VERSION', '1.0.11')
+APP_VERSION = os.environ.get('APP_VERSION', '1.0.14')
 
 
 # Application definition

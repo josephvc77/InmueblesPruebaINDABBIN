@@ -13,8 +13,8 @@ from django.views import View
 
 from djangocrud import settings
 
-from .forms import CreateDatosLlamadasForm, DictamenEstructuralIMPForm, DocumentoPropiedadIMPForm, Expedientes_CEDOCIMPForm, FoliosRealesIMPForm, NumeroPlanoIMPForm, ObservacionesForm, UserCreateForm
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .forms import ArchivoForm, ComentarioForm, CreateDatosLlamadasForm, DictamenEstructuralIMPForm, DocumentoPropiedadIMPForm, Expedientes_CEDOCIMPForm, FoliosRealesIMPForm, NumeroPlanoIMPForm, ObservacionForm, UserCreateForm
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, Observacion, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 from .forms import TaskCreateForm
 
@@ -1405,6 +1405,7 @@ def inmuebles_list(request):
     search_query = request.GET.get("q", "")
     prioridad = request.GET.get("prioridad", "")
     ur = request.GET.get("ur", "")
+    usuario_id = request.GET.get("usuario", "")
     orden = request.GET.get("ordenar", "")
 
     inmuebles = Inmueble.objects.all()
@@ -1421,6 +1422,9 @@ def inmuebles_list(request):
         inmuebles = inmuebles.filter(prioridad=prioridad)
     if ur:
         inmuebles = inmuebles.filter(UR=ur)
+    if usuario_id:
+        inmuebles = inmuebles.filter(assigned_to__id=usuario_id)
+
 
     # 🔃 Ordenamientos
     if orden == "az":
@@ -1441,11 +1445,16 @@ def inmuebles_list(request):
     total_completed_inmuebles = inmuebles.filter(datecompleted__isnull=False).count()
     total_pending_inmuebles = inmuebles.filter(datecompleted__isnull=True).count()
 
+    # Lista de usuarios para el filtro
+    usuarios = CustomUser.objects.all().order_by("username")
+
     context = {
         "inmuebles": inmuebles_page,
         "search_query": search_query,
         "prioridad": prioridad,
         "ur": ur,
+        "usuario_id": usuario_id,
+        "usuarios": usuarios,
         "orden": orden,
         "ur_opciones": [op[0] for op in Inmueble.UR_CHOICES],
         "total_completed_inmuebles": total_completed_inmuebles,
@@ -1461,104 +1470,117 @@ def inmuebles_list(request):
 def detalle_inmueble(request, pk):
     inmueble = get_object_or_404(Inmueble, pk=pk)
 
-    # Lógica para el formulario principal (inmueble)
+    # ------------------------
+    # FORMULARIOS PRINCIPALES
+    # ------------------------
     inmueble_form = InmuebleForm(request.POST or None, request.FILES or None, instance=inmueble)
     if 'inmueble_form_submit' in request.POST and inmueble_form.is_valid():
         if inmueble_form.cleaned_data.get('estado') == 'Completado' and not inmueble.datecompleted:
             inmueble.datecompleted = timezone.now()
         inmueble_form.save()
         messages.success(request, "El inmueble se actualizó correctamente ✅")
-        # Redirige a la misma página, manteniendo la pestaña activa
         return redirect(f"{request.path}?tab=informacion")
+    
+    archivo_form = ArchivoForm(request.POST or None, request.FILES or None)
+    if 'archivo_form_submit' in request.POST and archivo_form.is_valid():
+        new_archivo = archivo_form.save(commit=False)
+        new_archivo.inmueble = inmueble
+        new_archivo.save()
+        messages.success(request, "El archivo se guardó correctamente ✅")
+        return redirect(f"{request.path}?tab=archivos")
+    elif 'archivo_form_submit' in request.POST:
+        messages.error(request, "Hubo un error al guardar el archivo ❌")
 
-    # Lógica para el formulario de Dictamenes
     dictamen_form = DictamenEstructuralIMPForm(request.POST or None, request.FILES or None)
     if 'dictamen_form_submit' in request.POST and dictamen_form.is_valid():
         new_dictamen = dictamen_form.save(commit=False)
         new_dictamen.task = inmueble
         new_dictamen.save()
         messages.success(request, "El dictamen se guardó correctamente ✅")
-        # Redirige a la misma página, manteniendo la pestaña activa
         return redirect(f"{request.path}?tab=dictamenes")
-    elif 'dictamen_form_submit' in request.POST and not dictamen_form.is_valid():
+    elif 'dictamen_form_submit' in request.POST:
         messages.error(request, "Hubo un error al guardar el dictamen ❌")
 
-    # Lógica para el formulario de Folios Reales
     folios_form = FoliosRealesIMPForm(request.POST or None, request.FILES or None)
     if 'folios_form_submit' in request.POST and folios_form.is_valid():
-        new_folios = folios_form.save(commit=False)
-        new_folios.task = inmueble
-        new_folios.save()
+        new_folio = folios_form.save(commit=False)
+        new_folio.task = inmueble
+        new_folio.save()
         messages.success(request, "El folio real se guardó correctamente ✅")
-        # Redirige a la misma página, manteniendo la pestaña activa
         return redirect(f"{request.path}?tab=dictamenes")
-    elif 'folios_form_submit' in request.POST and not folios_form.is_valid():
+    elif 'folios_form_submit' in request.POST:
         messages.error(request, "Hubo un error al guardar el folio real ❌")
 
-    # Lógica para el formulario de Números de Plano
     planos_form = NumeroPlanoIMPForm(request.POST or None, request.FILES or None)
     if 'planos_form_submit' in request.POST and planos_form.is_valid():
         new_plano = planos_form.save(commit=False)
         new_plano.task = inmueble
         new_plano.save()
         messages.success(request, "El número de plano se guardó correctamente ✅")
-        # Redirige a la misma página, manteniendo la pestaña activa
         return redirect(f"{request.path}?tab=dictamenes")
-    elif 'planos_form_submit' in request.POST and not planos_form.is_valid():
+    elif 'planos_form_submit' in request.POST:
         messages.error(request, "Hubo un error al guardar el número de plano ❌")
 
-    # Lógica para el formulario de Expedientes CEDOC
     cedoc_form = Expedientes_CEDOCIMPForm(request.POST or None, request.FILES or None)
     if 'cedoc_form_submit' in request.POST and cedoc_form.is_valid():
         new_cedoc = cedoc_form.save(commit=False)
         new_cedoc.task = inmueble
         new_cedoc.save()
         messages.success(request, "El expediente CEDOC se guardó correctamente ✅")
-        # Redirige a la misma página, manteniendo la pestaña activa
         return redirect(f"{request.path}?tab=dictamenes")
-    elif 'cedoc_form_submit' in request.POST and not cedoc_form.is_valid():
+    elif 'cedoc_form_submit' in request.POST:
         messages.error(request, "Hubo un error al guardar el expediente CEDOC ❌")
 
-    # Lógica para el formulario de Títulos de Propiedad
     titulo_form = DocumentoPropiedadIMPForm(request.POST or None, request.FILES or None)
     if 'titulo_form_submit' in request.POST and titulo_form.is_valid():
         new_titulo = titulo_form.save(commit=False)
         new_titulo.task = inmueble
         new_titulo.save()
         messages.success(request, "El título de propiedad se guardó correctamente ✅")
-        # Redirige a la misma página, manteniendo la pestaña activa
         return redirect(f"{request.path}?tab=titulos")
-    elif 'titulo_form_submit' in request.POST and not titulo_form.is_valid():
+    elif 'titulo_form_submit' in request.POST:
         messages.error(request, "Hubo un error al guardar el título de propiedad ❌")
-        
-    # Lógica para el formulario de Observaciones
-    observaciones_form = ObservacionesForm(request.POST or None, request.FILES or None)
+
+    # ------------------------
+    # FORMULARIOS OBSERVACIONES Y COMENTARIOS
+    # ------------------------
+    observaciones_form = ObservacionForm(request.POST or None)
+    comentario_form = ComentarioForm(request.POST or None)
+
+    # Guardar Observación
     if 'observaciones_form_submit' in request.POST and observaciones_form.is_valid():
         new_observacion = observaciones_form.save(commit=False)
         new_observacion.task = inmueble
+        new_observacion.usuario = request.user
         new_observacion.save()
         messages.success(request, "La observación se guardó correctamente ✅")
         return redirect(f"{request.path}?tab=observaciones")
-    elif 'observaciones_form_submit' in request.POST and not observaciones_form.is_valid():
+    elif 'observaciones_form_submit' in request.POST:
         messages.error(request, "Hubo un error al guardar la observación ❌")
 
-    # Si la solicitud no es POST, se inicializan los formularios
-    if request.method != "POST":
-        inmueble_form = InmuebleForm(instance=inmueble)
-        dictamen_form = DictamenEstructuralIMPForm()
-        folios_form = FoliosRealesIMPForm()
-        planos_form = NumeroPlanoIMPForm()
-        cedoc_form = Expedientes_CEDOCIMPForm()
-        titulo_form = DocumentoPropiedadIMPForm()
-        observaciones_form = ObservacionesForm()
+    # Guardar Comentario
+    if 'comentario_form_submit' in request.POST and comentario_form.is_valid():
+        new_comentario = comentario_form.save(commit=False)
+        obs_id = request.POST.get("observacion_id")  # viene del template
+        observacion = get_object_or_404(Observacion, id=obs_id)
+        new_comentario.observacion = observacion
+        new_comentario.usuario = request.user
+        new_comentario.save()
+        messages.success(request, "El comentario se guardó correctamente ✅")
+        return redirect(f"{request.path}?tab=observaciones")
+    elif 'comentario_form_submit' in request.POST:
+        messages.error(request, "Hubo un error al guardar el comentario ❌")
 
-    # Datos para la plantilla
+    # ------------------------
+    # DATOS PARA LA PLANTILLA
+    # ------------------------
     dictamenes = inmueble.dictamen_estructural.all()
     titulos = inmueble.docprop.all()
     folios_reales = inmueble.folios_reales.all()
     numeros_planos = inmueble.numeros_planos.all()
     expedientes_cedoc = inmueble.expedientes_deoc.all()
-    observaciones_list = inmueble.observaciones.all()
+    observaciones_list = inmueble.observaciones.prefetch_related("comentarios", "usuario")
+    archivos_list = inmueble.archivos.all()
 
     return render(request, "Inmuebles/detalle_inmueble.html", {
         "form": inmueble_form,
@@ -1574,5 +1596,8 @@ def detalle_inmueble(request, pk):
         "cedoc_form": cedoc_form,
         "expedientes_cedoc": expedientes_cedoc,
         "observaciones_form": observaciones_form,
+        "comentario_form": comentario_form,
         "observaciones_list": observaciones_list,
+        "archivo_form": archivo_form,
+        "archivos_list": archivos_list,
     })

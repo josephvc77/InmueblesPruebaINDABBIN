@@ -4,7 +4,7 @@ from django.forms import ClearableFileInput, ModelForm
 
 from MDSJSEP.models import Task_eventos
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, Observaciones, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 
@@ -68,7 +68,6 @@ class TaskCreateForm(ModelForm):
             'causa_alta', 
             'prioridad', 
             'deadline', 
-            'creado', 
             'Sector', 
             'Nombre_de_la_institucion_que_administra_el_inmueble'
         ]
@@ -316,14 +315,67 @@ class DictamenEstructuralIMPForm(forms.ModelForm):
         }
 
 
-class ObservacionesForm(forms.ModelForm):
+from django import forms
+from .models import Observacion, Comentario
+
+
+# forms.py
+class ObservacionForm(forms.ModelForm):
     class Meta:
-        model = Observaciones
-        fields = ['observaciones_data', 'fecha_observacion']
+        model = Observacion
+        fields = ['texto']
         widgets = {
-            'observaciones_data': forms.TextInput(attrs={'class': 'form-control'}),
-            'fecha_observacion': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Escribe tu observación aquí...'
+            }),
         }
+
+    # Quitar requerido explícitamente
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['texto'].required = False
+
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['texto']
+        widgets = {
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 2,
+                'placeholder': 'Escribe tu respuesta aquí...'
+            }),
+        }
+
+    # Quitar requerido explícitamente
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['texto'].required = False
+
+
+from django import forms
+from .models import Archivo
+
+class ArchivoForm(forms.ModelForm):
+    class Meta:
+        model = Archivo
+        fields = ['archivo', 'descripcion']
+        widgets = {
+            'archivo': forms.ClearableFileInput(attrs={
+                'class': 'form-control',
+                'accept': '*/*',  # permite cualquier tipo de archivo
+            }),
+            'descripcion': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 2,
+                'placeholder': 'Agrega una descripción del archivo (opcional)...',
+            }),
+        }
+
+
 
 class FoliosRealesIMPForm(forms.ModelForm):
     class Meta:

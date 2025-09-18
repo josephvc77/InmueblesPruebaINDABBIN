@@ -6,6 +6,8 @@ import os
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
+from djangocrud import settings
+
 class CustomUser(AbstractUser):
     bio = models.TextField(null=True, blank=True)
     sitio_CHOICES = [
@@ -570,10 +572,72 @@ class DictamenEstructuralIMP(models.Model):
     descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=True)
     fecha_documento = models.DateField(null=True, blank=True)
 
-class Observaciones(models.Model):
-    task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='observaciones')
-    observaciones_data = models.CharField(max_length=60, unique=True, null=True, blank=True)
-    fecha_observacion = models.DateField(null=True, blank=True)
+
+class Observacion(models.Model):
+    task = models.ForeignKey(
+        "Inmueble",
+        on_delete=models.CASCADE,
+        related_name="observaciones"
+    )
+    texto = models.TextField(null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # Tu modelo CustomUser
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="observaciones_creadas"
+    )
+
+    def __str__(self):
+        return f"Obs {self.id} - {self.task} ({self.usuario})"
+
+
+class Comentario(models.Model):
+    observacion = models.ForeignKey(
+        Observacion,
+        on_delete=models.CASCADE,
+        related_name="comentarios"
+    )
+    texto = models.TextField(null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # Tu modelo CustomUser
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="comentarios_creados"
+    )
+
+    def __str__(self):
+        return f"Comentario {self.id} -> Obs {self.observacion.id} ({self.usuario})"
+    
+def archivo_inmueble_path(instance, filename):
+    """
+    Genera la ruta de subida dinámica:
+    media/inmuebles/<NombreInmueble>-<ID>/<filename>
+    """
+    nombre_inmueble = instance.inmueble.NombreInmueble if instance.inmueble.NombreInmueble else f"inmueble_{instance.inmueble.id}"
+    # Evita espacios y caracteres raros
+    nombre_inmueble = nombre_inmueble.replace(" ", "_")
+    return f"inmuebles/{nombre_inmueble}_{instance.inmueble.id}/{filename}"
+
+
+class Archivo(models.Model):
+    inmueble = models.ForeignKey(
+        "Inmueble",
+        on_delete=models.CASCADE,
+        related_name="archivos"
+    )
+    archivo = models.FileField(
+        upload_to=archivo_inmueble_path,
+        null=True,
+        blank=True
+    )
+    descripcion = models.TextField(null=True, blank=True)
+    fecha_subida = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return f"Archivo {self.id} - {self.inmueble} ({self.descripcion[:30] if self.descripcion else 'Sin descripción'})"
+
 
 class FoliosRealesIMP(models.Model):
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='folios_reales')

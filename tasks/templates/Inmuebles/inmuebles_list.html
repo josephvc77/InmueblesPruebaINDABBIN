@@ -40,18 +40,17 @@
             <option value="RESEMS" {% if ur == 'RESEMS' %}selected{% endif %}>RESEMS</option>
           </select>
         </div>
-
-        <div class="col-md-2">
-          <label for="ordenar-por" class="form-label">Ordenar</label>
-          <select id="ordenar-por" name="ordenar" class="form-select">
-            <option value="" {% if not orden %}selected{% endif %}>Ordenar</option>
-            <option value="mas_utilizados" {% if orden == 'mas_utilizados' %}selected{% endif %}>Más Utilizados</option>
-            <option value="az" {% if orden == 'az' %}selected{% endif %}>A a Z</option>
-            <option value="za" {% if orden == 'za' %}selected{% endif %}>Z a A</option>
-            <option value="nuevo" {% if orden == 'nuevo' %}selected{% endif %}>Más nuevo</option>
-            <option value="viejo" {% if orden == 'viejo' %}selected{% endif %}>Más viejo</option>
-          </select>
-        </div>
+        <div class="col-md-3">
+        <label for="usuario-select" class="form-label">Usuario Asignado</label>
+        <select id="usuario-select" name="usuario" class="form-select">
+          <option value="" {% if not usuario_id %}selected{% endif %}>Todos</option>
+          {% for user in usuarios %}
+            <option value="{{ user.id }}" {% if usuario_id == user.id|stringformat:"s" %}selected{% endif %}>
+              {{ user.get_full_name|default:user.username }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
 
 <div class="col-md-2 d-flex gap-2" style="flex-wrap: wrap;">
   <button class="btn btn-primary flex-fill" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
