@@ -14272,3 +14272,111 @@ Traceback (most recent call last):
     raise NoReverseMatch(msg)
 django.urls.exceptions.NoReverseMatch: Reverse for 'detalle_inmueble' with arguments '('',)' not found. 1 pattern(s) tried: ['inmuebles/(?P<pk>[0-9]+)/\\Z']
 "GET /inmuebles/1/?tab=informacion HTTP/1.1" 500 286667
+Internal Server Error: /importar/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 298, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+                                ~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/django/base.py", line 439, in create_cursor
+    cursor = self.connection.cursor()
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 841, in cursor
+    raise OperationalError("MySQL Connection not available.")
+mysql.connector.errors.OperationalError: MySQL Connection not available.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/joseph/Documents/GitHub/InmueblesPruebaINDABBIN/tasks/views.py", line 968, in wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/joseph/Documents/GitHub/InmueblesPruebaINDABBIN/tasks/views.py", line 996, in importar
+    result = inmueble_resource.import_data(dataset, dry_run=False)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/import_export/resources.py", line 850, in import_data
+    result = self.import_data_inner(
+        dataset,
+    ...<4 lines>...
+        **kwargs,
+    )
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/import_export/resources.py", line 897, in import_data_inner
+    with atomic_if_using_transaction(
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        using_transactions and not self._meta.use_bulk, using=db_connection
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/import_export/utils.py", line 26, in __exit__
+    self.context_manager.__exit__(*args)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/transaction.py", line 247, in __exit__
+    connection.savepoint_commit(sid)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 431, in savepoint_commit
+    self._savepoint_commit(sid)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 374, in _savepoint_commit
+    with self.cursor() as cursor:
+         ~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 320, in cursor
+    return self._cursor()
+           ~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 297, in _cursor
+    with self.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 298, in _cursor
+    return self._prepare_cursor(self.create_cursor(name))
+                                ~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/django/base.py", line 439, in create_cursor
+    cursor = self.connection.cursor()
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 841, in cursor
+    raise OperationalError("MySQL Connection not available.")
+django.db.utils.OperationalError: (-1, 'MySQL Connection not available.', None)
+Internal Server Error: /importar/
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/reversion/middleware.py", line 26, in __call__
+    return self.get_response(request)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/reversion/views.py", line 27, in do_revision_view
+    with create_revision_base(manage_manually=manage_manually, using=using, atomic=atomic):
+         ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/reversion/revisions.py", line 328, in __exit__
+    return self._context.__exit__(exc_type, exc_value, traceback)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 148, in __exit__
+    next(self.gen)
+    ~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/reversion/revisions.py", line 285, in _create_revision_context
+    with context:
+         ^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/transaction.py", line 295, in __exit__
+    connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 337, in rollback
+    self._rollback()
+    ~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/django/base.py", line 444, in _rollback
+    BaseDatabaseWrapper._rollback(self)  # type: ignore[attr-defined]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/django/db/backends/base/base.py", line 308, in _rollback
+    return self.connection.rollback()
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 611, in rollback
+    self._cmysql.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+_mysql_connector.MySQLInterfaceError: Lost connection to MySQL server during query
