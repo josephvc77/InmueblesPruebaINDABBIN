@@ -63,7 +63,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '168.255.101.50']
 # Leer versión desde .env o usar valor por defecto
 # El script bump_version.sh actualiza el .env y este valor por defecto
 # IMPORTANTE: El .env se carga arriba, así que os.environ ya tiene APP_VERSION
-APP_VERSION = os.environ.get('APP_VERSION', '1.0.20')
+APP_VERSION = os.environ.get('APP_VERSION', '1.0.19')
 
 
 # Application definition

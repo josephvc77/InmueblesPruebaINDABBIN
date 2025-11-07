@@ -336,7 +336,7 @@ def crear_inmueble(request):
         if form.is_valid():
             inmueble = form.save(commit=False)
             inmueble.user = request.user
-            inmueble.creado = timezone.now()
+            # creado se establece automáticamente con auto_now_add=True
             inmueble.save()
             messages.success(request, 'El inmueble se creó correctamente ✅')
             return redirect('inmuebles_list')
@@ -1369,6 +1369,22 @@ def registro_llamada(request, pk):
 
 from django.shortcuts import render, redirect
 from .forms import DatosLlamadasInmueblesForm
+
+@login_required
+def buscar_inmuebles_ajax(request):
+    """Vista AJAX para buscar inmuebles por nombre"""
+    query = request.GET.get('q', '').strip()
+    
+    if len(query) < 2:  # Mínimo 2 caracteres para buscar
+        return JsonResponse({'inmuebles': []})
+    
+    inmuebles = Inmueble.objects.filter(
+        NombreInmueble__icontains=query
+    ).values('id', 'NombreInmueble', 'rfi')[:20]  # Limitar a 20 resultados
+    
+    inmuebles_list = list(inmuebles)
+    return JsonResponse({'inmuebles': inmuebles_list})
+
 
 @login_required
 @permission_required('tasks.add_tasks_inmueble', raise_exception=True)

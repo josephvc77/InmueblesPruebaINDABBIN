@@ -67,6 +67,7 @@ urlpatterns = [
     path("tareas/<int:pk>/", views.task_detail_llamadas, name="task_detail_llamadas"),
     path("tareas/<int:pk>/add-llamada/", views.registro_llamada, name="registro_llamada"),
     path("tareas/crear/", views.crear_tarea, name="crear_tarea"),
+    path("tareas/buscar-inmuebles/", views.buscar_inmuebles_ajax, name="buscar_inmuebles_ajax"),
     path('tareas/exportar/', views.export_Llamadas_to_excelIMP, name='export_llamadas_excel'),
     path('export_tasks_to_excelIMP/', views.export_tasks_to_excelIMP, name='export_tasks_to_excelIMP'),
 

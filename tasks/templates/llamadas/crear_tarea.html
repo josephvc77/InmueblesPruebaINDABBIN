@@ -15,7 +15,14 @@
           {% for field in form %}
             <div class="col-md-6">
               <label class="form-label">{{ field.label }}</label>
-              {{ field }}
+              {% if field.name == 'NombreInmueble' %}
+                <div class="autocomplete-wrapper">
+                  {{ field }}
+                  <div id="autocomplete-list-id_NombreInmueble" class="autocomplete-items"></div>
+                </div>
+              {% else %}
+                {{ field }}
+              {% endif %}
               {% if field.errors %}
                 <div class="text-danger small">{{ field.errors|striptags }}</div>
               {% endif %}
@@ -35,4 +42,181 @@
     </div>
   </div>
 </div>
+
+<style>
+.autocomplete-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+  background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nombreInmuebleInput = document.querySelector('#id_NombreInmueble');
+    const rfiInput = document.querySelector('#id_rfi');
+    const autocompleteList = document.getElementById('autocomplete-list-id_NombreInmueble');
+    let currentFocus = -1;
+    let inmueblesData = [];
+    let timeoutId = null;
+
+    if (!nombreInmuebleInput) return;
+
+    // Crear el contenedor de autocompletado si no existe
+    if (!autocompleteList) {
+        const wrapper = nombreInmuebleInput.parentElement;
+        const newList = document.createElement('div');
+        newList.id = 'autocomplete-list-id_NombreInmueble';
+        newList.className = 'autocomplete-items';
+        wrapper.appendChild(newList);
+    }
+
+    nombreInmuebleInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        
+        // Limpiar timeout anterior
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        // Si hay menos de 2 caracteres, limpiar la lista
+        if (query.length < 2) {
+            closeAllLists();
+            return;
+        }
+
+        // Debounce: esperar 300ms después de que el usuario deje de escribir
+        timeoutId = setTimeout(function() {
+            buscarInmuebles(query);
+        }, 300);
+    });
+
+    nombreInmuebleInput.addEventListener('keydown', function(e) {
+        const list = document.getElementById('autocomplete-list-id_NombreInmueble');
+        let items = list ? list.getElementsByTagName('div') : [];
+
+        if (e.keyCode === 40) { // Flecha abajo
+            e.preventDefault();
+            currentFocus++;
+            addActive(items);
+        } else if (e.keyCode === 38) { // Flecha arriba
+            e.preventDefault();
+            currentFocus--;
+            addActive(items);
+        } else if (e.keyCode === 13) { // Enter
+            e.preventDefault();
+            if (currentFocus > -1 && items.length > 0) {
+                if (items[currentFocus]) {
+                    items[currentFocus].click();
+                }
+            }
+        } else if (e.keyCode === 27) { // Escape
+            closeAllLists();
+        }
+    });
+
+    function buscarInmuebles(query) {
+        const url = '{% url "buscar_inmuebles_ajax" %}?q=' + encodeURIComponent(query);
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                inmueblesData = data.inmuebles || [];
+                mostrarSugerencias(inmueblesData);
+            })
+            .catch(error => {
+                console.error('Error al buscar inmuebles:', error);
+            });
+    }
+
+    function mostrarSugerencias(inmuebles) {
+        closeAllLists();
+        currentFocus = -1;
+
+        if (inmuebles.length === 0) {
+            return;
+        }
+
+        const list = document.getElementById('autocomplete-list-id_NombreInmueble');
+        if (!list) return;
+
+        inmuebles.forEach(function(inmueble) {
+            const div = document.createElement('div');
+            div.innerHTML = '<strong>' + inmueble.NombreInmueble + '</strong>';
+            if (inmueble.rfi) {
+                div.innerHTML += '<br><small class="text-muted">RFI: ' + inmueble.rfi + '</small>';
+            }
+            div.addEventListener('click', function() {
+                nombreInmuebleInput.value = inmueble.NombreInmueble;
+                if (rfiInput && inmueble.rfi) {
+                    rfiInput.value = inmueble.rfi;
+                }
+                closeAllLists();
+            });
+            list.appendChild(div);
+        });
+    }
+
+    function addActive(items) {
+        if (!items) return false;
+        removeActive(items);
+        if (currentFocus >= items.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (items.length - 1);
+        items[currentFocus].classList.add('autocomplete-active');
+    }
+
+    function removeActive(items) {
+        for (let i = 0; i < items.length; i++) {
+            items[i].classList.remove('autocomplete-active');
+        }
+    }
+
+    function closeAllLists() {
+        const list = document.getElementById('autocomplete-list-id_NombreInmueble');
+        if (list) {
+            list.innerHTML = '';
+        }
+        currentFocus = -1;
+    }
+
+    // Cerrar la lista cuando se hace clic fuera
+    document.addEventListener('click', function(e) {
+        if (e.target !== nombreInmuebleInput && !nombreInmuebleInput.contains(e.target)) {
+            closeAllLists();
+        }
+    });
+});
+</script>
+
 {% endblock %}

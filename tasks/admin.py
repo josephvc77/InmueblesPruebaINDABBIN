@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from MDSJSEP.models import EventosCreados
 from condia.models import TareasCondia
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .models import Archivo, ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, NumeroPlanoIMP, Observacion, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 
 class RegistroLlamadas(admin.TabularInline):
     model = RegistroLlamadas
@@ -70,8 +70,17 @@ class TramitesDisposicionInlineIMP(admin.TabularInline):
 class InstitucionesOcupantesInlineIMP(admin.TabularInline):
     model = InstitucionesOcupantesIMP
 
-class MensajesInlineIMP(admin.TabularInline):
-    model = MensajeIMP
+class ObservacionesInlineIMP(admin.TabularInline):
+    model = Observacion
+    extra = 0
+    fields = ('texto', 'usuario', 'fecha_creacion')
+    readonly_fields = ('fecha_creacion',)
+    
+class ArchivosInlineIMP(admin.TabularInline):
+    model = Archivo
+    extra = 0
+    fields = ('archivo', 'descripcion', 'fecha_subida')
+    readonly_fields = ('fecha_subida',)
 
 # Agrega más TabularInline para otros modelos aquí...
 
@@ -92,7 +101,8 @@ class AllModelsAdminIMP(admin.ModelAdmin):
         DatosAvaluosInlineIMP,
         OcupacionesInlineIMP,
         TramitesDisposicionInlineIMP,
-        MensajesInlineIMP,
+        ObservacionesInlineIMP,
+        ArchivosInlineIMP,
 
         # Agrega más TabularInline aquí para otros modelos...
     ]

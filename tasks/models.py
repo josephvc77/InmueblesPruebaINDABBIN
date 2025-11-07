@@ -121,7 +121,7 @@ class Inmueble(models.Model):
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='Media', null=True, blank=True)
 
     Denominaciones_anteriores = models.CharField(max_length=150,  null=True, blank=True)
-    creado = models.CharField(max_length=20,null=True, blank=True)
+    creado = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     datecompleted = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False, null=True, blank=True)

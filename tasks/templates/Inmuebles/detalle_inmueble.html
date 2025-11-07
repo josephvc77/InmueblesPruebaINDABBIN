@@ -962,9 +962,10 @@
             <div class="card-body">
                 <h2 class="h5 card-title mb-3">Agregar una Nueva Observación</h2>
                 <div class="mb-3">
-                <textarea id="observacion-texto" class="form-control" rows="3" placeholder="Escribe tu observación aquí..."></textarea>
+                    <label for="{{ observaciones_form.texto.id_for_label }}" class="form-label">Observación</label>
+                    {{ observaciones_form.texto|add_class:"form-control" }}
                 </div>
-                <button type="submit" name="observaciones_form_submit" class="btn btn-primary" data-target="#observacion-texto">
+                <button type="submit" name="observaciones_form_submit" class="btn btn-primary">
                     <i class="fas fa-paper-plane me-2"></i> Enviar Observación
                 </button>
             </div>
@@ -1008,12 +1009,10 @@
                             <!-- Responder -->
                             <div class="collapse pt-3 ps-5" id="responder-{{ observacion.id }}">
                                 <div class="d-flex gap-2">
-                                    <input type="hidden" name="observacion_id" value="{{ observacion.id }}">
-                                <textarea id="comentario-texto-{{ observacion.id }}" class="form-control form-control-sm" rows="1" placeholder="Escribe una respuesta..."></textarea>
-                                <button type="submit" name="comentario_form_submit"  class="btn btn-sm btn-primary"  data-target="#comentario-texto-{{ observacion.id }}">
-                                    <i class="fi fi-rr-paper-plane me-2"></i>Enviar
-                                </button>
-
+                                    <textarea name="comentario_texto_{{ observacion.id }}" id="comentario-texto-{{ observacion.id }}" class="form-control form-control-sm" rows="2" placeholder="Escribe una respuesta..."></textarea>
+                                    <button type="button" class="btn btn-sm btn-primary enviar-comentario-btn" data-observacion-id="{{ observacion.id }}">
+                                        <i class="fi fi-rr-paper-plane me-2"></i>Enviar
+                                    </button>
                                 </div>
                             </div>
 
@@ -1171,10 +1170,77 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Validar Observaciones
-    validarCampoVacio('button[name="observaciones_form_submit"]', 'data-target', "text");
+    document.querySelector('button[name="observaciones_form_submit"]')?.addEventListener('click', function(e) {
+        const textoField = document.querySelector('textarea#id_texto');
+        // Solo validar si estamos en la sección de observaciones y el campo está visible
+        if (textoField && !textoField.value.trim()) {
+            e.preventDefault();
+            textoField.focus();
+            alert("El campo de observación no puede estar vacío.");
+            return;
+        }
+        
+        // Deshabilitar campos de comentarios para evitar conflictos
+        document.querySelectorAll('textarea[name^="comentario_texto_"]').forEach(function(ta) {
+            ta.disabled = true;
+        });
+    });
 
-    // Validar Comentarios
-    validarCampoVacio('button[name="comentario_form_submit"]', 'data-target', "text");
+    // Manejar envío de comentarios
+    document.querySelectorAll('.enviar-comentario-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const observacionId = btn.getAttribute('data-observacion-id');
+            const collapseElement = btn.closest('.collapse');
+            if (collapseElement) {
+                const textarea = collapseElement.querySelector(`textarea[name="comentario_texto_${observacionId}"]`);
+                if (textarea && !textarea.value.trim()) {
+                    textarea.focus();
+                    alert("El comentario no puede estar vacío.");
+                    return;
+                }
+                
+                // Deshabilitar el campo de observación para evitar conflictos
+                const observacionTextarea = document.querySelector('textarea#id_texto');
+                if (observacionTextarea) {
+                    observacionTextarea.disabled = true;
+                }
+                
+                // Cambiar el nombre del textarea a "texto" para que Django lo reconozca
+                textarea.name = 'texto';
+                
+                // Crear o actualizar campo oculto para observacion_id
+                let observacionIdInput = document.querySelector('input[name="observacion_id"]');
+                if (!observacionIdInput) {
+                    observacionIdInput = document.createElement('input');
+                    observacionIdInput.type = 'hidden';
+                    observacionIdInput.name = 'observacion_id';
+                    document.querySelector('form').appendChild(observacionIdInput);
+                }
+                observacionIdInput.value = observacionId;
+                
+                // Crear campo oculto para indicar que es un comentario
+                let comentarioSubmitInput = document.querySelector('input[name="comentario_form_submit"]');
+                if (!comentarioSubmitInput) {
+                    comentarioSubmitInput = document.createElement('input');
+                    comentarioSubmitInput.type = 'hidden';
+                    comentarioSubmitInput.name = 'comentario_form_submit';
+                    comentarioSubmitInput.value = '1';
+                    document.querySelector('form').appendChild(comentarioSubmitInput);
+                }
+                
+                // Ocultar otros textareas de comentarios para evitar conflictos
+                document.querySelectorAll('textarea[name^="comentario_texto_"]').forEach(function(ta) {
+                    if (ta !== textarea) {
+                        ta.disabled = true;
+                    }
+                });
+                
+                // Enviar el formulario
+                document.querySelector('form').submit();
+            }
+        });
+    });
 
     // Validar Archivos
     validarCampoVacio('button[name="archivo_form_submit"]', 'data-target', "file");
