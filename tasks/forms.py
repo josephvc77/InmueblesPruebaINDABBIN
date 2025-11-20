@@ -3,7 +3,7 @@ from django.forms import ClearableFileInput, ModelForm
 
 
 from MDSJSEP.models import Task_eventos
-from condia.models import TareasCondia
+# from condia.models import TareasCondia  # Modelo no existe, comentado
 from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
@@ -32,6 +32,27 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'is_active', 'is_staff', 'groups']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_staff': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Agrega la clase 'form-control' a todos los widgets del formulario
+        for field_name, field in self.fields.items():
+            if field_name not in ['is_active', 'is_staff', 'is_superuser', 'groups']:
+                if 'class' not in field.widget.attrs:
+                    field.widget.attrs['class'] = 'form-control'
+                else:
+                    field.widget.attrs['class'] += ' form-control'
+            elif field_name == 'groups':
+                # Para el campo groups (CheckboxSelectMultiple), agregar clases a los checkboxes
+                field.widget.attrs['class'] = 'form-check-input'
 
 
 # Formulario para crear un nuevo usuario
@@ -308,9 +329,9 @@ class DictamenEstructuralIMPForm(forms.ModelForm):
         widgets = {
             'no_de_identificador_del_expediente_institucion': forms.TextInput(attrs={'class': 'form-control'}),
             'subir_archivo_dictamen': CustomClearableFileInput(attrs={'class': 'form-control'}),
-            'certificado_de_seguridad': forms.TextInput(attrs={'class': 'form-control'}),
-            'sentido_del_Dictamen': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion_del_sentido_del_Dictamen': forms.Textarea(attrs={'class': 'form-control'}),
+            'certificado_de_seguridad': forms.Select(attrs={'class': 'form-select', 'id': 'id_certificado_de_seguridad'}),
+            'sentido_del_Dictamen': forms.Select(attrs={'class': 'form-select', 'id': 'id_sentido_del_Dictamen'}),
+            'descripcion_del_sentido_del_Dictamen': forms.Textarea(attrs={'class': 'form-control', 'id': 'id_descripcion_del_sentido_del_Dictamen', 'rows': 3, 'style': 'display: none;'}),
             'fecha_documento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
 
@@ -350,10 +371,16 @@ class ComentarioForm(forms.ModelForm):
             }),
         }
 
-    # Quitar requerido explícitamente
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['texto'].required = False
+        self.fields['texto'].required = True
+        self.fields['texto'].label = 'Comentario'
+    
+    def clean_texto(self):
+        texto = self.cleaned_data.get('texto')
+        if not texto or not texto.strip():
+            raise forms.ValidationError("El comentario no puede estar vacío.")
+        return texto.strip()
 
 
 from django import forms
@@ -440,39 +467,39 @@ class DocumentoPropiedadIMPForm(forms.ModelForm):
         }
         
 # CONDIA ---------------------------------------------------------------------
+# Formularios comentados porque TareasCondia no existe
+# class CondiaForm(forms.ModelForm):
+#     class Meta:
+#         model = TareasCondia
+#         fields = [
+#             'titulo', 'descripcion','uso_inmueble','riuf','superficie_rentable',
+#             'superficie_terreno','superficie_construida','personal_ocupante','uso_suelo','renta_mensual_civa_segun_contrato', 'monto_por_m2_civa','ubicacion',
+#             'no_contrato','fecha_firma_contrato','monto_mensual_dictamen_estructural', 'tipo_de_proceso',
+#             'correo1','correo2','razon_social','propietario_representante','identificacion_oficial',
+#             'email','domicilio_fiscal','justificacion_de_renta','nombre_asentamiento', 'codigo_postal','descripcion_ubicacion', 'fotoPresentacion', 
+#             # Archivos
+#             
+#             'solicitud_espacio', 'tabla_superficie_maxima', 'justificacion_arrendamiento', 'solicitud_disponibilidad', 'solicitud_arrendamiento_oficialia', 'notificacion_propietario_arrendar',
+#             'solicitud_justipreciacion_renta', 'notificacion_pago_derechos', 'dictamen_justipreciacion_renta', 'oficio_revision_juridica_respuesta', 'justificacion_plurianual', 'oficio_solicitud_registro_obligacional',
+#             'registro_contrato_pagina_indaabin', 'contrato_arrendamiento_convenios', 'notificacion_ur_subdireccion_obras_planos', 'anexo_contrato_acta_recepcion_inmueble', 'documentos_inventario_condiciones',
+#             'documentos_dictamen_seguridad_estructural', 'documentos_usos_limitaciones', 'documentos_acta_entrega_trabajos', 'anexo_contrato_plano_distribucion_personal', 'notificacion_disponibilidad_ur',
+#             'actas_entrega_asignacion_espacio', 'documentos_legales_escritura_inmueble', 'documentos_legales_acta_constitutiva', 'documentos_legales_escritura_cambio_regimen', 'documentos_legales_poder_notarial',
+#             'documentos_legales_cedula_fiscal', 'documentos_legales_identificacion_oficial', 'documentos_legales_comprobante_domicilio_fiscal', 'documentos_tecnicos_planos_arquitectonicos', 
+#             'documentos_tecnicos_constancia_seguridad_estructural', 'documentos_tecnicos_visto_bueno_seguridad_operacion', 'documentos_tecnicos_ultimo_pago_predial', 'documentos_tecnicos_ultimo_pago_agua',
+#             'documentos_tecnicos_ultimo_pago_energia', 'fundamento_legal'
+#         ]
+#         widgets = {
+#             'renta_mensual_civa_segun_contrato': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa un Monto', 'id': 'renta_mensual_civa_segun_contrato'}),
+#             'monto_por_m2_civa': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa un Monto',}),
+#             'ubicacion': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa la Ubicación',}),
+#         }
 
-class CondiaForm(forms.ModelForm):
-    class Meta:
-        model = TareasCondia
-        fields = [
-            'titulo', 'descripcion','uso_inmueble','riuf','superficie_rentable',
-            'superficie_terreno','superficie_construida','personal_ocupante','uso_suelo','renta_mensual_civa_segun_contrato', 'monto_por_m2_civa','ubicacion',
-            'no_contrato','fecha_firma_contrato','monto_mensual_dictamen_estructural', 'tipo_de_proceso',
-            'correo1','correo2','razon_social','propietario_representante','identificacion_oficial',
-            'email','domicilio_fiscal','justificacion_de_renta','nombre_asentamiento', 'codigo_postal','descripcion_ubicacion', 'fotoPresentacion', 
-            # Archivos
-            
-            'solicitud_espacio', 'tabla_superficie_maxima', 'justificacion_arrendamiento', 'solicitud_disponibilidad', 'solicitud_arrendamiento_oficialia', 'notificacion_propietario_arrendar',
-            'solicitud_justipreciacion_renta', 'notificacion_pago_derechos', 'dictamen_justipreciacion_renta', 'oficio_revision_juridica_respuesta', 'justificacion_plurianual', 'oficio_solicitud_registro_obligacional',
-            'registro_contrato_pagina_indaabin', 'contrato_arrendamiento_convenios', 'notificacion_ur_subdireccion_obras_planos', 'anexo_contrato_acta_recepcion_inmueble', 'documentos_inventario_condiciones',
-            'documentos_dictamen_seguridad_estructural', 'documentos_usos_limitaciones', 'documentos_acta_entrega_trabajos', 'anexo_contrato_plano_distribucion_personal', 'notificacion_disponibilidad_ur',
-            'actas_entrega_asignacion_espacio', 'documentos_legales_escritura_inmueble', 'documentos_legales_acta_constitutiva', 'documentos_legales_escritura_cambio_regimen', 'documentos_legales_poder_notarial',
-            'documentos_legales_cedula_fiscal', 'documentos_legales_identificacion_oficial', 'documentos_legales_comprobante_domicilio_fiscal', 'documentos_tecnicos_planos_arquitectonicos', 
-            'documentos_tecnicos_constancia_seguridad_estructural', 'documentos_tecnicos_visto_bueno_seguridad_operacion', 'documentos_tecnicos_ultimo_pago_predial', 'documentos_tecnicos_ultimo_pago_agua',
-            'documentos_tecnicos_ultimo_pago_energia', 'fundamento_legal'
-        ]
-        widgets = {
-            'renta_mensual_civa_segun_contrato': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa un Monto', 'id': 'renta_mensual_civa_segun_contrato'}),
-            'monto_por_m2_civa': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa un Monto',}),
-            'ubicacion': forms.TextInput(attrs={'class': 'bg', 'placeholder': 'Ingresa la Ubicación',}),
-        }
-
-class CreateTaskCondiaForm(forms.ModelForm):
-    class Meta:
-        model = TareasCondia
-        fields = [
-            'titulo', 'descripcion'
-        ]
+# class CreateTaskCondiaForm(forms.ModelForm):
+#     class Meta:
+#         model = TareasCondia
+#         fields = [
+#             'titulo', 'descripcion'
+#         ]
 
 
 # SALAS DE JUNTAS
@@ -560,7 +587,6 @@ class RegistroLlamadasForm(forms.ModelForm):
     class Meta:
         model = RegistroLlamadas
         fields = [
-            "NumLlamada",
             "fecha_llamada",
             "hora_llamada",
             "acuerdos_compromisos",
@@ -587,7 +613,6 @@ class RegistroLlamadasForm(forms.ModelForm):
             "fecha_compromiso_de_observaciones_subsanadas": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
             "fecha_autorizacion_de_documento": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
             "finalizacion": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
-            "NumLlamada": forms.TextInput(attrs={"class": "form-control"}),
             "acuerdos_compromisos": forms.TextInput(attrs={"class": "form-control"}),
             "observaciones_generales": forms.TextInput(attrs={"class": "form-control"}),
         }

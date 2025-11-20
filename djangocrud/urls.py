@@ -18,8 +18,8 @@ from django.shortcuts import redirect
 from django.urls import include, path
 from djangocrud import settings
 from tasks import views
-from condia import views as views_condia
 from MDSJSEP import views as views_MDSJ
+from condia import views as views_condia
 from django.utils.text import slugify  # Para crear URLs basadas en texto
 
 app_name = 'tasks'
@@ -66,6 +66,8 @@ urlpatterns = [
     path("tareas/", views.tareas_list, name="tareas_list"),
     path("tareas/<int:pk>/", views.task_detail_llamadas, name="task_detail_llamadas"),
     path("tareas/<int:pk>/add-llamada/", views.registro_llamada, name="registro_llamada"),
+    path("tareas/<int:pk>/editar-llamada/<int:llamada_id>/", views.editar_llamada, name="editar_llamada"),
+    path("tareas/<int:pk>/eliminar-llamada/<int:llamada_id>/", views.eliminar_llamada, name="eliminar_llamada"),
     path("tareas/crear/", views.crear_tarea, name="crear_tarea"),
     path("tareas/buscar-inmuebles/", views.buscar_inmuebles_ajax, name="buscar_inmuebles_ajax"),
     path('tareas/exportar/', views.export_Llamadas_to_excelIMP, name='export_llamadas_excel'),
@@ -80,13 +82,16 @@ urlpatterns = [
     # CONDIA ------------------------------------------------------------------
     # path('keep_session_alive/', views.keep_session_alive, name='keep_session_alive'),
 
-    
+    # Autenticación CONDIA
     path('signupCondia/', views_condia.signupCondia, name='signupCondia'),
     path('signinCondia/', views_condia.signinCondia, name='signinCondia'),
     path('logout_condia/', views_condia.signout_condia, name='logout_condia'),
-    path('task_condia/', views_condia.task_condia, name='task_condia'),
-    path('create_task_CONDIA/', views_condia.create_task_CONDIA, name='create_task_CONDIA'),
-    path('tasks/<int:task_id>/', views_condia.task_detail_condia, name='task_detail_condia'),
+    path('condia/home/', views_condia.homeCondia, name='homeCondia'),
+    path('condia/crear/', views_condia.crear_inmueble_condia, name='crear_inmueble_condia'),
+    path('condia/inmuebles/', views_condia.inmuebles_list_condia, name='inmuebles_list_condia'),
+    path('condia/inmuebles/<int:pk>/', views_condia.detalle_inmueble_condia, name='detalle_inmueble_condia'),
+    path('condia/inmuebles/<int:pk>/eliminar-archivo/<str:field_name>/', views_condia.eliminar_archivo_condia, name='eliminar_archivo_condia'),
+    
 
 
 
@@ -104,6 +109,8 @@ urlpatterns = [
     path('update_MDSJ/', views_MDSJ.update_MDSJ, name='update_MDSJ'),
     path('remove_MDSJ/', views_MDSJ.remove_MDSJ, name='remove_MDSJ'),
     path('salaJuntas/analicis/', views_MDSJ.uso_salas_view, name='uso_salas_view'),
+    path('salaJuntas/reporte-trimestral/', views_MDSJ.export_reporte_trimestral_salas, name='export_reporte_trimestral_salas'),
+    path('salaJuntas/reporte-trimestral-pdf/', views_MDSJ.export_reporte_trimestral_salas_pdf, name='export_reporte_trimestral_salas_pdf'),
 
 ]
 

@@ -564,11 +564,23 @@ class Inmueble(models.Model):
         ]
         
 class DictamenEstructuralIMP(models.Model):
+    CERTIFICADO_OPCIONES = [
+        ('Si', 'Si'),
+        ('No', 'No'),
+    ]
+    
+    SENTIDO_DICTAMEN_OPCIONES = [
+        ('Inmueble Seguro', 'Inmueble Seguro'),
+        ('Inmueble con daños menores que pueden repararse', 'Inmueble con daños menores que pueden repararse'),
+        ('Inmueble con Daño estructural', 'Inmueble con Daño estructural'),
+        ('Otros', 'Otros'),
+    ]
+    
     task = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='dictamen_estructural')
     no_de_identificador_del_expediente_institucion = models.CharField(max_length=100, unique=True, null=True, blank=True)
     subir_archivo_dictamen = models.FileField(upload_to='Dictamen-Estructurales/', blank=True, null=True, editable=True)
-    certificado_de_seguridad = models.CharField(max_length=4, null=True, blank=True)
-    sentido_del_Dictamen = models.CharField(max_length=60, null=True, blank=True)
+    certificado_de_seguridad = models.CharField(max_length=4, choices=CERTIFICADO_OPCIONES, null=True, blank=True)
+    sentido_del_Dictamen = models.CharField(max_length=60, choices=SENTIDO_DICTAMEN_OPCIONES, null=True, blank=True)
     descripcion_del_sentido_del_Dictamen = models.TextField(null=True, blank=True)
     fecha_documento = models.DateField(null=True, blank=True)
 
@@ -1106,6 +1118,71 @@ class RegistroLlamadas(models.Model):
     fecha_autorizacion_de_documento = models.DateField(null=True, blank=True)
     finalizacion = models.DateField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        # Si es una nueva instancia (no tiene pk) y no tiene NumLlamada asignado
+        if not self.pk and (not self.NumLlamada or self.NumLlamada.strip() == ''):
+            # Calcular el número de llamada autoincremental
+            if self.ficha:
+                # Obtener todas las llamadas existentes para esta ficha
+                llamadas_existentes = RegistroLlamadas.objects.filter(ficha=self.ficha)
+                
+                # Encontrar el número máximo de llamada
+                max_num = 0
+                for llamada_existente in llamadas_existentes:
+                    if llamada_existente.NumLlamada:
+                        try:
+                            num = int(llamada_existente.NumLlamada)
+                            if num > max_num:
+                                max_num = num
+                        except (ValueError, TypeError):
+                            # Si no se puede convertir a entero, ignorar
+                            pass
+                
+                # Asignar el siguiente número de llamada
+                self.NumLlamada = str(max_num + 1)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Llamada {self.NumLlamada or 'N/A'} - {self.ficha.NombreInmueble}"
+
+
+class HistorialUsoInmueble(models.Model):
+    """Modelo para registrar el historial de uso y acciones en inmuebles"""
+    inmueble = models.ForeignKey(Inmueble, on_delete=models.CASCADE, related_name='historial_uso')
+    usuario = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='acciones_inmuebles')
+    fecha_hora = models.DateTimeField(auto_now_add=True)
+    
+    ACCION_CHOICES = [
+        ('acceso', 'Acceso al inmueble'),
+        ('visualizacion', 'Visualización de datos'),
+        ('edicion', 'Edición de información'),
+        ('archivo_subido', 'Archivo subido'),
+        ('archivo_eliminado', 'Archivo eliminado'),
+        ('observacion_agregada', 'Observación agregada'),
+        ('comentario_agregado', 'Comentario agregado'),
+        ('dictamen_agregado', 'Dictamen agregado'),
+        ('titulo_agregado', 'Título agregado'),
+        ('folio_agregado', 'Folio agregado'),
+        ('expediente_agregado', 'Expediente agregado'),
+        ('estado_cambiado', 'Estado cambiado'),
+        ('asignacion_cambiada', 'Asignación cambiada'),
+        ('otro', 'Otra acción'),
+    ]
+    accion = models.CharField(max_length=50, choices=ACCION_CHOICES, default='acceso')
+    descripcion = models.TextField(null=True, blank=True, help_text="Descripción detallada de la acción realizada")
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.CharField(max_length=255, null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Historial de Uso"
+        verbose_name_plural = "Historiales de Uso"
+        ordering = ['-fecha_hora']
+        indexes = [
+            models.Index(fields=['-fecha_hora']),
+            models.Index(fields=['inmueble', '-fecha_hora']),
+            models.Index(fields=['usuario', '-fecha_hora']),
+        ]
+
+    def __str__(self):
+        return f"{self.get_accion_display()} - {self.inmueble.NombreInmueble} - {self.fecha_hora.strftime('%d/%m/%Y %H:%M')}"
 

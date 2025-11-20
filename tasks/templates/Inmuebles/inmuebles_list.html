@@ -3,63 +3,386 @@
 {% block titulo %}Tareas Pendientes{% endblock %}
 
 {% block content %}
+<style>
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.search-form .form-label {
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.search-form .form-control,
+.search-form .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.search-form .form-control:focus,
+.search-form .form-select:focus {
+  border-color: #691c32;
+  box-shadow: 0 0 0 0.2rem rgba(105, 28, 50, 0.25);
+}
+
+.filters-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.actions-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.search-form .input-group {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.search-form .input-group-text {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+}
+
+.search-input {
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.btn-search {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(105, 28, 50, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+  color: white;
+}
+
+.btn-success {
+  background: #28a745;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+}
+
+.btn-success:hover {
+  background: #218838;
+  color: white;
+}
+
+.stats-container {
+  background: linear-gradient(135deg, #fff5f8 0%, #ffeef2 100%);
+  border: 1px solid rgba(105, 28, 50, 0.2);
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  overflow: hidden;
+}
+
+.table thead.table-dark {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: #fff5f8;
+}
+
+.btn-outline-primary {
+  color: #691c32;
+  border-color: #691c32;
+  border-radius: 6px;
+}
+
+.btn-outline-primary:hover {
+  background: #691c32;
+  border-color: #691c32;
+  color: white;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+  border-radius: 6px;
+}
+
+.btn-outline-danger:hover {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.pagination {
+  color: #691c32;
+}
+
+.pagination .page-link {
+  color: #ede9ea;
+  border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  border-color: #691c32;
+}
+
+.pagination .page-link:hover {
+  color: #8b1f43;
+  background-color: #fff5f8;
+}
+
+.badge {
+  font-weight: 600;
+  padding: 0.4em 0.65em;
+  border-radius: 6px;
+}
+
+/* Estado vacío atractivo */
+.empty-state {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(105, 28, 50, 0.1);
+  border: 2px dashed #e9ecef;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.empty-state:hover {
+  border-color: #8b1f43;
+  box-shadow: 0 12px 40px rgba(105, 28, 50, 0.15);
+}
+
+.empty-icon {
+  font-size: 6rem;
+  background: linear-gradient(135deg, #8b1f43 0%, #a52d52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+  font-size: 1.75rem;
+}
+
+.empty-state p {
+  color: #6c757d;
+  margin-bottom: 2.5rem;
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.empty-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-create-large {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(105, 28, 50, 0.3);
+}
+
+.btn-create-large:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(105, 28, 50, 0.4);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-container {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .filters-row {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-row {
+    flex-direction: column;
+  }
+
+  .actions-row .btn {
+    width: 100%;
+  }
+}
+</style>
+
 <div class="container my-4">
 
   <!-- Buscador y filtros -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-body">
-      <form class="row g-3 align-items-end" method="GET" aria-label="Formulario de búsqueda de inmuebles">
-
-        <div class="col-md-3">
-          <label for="search-input" class="form-label">Buscar</label>
-          <input type="text" class="form-control" id="search-input" name="q" 
-                 value="{{ search_query }}" placeholder="Nombre, RFI, Estado o Municipio">
+  <div class="top-bar">
+    <div class="search-container">
+      <form method="GET" action="{% url 'inmuebles_list' %}" class="search-form" aria-label="Formulario de búsqueda de inmuebles">
+        
+        <!-- Campo de búsqueda principal -->
+        <div class="mb-2">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control search-input" 
+              id="search-input" 
+              name="q" 
+              placeholder="Nombre, RFI, Estado o Municipio..." 
+              value="{{ search_query }}"
+              autocomplete="off"
+            >
+            {% if search_query %}
+            <a href="{% url 'inmuebles_list' %}" class="btn btn-outline-secondary" title="Limpiar búsqueda">
+              <i class="bi bi-x-lg"></i>
+            </a>
+            {% endif %}
+          </div>
         </div>
 
-        <div class="col-md-2">
-          <label for="prioridad" class="form-label">Prioridad</label>
-          <select id="prioridad" name="prioridad" class="form-select">
-            <option value="" {% if not prioridad %}selected{% endif %}>Todas</option>
-            <option value="Alta" {% if prioridad == 'Alta' %}selected{% endif %}>Alta</option>
-            <option value="Media" {% if prioridad == 'Media' %}selected{% endif %}>Media</option>
-            <option value="Baja" {% if prioridad == 'Baja' %}selected{% endif %}>Baja</option>
-          </select>
+        <!-- Filtros -->
+        <div class="filters-row">
+          <div>
+            <label for="prioridad" class="form-label">Prioridad</label>
+            <select id="prioridad" name="prioridad" class="form-select">
+              <option value="" {% if not prioridad %}selected{% endif %}>Todas</option>
+              <option value="Alta" {% if prioridad == 'Alta' %}selected{% endif %}>Alta</option>
+              <option value="Media" {% if prioridad == 'Media' %}selected{% endif %}>Media</option>
+              <option value="Baja" {% if prioridad == 'Baja' %}selected{% endif %}>Baja</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="ur-select" class="form-label">Unidad Responsable</label>
+            <select id="ur-select" name="ur" class="form-select">
+              <option value="" {% if not ur %}selected{% endif %}>Todas</option>
+              <option value="CGEE" {% if ur == 'CGEE' %}selected{% endif %}>CGEE</option>
+              <option value="DGB" {% if ur == 'DGB' %}selected{% endif %}>DGB</option>
+              <option value="DGBTEPD" {% if ur == 'DGBTEPD' %}selected{% endif %}>DGBTEPD</option>
+              <option value="DGCFT" {% if ur == 'DGCFT' %}selected{% endif %}>DGCFT</option>
+              <option value="DGETAyCM" {% if ur == 'DGETAyCM' %}selected{% endif %}>DGETAyCM</option>
+              <option value="DGETI" {% if ur == 'DGETI' %}selected{% endif %}>DGETI</option>
+              <option value="DGRMyS" {% if ur == 'DGRMyS' %}selected{% endif %}>DGRMyS</option>
+              <option value="RESEMS" {% if ur == 'RESEMS' %}selected{% endif %}>RESEMS</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="usuario-select" class="form-label">Usuario Asignado</label>
+            <select id="usuario-select" name="usuario" class="form-select">
+              <option value="" {% if not usuario_id %}selected{% endif %}>Todos</option>
+              {% for user in usuarios %}
+                <option value="{{ user.id }}" {% if usuario_id == user.id|stringformat:"s" %}selected{% endif %}>
+                  {{ user.get_full_name|default:user.username }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
 
-        <div class="col-md-3">
-          <label for="ur-select" class="form-label">Unidad Responsable</label>
-          <select id="ur-select" name="ur" class="form-select">
-            <option value="" {% if not ur %}selected{% endif %}>Todas</option>
-            <option value="CGEE" {% if ur == 'CGEE' %}selected{% endif %}>CGEE</option>
-            <option value="DGB" {% if ur == 'DGB' %}selected{% endif %}>DGB</option>
-            <option value="DGBTEPD" {% if ur == 'DGBTEPD' %}selected{% endif %}>DGBTEPD</option>
-            <option value="DGCFT" {% if ur == 'DGCFT' %}selected{% endif %}>DGCFT</option>
-            <option value="DGETAyCM" {% if ur == 'DGETAyCM' %}selected{% endif %}>DGETAyCM</option>
-            <option value="DGETI" {% if ur == 'DGETI' %}selected{% endif %}>DGETI</option>
-            <option value="DGRMyS" {% if ur == 'DGRMyS' %}selected{% endif %}>DGRMyS</option>
-            <option value="RESEMS" {% if ur == 'RESEMS' %}selected{% endif %}>RESEMS</option>
-          </select>
+        <!-- Botones de acción -->
+        <div class="actions-row">
+          <button class="btn-primary-global" type="submit">
+            <i class="bi bi-search me-1"></i> Buscar
+          </button>
+          <a href="{% url 'inmuebles_list' %}" class="btn-secondary-global">
+            <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+          </a>
+          <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn-success-global">
+            <i class="bi bi-file-earmark-excel me-1"></i> Exportar Excel
+          </a>
         </div>
-        <div class="col-md-3">
-        <label for="usuario-select" class="form-label">Usuario Asignado</label>
-        <select id="usuario-select" name="usuario" class="form-select">
-          <option value="" {% if not usuario_id %}selected{% endif %}>Todos</option>
-          {% for user in usuarios %}
-            <option value="{{ user.id }}" {% if usuario_id == user.id|stringformat:"s" %}selected{% endif %}>
-              {{ user.get_full_name|default:user.username }}
-            </option>
-          {% endfor %}
-        </select>
-      </div>
-
-<div class="col-md-2 d-flex gap-2" style="flex-wrap: wrap;">
-  <button class="btn btn-primary flex-fill" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
-  <a href="{% url 'inmuebles_list' %}" class="btn btn-secondary flex-fill"><i class="fas fa-sync-alt me-1"></i> Limpiar</a>
-  <a href="{% url 'export_tasks_to_excelIMP' %}" class="btn btn-success flex-fill"><i class="fas fa-file-excel me-1"></i> Excel</a>
-</div>
-
-
-
       </form>
     </div>
   </div>
@@ -78,14 +401,16 @@
         {% endif %}
 
 {% if inmuebles %}
-  <div class="mb-3 text-muted fw-semibold">
-    <i class="bi bi-check-circle-fill text-success"></i> Terminados: {{ total_completed_inmuebles }}
-    &nbsp;|&nbsp; 
-    <i class="bi bi-hourglass-split text-warning"></i> Pendientes: {{ total_pending_inmuebles }}
+  <div class="stats-container">
+    <div class="d-flex align-items-center gap-4 fw-semibold">
+      <span><i class="bi bi-check-circle-fill text-success me-2"></i> Terminados: <strong>{{ total_completed_inmuebles }}</strong></span>
+      <span><i class="bi bi-hourglass-split text-warning me-2"></i> Pendientes: <strong>{{ total_pending_inmuebles }}</strong></span>
+    </div>
   </div>
 
-  <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
-    <table class="table table-striped table-hover align-middle shadow-sm border rounded">
+  <div class="table-container">
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+      <table class="table table-striped table-hover align-middle mb-0">
       <thead class="table-dark sticky-top">
         <tr>
           <th>#</th>
@@ -140,11 +465,11 @@
           </td>
           <td>{{ task.deadline|date:"d/m/Y"|default:" Pendiente" }}</td>
           <td class="text-center">
-            <div class="btn-group" role="group">
-              <a href="{% url 'detalle_inmueble' task.id %}" class="btn btn-sm btn-outline-primary" title="Detalles">
-                <i class="bi bi-info-circle-fill"></i>
+            <div class="d-flex justify-content-center gap-1">
+              <a href="{% url 'detalle_inmueble' task.id %}" class="btn-info-global btn-sm" style="padding: 0.5rem 1rem; font-size: 0.875rem;" title="Ver detalles">
+                <i class="bi bi-eye"></i>
               </a>
-              <a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="btn btn-sm btn-outline-danger" title="PDF">
+              <a href="{% url 'generate_pdfIMP' task.id %}" target="_blank" class="btn-danger-global btn-sm" style="padding: 0.5rem 1rem; font-size: 0.875rem;" title="Generar PDF">
                 <i class="bi bi-file-earmark-pdf-fill"></i>
               </a>
             </div>
@@ -153,38 +478,102 @@
         {% endfor %}
       </tbody>
     </table>
+    </div>
   </div>
 
-  <!-- Paginación -->
+  <!-- Paginación Mejorada -->
+  {% if inmuebles.has_other_pages %}
   <nav aria-label="Navegación de página" class="mt-4">
-    <ul class="pagination justify-content-center pagination-sm">
-      {% if inmuebles.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1">&laquo; Primero</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}">Anterior</a>
-        </li>
-      {% endif %}
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div class="pagination-info">
+        <span class="text-muted">
+          Mostrando página <strong>{{ inmuebles.number }}</strong> de <strong>{{ inmuebles.paginator.num_pages }}</strong>
+          (Total: <strong>{{ inmuebles.paginator.count }}</strong> registros)
+        </span>
+      </div>
+      <ul class="pagination justify-content-center mb-0">
+        {% if inmuebles.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page=1" title="Primera página">
+              <i class="bi bi-chevron-double-left"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.previous_page_number }}" title="Página anterior">
+              <i class="bi bi-chevron-left"></i> Anterior
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-left"></i> Anterior</span>
+          </li>
+        {% endif %}
 
-      <li class="page-item active">
-        <span class="page-link">{{ inmuebles.number }}</span>
-      </li>
+        {% for num in inmuebles.paginator.page_range %}
+          {% if inmuebles.number == num %}
+            <li class="page-item active">
+              <span class="page-link">{{ num }}</span>
+            </li>
+          {% elif num > inmuebles.number|add:'-3' and num < inmuebles.number|add:'3' %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ num }}">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
 
-      {% if inmuebles.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}">Siguiente</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}">Última &raquo;</a>
-        </li>
-      {% endif %}
-    </ul>
+        {% if inmuebles.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.next_page_number }}" title="Página siguiente">
+              Siguiente <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?q={{ search_query }}&prioridad={{ prioridad }}&ur={{ ur }}&ordenar={{ orden }}&page={{ inmuebles.paginator.num_pages }}" title="Última página">
+              <i class="bi bi-chevron-double-right"></i>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Siguiente <i class="bi bi-chevron-right"></i></span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
   </nav>
+  {% endif %}
 
 {% else %}
-  <div class="alert alert-warning text-center shadow-sm rounded">
-    <i class="bi bi-exclamation-circle"></i> No se encontraron inmuebles que coincidan con la búsqueda.
+  <!-- Estado vacío atractivo -->
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="bi bi-building-x"></i>
+    </div>
+    <h3>No se encontraron inmuebles</h3>
+    <p>
+      {% if search_query or prioridad or ur %}
+        No hay inmuebles que coincidan con los filtros aplicados.<br>
+        Intenta ajustar los criterios de búsqueda.
+      {% else %}
+        Aún no se han registrado inmuebles en el sistema.<br>
+        Comienza importando o creando tu primer inmueble.
+      {% endif %}
+    </p>
+    <div class="empty-actions">
+      {% if search_query or prioridad or ur %}
+        <a href="{% url 'inmuebles_list' %}" class="btn-create-large">
+          <i class="bi bi-arrow-counterclockwise me-2"></i>Limpiar Filtros
+        </a>
+      {% endif %}
+      <a href="{% url 'importar' %}" class="btn-create-large">
+        <i class="bi bi-upload me-2"></i>Importar Inmuebles
+      </a>
+    </div>
   </div>
 {% endif %}
 </div>

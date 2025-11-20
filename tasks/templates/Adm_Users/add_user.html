@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
+{% block titulo %}Agregar Usuario{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-  <div class="card shadow-sm border-0">
-    <div class="card-header text-white" style="background-color: #611232;">
+<div class="container my-4">
+  <div class="form-card">
+    <div class="card-header text-white">
       <h4 class="mb-0">
         <i class="bi bi-person-plus-fill me-2"></i> Agregar Usuario
       </h4>
@@ -14,65 +16,44 @@
 
         <!-- Errores generales -->
         {% if form.non_field_errors %}
-          <div class="alert alert-danger">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ form.non_field_errors }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         {% endif %}
 
-        <div class="row">
+        <div class="row g-3">
           {% for field in form %}
-            <div class="col-md-6 mb-3">
-              <label for="{{ field.id_for_label }}" class="form-label" style="color: #611232;">{{ field.label }}</label>
+            <div class="col-md-6">
+              <label for="{{ field.id_for_label }}" class="form-label">
+                <i class="bi bi-{% if 'username' in field.name %}person{% elif 'email' in field.name %}envelope{% elif 'password' in field.name %}lock{% elif 'first' in field.name or 'last' in field.name %}person-badge{% else %}tag{% endif %} me-2"></i>
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+              </label>
               {{ field }}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
               {% if field.errors %}
-                <div class="text-danger small">{{ field.errors }}</div>
+                <div class="text-danger small mt-1">
+                  <i class="bi bi-exclamation-circle me-1"></i>{{ field.errors|striptags }}
+                </div>
               {% endif %}
             </div>
           {% endfor %}
         </div>
 
-        <button type="submit" class="btn btn-custom w-100">
-          <i class="bi bi-check-circle-fill me-1"></i> Crear usuario
-        </button>
+        <div class="d-flex justify-content-between mt-4">
+          <a href="{% url 'user_list' %}" class="btn-secondary-global">
+            <i class="bi bi-arrow-left me-1"></i> Volver
+          </a>
+          <button type="submit" class="btn-success-global">
+            <i class="bi bi-check-circle-fill me-1"></i> Crear Usuario
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block styles %}
-<style>
-  /* Campos input con borde vino oscuro */
-  .form-control {
-    border: 1.5px solid #611232;
-    transition: border-color 0.3s ease;
-  }
-  .form-control:focus {
-    border-color: #A57F2C;
-    box-shadow: 0 0 5px #A57F2C;
-  }
-
-  /* Botón personalizado */
-  .btn-custom {
-    background-color: #A57F2C !important;
-    color: #611232;
-    font-weight: 600;
-    border: none;
-    transition: background-color 0.3s ease;
-  }
-  .btn-custom:hover, .btn-custom:focus {
-    background-color: #7f6a1b;
-    color: #fff;
-  }
-
-  /* Iconos color vino */
-  .bi-person-plus-fill {
-    color: #A57F2C;
-  }
-
-  /* Alertas de error */
-  .alert-danger {
-    border-left: 5px solid #611232;
-  }
-</style>
 {% endblock %}

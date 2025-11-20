@@ -2,84 +2,189 @@
 {% block titulo %}Inicio | Sistema SIISEP{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="text-center mb-5">
-    <h1 class="display-5 fw-bold text-primary">Sistema de Inmuebles SIISEP</h1>
-    <p class="lead text-muted">Administración de bienes inmuebles del sector público.</p>
+<div class="home-container">
+  <div class="home-header">
+    <h1 class="home-title">Sistema de Inmuebles SIISEP</h1>
+    <p class="home-subtitle">Administración de bienes inmuebles del sector público.</p>
   </div>
 
-
-
-  <div class="row g-4">
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow border-0 h-100 text-center">
-        <div class="card-body">
-          <img src="/static/inicio/img/house.svg" alt="Inmuebles" class="mb-3" style="height: 48px;">
-          <h5 class="card-title">Inmuebles</h5>
-          <p class="card-text">Explora el catálogo completo de inmuebles registrados.</p>
-          <a href="{% url 'inmuebles_list' %}" class="btn btn-primary btn-sm">Ver Inmuebles</a>
-        </div>
+  <div class="cards-grid">
+    <div class="feature-card">
+      <div class="card-icon-wrapper">
+        <i class="bi bi-building card-icon"></i>
+      </div>
+      <div class="card-content">
+        <h5 class="card-title">Inmuebles</h5>
+        <p class="card-text">Explora el catálogo completo de inmuebles registrados.</p>
+        <a href="{% url 'inmuebles_list' %}" class="btn-card">Ver Inmuebles</a>
       </div>
     </div>
 
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow border-0 h-100 text-center">
-        <div class="card-body">
-          <img src="/static/inicio/img/create.svg" alt="Crear" class="mb-3" style="height: 48px;">
-          <h5 class="card-title">Registrar Inmueble</h5>
-          <p class="card-text">Da de alta un nuevo inmueble en el sistema.</p>
-          <a href="{% url 'crear_inmueble' %}" class="btn btn-primary btn-sm">Registrar</a>
-        </div>
+    <div class="feature-card">
+      <div class="card-icon-wrapper">
+        <i class="bi bi-plus-circle-fill card-icon"></i>
+      </div>
+      <div class="card-content">
+        <h5 class="card-title">Registrar Inmueble</h5>
+        <p class="card-text">Da de alta un nuevo inmueble en el sistema.</p>
+        <a href="{% url 'crear_inmueble' %}" class="btn-card">Registrar</a>
       </div>
     </div>
 
-
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow border-0 h-100 text-center">
-        <div class="card-body">
-          <img src="/static/inicio/img/llamadas.svg" alt="Llamadas" class="mb-3" style="height: 48px;">
-          <h5 class="card-title">Módulo de Llamadas</h5>
-          <p class="card-text">Registra y consulta las llamadas relacionadas con inmuebles.</p>
-          <a href="{% url 'tareas_list' %}" class="btn btn-primary btn-sm">Ver Llamadas</a>
-        </div>
+    <div class="feature-card">
+      <div class="card-icon-wrapper">
+        <i class="bi bi-telephone-fill card-icon"></i>
+      </div>
+      <div class="card-content">
+        <h5 class="card-title">Módulo de Llamadas</h5>
+        <p class="card-text">Registra y consulta las llamadas relacionadas con inmuebles.</p>
+        <a href="{% url 'tareas_list' %}" class="btn-card">Ver Llamadas</a>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow border-0 h-100 text-center">
-        <div class="card-body">
-          <img src="/static/inicio/img/manual.svg" alt="Manual" class="mb-3" style="height: 48px;">
-          <h5 class="card-title">Descargar Manual</h5>
-          <p class="card-text">Accede al manual del usuario para obtener más información.</p>
-          <a href="#" class="btn btn-primary btn-sm">Descargar Manual</a>
-        </div>
+
+    <div class="feature-card">
+      <div class="card-icon-wrapper">
+        <i class="bi bi-file-earmark-pdf-fill card-icon"></i>
+      </div>
+      <div class="card-content">
+        <h5 class="card-title">Descargar Manual</h5>
+        <p class="card-text">Accede al manual del usuario para obtener más información.</p>
+        <a href="#" class="btn-card">Descargar Manual</a>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-body {
-  font-family: 'Roboto', 'Segoe UI', sans-serif;
-  background-color: #f8f9fa;
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+
+.home-header {
+  text-align: center;
+  margin-bottom: 3rem;
 }
-.card-body img {
-  opacity: 0.9;
+
+.home-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #691c32;
+  margin-bottom: 0.75rem;
 }
-.btn-primary {
-  background-color: #003366;
-  border-color: #003366;
+
+.home-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin: 0;
 }
-.btn-outline-primary {
-  color: #003366;
-  border-color: #003366;
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
 }
-.btn-outline-primary:hover {
-  background-color: #003366;
+
+.feature-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(105, 28, 50, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e9ecef;
+  transition: box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 8px 24px rgba(105, 28, 50, 0.15);
+}
+
+.card-icon-wrapper {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon {
+  font-size: 4rem;
   color: white;
+  margin: 0;
+}
+
+.card-content {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #691c32;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  color: #6c757d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.btn-card {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-block;
+  text-align: center;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.2);
+}
+
+.btn-card:hover {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(105, 28, 50, 0.3);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .home-title {
+    font-size: 2rem;
+  }
+
+  .home-subtitle {
+    font-size: 1rem;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .card-icon-wrapper {
+    padding: 1.5rem;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
 }
 </style>
 

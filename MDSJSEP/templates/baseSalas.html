@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://kit.fontawesome.com/91cca0bc27.js" crossorigin="anonymous">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
@@ -20,36 +21,227 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-wrapper {
+      flex: 1;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .btn-menu {
+      font-size: 1.2rem;
+      color: #691c32;
+      background-color: transparent;
+      border: none;
+      padding: 0.5rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-menu:hover {
+      color: #8b1f43;
+      transform: scale(1.1);
+    }
+
+    .header-user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 0.95rem;
+      gap: 0.25rem;
+    }
+
+    .header-user .user {
+      font-weight: 600;
+      color: #343a40;
+    }
+
+    .header-user .email {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    .btn-logout {
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(105, 28, 50, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 10px;
+      background-color: #f0f0f0;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #691c32;
+    }
+
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: #691c32 #f0f0f0;
+    }
+
+    /* Footer */
+    footer.footer {
+      background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+      color: #ffffff;
+      padding: 1.5rem 0;
+      margin-top: auto;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+    }
+
+    footer.footer a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    footer.footer a:hover {
+      color: #ffc107;
+      text-decoration: none;
+    }
+
+    footer.footer h6 {
+      color: #ffc107;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    footer.footer img {
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .header-user {
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      .header-icons {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 1.5rem;
+      }
+    }
+    </style>
 </head>
 <body>
-  
+  <div class="main-wrapper">
   {% if user.is_authenticated %}
-    <div class="containerT ">
-      
-      <h1 class="title">MODULO DE SALA DE JUNTAS SEP</h1>
-        <h2 class="title2">
-          
-          <p class="user">Bienvenido: {{ user.first_name }} {{ user.last_name }}</p><br><br>
-          
-          <a href="/signout_MDSJ" style="position: absolute; margin-top: 25px; right: 0;" class="salir">Salir <i class="fa-solid fa-right-to-bracket"></i></a>
-          <p class="email">{{user.email}}</p><br><br>
-         
-        </h2>
-      </div>
-      <div dark class="contenedor-menu">
-          <button id="modoOscuroBtn" aria-label="modoOscuro"><i class="fas fa-moon"></i></i></button>
-           <a href="{%url 'calendar_MDSJ' %}" aria-label="home" class="btn-home"><i class="fa-solid fa-house"></i></a>
-           <a href="{%url 'uso_salas_view' %}" aria-label="home" class="btn-home m-4"> <i class="fas fa-chart-bar"></i></a>
-           {% endif %}
-      </div>
+    <div class="header-container">
+    <div class="header-icons">
+      <button id="modoOscuroBtn" aria-label="modoOscuro" class="btn-menu">
+        <i class="fas fa-moon"></i>
+      </button>
+      <a href="{%url 'calendar_MDSJ' %}" aria-label="home" class="btn-menu">
+        <i class="fa-solid fa-house"></i>
+      </a>
+      <a href="{%url 'uso_salas_view' %}" aria-label="home" class="btn-menu">
+        <i class="fas fa-chart-bar"></i>
+      </a>
+    </div>
+    <div class="header-user">
+      <span class="user">Bienvenido: {{ user.first_name }} {{ user.last_name }} <i class="fa-solid fa-user"></i></span>
+      <span class="email">{{user.email}}</span>
+      <a href="/signout_MDSJ" class="btn-logout">Salir <i class="fa-solid fa-right-to-bracket"></i></a>
+    </div>
+    </div>
+    {% endif %}
 
-      <div class="custom-scrollbar"></div>
-    
-    {% block content %}
-    {% endblock %}
+    <div class="content-wrapper custom-scrollbar">
+      {% block content %}
+      {% endblock %}
+    </div>
 
-    <style>.animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;animation-fill-mode:both}.fast{-webkit-animation-duration:.4s;animation-duration:.4s;-webkit-animation-fill-mode:both;animation-fill-mode:both}.low{-webkit-animation-duration:1.5s;animation-duration:1.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.fadeIn{animation-name:fadeIn}.dropdown.notifications .btn{font-size:14px;padding:4px 12px}.dropdown{position:absolute;right:0}.dropdown.notifications .dropdown-menu{max-height:500px;overflow-y:auto}.dropdown.notifications .fas{font-size:15px}.dropdown.notifications .dropdown-menu{border:1px solid #ccc}.btn-calendar{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:6em;color:#fff;text-decoration:none;padding:2px 8px;border:.1px solid #ccc;border-radius:5px}.mensajes{background-color:#1a252f;display:flex;align-content:center;justify-content:space-evenly;align-items:baseline;position:absolute;right:15em;margin-left:10px;color:#fff;text-decoration:none;padding:5px 10px;border:.1px solid #ccc;border-radius:5px}.fa-envelope{margin-left:5px}.containerT{position:relative;width:100%;display:flex;overflow:hidden}.btn-pendientes{padding:8px;border-radius:5px;background:#a55da5;border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:0;color:#fff;width:210.72px;height:115px;flex-shrink:0}.btn-completados{filter:brightness(1.4);border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:105.36px;height:115px;flex-shrink:0;left:.01em;top:.2em;border-radius:5px;background:#0c9273}.btn-alta{filter:brightness(1.4);border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:210.36px;height:95px;flex-shrink:0;left:1px;top:8px;border-radius:5px;background:#8a8257}.btn-alta:hover{filter:brightness(1.1);transition:.3s}.btn-importados{filter:brightness(1.4);border-radius:5px;margin:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:105.36px;height:115px;flex-shrink:0;left:.01em;top:10px;border-radius:5px;background:#1741c8}.btn-importados:hover{filter:brightness(1.1);transition:.3s}.btn-importados_completed{filter:brightness(1.4);border-radius:5px;margin:2px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;color:#fff;width:99px;height:115px;flex-shrink:0;top:13px;border-radius:5px;background:#5a55b3}.btn-importados:hover{filter:brightness(1.1);transition:.3s}.btn-baja{padding:10px;background-color:#690e0e;filter:brightness(1.2);border-radius:5px;margin-left:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;color:#fff;width:99px;height:115px;flex-shrink:0;position:relative;left:-.2em;top:.5em}.btn-baja:hover{filter:brightness(1.1);transition:.3s}.btn-baja-importados{padding:10px;background-color:#9e2727;filter:brightness(1.2);border-radius:5px;margin-left:5px;display:inline;text-decoration:none;text-align:center;margin-bottom:25px;color:#fff;width:210.72px;height:115px;flex-shrink:0;position:relative;left:1px;top:20px}.btn-modificacion{padding:2px;border-radius:5px;background:#fcbc58;border-radius:5px;margin:10px;display:inline;text-decoration:none;text-align:center;margin-bottom:-5px;position:relative;left:-15px;color:#fff;width:210.72px;height:115px;flex-shrink:0;top:.2em;left:-.3em}.custom-scrollbar::-webkit-scrollbar{width:10px;background-color:#f0f0f0}.custom-scrollbar::-webkit-scrollbar-thumb{background-color:#0077b6}.custom-scrollbar{scrollbar-width:thin;scrollbar-color:#0077b6 #f0f0f0}@media (max-width:768px){.email{display:none}}.events{display:flex}@media (max-width:560px){a.salir{position:absolute;margin-top:40px;right:0}.title{font-size:13px}.events{display:none}.mensajes{left:16em;width:4em;top:7em}}</style>
-    <script>
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- Logo -->
+          <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+            <img src="{% static 'inicio/img/logosep.webp' %}" alt="Logo Sala de Juntas" width="180" loading="lazy">
+          </div>
+
+          <!-- Enlaces rápidos -->
+          <div class="col-md-4 text-center mb-3 mb-md-0">
+            <h6 class="fw-bold">Enlaces Rápidos</h6>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'calendar_MDSJ' %}" class="text-white text-decoration-none">Calendario</a></li>
+              <li><a href="{% url 'uso_salas_view' %}" class="text-white text-decoration-none">Uso de Salas</a></li>
+            </ul>
+          </div>
+
+          <!-- Contacto / Derechos -->
+          <div class="col-md-4 text-center text-md-end">
+            <h6 class="fw-bold">Contacto</h6>
+            <p class="mb-1">Correo: soporte@salasdejuntas.com</p>
+            <p class="mb-0">&copy; {% now "Y" %} Sala de Juntas. Todos los derechos reservados.</p>
+          </div>
+      </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
 
       function toggleSidebar() {
         const sidebar = document.getElementById("sidebar");

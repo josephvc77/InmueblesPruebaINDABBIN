@@ -2,12 +2,286 @@
 {% block titulo %} Calendario de Actividades {% endblock %}
 
 {% block content %}
+<style>
+.calendar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
 
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
-<div class="options">
-    <label for="selectSala">Filtrar por Sala:</label>
+.calendar-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #691c32;
+  margin: 0;
+}
+
+.filter-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.filter-container label {
+  font-weight: 600;
+  color: #343a40;
+  margin-right: 1rem;
+}
+
+.filter-container select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  min-width: 250px;
+  transition: all 0.3s ease;
+}
+
+.filter-container select:focus {
+  border-color: #691c32;
+  box-shadow: 0 0 0 0.2rem rgba(105, 28, 50, 0.25);
+  outline: none;
+}
+
+.calendar-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  border: none;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-header .modal-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(105, 28, 50, 0.15);
+}
+
+.modal-body {
+  padding: 2rem;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.form-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.section-title {
+  color: #691c32;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(105, 28, 50, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.625rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #691c32;
+  box-shadow: 0 0 0 0.2rem rgba(105, 28, 50, 0.25);
+  outline: none;
+}
+
+.form-control:disabled {
+  background-color: #e9ecef;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+.modal-xl {
+  max-width: 1200px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(105, 28, 50, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-outline-warning {
+  color: #ffc107;
+  border-color: #ffc107;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+}
+
+.btn-outline-warning:hover {
+  background: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+}
+
+.form-check-inline {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.form-check-inline .form-group {
+  display: inline-block;
+  margin-right: 1rem;
+  vertical-align: top;
+}
+
+#calendar {
+  background: white;
+}
+
+:root {
+  --fc-button-bg-color: #691c32;
+  --fc-button-border-color: #691c32;
+  --fc-button-hover-bg-color: #8b1f43;
+  --fc-button-hover-border-color: #8b1f43;
+  --fc-button-active-bg-color: #611232;
+  --fc-button-active-border-color: #611232;
+  --fc-event-bg-color: #691c32;
+  --fc-event-border-color: #691c32;
+  --fc-today-bg-color: rgba(105, 28, 50, 0.1);
+}
+
+.event-alta {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.event-media {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.event-baja {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.event-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 1rem;
+  }
+
+  .calendar-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-container {
+    width: 100%;
+  }
+
+  .filter-container select {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .calendar-wrapper {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .modal-content {
+    margin: 1rem;
+  }
+}
+</style>
+
+<div class="calendar-container">
+  <div class="calendar-header">
+    <h1 class="calendar-title">
+      <i class="bi bi-calendar3 me-2"></i>Calendario de Actividades
+    </h1>
+  </div>
+
+  <div class="filter-container">
+    <label for="selectSala">
+      <i class="bi bi-funnel me-2"></i>Filtrar por Sala:
+    </label>
     <select id="selectSala">
-            <option value="">Todas las Salas</option>
+      <option value="">Todas las Salas</option>
             <option value="AUDITORIO CENTRO SEP">AUDITORIO CENTRO SEP</option>
             <option value="ESTUDIO DE GRABACIÓN">ESTUDIO DE GRABACIÓN</option>
             <option value="BODEGA DGTIC-DGRMyS">BODEGA DGTIC-DGRMyS</option>
@@ -57,10 +331,11 @@
             <option value="RABOSO (PUEBLA) 4">RABOSO (PUEBLA) 4</option>
             <option value="RABOSO (PUEBLA) 5">RABOSO (PUEBLA) 5</option>
         </select>
-</div>
+  </div>
 
-<div class="col-md-12 animated fadeIn">
-    <div style="padding: 80px;" id='calendar'></div>
+  <div class="calendar-wrapper animated fadeIn">
+    <div id='calendar'></div>
+  </div>
 </div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
@@ -72,94 +347,198 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/es.js"></script>
 
 
-<div id="calendar"></div>
-
-
-
 <!-- Modal para agregar eventos -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar Evento</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="bi bi-plus-circle-fill me-2"></i>Agregar Evento
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="eventForm">
-                    <input type="hidden" id="dia" name="dia"> <!-- Campo oculto para la fecha de inicio -->
-                    <div class="form-group form-check-inline ">
-                        <label for="title">Título:</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="hora_inicio">Hora de inicio:</label>
-                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" required>
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="hora_finalizacion">Hora de finalización:</label>
-                        <input type="time" class="form-control" id="hora_finalizacion" name="hora_finalizacion"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="Nom_sala">Nombre Sala:</label>
-                        <select id="Nom_sala" name="Nom_sala" class="form-control" required></select>
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="capacidad">Capacidad:</label>
-                        <input type="number" class="form-control" id="capacidad" disabled name="capacidad">
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="nivel">Nivel:</label>
-                        <input type="text" class="form-control" id="nivel" disabled name="nivel">
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="sala">Sala:</label>
-                        <input type="text" class="form-control" id="sala" disabled name="sala">
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="coordina">Coordina:</label>
-                        <input type="text" class="form-control" id="coordina" required name="coordina">
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="preside">Preside:</label>
-                        <input type="text" class="form-control" id="preside" required name="preside">
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="cargo">Cargo:</label>
-                        <input type="text" class="form-control" id="cargo" required name="cargo">
+                    <input type="hidden" id="dia" name="dia">
+                    
+                    <!-- Información General -->
+                    <div class="form-section">
+                        <h6 class="section-title">
+                            <i class="bi bi-info-circle-fill me-2"></i>Información General
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="title"><i class="bi bi-tag me-1"></i>Título del Evento:</label>
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="Ingrese el título del evento" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="prioridad"><i class="bi bi-exclamation-triangle me-1"></i>Prioridad:</label>
+                                    <select class="form-control" id="prioridad" required name="prioridad">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Alta">Alta</option>
+                                        <option value="Media">Media</option>
+                                        <option value="Baja">Baja</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="Nom_sala"><i class="bi bi-building me-1"></i>Nombre de la Sala:</label>
+                                    <select id="Nom_sala" name="Nom_sala" class="form-control" required>
+                                        <option value="">Seleccione una sala...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group form-check-inline">
-                        <label for="no_personas">Número de Asistentes:</label>
-                        <input type="number" class="form-control" id="no_personas" required name="no_personas">
+                    <!-- Horarios -->
+                    <div class="form-section">
+                        <h6 class="section-title">
+                            <i class="bi bi-clock-history me-2"></i>Horarios
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="hora_inicio"><i class="bi bi-clock me-1"></i>Hora de Inicio:</label>
+                                    <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="hora_finalizacion"><i class="bi bi-clock-fill me-1"></i>Hora de Finalización:</label>
+                                    <input type="time" class="form-control" id="hora_finalizacion" name="hora_finalizacion" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="duracion"><i class="bi bi-hourglass-split me-1"></i>Duración:</label>
+                                    <input type="text" class="form-control" id="duracion" disabled placeholder="Se calculará automáticamente">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group form-check-inline">
-                        <label for="contacto">Contacto:</label>
-                        <input type="text" class="form-control" id="contacto" required name="contacto">
+                    <!-- Detalles de la Sala -->
+                    <div class="form-section">
+                        <h6 class="section-title">
+                            <i class="bi bi-door-open-fill me-2"></i>Detalles de la Sala
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="capacidad"><i class="bi bi-people me-1"></i>Capacidad:</label>
+                                    <input type="text" class="form-control" id="capacidad" disabled name="capacidad" placeholder="Se llenará automáticamente">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nivel"><i class="bi bi-layers me-1"></i>Nivel:</label>
+                                    <input type="text" class="form-control" id="nivel" disabled name="nivel" placeholder="Se llenará automáticamente">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="sala"><i class="bi bi-door-open me-1"></i>Número de Sala:</label>
+                                    <input type="text" class="form-control" id="sala" disabled name="sala" placeholder="Se llenará automáticamente">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group form-check-inline">
-                        <label for="servicios">Servicios:</label>
-                        <input type="text" class="form-control" id="servicios" required name="servicios">
+                    <!-- Participantes -->
+                    <div class="form-section">
+                        <h6 class="section-title">
+                            <i class="bi bi-people-fill me-2"></i>Participantes
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="coordina"><i class="bi bi-person-check me-1"></i>Coordina:</label>
+                                    <input type="text" class="form-control" id="coordina" required name="coordina" placeholder="Nombre del coordinador">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="preside"><i class="bi bi-person-badge me-1"></i>Preside:</label>
+                                    <input type="text" class="form-control" id="preside" required name="preside" placeholder="Nombre del presidente">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="cargo"><i class="bi bi-briefcase me-1"></i>Cargo:</label>
+                                    <input type="text" class="form-control" id="cargo" required name="cargo" placeholder="Cargo del responsable">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="no_personas"><i class="bi bi-people-fill me-1"></i>Número de Asistentes:</label>
+                                    <input type="number" class="form-control" id="no_personas" required name="no_personas" placeholder="Ingrese el número de asistentes" min="1">
+                                    <small class="form-text text-muted" id="capacidad-warning" style="display: none; color: #dc3545;">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>El número de asistentes excede la capacidad de la sala.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group form-check-inline">
-                        <label for="observaciones">Observaciones:</label>
-                        <input type="text" class="form-control" id="observaciones" required name="observaciones">
-                    </div>
-                    <div class="form-group form-check-inline">
-                        <label for="prioridad">Prioridad:</label>
-                        <select class="form-control" id="prioridad" required name="prioridad" required>
-                            <option value="Alta">Alta</option>
-                            <option value="Media">Media</option>
-                            <option value="Baja">Baja</option>
-                        </select>
+                    <!-- Contacto y Servicios -->
+                    <div class="form-section">
+                        <h6 class="section-title">
+                            <i class="bi bi-telephone-fill me-2"></i>Contacto y Servicios
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="contacto"><i class="bi bi-telephone me-1"></i>Contacto:</label>
+                                    <input type="text" class="form-control" id="contacto" required name="contacto" placeholder="Teléfono o email de contacto">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="servicios"><i class="bi bi-gear me-1"></i>Servicios Requeridos:</label>
+                                    <input type="text" class="form-control" id="servicios" required name="servicios" placeholder="Ej: Proyector, WiFi, Cafetería">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Agregar Evento</button>
-                    <button type="submit" class="btn btn-outline-warning" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                    <!-- Observaciones -->
+                    <div class="form-section">
+                        <h6 class="section-title">
+                            <i class="bi bi-sticky-fill me-2"></i>Observaciones
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="observaciones"><i class="bi bi-sticky me-1"></i>Observaciones Adicionales:</label>
+                                    <textarea class="form-control" id="observaciones" name="observaciones" rows="4" placeholder="Ingrese cualquier observación o nota adicional sobre el evento..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>Agregar Evento
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -168,30 +547,65 @@
 
 <!-- Modal para mostrar los detalles del evento -->
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Detalles del Evento</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="eventModalLabel">
+                    <i class="bi bi-info-circle-fill me-2"></i>Detalles del Evento
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="eventDetails">
-                    <p><strong>Título:</strong> <span id="eventTitle"></span></p>
-                    <p><strong>Inicio:</strong> <span id="eventInicio"></span></p>
-                    <p><strong>Fin:</strong> <span id="eventFin"></span></p>
-                    <p><strong>Nombre de la Sala:</strong> <span id="eventNom_Sala"></span></p>
-                    <p><strong>Capacidad:</strong> <span id="eventCapacidad"></span></p>
-                    <p><strong>Nivel:</strong> <span id="eventNivel"></span></p>
-                    <p><strong>Sala:</strong> <span id="eventSala"></span></p>
-                    <p><strong>Prioridad:</strong> <span id="eventPriority"></span></p>
-                    <p><strong>Coordina:</strong> <span id="eventCoordina"></span></p>
-                    <p><strong>Preside:</strong> <span id="eventPreside"></span></p>
-                    <p><strong>Cargo:</strong> <span id="eventCargo"></span></p>
-                    <p><strong>No. de Personas:</strong> <span id="eventNoPersonas"></span></p>
-                    <p><strong>Contacto:</strong> <span id="eventContacto"></span></p>
-                    <p><strong>Servicios:</strong> <span id="eventServicios"></span></p>
-                    <p><strong>Observaciones:</strong> <span id="eventObservaciones"></span></p>
+                <div id="eventDetails" class="row g-3">
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-tag me-2"></i>Título:</strong> <span id="eventTitle"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-building me-2"></i>Nombre de la Sala:</strong> <span id="eventNom_Sala"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="bi bi-clock me-2"></i>Inicio:</strong> <span id="eventInicio"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="bi bi-clock-history me-2"></i>Fin:</strong> <span id="eventFin"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="bi bi-exclamation-triangle me-2"></i>Prioridad:</strong> <span id="eventPriority"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="bi bi-people me-2"></i>Capacidad:</strong> <span id="eventCapacidad"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="bi bi-layers me-2"></i>Nivel:</strong> <span id="eventNivel"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="bi bi-door-open me-2"></i>Sala:</strong> <span id="eventSala"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-person-check me-2"></i>Coordina:</strong> <span id="eventCoordina"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-person-badge me-2"></i>Preside:</strong> <span id="eventPreside"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-briefcase me-2"></i>Cargo:</strong> <span id="eventCargo"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-people-fill me-2"></i>No. de Personas:</strong> <span id="eventNoPersonas"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-telephone me-2"></i>Contacto:</strong> <span id="eventContacto"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-gear me-2"></i>Servicios:</strong> <span id="eventServicios"></span></p>
+                    </div>
+                    <div class="col-12">
+                        <p><strong><i class="bi bi-sticky me-2"></i>Observaciones:</strong> <span id="eventObservaciones"></span></p>
+                    </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -201,25 +615,99 @@
 <script>
 
     $(document).ready(function () {
-        $('#no_personas').on('input', function () {
-            var capacidad = parseInt($('#capacidad').val());  // Obtener valor de capacidad
-            var noPersonas = parseInt($(this).val());  // Obtener valor de Número de Personas
+        // Calcular duración automáticamente
+        function calcularDuracion() {
+            var horaInicio = $('#hora_inicio').val();
+            var horaFin = $('#hora_finalizacion').val();
+            
+            if (horaInicio && horaFin) {
+                var inicio = moment(horaInicio, 'HH:mm');
+                var fin = moment(horaFin, 'HH:mm');
+                
+                if (fin.isAfter(inicio)) {
+                    var duracion = moment.duration(fin.diff(inicio));
+                    var horas = Math.floor(duracion.asHours());
+                    var minutos = duracion.minutes();
+                    
+                    var textoDuracion = '';
+                    if (horas > 0) {
+                        textoDuracion = horas + ' hora' + (horas > 1 ? 's' : '');
+                        if (minutos > 0) {
+                            textoDuracion += ' y ' + minutos + ' minuto' + (minutos > 1 ? 's' : '');
+                        }
+                    } else {
+                        textoDuracion = minutos + ' minuto' + (minutos > 1 ? 's' : '');
+                    }
+                    
+                    $('#duracion').val(textoDuracion);
+                } else {
+                    $('#duracion').val('Hora final debe ser mayor a hora inicio');
+                }
+            } else {
+                $('#duracion').val('');
+            }
+        }
 
-            // Validar si el número de personas excede la capacidad
-            if (noPersonas > capacidad) {
+        $('#hora_inicio, #hora_finalizacion').on('change', calcularDuracion);
+
+        // Validar capacidad de asistentes al cambiar el número
+        $('#no_personas').on('input', function () {
+            var capacidad = parseInt($('#capacidad').val());
+            var noPersonas = parseInt($(this).val());
+
+            if (capacidad && noPersonas) {
+                validarCapacidad();
+                
+                // Mostrar alerta solo si se intenta guardar con capacidad excedida
+                if (noPersonas > capacidad) {
+                    // No mostrar alerta aquí, solo validar visualmente
+                }
+            }
+        });
+
+        // Validar antes de enviar el formulario
+        $('#eventForm').on('submit', function(e) {
+            var capacidad = parseInt($('#capacidad').val());
+            var noPersonas = parseInt($('#no_personas').val());
+
+            if (capacidad && noPersonas && noPersonas > capacidad) {
+                e.preventDefault();
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error',
-                    text: 'El número de personas no puede ser mayor que la capacidad.',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    $(this).val('');  // Limpiar el campo si no es válido
+                    title: 'Error de Capacidad',
+                    text: 'El número de personas (' + noPersonas + ') excede la capacidad de la sala (' + capacidad + '). Por favor, ajuste el número de asistentes.',
+                    confirmButtonText: 'Entendido'
                 });
+                return false;
             }
         });
     });
 
 
+    // Función global para validar capacidad
+    function validarCapacidad() {
+        var capacidadStr = $('#capacidad').val();
+        var noPersonas = parseInt($('#no_personas').val());
+        
+        if (capacidadStr && noPersonas) {
+            var capacidad = parseInt(capacidadStr);
+            var warning = $('#capacidad-warning');
+            
+            if (noPersonas > capacidad) {
+                warning.show();
+                $('#no_personas').addClass('is-invalid');
+                $('#no_personas').css('border-color', '#dc3545');
+            } else {
+                warning.hide();
+                $('#no_personas').removeClass('is-invalid');
+                $('#no_personas').css('border-color', '');
+            }
+        } else {
+            $('#capacidad-warning').hide();
+            $('#no_personas').removeClass('is-invalid');
+            $('#no_personas').css('border-color', '');
+        }
+    }
 
     function loadSalasDeJuntas() {
         $.getJSON('https://historia-4c332-default-rtdb.firebaseio.com/5/Salas_de_Juntas.json', function (data) {
@@ -245,11 +733,19 @@
                     $('#capacidad').val(selectedSala.capacidad);
                     $('#nivel').val(selectedSala.nivel);
                     $('#sala').val(selectedSala.sala || '');  // Mostrar sala si existe, sino, dejar vacío
+                    
+                    // Validar capacidad de asistentes si ya hay un valor
+                    if ($('#no_personas').val()) {
+                        validarCapacidad();
+                    }
                 } else {
                     // Si no se encuentra la sala, limpiar los campos
                     $('#capacidad').val('');
                     $('#nivel').val('');
                     $('#sala').val('');
+                    $('#capacidad-warning').hide();
+                    $('#no_personas').removeClass('is-invalid');
+                    $('#no_personas').css('border-color', '');
                 }
             });
 

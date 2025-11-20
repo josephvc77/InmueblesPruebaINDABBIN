@@ -14,7 +14,7 @@ from django.views import View
 from djangocrud import settings
 
 from .forms import ArchivoForm, ComentarioForm, CreateDatosLlamadasForm, DictamenEstructuralIMPForm, DocumentoPropiedadIMPForm, Expedientes_CEDOCIMPForm, FoliosRealesIMPForm, NumeroPlanoIMPForm, ObservacionForm, UserCreateForm
-from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, Observacion, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP
+from .models import ColindanciasIMP, DatosAvaluosIMP, DatosLlamadasInmuebles, DatosTercerosIMP, DictamenEstructuralIMP, Documento_ocupacionIMP, DocumentoPropiedadIMP, EdificacionIMP, EdificioVerdeIMP, Expedientes_CEDOCIMP, FoliosRealesIMP, Inmueble, InstitucionesOcupantesIMP, MensajeIMP, NumeroPlanoIMP, Observacion, OcupacionesIMP, RegistroLlamadas, TramitesDisposicionIMP, HistorialUsoInmueble
 
 from .forms import TaskCreateForm
 
@@ -352,13 +352,104 @@ def crear_inmueble(request):
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter, A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from PIL import Image as PILImage
 import os
 from django.contrib.auth.decorators import login_required
+from datetime import datetime, date
+
+def format_value(value):
+    """Formatea valores para el PDF, manejando None, fechas, booleanos, etc."""
+    if value is None or value == '' or str(value).strip() == '' or str(value) == 'None':
+        return 'N/A'
+    # Manejar objetos date y datetime
+    if isinstance(value, datetime):
+        return value.strftime('%d/%m/%Y %H:%M')
+    if isinstance(value, date):
+        return value.strftime('%d/%m/%Y')
+    if isinstance(value, bool):
+        return 'Sí' if value else 'No'
+    # Manejar campos que pueden ser booleanos pero vienen como string
+    if str(value).lower() in ['true', 'yes', 'si', 'sí', '1']:
+        return 'Sí'
+    if str(value).lower() in ['false', 'no', '0']:
+        return 'No'
+    # Formatear números
+    if isinstance(value, (int, float)):
+        try:
+            # Intentar formatear números con comas
+            return f'{value:,.2f}' if isinstance(value, float) and value != int(value) else f'{value:,}'
+        except (ValueError, TypeError):
+            return str(value)
+    return str(value)
+
+def create_table_pdf_improved(data, col_widths=None, styles=None):
+    """Función auxiliar mejorada para crear tablas PDF con estilo"""
+    if styles is None:
+        styles = getSampleStyleSheet()
+    
+    # Crear estilo personalizado para headers con texto blanco
+    header_style = ParagraphStyle(
+        'HeaderStyle',
+        parent=styles['Normal'],
+        textColor=colors.white,
+        fontName='Helvetica-Bold',
+        fontSize=10,
+        alignment=0,  # LEFT
+    )
+    
+    # Convertir datos a Paragraphs para permitir saltos de línea
+    table_data = []
+    for row_idx, row in enumerate(data):
+        table_row = []
+        for col_idx, cell_value in enumerate(row):
+            if row_idx == 0:  # Header
+                # Usar estilo personalizado con texto blanco para headers
+                para = Paragraph(f"<b>{str(cell_value)}</b>", header_style)
+            else:
+                # Convertir a string y usar Paragraph para permitir saltos
+                cell_str = format_value(cell_value)
+                # Truncar textos muy largos pero permitir saltos de línea
+                if len(cell_str) > 80:
+                    cell_str = cell_str[:77] + '...'
+                para = Paragraph(cell_str, styles['Normal'])
+            table_row.append(para)
+        table_data.append(table_row)
+    
+    if col_widths is None:
+        # Calcular anchos automáticos basados en el número de columnas
+        num_cols = len(data[0]) if data else 0
+        if num_cols > 0:
+            # Letter width = 8.5 inches, dejar espacio para márgenes (aproximadamente 7.5 inches útiles)
+            total_width = 7.5 * inch
+            col_width = total_width / num_cols
+            col_widths = [col_width] * num_cols
+    
+    table = Table(table_data, colWidths=col_widths, repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#691c32")),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('ALIGN', (1, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+        ('TOPPADDING', (0, 0), (-1, 0), 8),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor("#ffffff")),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.HexColor("#f9f9f9"), colors.white]),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('WORDWRAP', (0, 0), (-1, -1), True),  # Permitir saltos de línea automáticos
+    ]))
+    return table
 
 @login_required
 def generate_pdfIMP(request, task_id):
@@ -367,31 +458,79 @@ def generate_pdfIMP(request, task_id):
 
     # Crear la respuesta HTTP para el PDF
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'inline; filename="reporte_inmueble_{inmueble.rfi}.pdf"'
+    filename = f"reporte_inmueble_{inmueble.rfi or inmueble.id}_{datetime.now().strftime('%Y%m%d')}.pdf"
+    response['Content-Disposition'] = f'inline; filename="{filename}"'
 
     # Crear el PDF
-    pdf = SimpleDocTemplate(response, pagesize=letter)
+    pdf = SimpleDocTemplate(response, pagesize=A4, topMargin=0.75*inch, bottomMargin=0.75*inch)
     elements = []
     styles = getSampleStyleSheet()
 
-    # Agregar una imagen al inicio (puedes cambiar la ruta)
-    # image_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'logosep.webp')
-    # img = Image(image_path, width=150, height=50)  # Ajusta el tamaño de la imagen según sea necesario
-    # elements.append(img)
-    elements.append(Spacer(1, 12))  # Agrega un espacio después de la imagen
+    # Estilo personalizado para títulos
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Title'],
+        textColor=colors.HexColor("#691c32"),
+        fontSize=18,
+        spaceAfter=20,
+        alignment=1,  # CENTER
+        fontName='Helvetica-Bold',
+    )
+
+    heading_style = ParagraphStyle(
+        'CustomHeading',
+        parent=styles['Heading2'],
+        textColor=colors.HexColor("#691c32"),
+        fontSize=14,
+        spaceAfter=12,
+        spaceBefore=16,
+        fontName='Helvetica-Bold',
+        borderWidth=1,
+        borderColor=colors.HexColor("#691c32"),
+        borderPadding=8,
+        backColor=colors.HexColor("#fff5f8"),
+    )
+
+    # Encabezado del Reporte
+    elements.append(Paragraph("<b>REPORTE DE INMUEBLE</b>", title_style))
+    elements.append(Paragraph("<b>Sistema Integral de Inventario de Inmuebles SEP</b>", styles['Normal']))
+    elements.append(Spacer(1, 0.3*inch))
+
+    # Información del inmueble en el encabezado
+    header_info = [
+        ['<b>RFI:</b>', format_value(inmueble.rfi) or 'N/A'],
+        ['<b>Nombre:</b>', format_value(inmueble.NombreInmueble) or 'N/A'],
+        ['<b>UR:</b>', format_value(inmueble.UR) or 'N/A'],
+        ['<b>Estado:</b>', format_value(inmueble.estado) or 'Activo'],
+    ]
     
+    header_table = []
+    for row in header_info:
+        header_table.append([
+            Paragraph(row[0], styles['Normal']),
+            Paragraph(row[1], styles['Normal'])
+        ])
+    
+    header_table_style = TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (1, 0), (1, -1), 20),
+    ])
+    header_table_obj = Table(header_table, colWidths=[1.5*inch, 5*inch])
+    header_table_obj.setStyle(header_table_style)
+    elements.append(header_table_obj)
+    elements.append(Spacer(1, 0.3*inch))
 
-    # Encabezado
-    elements.append(Paragraph("<b>Reporte de Inmueble</b>", styles['Title']))
-    elements.append(Spacer(1, 12))
-
-    # Datos Generales
-    elements.append(Paragraph("<b>Encabezado - Datos Generales</b>", styles['Heading2']))
+    # SECCIÓN 1: DATOS GENERALES
+    elements.append(Paragraph("<b>1. DATOS GENERALES</b>", heading_style))
     encabezado_data = [
         ["Campo", "Valor"],
         ["RFI", inmueble.rfi],
-        ["Asignado a", inmueble.assigned_to],
-        ["Fecha Límite", inmueble.deadline.strftime('%d/%m/%Y') if inmueble.deadline else "N/A"],
+        ["Asignado a", inmueble.assigned_to.get_full_name() if inmueble.assigned_to else 'No asignado'],
+        ["Fecha Límite", inmueble.deadline],
         ["Proveedor", inmueble.rfiProv],
         ["Nombre del Inmueble", inmueble.NombreInmueble],
         ["UR", inmueble.UR],
@@ -406,16 +545,15 @@ def generate_pdfIMP(request, task_id):
         ["Certificado de Seguridad", inmueble.certificado_de_seguridad],
         ["Sentido del Dictamen", inmueble.sentido_del_Dictamen],
         ["Descripción del Sentido del Dictamen", inmueble.descripcion_del_sentido_del_Dictamen],
-        ["Fecha del Documento", inmueble.fecha_documento.strftime('%d/%m/%Y') if inmueble.fecha_documento else "N/A"],
-        ["Subir Archivo", inmueble.subir_archivo],
+        ["Fecha del Documento", inmueble.fecha_documento],
         ["No. de Identificador Expediente I.", inmueble.no_de_identificador_del_expediente_institucion]
     ]
-    elements.append(create_table(encabezado_data))
+    elements.append(create_table_pdf_improved(encabezado_data, col_widths=[2.2*inch, 5*inch], styles=styles))
     elements.append(PageBreak())
 
 
-   # Ubicación
-    elements.append(Paragraph("<b>Ubicación</b>", styles['Heading2']))
+    # SECCIÓN 2: UBICACIÓN
+    elements.append(Paragraph("<b>2. UBICACIÓN</b>", heading_style))
     ubicacion_data = [
         ["Campo", "Valor"],
         ["País", inmueble.pais],
@@ -424,7 +562,6 @@ def generate_pdfIMP(request, task_id):
         ["Municipio No Existente", inmueble.municipio_no_existente],
         ["Localidad", inmueble.localidad],
         ["Componente Espacial", inmueble.componente_espacial],
-        ["Fotografía de la Ubicación", f'URL o Ruta: {inmueble.fotografia_de_la_ubicacion}'],  # Aquí asumo que es una URL o ruta
         ["Tipo de Vialidad", inmueble.tipo_vialidad],
         ["Nombre de Vialidad", inmueble.nombre_vialidad],
         ["Número Exterior", inmueble.numero_exterior],
@@ -444,18 +581,20 @@ def generate_pdfIMP(request, task_id):
         ["Latitud", inmueble.latitud],
         ["Longitud", inmueble.longitud]
     ]
-    elements.append(create_table(ubicacion_data))
+    elements.append(create_table_pdf_improved(ubicacion_data, col_widths=[2.5*inch, 4.7*inch], styles=styles))
     elements.append(PageBreak())
 
-   # Características
-    elements.append(Paragraph("<b>Características</b>", styles['Heading2']))
+    # SECCIÓN 3: CARACTERÍSTICAS
+    elements.append(Paragraph("<b>3. CARACTERÍSTICAS</b>", heading_style))
+    
+    # Subsección: Superficies
     caracteristicas_data = [
         ["Campo", "Valor"],
-        ["Superficie del Terreno (M2)", inmueble.superficie_del_terreno_en_M2],
+        ["Superficie del Terreno (M²)", inmueble.superficie_del_terreno_en_M2],
         ["Superficie del Terreno (HA)", inmueble.superficie_del_terreno_HA],
-        ["Superficie de Desplante (M2)", inmueble.superficie_de_desplante_en_M2],
-        ["Superficie Construida (M2)", inmueble.superficie_construida_en_M2],
-        ["Superficie Útil (M2)", inmueble.superficie_util_m2],
+        ["Superficie de Desplante (M²)", inmueble.superficie_de_desplante_en_M2],
+        ["Superficie Construida (M²)", inmueble.superficie_construida_en_M2],
+        ["Superficie Útil (M²)", inmueble.superficie_util_m2],
         ["Zona de Ubicación", inmueble.zona_ubicacion],
         ["Tipo de Inmueble Rural", inmueble.tipo_inmueble_rural],
         ["Uso Dominante de la Zona", inmueble.uso_dominante_zona],
@@ -465,28 +604,34 @@ def generate_pdfIMP(request, task_id):
         ["Grado de Consolidación", inmueble.grado_consolidacion],
         ["Servicios", inmueble.servicios],
         ["Teléfono del Inmueble", inmueble.telefono_inmueble],
-        ["Fecha de Inicio de Construcción", inmueble.fecha_inicio_construccion.strftime('%d/%m/%Y') if inmueble.fecha_inicio_construccion else "N/A"],
+        ["Fecha de Inicio de Construcción", inmueble.fecha_inicio_construccion],
         ["Siglo de Construcción", inmueble.siglo_construccion],
-        ["Fecha de Última Remodelación", inmueble.fecha_ultima_remodelacion.strftime('%d/%m/%Y') if inmueble.fecha_ultima_remodelacion else "N/A"],
-        ["Monumento", "Sí" if inmueble.monumento else "No"],
-        ["Histórico", "Sí" if inmueble.historico else "No"],
-        ["Artístico", "Sí" if inmueble.artistico else "No"],
-        ["Arqueológico", "Sí" if inmueble.arqueologico else "No"],
+        ["Fecha de Última Remodelación", inmueble.fecha_ultima_remodelacion],
+        ["Monumento", inmueble.monumento],
+        ["Histórico", inmueble.historico],
+        ["Artístico", inmueble.artistico],
+        ["Arqueológico", inmueble.arqueologico],
         ["Estado de Conservación", inmueble.estado_conservacion],
+    ]
+    elements.append(create_table_pdf_improved(caracteristicas_data, col_widths=[2.5*inch, 4.7*inch], styles=styles))
+    elements.append(Spacer(1, 0.2*inch))
+    
+    # Subsección: Datos Históricos y Culturales
+    historico_data = [
+        ["Campo", "Valor"],
         ["Clave INAH", inmueble.clave_inah],
         ["Folio Real INAH", inmueble.folio_real_inah],
         ["No. Plano INAH", inmueble.no_plano_inah],
         ["Clave CNMH", inmueble.clave_cnmh],
         ["Clave DGSMPCCONACULTA", inmueble.clave_dgsmpc_conaculta],
-        ["Fecha de Inscripción en la UNESCO", inmueble.fecha_inscripcion_unesco if inmueble.fecha_inscripcion_unesco else "N/A"],
+        ["Fecha de Inscripción en la UNESCO", inmueble.fecha_inscripcion_unesco],
         ["Observaciones Históricas", inmueble.observaciones_historicas]
     ]
-    elements.append(create_table(caracteristicas_data))
-    elements.append(Spacer(1, 12))  
+    elements.append(create_table_pdf_improved(historico_data, col_widths=[2.5*inch, 4.7*inch], styles=styles))
+    elements.append(PageBreak())  
 
-    # Uso
-    elements.append(Spacer(1, 12))  
-    elements.append(Paragraph("<b>Uso</b>", styles['Heading2']))
+    # SECCIÓN 4: USO
+    elements.append(Paragraph("<b>4. USO</b>", heading_style))
     uso_data = [
         ["Campo", "Valor"],
         ["Usuario Principal del Inmueble", inmueble.usuario_principal_del_inmueble],
@@ -504,78 +649,67 @@ def generate_pdfIMP(request, task_id):
         ["Clave INBAL", inmueble.clave_inbal],
         ["Registro Único INAH", inmueble.registro_unico_inah]
     ]
-    elements.append(create_table(uso_data))
+    elements.append(create_table_pdf_improved(uso_data, col_widths=[2.5*inch, 4.7*inch], styles=styles))
     elements.append(PageBreak())
 
-    # Aprovechamiento
-    elements.append(Paragraph("<b>Aprovechamiento</b>", styles['Heading2']))
+    # SECCIÓN 5: APROVECHAMIENTO
+    elements.append(Paragraph("<b>5. APROVECHAMIENTO</b>", heading_style))
     aprovechamiento_data = [
         ["Campo", "Valor"],
         ["Aprovechamiento", inmueble.aprovechamiento],
-        ["Inmueble con Atención al Público", "Sí" if inmueble.inmueble_con_atencion_al_publico else "No"],
+        ["Inmueble con Atención al Público", inmueble.inmueble_con_atencion_al_publico],
         ["Población Beneficiada", inmueble.poblacion_beneficiada],
         ["Población en Servicio", inmueble.poblacion_servicio],
-        ["Cuenta con Proyecto de Uso Inmediato Desarrollado", "Sí" if inmueble.cuenta_con_proyecto_de_uso_inmediato_desarrollado else "No"],
+        ["Cuenta con Proyecto de Uso Inmediato Desarrollado", inmueble.cuenta_con_proyecto_de_uso_inmediato_desarrollado],
         ["Inversión Requerida", inmueble.inversion_requerida],
         ["Fuente de Financiamiento", inmueble.fuente_financiamiento],
-        ["Fecha Solicitud", inmueble.fecha_solicitud if inmueble.fecha_solicitud else "N/A"],
+        ["Fecha Solicitud", inmueble.fecha_solicitud],
         ["Inmueble no Aprovechable (Especificar)", inmueble.inmueble_no_aprovechable_especificar],
         ["Gasto Anual de Mantenimiento", inmueble.gasto_anual_de_mantenimiento],
-        ["Inmueble en Condominio", "Sí" if inmueble.inmueble_en_condominio else "No"],
+        ["Inmueble en Condominio", inmueble.inmueble_en_condominio],
         ["Superficie Total", inmueble.superficie_total],
         ["Indiviso", inmueble.indiviso]
     ]
-    elements.append(create_table(aprovechamiento_data))
+    elements.append(create_table_pdf_improved(aprovechamiento_data, col_widths=[2.8*inch, 4.4*inch], styles=styles))
     elements.append(PageBreak())
 
-    # Valor
-    elements.append(Paragraph("<b>Valor</b>", styles['Heading2']))
+    # SECCIÓN 6: VALOR
+    elements.append(Paragraph("<b>6. VALOR Y AVALÚOS</b>", heading_style))
     valor_data = [
         ["Campo", "Valor"],
         ["Valor Contable", inmueble.valor_contable],
-        ["Fecha Valor Contable", inmueble.fecha_valor_contable if inmueble.fecha_valor_contable else "N/A"],
+        ["Fecha Valor Contable", inmueble.fecha_valor_contable],
         ["Valor Asegurable", inmueble.valor_asegurable],
-        ["Fecha Valor Asegurable", inmueble.fecha_valor_asegurable if inmueble.fecha_valor_asegurable else "N/A"],
+        ["Fecha Valor Asegurable", inmueble.fecha_valor_asegurable],
         ["Valor Adquisición", inmueble.valor_adquisicion],
-        ["Fecha Valor Adquisición", inmueble.fecha_valor_adquisicion if inmueble.fecha_valor_adquisicion else "N/A"],
+        ["Fecha Valor Adquisición", inmueble.fecha_valor_adquisicion],
         ["Valor Terreno", inmueble.valor_terreno],
         ["Valor Construcción", inmueble.valor_construccion],
         ["Valor Catastral Terreno", inmueble.valor_catastral_terreno],
         ["Valor Catastral Construcción", inmueble.valor_catastral_construccion],
         ["Valor Total Catastral", inmueble.valor_total_catastral],
-        ["Fecha Valor Catastral", inmueble.fecha_valor_catastral if inmueble.fecha_valor_catastral else "N/A"],
+        ["Fecha Valor Catastral", inmueble.fecha_valor_catastral],
         ["Documentación Soporte", inmueble.documentacion_soporte]
     ]
-    elements.append(create_table(valor_data))
-    elements.append(PageBreak())
+    elements.append(create_table_pdf_improved(valor_data, col_widths=[2.5*inch, 4.7*inch], styles=styles))
+    elements.append(Spacer(1, 0.3*inch))
 
-
-    
     # Pie de Página
-    elements.append(Spacer(1, 12))
-    elements.append(Paragraph("<i>Este reporte fue generado por el SIISEP</i>", styles['Normal']))
+    footer_style = ParagraphStyle(
+        'FooterStyle',
+        parent=styles['Normal'],
+        textColor=colors.HexColor("#6c757d"),
+        fontSize=9,
+        alignment=1,  # CENTER
+        spaceBefore=20,
+    )
+    elements.append(Paragraph(f"<i>Reporte generado el {datetime.now().strftime('%d/%m/%Y a las %H:%M')} por el Sistema SIISEP</i>", footer_style))
+    elements.append(Paragraph(f"<i>Generado por: {request.user.get_full_name() or request.user.username}</i>", footer_style))
 
     # Construcción del PDF
     pdf.build(elements)
 
     return response
-
-
-def create_table(data):
-    table = Table(data, colWidths=[180, 300])
-    table.setStyle(TableStyle([  
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#691c32")),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor("#f9f9f9")),
-        ('GRID', (0, 0), (-1, -1), 1, colors.gray),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -1), 10)
-    ]))
-    return table
 
 
 
@@ -1355,6 +1489,7 @@ def registro_llamada(request, pk):
         if form.is_valid():
             llamada = form.save(commit=False)
             llamada.ficha = tarea
+            # El número de llamada se calcula automáticamente en el método save() del modelo
             llamada.save()
             return redirect("task_detail_llamadas", pk=tarea.id)
     else:
@@ -1365,6 +1500,43 @@ def registro_llamada(request, pk):
         "tarea": tarea,
     }
     return render(request, "llamadas/registro_llamada.html", context)
+
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
+def editar_llamada(request, pk, llamada_id):
+    tarea = get_object_or_404(DatosLlamadasInmuebles, pk=pk)
+    llamada = get_object_or_404(RegistroLlamadas, pk=llamada_id, ficha=tarea)
+    
+    if request.method == "POST":
+        form = RegistroLlamadasForm(request.POST, instance=llamada)
+        if form.is_valid():
+            form.save()
+            return redirect("task_detail_llamadas", pk=tarea.id)
+    else:
+        form = RegistroLlamadasForm(instance=llamada)
+
+    context = {
+        "form": form,
+        "tarea": tarea,
+        "llamada": llamada,
+    }
+    return render(request, "llamadas/editar_llamada.html", context)
+
+@login_required
+@permission_required('tasks.add_tasks_inmueble', raise_exception=True)
+def eliminar_llamada(request, pk, llamada_id):
+    from django.http import JsonResponse
+    tarea = get_object_or_404(DatosLlamadasInmuebles, pk=pk)
+    llamada = get_object_or_404(RegistroLlamadas, pk=llamada_id, ficha=tarea)
+    
+    if request.method == "POST":
+        try:
+            llamada.delete()
+            return JsonResponse({'success': True, 'message': 'Llamada eliminada correctamente'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error al eliminar: {str(e)}'})
+    
+    return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
 
 
 from django.shortcuts import render, redirect
@@ -1485,107 +1657,406 @@ def inmuebles_list(request):
 @permission_required('tasks.change_inmueble', raise_exception=True)
 def detalle_inmueble(request, pk):
     inmueble = get_object_or_404(Inmueble, pk=pk)
+    
+    # Nota: No se registra el acceso para evitar demasiado tráfico.
+    # Solo se registran acciones importantes como ediciones, agregar archivos, observaciones, etc.
+    # Estas acciones se registran automáticamente mediante signals.
 
     # ------------------------
     # FORMULARIOS PRINCIPALES
     # ------------------------
     inmueble_form = InmuebleForm(request.POST or None, request.FILES or None, instance=inmueble)
     if 'inmueble_form_submit' in request.POST and inmueble_form.is_valid():
+        estado_anterior = inmueble.estado
+        asignado_anterior = inmueble.assigned_to
+        
         if inmueble_form.cleaned_data.get('estado') == 'Completado' and not inmueble.datecompleted:
             inmueble.datecompleted = timezone.now()
         inmueble_form.save()
+        
+        # Registrar acción de edición
+        if request.user.is_authenticated:
+            from .signals import get_client_ip
+            HistorialUsoInmueble.objects.create(
+                inmueble=inmueble,
+                usuario=request.user,
+                accion='edicion',
+                descripcion='Información del inmueble actualizada',
+                ip_address=get_client_ip(request) if hasattr(request, 'META') else None,
+                user_agent=request.META.get('HTTP_USER_AGENT', '')[:255] if hasattr(request, 'META') else None
+            )
+        
         messages.success(request, "El inmueble se actualizó correctamente ✅")
-        return redirect(f"{request.path}?tab=informacion")
+        # Mantener la pestaña actual o usar informacion si no hay una
+        current_tab = request.GET.get('tab', 'informacion')
+        return redirect(f"{request.path}?tab={current_tab}")
     
-    archivo_form = ArchivoForm(request.POST or None, request.FILES or None)
-    if 'archivo_form_submit' in request.POST and archivo_form.is_valid():
-        new_archivo = archivo_form.save(commit=False)
-        new_archivo.inmueble = inmueble
-        new_archivo.save()
-        messages.success(request, "El archivo se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=archivos")
-    elif 'archivo_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el archivo ❌")
+    # Inicializar formulario de archivos
+    if 'archivo_form_submit' in request.POST:
+        archivo_form = ArchivoForm(request.POST, request.FILES)
+        if archivo_form.is_valid():
+            new_archivo = archivo_form.save(commit=False)
+            new_archivo.inmueble = inmueble
+            try:
+                new_archivo.save()
+                
+                # El registro de archivo se hace automáticamente con la señal, pero podemos actualizar el usuario
+                if request.user.is_authenticated:
+                    from .signals import get_client_ip
+                    try:
+                        historial = HistorialUsoInmueble.objects.filter(
+                            inmueble=inmueble,
+                            accion='archivo_subido'
+                        ).order_by('-fecha_hora').first()
+                        if historial:
+                            nombre_archivo = new_archivo.archivo.name.split('/')[-1] if new_archivo.archivo else 'sin nombre'
+                            historial.usuario = request.user
+                            historial.descripcion = f"Archivo '{nombre_archivo}' subido por {request.user.username}"
+                            historial.ip_address = get_client_ip(request) if hasattr(request, 'META') else None
+                            historial.user_agent = request.META.get('HTTP_USER_AGENT', '')[:255] if hasattr(request, 'META') else None
+                            historial.save()
+                    except:
+                        pass
+                
+                messages.success(request, "El archivo se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar archivos si no hay una
+                current_tab = request.GET.get('tab', 'archivos')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                error_msg = str(e)
+                error_message = ""
+                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower() or 'ya existe' in error_msg.lower():
+                    error_message = "Ya existe un archivo con ese nombre. Por favor, use un nombre único."
+                else:
+                    clean_msg = error_msg.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ')
+                    error_message = f"Error al guardar el archivo: {clean_msg}"
+                
+                if not hasattr(request, '_error_messages'):
+                    request._error_messages = []
+                request._error_messages.append(error_message)
+                messages.error(request, error_message)
+        else:
+            for field, errors in archivo_form.errors.items():
+                for error in errors:
+                    field_label = archivo_form.fields[field].label if field in archivo_form.fields else field
+                    messages.error(request, f"Error en {field_label}: {error}")
+            messages.error(request, "Hubo un error al guardar el archivo ❌")
+    else:
+        archivo_form = ArchivoForm()
 
-    dictamen_form = DictamenEstructuralIMPForm(request.POST or None, request.FILES or None)
-    if 'dictamen_form_submit' in request.POST and dictamen_form.is_valid():
-        new_dictamen = dictamen_form.save(commit=False)
-        new_dictamen.task = inmueble
-        new_dictamen.save()
-        messages.success(request, "El dictamen se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=dictamenes")
-    elif 'dictamen_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el dictamen ❌")
+    # Inicializar formulario de dictamen
+    if 'dictamen_form_submit' in request.POST:
+        dictamen_form = DictamenEstructuralIMPForm(request.POST, request.FILES)
+        if dictamen_form.is_valid():
+            new_dictamen = dictamen_form.save(commit=False)
+            new_dictamen.task = inmueble
+            try:
+                new_dictamen.save()
+                messages.success(request, "El dictamen se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar dictamenes si no hay una
+                current_tab = request.GET.get('tab', 'dictamenes')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                # Manejar errores de integridad (como unique constraint)
+                error_msg = str(e)
+                error_message = ""
+                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower() or 'ya existe' in error_msg.lower():
+                    error_message = "Ya existe un dictamen con ese número de identificador. Por favor, use un identificador único."
+                else:
+                    # Limpiar mensajes de error de Django
+                    clean_msg = error_msg.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ').replace('Dictamen estructural imp', 'dictamen')
+                    error_message = f"Error al guardar el dictamen: {clean_msg}"
+                
+                # Almacenar error para JavaScript
+                if not hasattr(request, '_error_messages'):
+                    request._error_messages = []
+                request._error_messages.append(error_message)
+                messages.error(request, error_message)
+        else:
+            # Recopilar todos los errores en una lista para mostrarlos en SweetAlert
+            error_list = []
+            for field, errors in dictamen_form.errors.items():
+                for error in errors:
+                    # Limpiar el mensaje de error para que sea más amigable
+                    error_text = str(error)
+                    # Si es un error de unique constraint, personalizarlo
+                    if 'ya existe' in error_text.lower() or 'already exists' in error_text.lower() or 'unique' in error_text.lower():
+                        if 'no_de_identificador_del_expediente_institucion' in field.lower() or 'identificador' in field.lower():
+                            error_list.append("Ya existe un dictamen con ese número de identificador. Por favor, use un identificador único.")
+                        else:
+                            field_label = dictamen_form.fields[field].label if field in dictamen_form.fields else field
+                            error_list.append(f"El campo '{field_label}' ya existe en otro registro.")
+                    else:
+                        field_label = dictamen_form.fields[field].label if field in dictamen_form.fields else field
+                        # Limpiar mensajes de Django
+                        clean_error = error_text.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ').replace('.', '')
+                        error_list.append(f"{field_label}: {clean_error}")
+            
+            # Almacenar errores en el contexto para JavaScript
+            if not hasattr(request, '_error_messages'):
+                request._error_messages = []
+            request._error_messages.extend(error_list)
+            
+            # También agregar un mensaje genérico para compatibilidad
+            if error_list:
+                messages.error(request, "|".join(error_list))  # Usar | como separador para JavaScript
+    else:
+        dictamen_form = DictamenEstructuralIMPForm()
 
-    folios_form = FoliosRealesIMPForm(request.POST or None, request.FILES or None)
-    if 'folios_form_submit' in request.POST and folios_form.is_valid():
-        new_folio = folios_form.save(commit=False)
-        new_folio.task = inmueble
-        new_folio.save()
-        messages.success(request, "El folio real se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=dictamenes")
-    elif 'folios_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el folio real ❌")
+    # Inicializar formulario de folios reales
+    if 'folios_form_submit' in request.POST:
+        folios_form = FoliosRealesIMPForm(request.POST, request.FILES)
+        if folios_form.is_valid():
+            new_folio = folios_form.save(commit=False)
+            new_folio.task = inmueble
+            try:
+                new_folio.save()
+                messages.success(request, "El folio real se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar dictamenes si no hay una
+                current_tab = request.GET.get('tab', 'dictamenes')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                error_msg = str(e)
+                error_message = ""
+                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower() or 'ya existe' in error_msg.lower():
+                    error_message = "Ya existe un folio real con ese identificador. Por favor, use un identificador único."
+                else:
+                    clean_msg = error_msg.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ')
+                    error_message = f"Error al guardar el folio real: {clean_msg}"
+                
+                if not hasattr(request, '_error_messages'):
+                    request._error_messages = []
+                request._error_messages.append(error_message)
+                messages.error(request, error_message)
+        else:
+            error_list = []
+            for field, errors in folios_form.errors.items():
+                for error in errors:
+                    error_text = str(error)
+                    if 'ya existe' in error_text.lower() or 'already exists' in error_text.lower() or 'unique' in error_text.lower():
+                        if 'identificador' in field.lower():
+                            error_list.append("Ya existe un folio real con ese identificador. Por favor, use un identificador único.")
+                        else:
+                            field_label = folios_form.fields[field].label if field in folios_form.fields else field
+                            error_list.append(f"El campo '{field_label}' ya existe en otro registro.")
+                    else:
+                        field_label = folios_form.fields[field].label if field in folios_form.fields else field
+                        clean_error = error_text.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ').replace('.', '')
+                        error_list.append(f"{field_label}: {clean_error}")
+            
+            if not hasattr(request, '_error_messages'):
+                request._error_messages = []
+            request._error_messages.extend(error_list)
+            
+            if error_list:
+                messages.error(request, "|".join(error_list))
+    else:
+        folios_form = FoliosRealesIMPForm()
 
-    planos_form = NumeroPlanoIMPForm(request.POST or None, request.FILES or None)
-    if 'planos_form_submit' in request.POST and planos_form.is_valid():
-        new_plano = planos_form.save(commit=False)
-        new_plano.task = inmueble
-        new_plano.save()
-        messages.success(request, "El número de plano se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=dictamenes")
-    elif 'planos_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el número de plano ❌")
+    # Inicializar formulario de números de plano
+    if 'planos_form_submit' in request.POST:
+        planos_form = NumeroPlanoIMPForm(request.POST, request.FILES)
+        if planos_form.is_valid():
+            new_plano = planos_form.save(commit=False)
+            new_plano.task = inmueble
+            try:
+                new_plano.save()
+                messages.success(request, "El número de plano se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar dictamenes si no hay una
+                current_tab = request.GET.get('tab', 'dictamenes')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                error_msg = str(e)
+                error_message = ""
+                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower() or 'ya existe' in error_msg.lower():
+                    error_message = "Ya existe un número de plano con ese identificador. Por favor, use un identificador único."
+                else:
+                    clean_msg = error_msg.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ')
+                    error_message = f"Error al guardar el número de plano: {clean_msg}"
+                
+                if not hasattr(request, '_error_messages'):
+                    request._error_messages = []
+                request._error_messages.append(error_message)
+                messages.error(request, error_message)
+        else:
+            error_list = []
+            for field, errors in planos_form.errors.items():
+                for error in errors:
+                    error_text = str(error)
+                    if 'ya existe' in error_text.lower() or 'already exists' in error_text.lower() or 'unique' in error_text.lower():
+                        if 'identificador' in field.lower() or 'numero' in field.lower():
+                            error_list.append("Ya existe un número de plano con ese identificador. Por favor, use un identificador único.")
+                        else:
+                            field_label = planos_form.fields[field].label if field in planos_form.fields else field
+                            error_list.append(f"El campo '{field_label}' ya existe en otro registro.")
+                    else:
+                        field_label = planos_form.fields[field].label if field in planos_form.fields else field
+                        clean_error = error_text.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ').replace('.', '')
+                        error_list.append(f"{field_label}: {clean_error}")
+            
+            if not hasattr(request, '_error_messages'):
+                request._error_messages = []
+            request._error_messages.extend(error_list)
+            
+            if error_list:
+                messages.error(request, "|".join(error_list))
+    else:
+        planos_form = NumeroPlanoIMPForm()
 
-    cedoc_form = Expedientes_CEDOCIMPForm(request.POST or None, request.FILES or None)
-    if 'cedoc_form_submit' in request.POST and cedoc_form.is_valid():
-        new_cedoc = cedoc_form.save(commit=False)
-        new_cedoc.task = inmueble
-        new_cedoc.save()
-        messages.success(request, "El expediente CEDOC se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=dictamenes")
-    elif 'cedoc_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el expediente CEDOC ❌")
+    # Inicializar formulario de expedientes CEDOC
+    if 'cedoc_form_submit' in request.POST:
+        cedoc_form = Expedientes_CEDOCIMPForm(request.POST, request.FILES)
+        if cedoc_form.is_valid():
+            new_cedoc = cedoc_form.save(commit=False)
+            new_cedoc.task = inmueble
+            try:
+                new_cedoc.save()
+                messages.success(request, "El expediente CEDOC se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar dictamenes si no hay una
+                current_tab = request.GET.get('tab', 'dictamenes')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                error_msg = str(e)
+                error_message = ""
+                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower() or 'ya existe' in error_msg.lower():
+                    error_message = "Ya existe un expediente CEDOC con ese identificador. Por favor, use un identificador único."
+                else:
+                    clean_msg = error_msg.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ')
+                    error_message = f"Error al guardar el expediente CEDOC: {clean_msg}"
+                
+                if not hasattr(request, '_error_messages'):
+                    request._error_messages = []
+                request._error_messages.append(error_message)
+                messages.error(request, error_message)
+        else:
+            error_list = []
+            for field, errors in cedoc_form.errors.items():
+                for error in errors:
+                    error_text = str(error)
+                    if 'ya existe' in error_text.lower() or 'already exists' in error_text.lower() or 'unique' in error_text.lower():
+                        if 'identificador' in field.lower() or 'numero' in field.lower():
+                            error_list.append("Ya existe un expediente CEDOC con ese identificador. Por favor, use un identificador único.")
+                        else:
+                            field_label = cedoc_form.fields[field].label if field in cedoc_form.fields else field
+                            error_list.append(f"El campo '{field_label}' ya existe en otro registro.")
+                    else:
+                        field_label = cedoc_form.fields[field].label if field in cedoc_form.fields else field
+                        clean_error = error_text.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ').replace('.', '')
+                        error_list.append(f"{field_label}: {clean_error}")
+            
+            if not hasattr(request, '_error_messages'):
+                request._error_messages = []
+            request._error_messages.extend(error_list)
+            
+            if error_list:
+                messages.error(request, "|".join(error_list))
+    else:
+        cedoc_form = Expedientes_CEDOCIMPForm()
 
-    titulo_form = DocumentoPropiedadIMPForm(request.POST or None, request.FILES or None)
-    if 'titulo_form_submit' in request.POST and titulo_form.is_valid():
-        new_titulo = titulo_form.save(commit=False)
-        new_titulo.task = inmueble
-        new_titulo.save()
-        messages.success(request, "El título de propiedad se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=titulos")
-    elif 'titulo_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el título de propiedad ❌")
+    # Inicializar formulario de títulos de propiedad
+    if 'titulo_form_submit' in request.POST:
+        titulo_form = DocumentoPropiedadIMPForm(request.POST, request.FILES)
+        if titulo_form.is_valid():
+            new_titulo = titulo_form.save(commit=False)
+            new_titulo.task = inmueble
+            try:
+                new_titulo.save()
+                messages.success(request, "El título de propiedad se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar titulos si no hay una
+                current_tab = request.GET.get('tab', 'titulos')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                error_msg = str(e)
+                error_message = ""
+                if 'unique' in error_msg.lower() or 'duplicate' in error_msg.lower() or 'ya existe' in error_msg.lower():
+                    error_message = "Ya existe un título de propiedad con ese identificador. Por favor, use un identificador único."
+                else:
+                    clean_msg = error_msg.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ')
+                    error_message = f"Error al guardar el título de propiedad: {clean_msg}"
+                
+                if not hasattr(request, '_error_messages'):
+                    request._error_messages = []
+                request._error_messages.append(error_message)
+                messages.error(request, error_message)
+        else:
+            error_list = []
+            for field, errors in titulo_form.errors.items():
+                for error in errors:
+                    error_text = str(error)
+                    if 'ya existe' in error_text.lower() or 'already exists' in error_text.lower() or 'unique' in error_text.lower():
+                        if 'identificador' in field.lower() or 'numero' in field.lower():
+                            error_list.append("Ya existe un título de propiedad con ese identificador. Por favor, use un identificador único.")
+                        else:
+                            field_label = titulo_form.fields[field].label if field in titulo_form.fields else field
+                            error_list.append(f"El campo '{field_label}' ya existe en otro registro.")
+                    else:
+                        field_label = titulo_form.fields[field].label if field in titulo_form.fields else field
+                        clean_error = error_text.replace('Ya existe un/a ', '').replace(' con este/a ', ' con ').replace('.', '')
+                        error_list.append(f"{field_label}: {clean_error}")
+            
+            if not hasattr(request, '_error_messages'):
+                request._error_messages = []
+            request._error_messages.extend(error_list)
+            
+            if error_list:
+                messages.error(request, "|".join(error_list))
+    else:
+        titulo_form = DocumentoPropiedadIMPForm()
 
     # ------------------------
     # FORMULARIOS OBSERVACIONES Y COMENTARIOS
     # ------------------------
-    observaciones_form = ObservacionForm(request.POST or None)
-    comentario_form = ComentarioForm(request.POST or None)
-
-    # Guardar Observación
-    if 'observaciones_form_submit' in request.POST and observaciones_form.is_valid():
-        new_observacion = observaciones_form.save(commit=False)
-        new_observacion.task = inmueble
-        new_observacion.usuario = request.user
-        new_observacion.save()
-        messages.success(request, "La observación se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=observaciones")
-    elif 'observaciones_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar la observación ❌")
+    # Inicializar formulario de observaciones
+    if 'observaciones_form_submit' in request.POST:
+        observaciones_form = ObservacionForm(request.POST)
+        if observaciones_form.is_valid():
+            new_observacion = observaciones_form.save(commit=False)
+            new_observacion.task = inmueble
+            new_observacion.usuario = request.user
+            try:
+                new_observacion.save()
+                messages.success(request, "La observación se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar observaciones si no hay una
+                current_tab = request.GET.get('tab', 'observaciones')
+                return redirect(f"{request.path}?tab={current_tab}")
+            except Exception as e:
+                error_msg = str(e)
+                messages.error(request, f"Error al guardar la observación: {error_msg} ❌")
+        else:
+            for field, errors in observaciones_form.errors.items():
+                for error in errors:
+                    field_label = observaciones_form.fields[field].label if field in observaciones_form.fields else field
+                    messages.error(request, f"Error en {field_label}: {error}")
+            messages.error(request, "Hubo un error al guardar la observación ❌")
+    else:
+        observaciones_form = ObservacionForm()
+    
+    comentario_form = ComentarioForm()
 
     # Guardar Comentario
-    if 'comentario_form_submit' in request.POST and comentario_form.is_valid():
-        new_comentario = comentario_form.save(commit=False)
-        obs_id = request.POST.get("observacion_id")  # viene del template
-        observacion = get_object_or_404(Observacion, id=obs_id)
-        new_comentario.observacion = observacion
-        new_comentario.usuario = request.user
-        new_comentario.save()
-        messages.success(request, "El comentario se guardó correctamente ✅")
-        return redirect(f"{request.path}?tab=observaciones")
-    elif 'comentario_form_submit' in request.POST:
-        messages.error(request, "Hubo un error al guardar el comentario ❌")
+    if 'comentario_form_submit' in request.POST:
+        obs_id = request.POST.get("observacion_id")
+        if not obs_id:
+            messages.error(request, "Error: No se especificó la observación ❌")
+        else:
+            comentario_form = ComentarioForm(request.POST)
+            if comentario_form.is_valid():
+                new_comentario = comentario_form.save(commit=False)
+                observacion = get_object_or_404(Observacion, id=obs_id)
+                new_comentario.observacion = observacion
+                new_comentario.usuario = request.user
+                new_comentario.save()
+                messages.success(request, "El comentario se guardó correctamente ✅")
+                # Mantener la pestaña actual o usar observaciones si no hay una
+                current_tab = request.GET.get('tab', 'observaciones')
+                return redirect(f"{request.path}?tab={current_tab}")
+            else:
+                # Mostrar errores del formulario
+                error_messages = []
+                for field, errors in comentario_form.errors.items():
+                    for error in errors:
+                        error_messages.append(f"{field}: {error}")
+                messages.error(request, f"Error al guardar el comentario: {'; '.join(error_messages)} ❌")
 
     # ------------------------
     # DATOS PARA LA PLANTILLA
@@ -1597,6 +2068,9 @@ def detalle_inmueble(request, pk):
     expedientes_cedoc = inmueble.expedientes_deoc.all()
     observaciones_list = inmueble.observaciones.prefetch_related("comentarios", "usuario")
     archivos_list = inmueble.archivos.all()
+    
+    # Obtener historial de uso (últimos 100 registros)
+    historial_uso = inmueble.historial_uso.select_related('usuario').all()[:100]
 
     return render(request, "Inmuebles/detalle_inmueble.html", {
         "form": inmueble_form,
@@ -1616,4 +2090,5 @@ def detalle_inmueble(request, pk):
         "observaciones_list": observaciones_list,
         "archivo_form": archivo_form,
         "archivos_list": archivos_list,
+        "historial_uso": historial_uso,
     })

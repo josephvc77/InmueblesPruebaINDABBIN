@@ -1,115 +1,202 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block titulo %}Editar Usuario{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2 style="color: #611232; font-weight: 600;">Editar Usuario</h2>
-
-  <form method="post" novalidate>
-    {% csrf_token %}
-
-    <div class="row g-3">
-      <div class="col-md-6">
-        <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
-        {{ form.username }}
-        {% if form.username.errors %}
-          <div class="text-danger small">{{ form.username.errors }}</div>
-        {% endif %}
-      </div>
-
-      <div class="col-md-6">
-        <label for="{{ form.first_name.id_for_label }}" class="form-label">{{ form.first_name.label }}</label>
-        {{ form.first_name }}
-        {% if form.first_name.errors %}
-          <div class="text-danger small">{{ form.first_name.errors }}</div>
-        {% endif %}
-      </div>
-
-      <div class="col-md-6">
-        <label for="{{ form.last_name.id_for_label }}" class="form-label">{{ form.last_name.label }}</label>
-        {{ form.last_name }}
-        {% if form.last_name.errors %}
-          <div class="text-danger small">{{ form.last_name.errors }}</div>
-        {% endif %}
-      </div>
-
-      <div class="col-md-6">
-        <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
-        {{ form.email }}
-        {% if form.email.errors %}
-          <div class="text-danger small">{{ form.email.errors }}</div>
-        {% endif %}
-      </div>
+<div class="container my-4">
+  <div class="form-card">
+    <div class="card-header text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-pencil-square me-2"></i> Editar Usuario
+      </h4>
     </div>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
 
-    <div class="d-flex gap-4 mt-3 mb-3">
-      <div class="form-check">
-        {{ form.is_active }}
-        <label class="form-check-label" for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
-      </div>
+        <!-- Errores generales -->
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ form.non_field_errors }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
 
-      <div class="form-check">
-        {{ form.is_staff }}
-        <label class="form-check-label" for="{{ form.is_staff.id_for_label }}">{{ form.is_staff.label }}</label>
-      </div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="{{ form.username.id_for_label }}" class="form-label">
+              <i class="bi bi-person me-2"></i>{{ form.username.label }}
+              {% if form.username.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.username|add_class:"form-control" }}
+            {% if form.username.errors %}
+              <div class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ form.username.errors|striptags }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label for="{{ form.email.id_for_label }}" class="form-label">
+              <i class="bi bi-envelope me-2"></i>{{ form.email.label }}
+              {% if form.email.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.email|add_class:"form-control" }}
+            {% if form.email.errors %}
+              <div class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ form.email.errors|striptags }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label for="{{ form.first_name.id_for_label }}" class="form-label">
+              <i class="bi bi-person-badge me-2"></i>{{ form.first_name.label }}
+            </label>
+            {{ form.first_name|add_class:"form-control" }}
+            {% if form.first_name.errors %}
+              <div class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ form.first_name.errors|striptags }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label for="{{ form.last_name.id_for_label }}" class="form-label">
+              <i class="bi bi-person-badge me-2"></i>{{ form.last_name.label }}
+            </label>
+            {{ form.last_name|add_class:"form-control" }}
+            {% if form.last_name.errors %}
+              <div class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ form.last_name.errors|striptags }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+          <div class="col-md-12">
+            <div class="card" style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: var(--border-radius-sm); padding: 1.5rem;">
+              <h6 class="mb-3" style="color: var(--color-primary); font-weight: 700;">
+                <i class="bi bi-shield-check me-2"></i>Permisos y Estado
+              </h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="form-check form-switch">
+                    {{ form.is_active }}
+                    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                      <i class="bi bi-toggle-on me-2"></i>{{ form.is_active.label }}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-check form-switch">
+                    {{ form.is_staff }}
+                    <label class="form-check-label" for="{{ form.is_staff.id_for_label }}">
+                      <i class="bi bi-shield-check me-2"></i>{{ form.is_staff.label }}
+                    </label>
+                  </div>
+                </div>
+                {% if form.is_superuser %}
+                <div class="col-md-4">
+                  <div class="form-check form-switch">
+                    {{ form.is_superuser }}
+                    <label class="form-check-label" for="{{ form.is_superuser.id_for_label }}">
+                      <i class="bi bi-shield-fill-check me-2"></i>{{ form.is_superuser.label }}
+                    </label>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label class="form-label">
+              <i class="bi bi-people me-2"></i>{{ form.groups.label }}
+            </label>
+            <div class="groups-container" style="background: white; border: 2px solid #dee2e6; border-radius: var(--border-radius-sm); padding: 1.5rem; max-height: 200px; overflow-y: auto;">
+              {% for checkbox in form.groups %}
+                <div class="form-check mb-2">
+                  {{ checkbox.tag }}
+                  <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.choice_label }}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+            {% if form.groups.errors %}
+              <div class="text-danger small mt-1">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ form.groups.errors|striptags }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+          <a href="{% url 'user_list' %}" class="btn-secondary-global">
+            <i class="bi bi-arrow-left me-1"></i> Volver
+          </a>
+          <button type="submit" class="btn-warning-global">
+            <i class="bi bi-save me-1"></i> Guardar Cambios
+          </button>
+        </div>
+      </form>
     </div>
-
-    <div class="mb-3">
-      <label class="form-label">{{ form.groups.label }}</label>
-      {{ form.groups }}
-      {% if form.groups.errors %}
-        <div class="text-danger small">{{ form.groups.errors }}</div>
-      {% endif %}
-    </div>
-
-    <button type="submit" class="btn btn-custom">
-      <i class="bi bi-save me-1"></i> Guardar cambios
-    </button>
-  </form>
+  </div>
 </div>
 
 <style>
-  /* Aplica estilos para inputs generados por Django */
-  input[type="text"],
-  input[type="email"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1.5px ;
-    border-radius: 0.25rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #A57F2C;
-    box-shadow: 0 0 5px #A57F2C;
-    outline: 0;
-  }
-
-  /* Checkbox inputs */
   .form-check-input {
     cursor: pointer;
+    width: 3rem;
+    height: 1.5rem;
+  }
+  
+  .form-check-input:checked {
+    background-color: var(--color-success);
+    border-color: var(--color-success);
   }
 
-  /* Botón personalizado */
-  .btn-custom {
-    background-color: #A57F2C;
-    color: #fff;
-    font-weight: 600;
-    border: none;
-    transition: background-color 0.3s ease;
+  .groups-container {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) #f1f1f1;
   }
-  .btn-custom:hover, .btn-custom:focus {
-    background-color: #7f6a1b;
-    color: #fff;
+
+  .groups-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .groups-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .groups-container::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+  }
+
+  .groups-container::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-light);
+  }
+
+  .groups-container .form-check {
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition);
+  }
+
+  .groups-container .form-check:hover {
+    background-color: #fff5f8;
+  }
+
+  .groups-container .form-check-label {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
   }
 </style>
 {% endblock %}

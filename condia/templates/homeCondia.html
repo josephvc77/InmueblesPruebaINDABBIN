@@ -1,0 +1,681 @@
+{% extends 'basecondia.html' %}
+{% block titulo %}Inmuebles CONDIA{% endblock %}
+
+{% block content %}
+<div class="main-container">
+  <!-- Barra superior con búsqueda y botón crear -->
+  <div class="top-bar">
+    <div class="search-container">
+      <form method="GET" action="{% url 'homeCondia' %}" class="search-form">
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-search"></i>
+          </span>
+          <input 
+            type="text" 
+            name="q" 
+            class="form-control search-input" 
+            placeholder="Buscar inmuebles por nombre, descripción o arrendatario..." 
+            value="{{ query }}"
+            autocomplete="off"
+          >
+          {% if query %}
+          <a href="{% url 'homeCondia' %}" class="btn btn-outline-secondary" title="Limpiar búsqueda">
+            <i class="bi bi-x-lg"></i>
+          </a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+    
+    <a href="{% url 'crear_inmueble_condia' %}" class="btn-create">
+      <i class="bi bi-plus-circle-fill me-2"></i>
+      Crear Inmueble
+    </a>
+  </div>
+
+  <!-- Mensajes -->
+  {% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Resultados de búsqueda -->
+  {% if query %}
+  <div class="search-results-header">
+    <h5>
+      <i class="bi bi-funnel me-2"></i>
+      Resultados de búsqueda para: <strong>"{{ query }}"</strong>
+      <span class="badge bg-primary ms-2">{{ inmuebles.count }}</span>
+    </h5>
+  </div>
+  {% endif %}
+
+  <!-- Grid de inmuebles en cards -->
+  {% if inmuebles %}
+  <div class="inmuebles-grid">
+    {% for inmueble in inmuebles %}
+    <div class="inmueble-card">
+      <div class="card-header-custom">
+        <div class="card-icon">
+          <i class="bi bi-building"></i>
+        </div>
+        <div class="card-status">
+          <span class="badge-status badge-{{ inmueble.estado|lower|default:'activo' }}">
+            {{ inmueble.estado|default:"Activo" }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="card-body-custom">
+        <h3 class="card-title">{{ inmueble.NombreInmueble|default:"Sin nombre" }}</h3>
+        
+        <p class="card-description">
+          {{ inmueble.descripcion|truncatewords:20|default:"Sin descripción disponible" }}
+        </p>
+        
+        <div class="card-info">
+          <div class="info-item">
+            <i class="bi bi-calendar3"></i>
+            <span>{{ inmueble.fecha_creacion|date:"d/m/Y" }}</span>
+          </div>
+          <div class="info-item">
+            <i class="bi bi-person"></i>
+            <span>{{ inmueble.creado_por.get_full_name|default:inmueble.creado_por.username|default:"Desconocido" }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-footer-custom">
+        <a href="{% url 'detalle_inmueble_condia' inmueble.pk %}" class="btn-view">
+          <i class="bi bi-eye me-2"></i>Ver Detalles
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <!-- Estado vacío -->
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="bi bi-inbox"></i>
+    </div>
+    <h3>{% if query %}No se encontraron resultados{% else %}No hay inmuebles registrados{% endif %}</h3>
+    <p>
+      {% if query %}
+        Intenta con otros términos de búsqueda
+      {% else %}
+        Comienza creando tu primer inmueble en el sistema
+      {% endif %}
+    </p>
+    {% if not query %}
+    <a href="{% url 'crear_inmueble_condia' %}" class="btn-create-large">
+      <i class="bi bi-plus-circle-fill me-2"></i>Crear Primer Inmueble
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<style>
+.main-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Barra superior */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.search-form .input-group {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.search-form .input-group-text {
+  background: linear-gradient(135deg, #611232 0%, #8b1f43 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+}
+
+.search-input {
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.btn-create {
+  background: linear-gradient(135deg, #A57F2C 0%, #c49f3f 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(165, 127, 44, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-create:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(165, 127, 44, 0.4);
+  color: white;
+}
+
+/* Mensajes */
+.messages-container {
+  margin-bottom: 1.5rem;
+}
+
+/* Resultados de búsqueda */
+.search-results-header {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffeef2 100%);
+  border-radius: 16px;
+  border-left: 5px solid #8b1f43;
+  box-shadow: 0 4px 12px rgba(139, 31, 67, 0.1);
+}
+
+.search-results-header h5 {
+  color: #8b1f43;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.search-results-header .badge {
+  background: linear-gradient(135deg, #8b1f43 0%, #a52d52 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+/* Grid de inmuebles */
+.inmuebles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card de inmueble */
+.inmueble-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(139, 31, 67, 0.08), 
+              0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.inmueble-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #8b1f43 0%, #A57F2C 50%, #8b1f43 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.inmueble-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 12px 36px rgba(139, 31, 67, 0.15), 
+              0 6px 20px rgba(165, 127, 44, 0.1);
+  border-color: rgba(139, 31, 67, 0.2);
+}
+
+.inmueble-card:hover::before {
+  opacity: 1;
+}
+
+.card-header-custom {
+  background: linear-gradient(135deg, #8b1f43 0%, #a52d52 50%, #8b1f43 100%);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header-custom::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
+  50% { transform: translateX(100%) translateY(100%) rotate(180deg); }
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+}
+
+.inmueble-card:hover .card-icon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-status .badge-status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.inmueble-card:hover .badge-status {
+  transform: scale(1.05);
+}
+
+.badge-status.badge-activo {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.badge-status.badge-completado {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+}
+
+.badge-status.badge-baja {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+}
+
+.card-body-custom {
+  padding: 1.5rem;
+  flex: 1;
+  background: white;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8b1f43 0%, #611232 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  transition: all 0.3s ease;
+}
+
+.inmueble-card:hover .card-title {
+  background: linear-gradient(135deg, #a52d52 0%, #8b1f43 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-description {
+  color: #5a6268;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  min-height: 2.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+  background: linear-gradient(180deg, transparent 0%, #f8f9fa 100%);
+  margin: 0 -1.5rem -1.5rem -1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #495057;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.info-item i {
+  color: #8b1f43;
+  width: 18px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffeef2 100%);
+  padding: 0.4rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+
+.card-footer-custom {
+  padding: 0;
+  background: transparent;
+  border-top: none;
+}
+
+.btn-view {
+  width: calc(100% - 3rem);
+  margin: 1rem 1.5rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, #8b1f43 0%, #a52d52 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(139, 31, 67, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-view::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-view:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-view:hover {
+  background: linear-gradient(135deg, #a52d52 0%, #8b1f43 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 31, 67, 0.4);
+}
+
+.btn-view i {
+  position: relative;
+  z-index: 1;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(139, 31, 67, 0.1);
+  border: 2px dashed #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.empty-state:hover {
+  border-color: #8b1f43;
+  box-shadow: 0 12px 40px rgba(139, 31, 67, 0.15);
+}
+
+.empty-icon {
+  font-size: 6rem;
+  background: linear-gradient(135deg, #8b1f43 0%, #a52d52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+  background: linear-gradient(135deg, #8b1f43 0%, #611232 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+  font-size: 1.75rem;
+}
+
+.empty-state p {
+  color: #6c757d;
+  margin-bottom: 2.5rem;
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-create-large {
+  background: linear-gradient(135deg, #A57F2C 0%, #d4af3f 100%);
+  color: white;
+  padding: 1.25rem 2.5rem;
+  border-radius: 16px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(165, 127, 44, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-create-large::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-create-large:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.btn-create-large:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(165, 127, 44, 0.5);
+  color: white;
+}
+
+.btn-create-large i {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 1.5rem;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  .btn-create {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .inmuebles-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .inmueble-card {
+    border-radius: 16px;
+  }
+
+  .card-header-custom {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .card-body-custom {
+    padding: 1.25rem;
+  }
+
+  .card-info {
+    grid-template-columns: 1fr;
+    margin: 0 -1.25rem -1.25rem -1.25rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .btn-view {
+    width: calc(100% - 2.5rem);
+    margin: 1rem 1.25rem;
+  }
+
+  .empty-state {
+    padding: 3rem 1.5rem;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    padding: 1rem;
+  }
+
+  .card-header-custom {
+    padding: 1rem 1.25rem;
+  }
+
+  .card-body-custom {
+    padding: 1rem;
+  }
+
+  .card-info {
+    grid-template-columns: 1fr;
+    margin: 0 -1rem -1rem -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: 0.5rem;
+  }
+
+  .btn-view {
+    width: calc(100% - 2rem);
+    margin: 0.75rem 1rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+  }
+
+  .empty-state {
+    padding: 2.5rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3.5rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
+{% endblock %}

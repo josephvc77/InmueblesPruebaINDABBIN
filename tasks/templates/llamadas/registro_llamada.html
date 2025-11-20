@@ -3,10 +3,75 @@
 {% block titulo %}Agregar Llamada{% endblock %}
 
 {% block content %}
+<style>
+.form-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(105, 28, 50, 0.1);
+  overflow: hidden;
+  border: none;
+}
+
+.form-card .card-header {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  padding: 1.25rem 1.5rem;
+  border: none;
+}
+
+.form-card .card-header h5 {
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-card .card-body {
+  padding: 1.5rem;
+}
+
+.form-card .form-label {
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.form-card .form-control,
+.form-card .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.9rem;
+}
+
+.form-card .form-control:focus,
+.form-card .form-select:focus {
+  border-color: #691c32;
+  box-shadow: 0 0 0 0.2rem rgba(105, 28, 50, 0.25);
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.2);
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(105, 28, 50, 0.3);
+}
+</style>
+
 <div class="container my-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-success text-white">
-      <h5 class="mb-0">Nueva llamada para la tarea: {{ tarea.NombreInmueble }}</h5>
+  <div class="form-card card shadow-sm">
+    <div class="card-header text-white">
+      <h5 class="mb-0">
+        <i class="bi bi-telephone-plus-fill me-2"></i>Nueva llamada para: {{ tarea.NombreInmueble }}
+      </h5>
     </div>
     <div class="card-body">
       <form method="post" novalidate>
@@ -26,10 +91,10 @@
 
         <div class="d-flex justify-content-between mt-4">
           <a href="{% url 'task_detail_llamadas' tarea.id %}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Volver
+            <i class="bi bi-arrow-left me-1"></i> Volver
           </a>
-          <button type="submit" class="btn btn-success">
-            <i class="bi bi-save"></i> Guardar Llamada
+          <button type="submit" class="btn btn-submit">
+            <i class="bi bi-save me-1"></i> Guardar Llamada
           </button>
         </div>
       </form>

@@ -3,44 +3,508 @@
 {% block titulo %}Detalle de Tarea{% endblock %}
 
 {% block content %}
+<style>
+.detail-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+  margin-bottom: 2.5rem;
+}
+
+.detail-card .card-header {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  padding: 2.5rem;
+  border: none;
+}
+
+.detail-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.detail-header-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.detail-header-icon {
+  width: 70px;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.detail-header-text h6 {
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.detail-header-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.detail-header-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-card .card-header h6 {
+  font-weight: 700;
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.btn-new-call {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-new-call:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  transform: translateY(-1px);
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  overflow: hidden;
+}
+
+.table thead.table-dark {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: #fff5f8;
+}
+
+.btn-info {
+  background: #17a2b8;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+.btn-info:hover {
+  background: #138496;
+  color: white;
+}
+
+.btn-edit {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+.btn-edit:hover {
+  background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  margin: 0 2px;
+}
+
+.btn-delete:hover {
+  background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  border: none;
+  padding: 1.5rem;
+}
+
+.modal-header .modal-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+  background: #f8f9fa;
+}
+
+.info-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #691c32;
+}
+
+.info-section h6 {
+  color: #691c32;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.info-item strong {
+  color: #495057;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 200px;
+  font-size: 0.9rem;
+}
+
+.info-item span {
+  color: #212529;
+  font-size: 0.95rem;
+}
+
+.info-item .badge-date {
+  background: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(105, 28, 50, 0.3);
+}
+
+.badge {
+  font-weight: 600;
+  padding: 0.4em 0.65em;
+  border-radius: 6px;
+}
+
+/* Estilos mejorados para campos de información */
+.campos-basicos-title {
+  color: #691c32;
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e9ecef;
+  display: flex;
+  align-items: center;
+}
+
+.info-field {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.info-field:hover {
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  border-color: #691c32;
+}
+
+.info-field strong {
+  display: block;
+  color: #691c32;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.info-field span {
+  color: #495057;
+  font-size: 0.95rem;
+}
+
+.detail-header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Estado vacío atractivo */
+.empty-state {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(105, 28, 50, 0.1);
+  border: 2px dashed #e9ecef;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.empty-state:hover {
+  border-color: #8b1f43;
+  box-shadow: 0 12px 40px rgba(105, 28, 50, 0.15);
+}
+
+.empty-icon {
+  font-size: 6rem;
+  background: linear-gradient(135deg, #8b1f43 0%, #a52d52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem;
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  font-weight: 800;
+  font-size: 1.75rem;
+}
+
+.empty-state p {
+  color: #6c757d;
+  margin-bottom: 2.5rem;
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.btn-create-large {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(105, 28, 50, 0.3);
+}
+
+.btn-create-large:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(105, 28, 50, 0.4);
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .detail-header-actions {
+    width: 100%;
+  }
+  
+  .detail-header-actions .btn-new-call {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .detail-card .card-header {
+    padding: 1.5rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .empty-state {
+    padding: 3rem 1.5rem;
+  }
+  
+  .empty-icon {
+    font-size: 4rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
 <div class="container my-4">
 
   <!-- Información de la tarea -->
-  <div class="card mb-3 shadow-sm">
-    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-      <h6 class="mb-0">{{ tarea.NombreInmueble }}</h6>
-      <a href="{% url 'registro_llamada' tarea.id %}" class="btn btn-sm btn-success">
-        <i class="bi bi-plus-circle"></i> Nueva llamada
-      </a>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-3"><strong>RFI:</strong> {{ tarea.rfi|default:"SIN ASIGNAR" }}</div>
-        <div class="col-md-3"><strong>Estado:</strong> {{ tarea.estado|default:"SIN ASIGNAR" }}</div>
-        <div class="col-md-3"><strong>Prioridad:</strong>
-          {% if tarea.prioridad %}
-            <span class="badge
-              {% if tarea.prioridad == 'Alta' %} bg-danger
-              {% elif tarea.prioridad == 'Media' %} bg-warning text-dark
-              {% else %} bg-success {% endif %}">
-              {{ tarea.prioridad }}
-            </span>
-          {% else %}
-            <span class="text-muted">SIN ASIGNAR</span>
-          {% endif %}
+  <div class="detail-card card shadow-sm">
+    <div class="card-header">
+      <div class="detail-header-content">
+        <div class="detail-header-info">
+          <div class="detail-header-icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <div class="detail-header-text">
+            <h6>{{ tarea.NombreInmueble|default:"Sin nombre" }}</h6>
+            <div class="detail-header-meta">
+              <span><i class="bi bi-hash"></i> ID: {{ tarea.id }}</span>
+              {% if tarea.creado %}
+                <span><i class="bi bi-calendar3"></i> {{ tarea.creado|date:"d/m/Y H:i" }}</span>
+              {% endif %}
+            </div>
+          </div>
         </div>
-        <div class="col-md-3"><strong>UR:</strong> {{ tarea.ur|default:"SIN ASIGNAR" }}</div>
+        <div class="detail-header-actions">
+          <a href="{% url 'registro_llamada' tarea.id %}" class="btn-new-call">
+            <i class="bi bi-plus-circle me-1"></i> Nueva llamada
+          </a>
+        </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-md-3"><strong>Asignado a:</strong>
-          {% if tarea.assigned_task %}
-            {{ tarea.assigned_task.first_name }} {{ tarea.assigned_task.last_name }}
-          {% else %}
-            <span class="text-muted">No asignada</span>
-          {% endif %}
+    </div>
+    <div class="card-body" style="padding: 2.5rem; background: #f8f9fa;">
+      <h4 class="campos-basicos-title mb-4">
+        <i class="bi bi-info-circle me-2"></i>Información General
+      </h4>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="info-field">
+            <strong><i class="bi bi-tag me-2"></i>RFI:</strong>
+            <span>{{ tarea.rfi|default:"SIN ASIGNAR" }}</span>
+          </div>
         </div>
-        <div class="col-md-3"><strong>Deadline:</strong> 
-          {% if tarea.deadline %}{{ tarea.deadline|date:"d/m/Y H:i" }}{% else %}<span class="text-muted">No definida</span>{% endif %}
+        <div class="col-md-3">
+          <div class="info-field">
+            <strong><i class="bi bi-toggle-on me-2"></i>Estado:</strong>
+            <span>{{ tarea.estado|default:"SIN ASIGNAR" }}</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-field">
+            <strong><i class="bi bi-flag me-2"></i>Prioridad:</strong>
+            {% if tarea.prioridad %}
+              <span class="badge
+                {% if tarea.prioridad == 'Alta' %} bg-danger
+                {% elif tarea.prioridad == 'Media' %} bg-warning text-dark
+                {% else %} bg-success {% endif %}">
+                {{ tarea.prioridad }}
+              </span>
+            {% else %}
+              <span class="text-muted">SIN ASIGNAR</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-field">
+            <strong><i class="bi bi-building me-2"></i>UR:</strong>
+            <span>{{ tarea.ur|default:"SIN ASIGNAR" }}</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-field">
+            <strong><i class="bi bi-person me-2"></i>Asignado a:</strong>
+            {% if tarea.assigned_task %}
+              <span>{{ tarea.assigned_task.first_name }} {{ tarea.assigned_task.last_name }}</span>
+            {% else %}
+              <span class="text-muted">No asignada</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info-field">
+            <strong><i class="bi bi-calendar-check me-2"></i>Deadline:</strong>
+            {% if tarea.deadline %}
+              <span>{{ tarea.deadline|date:"d/m/Y H:i" }}</span>
+            {% else %}
+              <span class="text-muted">No definida</span>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
@@ -48,8 +512,9 @@
 
   <!-- Tabla de registros de llamadas -->
   {% if registros %}
-    <div class="table-responsive shadow-sm">
-      <table class="table table-striped table-hover align-middle text-center">
+    <div class="table-container">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle text-center mb-0">
         <thead class="table-dark sticky-top">
           <tr>
             <th>#</th>
@@ -75,44 +540,152 @@
               <td>{{ reg.observaciones_generales|default:"-" }}</td>
               <td>{{ reg.finalizacion|default:"-" }}</td>
               <td>
-                <!-- Botón para abrir modal -->
-                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detalleLlamadaModal{{ reg.id }}">
-                  Ver Detalles
-                </button>
+                <div class="d-flex justify-content-center gap-1">
+                  <!-- Botón para abrir modal -->
+                  <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#detalleLlamadaModal{{ reg.id }}" title="Ver detalles">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <!-- Botón para editar -->
+                  <a href="{% url 'editar_llamada' tarea.id reg.id %}" class="btn btn-sm btn-edit" title="Editar llamada">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <!-- Botón para eliminar -->
+                  <button type="button" class="btn btn-sm btn-delete eliminar-llamada-btn" 
+                          data-url="{% url 'eliminar_llamada' tarea.id reg.id %}" 
+                          data-num-llamada="{{ reg.NumLlamada|default:forloop.counter }}"
+                          title="Eliminar llamada">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
 
             <!-- Modal de detalles de la llamada -->
             <div class="modal fade" id="detalleLlamadaModal{{ reg.id }}" tabindex="-1" aria-labelledby="detalleLlamadaModalLabel{{ reg.id }}" aria-hidden="true">
-              <div class="modal-dialog modal-lg modal-dialog-scrollable">
+              <div class="modal-dialog modal-xl modal-dialog-scrollable">
                 <div class="modal-content">
-                  <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title" id="detalleLlamadaModalLabel{{ reg.id }}">Detalle de la llamada #{{ forloop.counter }}</h5>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="detalleLlamadaModalLabel{{ reg.id }}">
+                      <i class="bi bi-telephone-fill me-2"></i>Detalle de la Llamada #{{ reg.NumLlamada|default:forloop.counter }}
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                   </div>
                   <div class="modal-body">
-                    <div class="row mb-2">
-                      <div class="col-md-3"><strong>Número Llamada:</strong> {{ reg.NumLlamada|default:"-" }}</div>
-                      <div class="col-md-3"><strong>Fecha:</strong> {{ reg.fecha_llamada|date:"d/m/Y" }}</div>
-                      <div class="col-md-3"><strong>Hora:</strong> {{ reg.hora_llamada|default:"-" }}</div>
-                      <div class="col-md-3"><strong>Finalización:</strong> {{ reg.finalizacion|date:"d/m/Y"|default:"-" }}</div>
+                    <!-- Información Principal -->
+                    <div class="info-section">
+                      <h6><i class="bi bi-info-circle me-2"></i>Información Principal</h6>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="info-item">
+                            <strong>Número de Llamada:</strong>
+                            <span class="badge bg-primary ms-2">{{ reg.NumLlamada|default:"N/A" }}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="info-item">
+                            <strong>Fecha de Llamada:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_llamada %}{{ reg.fecha_llamada|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="info-item">
+                            <strong>Hora de Llamada:</strong>
+                            <span class="ms-2">{% if reg.hora_llamada %}{{ reg.hora_llamada|time:"H:i" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="info-item">
+                            <strong>Finalización:</strong>
+                            <span class="badge-date ms-2">{% if reg.finalizacion %}{{ reg.finalizacion|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="row mb-2">
-                      <div class="col-md-6"><strong>Acuerdos/Compromisos:</strong> {{ reg.acuerdos_compromisos|default:"-" }}</div>
-                      <div class="col-md-6"><strong>Observaciones:</strong> {{ reg.observaciones_generales|default:"-" }}</div>
+
+                    <!-- Acuerdos y Compromisos -->
+                    <div class="info-section">
+                      <h6><i class="bi bi-handshake me-2"></i>Acuerdos y Compromisos</h6>
+                      <div class="info-item">
+                        <strong>Acuerdos/Compromisos:</strong>
+                        <span class="ms-2">{{ reg.acuerdos_compromisos|default:"No especificado" }}</span>
+                      </div>
+                      <div class="info-item">
+                        <strong>Fecha Comprometida:</strong>
+                        <span class="badge-date ms-2">{% if reg.fecha_comprometida %}{{ reg.fecha_comprometida|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                      </div>
+                      <div class="info-item">
+                        <strong>Fecha Compromiso de Envío de Información:</strong>
+                        <span class="badge-date ms-2">{% if reg.fecha_compromiso_de_envio_de_informacion %}{{ reg.fecha_compromiso_de_envio_de_informacion|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                      </div>
                     </div>
-                    <div class="row mb-2">
-                      <div class="col-md-3"><strong>Fecha Comprometida:</strong> {{ reg.fecha_comprometida|default:"-" }}</div>
-                      <div class="col-md-3"><strong>Fecha Respuesta Email:</strong> {{ reg.fecha_respuesta_email|default:"-" }}</div>
-                      <div class="col-md-3"><strong>Fecha Revisión Correcciones:</strong> {{ reg.fecha_revision_correcciones|default:"-" }}</div>
-                      <div class="col-md-3"><strong>Fecha Envío Correcciones:</strong> {{ reg.fecha_envio_correccion|default:"-" }}</div>
+
+                    <!-- Proceso de Corrección -->
+                    <div class="info-section">
+                      <h6><i class="bi bi-file-earmark-check me-2"></i>Proceso de Corrección</h6>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="info-item">
+                            <strong>Fecha Respuesta Email:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_respuesta_email %}{{ reg.fecha_respuesta_email|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="info-item">
+                            <strong>Fecha Revisión Correcciones:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_revision_correcciones %}{{ reg.fecha_revision_correcciones|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="info-item">
+                            <strong>Fecha Envío Correcciones:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_envio_correccion %}{{ reg.fecha_envio_correccion|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="info-item">
+                            <strong>Fecha Compromiso de Observaciones Subsanadas:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_compromiso_de_observaciones_subsanadas %}{{ reg.fecha_compromiso_de_observaciones_subsanadas|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6"><strong>Fecha Aprobación Fichas Corregidas:</strong> {{ reg.fecha_aprobacion_fichas_corregidas|default:"-" }}</div>
+
+                    <!-- Aprobación y Autorización -->
+                    <div class="info-section">
+                      <h6><i class="bi bi-check-circle me-2"></i>Aprobación y Autorización</h6>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="info-item">
+                            <strong>Fecha Aprobación Fichas Corregidas:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_aprobacion_fichas_corregidas %}{{ reg.fecha_aprobacion_fichas_corregidas|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="info-item">
+                            <strong>Fecha Autorización de Documento:</strong>
+                            <span class="badge-date ms-2">{% if reg.fecha_autorizacion_de_documento %}{{ reg.fecha_autorizacion_de_documento|date:"d/m/Y" }}{% else %}-{% endif %}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+
+                    <!-- Observaciones Generales -->
+                    {% if reg.observaciones_generales %}
+                    <div class="info-section">
+                      <h6><i class="bi bi-chat-left-text me-2"></i>Observaciones Generales</h6>
+                      <div class="info-item">
+                        <p class="mb-0" style="color: #495057; line-height: 1.6;">{{ reg.observaciones_generales }}</p>
+                      </div>
+                    </div>
+                    {% endif %}
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="{% url 'editar_llamada' tarea.id reg.id %}" class="btn btn-primary">
+                      <i class="bi bi-pencil me-1"></i> Editar Llamada
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      <i class="bi bi-x-circle me-1"></i> Cerrar
+                    </button>
                   </div>
                 </div>
               </div>
@@ -120,10 +693,22 @@
           {% endfor %}
         </tbody>
       </table>
+      </div>
     </div>
   {% else %}
-    <div class="alert alert-warning text-center shadow-sm rounded">
-      <i class="bi bi-exclamation-circle"></i> No se han registrado llamadas aún.
+    <!-- Estado vacío atractivo -->
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="bi bi-telephone-x"></i>
+      </div>
+      <h3>No hay llamadas registradas</h3>
+      <p>
+        Aún no se han registrado llamadas para este inmueble.<br>
+        Comienza creando tu primera llamada en el sistema.
+      </p>
+      <a href="{% url 'registro_llamada' tarea.id %}" class="btn-create-large">
+        <i class="bi bi-plus-circle-fill me-2"></i>Crear Primera Llamada
+      </a>
     </div>
   {% endif %}
 
@@ -135,4 +720,107 @@
   </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Obtener el token CSRF
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  // Manejar clics en botones de eliminar
+  const eliminarButtons = document.querySelectorAll('.eliminar-llamada-btn');
+  
+  eliminarButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = this.getAttribute('data-url');
+      const numLlamada = this.getAttribute('data-num-llamada');
+      const row = this.closest('tr');
+
+      // Mostrar confirmación con SweetAlert
+      Swal.fire({
+        title: '¿Estás seguro?',
+        html: `¿Deseas eliminar la llamada <strong>#${numLlamada}</strong>?<br><br>Esta acción no se puede deshacer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="bi bi-trash me-1"></i> Sí, eliminar',
+        cancelButtonText: '<i class="bi bi-x-circle me-1"></i> Cancelar',
+        reverseButtons: true,
+        focusCancel: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Realizar petición AJAX para eliminar
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrftoken,
+              'Content-Type': 'application/json',
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Eliminar la fila de la tabla
+              row.style.transition = 'opacity 0.3s';
+              row.style.opacity = '0';
+              setTimeout(() => {
+                row.remove();
+                
+                // Verificar si quedan registros
+                const tbody = document.querySelector('tbody');
+                if (tbody && tbody.children.length === 0) {
+                  // Recargar la página si no hay más registros
+                  location.reload();
+                }
+              }, 300);
+
+              // Mostrar mensaje de éxito
+              Swal.fire({
+                icon: 'success',
+                title: '¡Eliminado!',
+                text: 'La llamada ha sido eliminada correctamente.',
+                showConfirmButton: false,
+                timer: 2000
+              });
+            } else {
+              // Mostrar mensaje de error
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message || 'Hubo un problema al intentar eliminar la llamada.',
+                confirmButtonColor: '#dc3545'
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al intentar eliminar la llamada.',
+              confirmButtonColor: '#dc3545'
+            });
+          });
+        }
+      });
+    });
+  });
+});
+</script>
+
 {% endblock %}

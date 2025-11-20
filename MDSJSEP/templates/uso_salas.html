@@ -1,83 +1,300 @@
-
 {% extends 'baseSalas.html' %}
 
-{% block titulo %} Graficas {% endblock %}
+{% block titulo %} Gráficas {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="text-center mb-4">Uso de las Salas de Juntas</h1>
+<style>
+.charts-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
 
-    <!-- Filtros para seleccionar Sala, Mes, y Tipo de Gráfico -->
-    <form id="filtrosForm" class="mb-4">
-        <div class="row">
-            <!-- Filtro por Sala -->
-            <div class="col-md-3">
-                <label for="salaSelect" class="form-label">Selecciona Sala:</label>
-                <select class="form-select" id="salaSelect" onchange="actualizarGrafico()">
-                    <option value="">Todas</option>
-                    <!-- Las opciones se agregarán aquí dinámicamente -->
-                </select>
-            </div>
-            
+.charts-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-            <!-- Filtro por Mes -->
-            <div class="col-md-3">
-                <label for="mesSelect" class="form-label">Selecciona Mes:</label>
-                <select class="form-select" id="mesSelect" onchange="actualizarGrafico()">
-                    <option value="">Todos los Meses</option>
-                    <option value="01">Enero</option>
-                    <option value="02">Febrero</option>
-                    <option value="03">Marzo</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Mayo</option>
-                    <option value="06">Junio</option>
-                    <option value="07">Julio</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Septiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>
-                </select>
-            </div>
-            
+.charts-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #691c32;
+  margin: 0;
+}
 
-            <div class="col-md-3">
-                <label for="usosInput" class="form-label">Usos en el Mes:</label>
-                <input type="number" class="form-control" id="usosInput" disabled>
-            </div>
-            
-            <div class="col-md-3">
-                <label for="capacidadInput" class="form-label">Capacidad de Sala:</label>
-                <input type="number" class="form-control" id="capacidadInput" disabled>
-            </div>
-            
-            <div class="col-md-3">
-                <label for="asistentesInput" class="form-label">Asistentes totales en mes/año:</label>
-                <input type="number" class="form-control" id="asistentesInput" disabled>
-            </div>
+.filters-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.form-select,
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  padding: 0.625rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-select:focus,
+.form-control:focus {
+  border-color: #691c32;
+  box-shadow: 0 0 0 0.2rem rgba(105, 28, 50, 0.25);
+  outline: none;
+}
+
+.form-control:disabled {
+  background-color: #e9ecef;
+  opacity: 0.7;
+}
+
+.btn-apply {
+  background: linear-gradient(135deg, #691c32 0%, #8b1f43 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-apply:hover {
+  background: linear-gradient(135deg, #8b1f43 0%, #691c32 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(105, 28, 50, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-download {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-download:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-download-pdf {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-download-pdf:hover {
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  transform: translateY(-2px);
+}
+
+.chart-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(105, 28, 50, 0.1);
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    padding: 1rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-title {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
+<div class="charts-container">
+  <div class="charts-header">
+    <h1 class="charts-title">
+      <i class="bi bi-bar-chart-fill me-2"></i>Uso de las Salas de Juntas
+    </h1>
+  </div>
+
+  <!-- Filtros para seleccionar Sala, Mes, y Tipo de Gráfico -->
+  <div class="filters-container">
+    <form id="filtrosForm">
+      <div class="filters-grid">
+        <!-- Filtro por Sala -->
+        <div>
+          <label for="salaSelect" class="form-label">
+            <i class="bi bi-building me-2"></i>Selecciona Sala:
+          </label>
+          <select class="form-select" id="salaSelect" onchange="actualizarGrafico()">
+            <option value="">Todas</option>
+            <!-- Las opciones se agregarán aquí dinámicamente -->
+          </select>
+        </div>
+
+        <!-- Filtro por Mes -->
+        <div>
+          <label for="mesSelect" class="form-label">
+            <i class="bi bi-calendar3 me-2"></i>Selecciona Mes:
+          </label>
+          <select class="form-select" id="mesSelect" onchange="actualizarGrafico()">
+            <option value="">Todos los Meses</option>
+            <option value="01">Enero</option>
+            <option value="02">Febrero</option>
+            <option value="03">Marzo</option>
+            <option value="04">Abril</option>
+            <option value="05">Mayo</option>
+            <option value="06">Junio</option>
+            <option value="07">Julio</option>
+            <option value="08">Agosto</option>
+            <option value="09">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+        </div>
 
         <!-- Selector de Tipo de Gráfico -->
-        <div class="row mt-3">
-            <div class="col-md-4">
-                <label for="tipoGrafico" class="form-label">Selecciona Tipo de Gráfico:</label>
-                <select class="form-select" id="tipoGrafico" onchange="actualizarGrafico()">
-                    <option value="bar">Barras</option>
-                    <option value="line">Líneas</option>
-                    <option value="pie">Pastel</option>
-                </select>
-            </div>
+        <div>
+          <label for="tipoGrafico" class="form-label">
+            <i class="bi bi-graph-up me-2"></i>Tipo de Gráfico:
+          </label>
+          <select class="form-select" id="tipoGrafico" onchange="actualizarGrafico()">
+            <option value="bar">Barras</option>
+            <option value="line">Líneas</option>
+            <option value="pie">Pastel</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="usosInput" class="form-label">
+            <i class="bi bi-clock-history me-2"></i>Usos en el Mes:
+          </label>
+          <input type="number" class="form-control" id="usosInput" disabled>
         </div>
         
-
-        <div class="row mt-4">
-            <div class="col-md-12 text-center">
-                <button type="button" class="btn btn-primary" onclick="actualizarGrafico()">Aplicar Filtros</button>
-            </div>
+        <div>
+          <label for="capacidadInput" class="form-label">
+            <i class="bi bi-people me-2"></i>Capacidad de Sala:
+          </label>
+          <input type="number" class="form-control" id="capacidadInput" disabled>
         </div>
-    </form>
+        
+        <div>
+          <label for="asistentesInput" class="form-label">
+            <i class="bi bi-people-fill me-2"></i>Asistentes totales en mes/año:
+          </label>
+          <input type="number" class="form-control" id="asistentesInput" disabled>
+        </div>
+      </div>
 
-    <!-- Lienzo donde se mostrará la gráfica -->
+      <div class="filters-grid mt-3">
+        <div>
+          <label for="trimestreSelect" class="form-label">
+            <i class="bi bi-calendar-range me-2"></i>Trimestre:
+          </label>
+          <select class="form-select" id="trimestreSelect">
+            <option value="">Todos</option>
+            <option value="1">Q1 (Enero-Marzo)</option>
+            <option value="2">Q2 (Abril-Junio)</option>
+            <option value="3">Q3 (Julio-Septiembre)</option>
+            <option value="4">Q4 (Octubre-Diciembre)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="añoSelect" class="form-label">
+            <i class="bi bi-calendar-year me-2"></i>Año:
+          </label>
+          <select class="form-select" id="añoSelect">
+            {% for año in años %}
+              <option value="{{ año }}" {% if año == año_actual %}selected{% endif %}>{{ año }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="nombreSalaSelect" class="form-label">
+            <i class="bi bi-building me-2"></i>Filtrar por Sala:
+          </label>
+          <select class="form-select" id="nombreSalaSelect">
+            <option value="">Todas las Salas</option>
+            <!-- Se llenará dinámicamente -->
+          </select>
+        </div>
+
+        <div>
+          <label for="filtroOrdenSelect" class="form-label">
+            <i class="bi bi-sort-down me-2"></i>Ordenar por:
+          </label>
+          <select class="form-select" id="filtroOrdenSelect">
+            <option value="total_eventos">Más Utilizadas (Eventos)</option>
+            <option value="total_personas">Más Personas (Total)</option>
+            <option value="promedio_personas">Más Personas (Promedio)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="topNSelect" class="form-label">
+            <i class="bi bi-trophy me-2"></i>Mostrar Top:
+          </label>
+          <select class="form-select" id="topNSelect">
+            <option value="">Todas</option>
+            <option value="5">Top 5</option>
+            <option value="10">Top 10</option>
+            <option value="15">Top 15</option>
+            <option value="20">Top 20</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-center mt-3 d-flex gap-2 justify-content-center flex-wrap">
+        <button type="button" class="btn btn-apply" onclick="actualizarGrafico()">
+          <i class="bi bi-funnel me-1"></i>Aplicar Filtros
+        </button>
+        <button type="button" class="btn btn-download" onclick="descargarReporte()">
+          <i class="bi bi-file-earmark-excel-fill me-1"></i>Descargar Excel
+        </button>
+        <button type="button" class="btn btn-download-pdf" onclick="descargarReportePDF()">
+          <i class="bi bi-file-earmark-pdf-fill me-1"></i>Descargar PDF
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lienzo donde se mostrará la gráfica -->
+  <div class="chart-wrapper">
     <canvas id="graficaSalas"></canvas>
+  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -143,9 +360,9 @@
             datasets: [{
                 label: 'Número de usos',
                 data: usos_salas, // Usos de las salas
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
+                backgroundColor: 'rgba(105, 28, 50, 0.2)',
+                borderColor: '#691c32',
+                borderWidth: 2
             }]
         },
         options: {
@@ -171,9 +388,13 @@ function cargarSalas() {
         .then(data => {
             // Asegúrate de que 'data' sea un objeto o array
             var salasSelect = document.getElementById('salaSelect');
+            var nombreSalaSelect = document.getElementById('nombreSalaSelect');
 
             // Limpia las opciones anteriores (si las hay)
             salasSelect.innerHTML = '<option value="">Todas</option>';
+            if (nombreSalaSelect) {
+                nombreSalaSelect.innerHTML = '<option value="">Todas las Salas</option>';
+            }
 
             // Itera sobre los datos para agregar las opciones al select
             for (var sala in data) {
@@ -187,6 +408,14 @@ function cargarSalas() {
                     capacidadesSalas[nombreSala] = data[sala].capacidad; // Ajusta según la propiedad correcta
 
                     salasSelect.appendChild(option);
+                    
+                    // Agregar también al select de filtro de PDF
+                    if (nombreSalaSelect) {
+                        var optionPDF = document.createElement('option');
+                        optionPDF.value = nombreSala;
+                        optionPDF.textContent = nombreSala;
+                        nombreSalaSelect.appendChild(optionPDF);
+                    }
                 }
             }
         })
@@ -195,6 +424,49 @@ function cargarSalas() {
 
 // Llama a la función para cargar las salas al cargar la página
 window.onload = cargarSalas;
+
+// Función para descargar el reporte trimestral Excel
+function descargarReporte() {
+    var trimestre = document.getElementById('trimestreSelect').value;
+    var año = document.getElementById('añoSelect').value;
+    
+    var url = '{% url "export_reporte_trimestral_salas" %}?';
+    if (trimestre) {
+        url += 'trimestre=' + trimestre + '&';
+    }
+    url += 'año=' + año;
+    
+    window.location.href = url;
+}
+
+// Función para descargar el reporte trimestral PDF
+function descargarReportePDF() {
+    var trimestre = document.getElementById('trimestreSelect').value;
+    var año = document.getElementById('añoSelect').value;
+    var nombreSala = document.getElementById('nombreSalaSelect').value;
+    var filtroOrden = document.getElementById('filtroOrdenSelect').value;
+    var topN = document.getElementById('topNSelect').value;
+    
+    var url = '{% url "export_reporte_trimestral_salas_pdf" %}?';
+    if (trimestre) {
+        url += 'trimestre=' + trimestre + '&';
+    }
+    url += 'año=' + año;
+    
+    if (nombreSala) {
+        url += '&nombre_sala=' + encodeURIComponent(nombreSala);
+    }
+    
+    if (filtroOrden) {
+        url += '&filtro_orden=' + filtroOrden;
+    }
+    
+    if (topN) {
+        url += '&top_n=' + topN;
+    }
+    
+    window.location.href = url;
+}
 
 </script>
 

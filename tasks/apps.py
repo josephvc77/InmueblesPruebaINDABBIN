@@ -5,3 +5,6 @@ class TasksConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'tasks'
     verbose_name='SIIFSEP'
+    
+    def ready(self):
+        import tasks.signals  # Importar señales para que se registren
