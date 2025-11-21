@@ -5,26 +5,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Sitio SIISEP">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block titulo %}{% endblock %}</title>
   {% load static %}
+  
+  <!-- Prefetch DNS para recursos externos -->
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="//unpkg.com">
+  <link rel="dns-prefetch" href="//cdn-uicons.flaticon.com">
+  <link rel="dns-prefetch" href="//code.jquery.com">
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'inicio/img/logo-sgis.png' %}">
 
-  <!-- CSS de la aplicación -->
+  <!-- Preconnect para recursos externos (mejora DNS lookup) -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn-uicons.flaticon.com" crossorigin>
+  <link rel="dns-prefetch" href="https://code.jquery.com">
+
+  <!-- Preload recursos críticos -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" as="style">
+  <link rel="preload" href="{% static 'inicio/css/styles.css' %}" as="style">
+  <link rel="preload" href="{% static 'inicio/css/menu.css' %}" as="style">
+
+  <!-- CSS crítico (cargar primero) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="{% static 'inicio/css/styles.css' %}" rel="stylesheet">
   <link href="{% static 'inicio/css/menu.css' %}" rel="stylesheet">
 
-  <!-- CSS de Bootstrap y Mapeo -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- CSS no crítico (cargar diferido) -->
+  <link rel="preload" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"></noscript>
   
-  <!-- CSS de fuentes y SweetAlert -->
-  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="preload" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css"></noscript>
+  
+  <link rel="preload" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css"></noscript>
+  
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"></noscript>
+  
+  <link rel="preload" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"></noscript>
+
+  <!-- Script para cargar CSS diferido (polyfill para navegadores antiguos) -->
+  <script>
+    (function() {
+      var links = document.querySelectorAll('link[rel="preload"][as="style"]');
+      for (var i = 0; i < links.length; i++) {
+        var link = links[i];
+        if (link.onload) {
+          link.onload();
+        } else {
+          var style = document.createElement('link');
+          style.rel = 'stylesheet';
+          style.href = link.href;
+          document.head.appendChild(style);
+        }
+      }
+    })();
+  </script>
 
   <!-- Sistema de Diseño Global SIISEP -->
   <style>
@@ -530,7 +573,7 @@
 
     .header-user .email {
       font-size: 0.85rem;
-      color: #6c757d;
+      color: #595959;
     }
 
     /* Dropdown Notificaciones */
@@ -615,21 +658,26 @@
     <div class="header-icons">
       <!-- Botón Offcanvas -->
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar">
-        <i class="fi fi-rr-align-justify"></i>
+        aria-controls="offcanvasNavbar" aria-label="Abrir menú de navegación">
+        <i class="fi fi-rr-align-justify" aria-hidden="true"></i>
+        <span class="visually-hidden">Menú</span>
       </button>
 
       <!-- Botón Home -->
-      <a href="{% url 'principal' %}" class="btn-home"><i class="fi fi-rr-home"></i></a>
+      <a href="{% url 'principal' %}" class="btn-home" aria-label="Ir a la página principal">
+        <i class="fi fi-rr-home" aria-hidden="true"></i>
+        <span class="visually-hidden">Inicio</span>
+      </a>
 
       <!-- Notificaciones -->
       <div class="dropdown notifications">
         <button class="btn btn-dark position-relative" id="dropdownMenuButton" data-bs-toggle="dropdown"
-          aria-expanded="false">
-          <i class="fi fi-rr-bell fs-4"></i>
+          aria-expanded="false" aria-label="Ver notificaciones{% if mensajes %} ({{ mensajes|length }} pendiente{{ mensajes|length|pluralize:'s' }}){% endif %}">
+          <i class="fi fi-rr-bell fs-4" aria-hidden="true"></i>
           {% if mensajes %}
-          <span style="width: 15px; font-size: 9px;height: 15px; top: 0.5em;" class="position-absolute translate-middle badge rounded-pill bg-danger">{{ mensajes|length }}</span>
+          <span style="width: 15px; font-size: 9px;height: 15px; top: 0.5em;" class="position-absolute translate-middle badge rounded-pill bg-danger" aria-label="{{ mensajes|length }} notificación{{ mensajes|length|pluralize:'es' }} pendiente{{ mensajes|length|pluralize:'s' }}">{{ mensajes|length }}</span>
           {% endif %}
+          <span class="visually-hidden">Notificaciones</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
           <li class="dropdown-header text-white bg-dark text-center py-2 rounded-top">
@@ -708,12 +756,12 @@
       <div class="row align-items-center">
         <!-- Logo -->
         <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-          <img src="{% static 'inicio/img/logosep.webp' %}" alt="Logo SIISEP" width="180" loading="lazy">
+          <img src="{% static 'inicio/img/logosep.webp' %}" alt="Logo SIISEP" width="180" height="auto" style="height: auto; max-width: 180px; object-fit: contain;" loading="lazy" decoding="async">
         </div>
 
         <!-- Enlaces rápidos -->
         <div class="col-md-4 text-center mb-3 mb-md-0">
-          <h6 class="fw-bold">Enlaces Rápidos</h6>
+          <h3 class="fw-bold" style="font-size: 1rem; margin-bottom: 0.5rem;">Enlaces Rápidos</h3>
           <ul class="list-unstyled">
             <li><a href="{% url 'inmuebles_list' %}" class="text-white text-decoration-none">Completados</a></li>
             <li><a href="{% url 'tareas_list' %}" class="text-white text-decoration-none">Registro de
@@ -724,7 +772,7 @@
 
         <!-- Contacto / Derechos -->
         <div class="col-md-4 text-center text-md-end">
-          <h6 class="fw-bold">Contacto</h6>
+          <h3 class="fw-bold" style="font-size: 1rem; margin-bottom: 0.5rem;">Contacto</h3>
           <p class="mb-1">Correo: soporte@siisep.com</p>
           <p class="mb-0">&copy; {{ now.year }} SIISEP. Todos los derechos reservados.</p>
         </div>
@@ -733,11 +781,37 @@
     </footer>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Preload scripts críticos -->
+  <link rel="preload" href="https://code.jquery.com/jquery-3.6.0.min.js" as="script">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" as="script">
+  
+  <!-- Scripts críticos (cargar primero, pero diferido para no bloquear) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+  
+  <!-- Scripts no críticos (cargar diferido) -->
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  
+  <!-- Script inline optimizado para manejar carga diferida de CSS -->
+  <script>
+    // Polyfill optimizado para carga diferida de CSS
+    (function() {
+      if ('onload' in document.createElement('link')) {
+        // Navegadores modernos ya soportan onload en link
+        return;
+      }
+      // Polyfill para navegadores antiguos
+      var links = document.querySelectorAll('link[rel="preload"][as="style"]');
+      for (var i = 0; i < links.length; i++) {
+        var link = links[i];
+        var style = document.createElement('link');
+        style.rel = 'stylesheet';
+        style.href = link.href;
+        document.head.appendChild(style);
+      }
+    })();
+  </script>
 </body>
 
 </html>

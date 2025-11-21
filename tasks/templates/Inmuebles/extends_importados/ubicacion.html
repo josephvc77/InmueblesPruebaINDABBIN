@@ -29,8 +29,8 @@
       <!-- Mostrar la imagen actual si existe -->
       {% if task.fotografia_de_la_ubicacion %}
         <div class="mb-3">
-          <img width="150" src="{{ task.fotografia_de_la_ubicacion.url }}" alt="Fotografía de ubicación"
-            onclick="openModal('{{ task.fotografia_de_la_ubicacion.url }}')" style="cursor: pointer;" />
+          <img width="150" height="150" src="{{ task.fotografia_de_la_ubicacion.url }}" alt="Fotografía de ubicación"
+            onclick="openModal('{{ task.fotografia_de_la_ubicacion.url }}')" style="cursor: pointer; object-fit: cover;" loading="lazy" decoding="async" />
         </div>
       {% else %}
         <p>No hay fotografía de ubicación disponible.</p>
@@ -181,7 +181,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body">
-          <img id="modalImage" src="" class="img-fluid" alt="Imagen en Modal">
+          <img id="modalImage" src="" class="img-fluid" alt="Imagen en Modal" loading="lazy" decoding="async">
         </div>
         <div class="modal-footer">
         </div>

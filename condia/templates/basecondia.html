@@ -289,12 +289,16 @@
     <div class="header-icons">
       <!-- Botón Offcanvas -->
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar">
-        <i class="fi fi-rr-align-justify"></i>
+        aria-controls="offcanvasNavbar" aria-label="Abrir menú de navegación">
+        <i class="fi fi-rr-align-justify" aria-hidden="true"></i>
+        <span class="visually-hidden">Menú</span>
       </button>
 
       <!-- Botón Home -->
-      <a href="{% url 'homeCondia' %}" class="btn-home"><i class="fi fi-rr-home"></i></a>
+      <a href="{% url 'homeCondia' %}" class="btn-home" aria-label="Ir a la página principal">
+        <i class="fi fi-rr-home" aria-hidden="true"></i>
+        <span class="visually-hidden">Inicio</span>
+      </a>
     </div>
 
     <div class="header-user">
@@ -347,7 +351,7 @@
       <div class="row align-items-center">
         <!-- Logo -->
         <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-          <img src="{% static 'inicio/img/logosep.webp' %}" alt="Logo CONDIA" width="180" loading="lazy">
+          <img src="{% static 'inicio/img/logosep.webp' %}" alt="Logo CONDIA" width="180" height="auto" style="height: auto; max-width: 180px; object-fit: contain;" loading="lazy" decoding="async">
         </div>
 
         <!-- Enlaces rápidos -->
